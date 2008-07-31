@@ -1,0 +1,153 @@
+Source: modemmanager
+Section: net
+Priority: optional
+Maintainer: Utopia Maintenance Team <pkg-utopia-maintainers@lists.alioth.debian.org>
+Uploaders: Michael Biebl <biebl@debian.org>, Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>
+Build-Depends: debhelper (>= 9),
+               dh-autoreconf,
+               dh-systemd,
+               automake,
+               libtool,
+               intltool,
+               gtk-doc-tools,
+               gnome-common,
+               gobject-introspection,
+               libgirepository1.0-dev,
+               libglib2.0-dev (>= 2.30.2),
+               libgudev-1.0-dev (>= 147),
+               libpolkit-gobject-1-dev (>= 0.97),
+               libqmi-glib-dev (>= 1.8),
+               libmbim-glib-dev (>= 1.10),
+               libglib2.0-doc,
+               valac (>= 0.22),
+               dbus
+Standards-Version: 3.9.5
+Vcs-Git: git://anonscm.debian.org/collab-maint/modemmanager.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/modemmanager.git
+Homepage: http://www.freedesktop.org/wiki/Software/ModemManager/
+
+Package: modemmanager
+Architecture: linux-any
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+Recommends: usb-modeswitch
+Breaks: network-manager (<< 0.9.8.2-1)
+Description: D-Bus service for managing modems
+ ModemManager is a DBus-activated daemon which controls mobile broadband
+ (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
+ bluetooth-paired telephones or professional RS232/USB devices with external
+ power supplies, ModemManager is able to prepare and configure the modems and
+ setup connections with them.
+
+Package: modemmanager-dbg
+Architecture: linux-any
+Section: debug
+Priority: extra
+Depends: modemmanager (= ${binary:Version}),
+         ${misc:Depends},
+Description: D-Bus service for managing modems - debugging symbols
+ ModemManager is a DBus-activated daemon which controls mobile broadband
+ (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
+ bluetooth-paired telephones or professional RS232/USB devices with external
+ power supplies, ModemManager is able to prepare and configure the modems and
+ setup connections with them.
+ .
+ This package contains debugging symbols for ModemManager.
+
+Package: modemmanager-dev
+Section: libdevel
+Architecture: linux-any
+Depends: ${misc:Depends}
+Replaces: modemmanager (<< 0.7.990)
+Breaks: modemmanager (<< 0.7.990)
+Suggests: modemmanager-doc
+Description: D-Bus service for managing modems - development files
+ ModemManager is a DBus-activated daemon which controls mobile broadband
+ (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
+ bluetooth-paired telephones or professional RS232/USB devices with external
+ power supplies, ModemManager is able to prepare and configure the modems and
+ setup connections with them.
+ .
+ This package contains header files for ModemManager.
+
+Package: modemmanager-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}
+Suggests: devhelp
+Description: D-Bus service for managing modems - documentation files
+ ModemManager is a DBus-activated daemon which controls mobile broadband
+ (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
+ bluetooth-paired telephones or professional RS232/USB devices with external
+ power supplies, ModemManager is able to prepare and configure the modems and
+ setup connections with them.
+ .
+ This package contains documentation of the D-Bus protocol to interface
+ ModemManager.
+
+Package: libmm-glib0
+Architecture: linux-any
+Section: libs
+Pre-Depends: ${misc:Pre-Depends},
+Multi-Arch: same
+Depends: ${shlibs:Depends},
+         ${misc:Depends}
+Recommends: modemmanager (>= ${binary:Version})
+Description: D-Bus service for managing modems - shared libraries
+ ModemManager is a DBus-activated daemon which controls mobile broadband
+ (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
+ bluetooth-paired telephones or professional RS232/USB devices with external
+ power supplies, ModemManager is able to prepare and configure the modems and
+ setup connections with them.
+ .
+ This package contains shared libraries for applications interfacing with
+ ModemManager.
+
+Package: libmm-glib-dev
+Architecture: linux-any
+Section: libdevel
+Depends: libmm-glib0 (= ${binary:Version}),
+         gir1.2-modemmanager-1.0 (= ${binary:Version}),
+         modemmanager-dev,
+         ${shlibs:Depends},
+         ${misc:Depends},
+Suggests: libmm-glib-doc
+Description: D-Bus service for managing modems - library development files
+ ModemManager is a DBus-activated daemon which controls mobile broadband
+ (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
+ bluetooth-paired telephones or professional RS232/USB devices with external
+ power supplies, ModemManager is able to prepare and configure the modems and
+ setup connections with them.
+ .
+ This package contains development files and Vala bindings to use when writing
+ applications that interface with ModemManager.
+
+Package: libmm-glib-doc
+Architecture: all
+Section: doc
+Depends: ${misc:Depends}
+Suggests: devhelp
+Description: D-Bus service for managing modems - library documentation
+ ModemManager is a DBus-activated daemon which controls mobile broadband
+ (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
+ bluetooth-paired telephones or professional RS232/USB devices with external
+ power supplies, ModemManager is able to prepare and configure the modems and
+ setup connections with them.
+ .
+ This package contains documentation of libmm-glib to use when writing
+ applications that interface with ModemManager.
+
+Package: gir1.2-modemmanager-1.0
+Section: introspection
+Architecture: linux-any
+Depends: ${gir:Depends},
+         ${shlibs:Depends},
+         ${misc:Depends}
+Description: GObject introspection data for modemmanager
+ ModemManager is a DBus-activated daemon which controls mobile broadband
+ (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
+ bluetooth-paired telephones or professional RS232/USB devices with external
+ power supplies, ModemManager is able to prepare and configure the modems and
+ setup connections with them.
+ .
+ This package contains introspection data for the libmm-glib library.

@@ -1,0 +1,820 @@
+modemmanager (1.4.0-1) unstable; urgency=medium
+
+  * New upstream release.
+    - Fixes conflicting definitions of mm_manager_new. (Closes: #749387)
+  * Refresh patches.
+  * Bump Build-Depends on libmbim-glib-dev to (>= 1.10).
+  * Install NEWS file which includes the relevant upstream changes.
+    (Closes: #641467)
+  * Update symbols file for libmm-glib0.
+  * Add Build-Depends on dbus, required to run the test suite.
+
+ -- Michael Biebl <biebl@debian.org>  Wed, 17 Sep 2014 08:46:25 +0200
+
+modemmanager (1.2.0-1) unstable; urgency=medium
+
+  [ Guido Günther ]
+  * New upstream version 1.2.0 (Closes: #731851)
+  * Update patches
+  * Install locale files
+  * Require newer libqmi
+  * Update symbols file
+  * Ship gobject introspection data
+  * Ship vala bindings
+
+  [ Michael Biebl ]
+  * Use canonical URI for Vcs-Git
+  * Use gir dh addon
+  * Update extendend package description (Closes: #744180)
+
+ -- Michael Biebl <biebl@debian.org>  Wed, 25 Jun 2014 02:23:09 +0200
+
+modemmanager (1.0.0-5) unstable; urgency=medium
+
+  [ Michael Biebl ]
+  * Fix typo in package description (Closes: #745140)
+
+  [ Martin Pitt ]
+  * libmm-glib: Initialize result array
+  * Add systemd unit link to shadow upstart job (LP: #1314795)
+  * Fix systemd/upstart job on upgrades on Ubuntu
+  * Avoid cancelling of systemd unit stop on remove (Closes: #745621)
+
+ -- Martin Pitt <mpitt@debian.org>  Tue, 03 Jun 2014 09:15:24 +0200
+
+modemmanager (1.0.0-4) unstable; urgency=medium
+
+  * Kill old modem-manager process when upgrading from pre 1.0.0 versions.
+
+ -- Michael Biebl <biebl@debian.org>  Sat, 29 Mar 2014 00:46:03 +0100
+
+modemmanager (1.0.0-3) unstable; urgency=medium
+
+  [ Michael Biebl ]
+  * Upload to unstable.
+  * Refresh patches to apply cleanly.
+
+  [ Guido Günther ]
+  * Update VCS- URLs
+  * Add homepage URL
+  * Enable PolicyKit support (Closes: #736475, #736900)
+
+  [ Michael Biebl ]
+  * Update Standards Version to 3.9.5
+  * Drop link to Git repository from package descriptions
+  * Build-Depend on the latest automake version
+  * Fix D-Bus service file generation (Closes: #733752)
+  * Add gbp.conf and enable pristine-tar
+  * Install systemd service file
+  * Use dh-systemd to enable the systemd service and restart it on upgrades
+  * Set pkg-utopia-maintainers@lists.alioth.debian.org as Maintainer
+  * Remove obsolete D-Bus policy conffile on upgrades (Closes: #733305)
+  * Update debian/copyright using machine-readable copyright format 1.0
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 27 Mar 2014 15:46:44 +0100
+
+modemmanager (1.0.0-2) experimental; urgency=medium
+
+  * Sync more changes from Ubuntu:
+    - changelog for 0.6.0.0.really-0ubuntu4 (all changes dropped, they are
+      patches included in the current upstream version).
+    - changelog for 0.6.0.0.really-0ubuntu5 (all changes dropped, they are
+      patches included in the current upstream version).
+    - changelog for 0.6.0.0.really-0ubuntu6.
+    - Build-Depend on automake1.11.
+    - changelog for 0.6.0.0.really-0ubuntu7.
+    - lp1229748_bluegiga_blacklist.patch: don't reset BLED112B.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Tue, 14 Jan 2014 10:02:26 -0500
+
+modemmanager (1.0.0-1) experimental; urgency=low
+
+  * New upstream release. (Closes: #728214, #728215)
+  * debian/control: add a versioned dependency for libqmi -- we need at least
+    version 1.4.
+  * debian/control: build-depends on libmbim-glib-dev 1.4
+  * debian/rules: run the local autogen.sh rather than gnome-autogen.sh.
+  * debian/rules: drop --with-tests. 
+  * debian/rules: clean up after gtk-doc files left around.
+  * debian/patches/glib_fixes.patch: link against glib explicitly for the
+    huawei modem helper tests.
+  * debian/libmm-glib0.symbols: updated symbols: Contacts interface that was
+    in 0.7.990 got dropped; it's not actually implemented, so upstream avoids
+    exposing it.
+  * debian/watch: update watch file for new location of upstream source.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Fri, 20 Dec 2013 15:35:26 -0500
+
+modemmanager (0.7.991-1) experimental; urgency=low
+
+  [ Mathieu Trudel-Lapierre ]
+  * New upstream release.
+  * debian/patches/handle_data07_capabilities_probing.patch,
+    debian/patches/git_skip_add_utf8_check_219424a.patch,
+    debian/patches/git_lte_etsi_mode_0af47c7.patch,
+    debian/patches/git_lte_4g_parsing_90489ae.patch,
+    debian/patches/git_lp1015328_segfault_in_clck_parser_318aaa0.patch,
+    debian/patches/git_better_handle_ucs2_convert_e07c216.patch: Dropped,
+    these patches were cherry-picks; included upstream
+  * debian/patches/ericsson_h5321gw_usbids.patch: dropped, included upstream.
+  * debian/control:
+    - clean up build-depends: remove xsltproc, bump
+      libglib2.0-dev to (>= 2.30.2), libgudev-1.0-dev to (>= 147).
+    - Add gtk-doc-tools to Build-Depends.
+    - Add libqmi-glib-dev to Build-Depends.
+    - Add gnome-common to Build-Depends.
+    - Bump debhelper Build-Depends to >= 9.
+    - Make sure libmm-glib0 pre-depends on multiarch-support (lintian).
+    - Make libmm-glib0 Multi-Arch: same.
+    - Make sure all binary packages (except modemmanager-dbg) are priority
+      optional.
+    - Update short descriptions.
+    - Breaks network-manager (<< 0.9.8.2-1) since otherwise NetworkManager
+      will not see ModemManager with its new API.
+  * debian/compat: bump to compat level 9.
+  * debian/rules:
+    - Replace --with-docs with --enable-gtk-doc.
+    - Fix autoreconf to run gnome-autogen.sh.
+    - Drop the override for installdocs; docs/spec.html isn't being built
+      anymore.
+    - Run dh_install with --fail-missing.
+    - Remove test pppd plugin which we shouldn't install.
+    - Drop old cruft for getting git snapshots.
+    - We don't need to exclude the pppd path from makeshlibs, since nothing
+      gets installed there.
+  * debian/patches/lp700316_usb_blacklist.patch: refreshed.
+  * debian/patches/arduino-blacklist.patch: refreshed.
+  * debian/patches/linux-default-usb-id.patch: refreshed.
+  * debian/*.install: make sure the files are properly installed given the new
+    packages, also take into account multiarch paths.
+  * debian/modemmanager.install: install the new mmcli binary.
+  * debian/ubuntu/modemmanager.upstart: fix the name for the ModemManager
+    binary, since it was changed upstream.
+  * debian/patches/dbus_remove_max_replies_per_connection_limit.patch: dropped,
+    included upstream.
+
+  [ Michael Biebl ]
+  * Add symbols file for libmm-glib0.
+
+  [ Marius B. Kotsbak ]
+  * Added binary packages modemmanager-doc and libmm-glib-doc for gtk-docs.
+  * Split out modemmanager-dev package containing header files and .pc file.
+    - add dependency on modemmanager-dev from libmm-glib-dev
+      as stated in "mm-glib.pc"
+    - add proper replaces/breaks for modemmanager-dev because of moved files
+  * Build-depends: added "libglib2.0-doc" for the cross references in the doc
+    to work.
+  * debian/rules: make dh_makeshlibs override multiarch aware.
+  * Update standards version to current 3.9.4.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Tue, 11 Jun 2013 10:35:42 -0400
+
+modemmanager (0.6.0.0.really-0ubuntu7) saucy; urgency=low
+
+  * debian/patches/lp1229748_bluegiga_blacklist.patch: don't reset BLED112B.
+    (LP: #1229748)
+
+ -- Alan Bell <alanbell@ubuntu.com>  Tue, 24 Sep 2013 15:39:47 +0100
+
+modemmanager (0.6.0.0.really-0ubuntu6) saucy; urgency=low
+
+  * Build-depend on automake1.11.
+
+ -- Matthias Klose <doko@ubuntu.com>  Tue, 24 Sep 2013 14:57:53 +0200
+
+modemmanager (0.6.0.0.really-0ubuntu5) raring; urgency=low
+
+  * debian/patches/lp1164023_try_csq_if_cind_fails_5d854a3.patch: fallback to
+    trying AT+CSQ if AT+CIND fails. (LP: #1164023)
+  * debian/patches/git_udev_match_both_vid_pid_e322ccf.patch: match both VID
+    and PID when matching devices: If the rules to tag specific USB interface
+    numbers only apply on the PID, we'll end up seeing that if the port has a
+    parent with another PID, and that other PID also has a rule, port will get
+    tagged multiple times.
+  * debian/patches/git_mbm_remove_check_poll_when_conn_1652019.patch: mbm:
+    remove connection attempt check poll explicitly when connected: Completing
+    a MMCallbackInfo is done asynchronously (in an idle), which means that we
+    may get the poll timeout called in between...
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Wed, 10 Apr 2013 21:20:53 -0400
+
+modemmanager (0.6.0.0.really-0ubuntu4) raring; urgency=low
+
+  * debian/patches/git_cdma_double_free_05a4226.patch: cdma: avoid double free
+    of GError (LP: #1083659)
+  * debian/patches/git_ignore_arduino_aa84ce9.patch: properly ignore more
+    arduino devices. (LP: #1153632)
+  * debian/patches/git_ignore_west_mountain_radios_e608b17.patch: ignore West
+    Mountain amateur radio systems. (LP: #1154654)
+  * debian/patches/lp700316_usb_blacklist.patch: refreshed.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Mon, 01 Apr 2013 11:07:37 -0400
+
+modemmanager (0.6.0.0.really-0ubuntu3) raring; urgency=low
+
+  * debian/patches/linux-default-usb-id.patch: blacklist the USB-Gadget default
+    USB ID (the module actually allows you to set a custom one). The default ID
+    is re-used by the Nexus 7 with Ubuntu images to expose a tty you can use
+    to login to the system; but if it's not ignored ModemManager will
+    harass it for some time trying to probe it. (LP: #1105352)
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Mon, 28 Jan 2013 11:24:42 -0500
+
+modemmanager (0.6.0.0.really-0ubuntu2) raring; urgency=low
+
+  * debian/patches/handle_data07_capabilities_probing.patch: properly handle
+    probing for the Huawei Data07 modem. (LP: #1071492)
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Tue, 20 Nov 2012 17:26:04 -0500
+
+modemmanager (0.6.0.0.really-0ubuntu1) quantal; urgency=low
+
+  * Upload the right tarball for 0.6.0.0 from upstream, which I somehow
+    mishandled before. Thanks to Marius B. Kotsbak for pointing out the issue.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Mon, 08 Oct 2012 11:03:19 -0400
+
+modemmanager (0.6.0.0-0ubuntu4) quantal; urgency=low
+
+  * debian/patches/git_fall_back_to_csq_cind_8bd6903.patch: fallback to +CSQ if
+    +CIND reports a signal level of 0. (LP: #1060831)
+  * debian/patches/git_move_cind_process_func_1dee45e.patch: moving the CIND
+    processing function down a bit to make the above change cleaner. Cherry-pick
+    from upstream.
+  * debian/patches/ericsson_h5321gw_usbids.patch: Add another known USB ID for
+    the Ericsson H5321gw. (LP: #1057956)
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Thu, 04 Oct 2012 16:38:54 -0400
+
+modemmanager (0.6.0.0-0ubuntu3) quantal; urgency=low
+
+  * debian/patches/git_lte_4g_parsing_90489ae.patch,
+    debian/patches/git_lte_etsi_mode_0af47c7.patch: cherry-pick the patches
+    to properly handle and display LTE/4G technology modes. (LP: #1044744)
+  * debian/patches/git_lp1015328_segfault_in_clck_parser_318aaa0.patch: avoid
+    crashing when parsing +CLCK responses. (LP: #1015328)
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Tue, 25 Sep 2012 16:51:16 -0400
+
+modemmanager (0.6.0.0-0ubuntu2) quantal; urgency=low
+
+  * debian/patches/git_better_handle_ucs2_convert_e07c216.patch,
+    debian/patches/git_skip_add_utf8_check_219424a.patch: fix UCS2 conversion
+    for some Huawei devices which return "garbage" along with the response for
+    the +COPS command. (LP: #1049426)
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Fri, 14 Sep 2012 14:15:15 -0400
+
+modemmanager (0.6.0.0-0ubuntu1) quantal; urgency=low
+
+  * New upstream release. (LP: #1043486)
+  * debian/patches/fix-format-string.patch: dropped, applied upstream.
+  * debian/patches/qdl-blacklist.patch: replaced with installing the rules file
+    directly to the udev rules directory.
+  * debian/77-mm-qdl-device-blacklist.rules, debian/rules: additional rules
+    file from the qdl-blacklist.patch; we now install it directly to the udev
+    rules directory. This fixes daily builds.
+  * debian/rules: build with --with-tests.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Fri, 07 Sep 2012 10:58:06 -0400
+
+modemmanager (0.5.2.0-2) unstable; urgency=low
+
+  * debian/patches/dbus_remove_max_replies_per_connection_limit.patch: Remove
+    'max_replies_per_connection' limit from D-Bus configuration which sets it
+    to 512. It was intended to increase the limit from its historical value of
+    32. However, since 2007 the default limit has been 8192, so this is actually
+    a reduction. (Closes: #678964)
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 06 Sep 2012 17:07:18 +0200 
+
+modemmanager (0.6~git201206221719.8289a64-0ubuntu1) quantal; urgency=low
+
+  * upstream snapshot 2012-06-22 17:19:35 (GMT)
+    + 8289a646fd19b6ddfba48214e94297ff96f731eb
+    - decode: harmonize with git master
+    - decode: update with latest QMI enums
+    - zte: try to handle Icera devices that use PPP
+    - uml290: allow setting more global modes (LP: #824114)
+    - qcdm: fix 1x/HDR mode pref and add GSM/UMTS mode prefs
+    - trivial: whitespace fixes
+    - uml290: add mode switching tool
+    - wmc: namespace stuff properly
+    - qcdm: namespace stuff properly
+    - wmc: add command for setting global mode
+    - cdma: fix QCDM registration state checking
+    - test: ignore ESN errors in info.py
+    - dbus: remove 'max_replies_per_connection' limit from D-Bus configuration
+  * debian/patches/fix-format-string.patch: fix a missing format string in
+    a fprintf call for uml290mode; it makes the build fail otherwise.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Fri, 22 Jun 2012 15:04:53 -0400
+
+modemmanager (0.6~git201203261122.16a0029-0ubuntu1) quantal; urgency=low
+
+  * upstream snapshot 2012-03-26 11:22:47 (GMT)
+    + 16a00296e42aeceaca3d43c00baa01b7d4de3aa2
+  * debian/rules: switch to upstream git branch MM_06.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Fri, 15 Jun 2012 13:45:28 -0400
+
+modemmanager (0.5.2.0-1) unstable; urgency=low
+
+  * Upload to unstable.
+  * debian/watch: Track .xz tarballs.
+
+ -- Michael Biebl <biebl@debian.org>  Sat, 24 Mar 2012 01:24:48 +0100
+
+modemmanager (0.5.2.0-0ubuntu1) precise; urgency=low
+
+  * New upstream bugfix release (stable release 0.5.2).
+    - hso: disable echo removal (LP: #953294)
+    - gsm: retry sending SMS in PDU mode if text fails and PDU is supported
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Wed, 14 Mar 2012 12:19:08 -0400
+
+modemmanager (0.5.1.97-0ubuntu1) precise; urgency=low
+
+  * New upstream bugfix release.
+    - release: update NEWS
+    - cdma: fix crash on NULL error (bgo #670145)
+    - Revert "huawei: rework probing and detection" (LP: #868034)
+    - core: fix loop limits in echo removal
+    - at-serial-port: implement built-in echo/garbage removal (LP: #916038)
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Wed, 07 Mar 2012 16:22:00 -0500
+
+modemmanager (0.5.1.96+git201202081807.635fce1-0ubuntu3) precise; urgency=low
+
+  * debian/ubuntu/modemmanager.upstart: Remove unnecessary expect fork as
+    this does the same thing as just exec'ing. Also check for existence of
+    modemmanager in case it has been removed but not purged. (LP: #942908)
+
+ -- Clint Byrum <clint@ubuntu.com>  Tue, 28 Feb 2012 14:35:15 -0800
+
+modemmanager (0.5.1.96+git201202081807.635fce1-0ubuntu2) precise; urgency=low
+
+  * debian/ubuntu/modemmanager.upstart: fix stop condition to make sure we stop
+    only when NetworkManager is stopped as much as possible, to avoid being
+    respawned by it via DBus. (LP: #869635, #919071)
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Thu, 16 Feb 2012 10:43:54 -0500
+
+modemmanager (0.5.1.96+git201202081807.635fce1-0ubuntu1) precise; urgency=low
+
+  * upstream snapshot 2012-02-08 18:07:13 (GMT)
+    + 635fce193ff3a1dbbdee2abab9aa3ab121df25f0
+  * debian/rules: as for NetworkManager, drop a few characters from the version
+    number for git snapshots.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Wed, 08 Feb 2012 15:47:24 -0500
+
+modemmanager (0.5+git.20111231t174444.1e332ab-0ubuntu1) precise; urgency=low
+
+  [ Mathieu Trudel-Lapierre ]
+  * upstream snapshot 2011-12-31 17:44:44 (GMT)
+    + 1e332abc957d7eea4521c95d1e28b097de5427e5
+
+  [ Artem Popov ]
+  * debian/patches/arduino-blacklist.patch: add Arduino devices to blacklist
+    to prevent managing Arduino devices. (LP: #910736)
+    - [0403:6001] FT232 USB-Serial (UART) IC.
+    - [03eb:204b] Atmel Corp. LUFA USB to Serial Adapter Project.
+    - Anything with the Arduino VID (2341).
+
+ -- Artem Popov <artfwo@ubuntu.com>  Mon, 02 Jan 2012 13:32:18 +0700
+
+modemmanager (0.5-1ubuntu1) oneiric; urgency=low
+
+  * debian/patches/qdl-blacklist.patch: add more devices to the blacklist of
+    Gobi QDL devices. (LP: #842702, #807889)
+    - [1410:a014] Novatel Gobi found in the Google CR-48.
+    - [03f0:241d] HP un2420 Gobi found in the HP Mini 5102 and Mini 5103.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Tue, 06 Sep 2011 10:09:17 -0400
+
+modemmanager (0.5-1) unstable; urgency=low
+
+  * debian/rules: override dh_autoreconf in a nicer way so we don't have to
+    clean up manually afterwards.
+
+ -- Michael Biebl <biebl@debian.org>  Sun, 07 Aug 2011 01:47:27 +0200
+
+modemmanager (0.5-0ubuntu1) oneiric; urgency=low
+
+  * New upstream release 0.5.
+    - gsm: send init command twice to make the N900 happy (LP: #765516)
+    - fix sierra modems' sleep mode command (LP: #459052, #738005)
+  * debian/patches/lp700316_usb_blacklist.patch: add extra devices to blacklist
+    of USB devices known to usually be serial dongles or other things MM should
+    not touch. (LP: #700316)
+  * debian/control, debian/rules: add a -dbg package for modemmanager, and
+    override dh_strip accordingly. (LP: #415394)
+  * debian/rules: fix .la/.a file removal to not fail if there is nothing to
+    remove.
+  * debian/modemmanager.install: install files to the modemmanager package
+    explicitly now that it's not the only binary package.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Fri, 05 Aug 2011 12:46:32 -0400
+
+modemmanager (0.4.997-1ubuntu1) oneiric; urgency=low
+
+  * debian/modemmanager.upstart: add an upstart config file so ModemManager
+    gets started just before NM, and stopped along with it. (LP: #806082)
+  * debian/rules: install upstart file only for Ubuntu.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Fri, 08 Jul 2011 15:32:13 -0400
+
+modemmanager (0.4.997-1) unstable; urgency=low
+
+  * debian/watch: Switch to .bz2 tarballs.
+  * Upload to unstable.
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 16 Jun 2011 17:12:41 +0200
+
+modemmanager (0.4.997-0ubuntu1) oneiric; urgency=low
+
+  * New upstream release 0.4.997.
+    + switch to git branch MM_05. 
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Thu, 09 Jun 2011 09:41:20 -0400
+
+modemmanager (0.4+git.20110429t103114.863dbca-1) unstable; urgency=low
+
+  [ Thomas Bechtold ]
+  * debian/rules, debian/control: migrate from CDBS to using dh
+
+  [ Mathieu Trudel-Lapierre ]
+  * upstream snapshot 2011-04-29 10:31:14 (GMT)
+    + 863dbca63132b820fca6c48a9c212f852752ee16
+  * debian/README.source: add instructions for using this packaging branch and
+    how to build from it; adapted from the NetworkManager package.
+  * debian/rules, debian/control: update control and rules to use dh-autoreconf
+    rather than just autoreconf.
+  * debian/control: bump Standards-Version to 3.9.2.
+  * debian/rules: re-add DEB_* variables which got dropped from the dh
+    migration, since we no longer include buildvars.mk.
+  * debian/patches/git-backport-e208c52-to-0c4b944.patch,
+    debian/patches/git-backport-verbose-cmee-errors-7d20acc.patch: dropped,
+    applied upstream.
+  * debian/control: bump debhelper Build-Depends to 8.
+  * debian/compat: bump to compat level 8, according to the debhelper update.
+  * debian/rules: cleanup extra files left behind by intltoolize.
+
+ -- Michael Biebl <biebl@debian.org>  Wed, 04 May 2011 13:17:33 +0200
+
+modemmanager (0.4+git.20110124t203624.00b6cce-2ubuntu1) natty; urgency=low
+
+  * debian/patches/git-backport-e208c52-to-0c4b944.patch: backport a number of
+    upstream bug fixes:
+    - gsm: fix for parsing malformed Gobi CREG response
+    - core: allow plugins to handle custom init responses (LP: #712580)
+    - policy: loosen permissions somewhat for reading device info (kde#266807)
+    - logging: use glong for secs and usecs
+    - cdma: ensure the ActivationStateChanged signal exists
+    - log: fix spacing so messages line up
+    - simtech: add port tags for SCT U300 (Element Mobile)
+    - core: allow platform devices without a VID/PID
+    - zte: fix handling of Icera simple connect process
+    - icera: fix username and password ordering for authentication
+  * debian/patches/0001-Use-type-glong-for-secs-and-usecs.patch: drop, included
+    in the above backports from upstream.
+  * debian/patches/git-backport-verbose-cmee-errors-7d20acc.patch: backport
+    patch to make sure error reporting is set to verbose when asking modems
+    about PIN status, so we get a useful message instead of a generic error.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Sun, 10 Apr 2011 18:16:54 -0400
+
+modemmanager (0.4+git.20110124t203624.00b6cce-2) unstable; urgency=low
+
+  * debian/patches/0001-Use-type-glong-for-secs-and-usecs.patch
+    - GVariant defines tv_usec  as glong and suseconds_t is not guaranteed to
+      be of type long on sparc, resulting in a build failure.
+      So use type glong instead for sec and usecs.
+
+ -- Michael Biebl <biebl@debian.org>  Fri, 25 Feb 2011 11:16:05 +0100
+
+modemmanager (0.4+git.20110124t203624.00b6cce-1) unstable; urgency=low
+
+  * Upload to unstable.
+  * Fixes GTest build failures. (Closes: #614448)
+  * Switch to source format 3.0 (quilt)
+    - Add debian/source/format.
+    - Drop Build-Depends on quilt.
+    - Remove /usr/share/cdbs/1/rules/patchsys-quilt.mk from debian/rules.
+  * Bump Standards-Version to 3.9.1. No further changes.
+  * Bump Build-Depends on libdbus-glib-1-dev to (>= 0.86).
+
+ -- Michael Biebl <biebl@debian.org>  Fri, 25 Feb 2011 00:08:15 +0100
+
+modemmanager (0.4+git.20110124t203624.00b6cce-0ubuntu1) natty; urgency=low
+
+  * upstream snapshot 2011-01-24 20:36:24 (GMT)
+    + 00b6cce4df7d4acbf3e580a03c2f044e18589d2c
+    - rules: blacklist some unlikely USB serial dongles
+    - gsm: enable unsolicited codes on secondary ports too
+    - test: handle cancel and distinguish between initiate and respond
+    - gsm: wire up USSD Respond function
+    - api: add reply parameter to USSD Respond method
+    - linktop: add plugin for Linktop/Teracom LW273
+    - gsm: prefer AT+CIND signal quality for modems that support it (LP: #682282)
+    - huawei: don't spam syslog with tx/rx stats (LP: #673457, #662791)
+    - gsm: query signal strength with +CIND if modem does not support +CSQ
+    - gsm: add preliminary USSD support
+    - huawei: fix potential double-free on error
+    - core: prefer CDMA capabilities over GSM for dual-mode devices
+    - gsm: allow use of GSM 03.38 character set
+    - polkit: fix for polkit >= 0.97
+    - core: work around dbus-glib property access bug (CVE-2010-1172)
+  * debian/patches/qdl-blacklist.patch: add a blacklist of Gobi QDL devices so
+    that we don't break firmware loading by trying to initialize them before
+    the modem is really ready. (LP: #686418)
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Wed, 26 Jan 2011 21:03:12 -0500
+
+modemmanager (0.4+git.20100809t153145.be28089-0ubuntu1) maverick; urgency=low
+
+  * upstream snapshot 2010-08-09 15:31:45 (GMT)
+    + be28089dc4c1b07d9def45a3c763f432ae8322c4
+    - cdma: determine EVDO registration even when in 1X mode
+    - zte: add more port tags
+    - gsm: ensure invalid operator names don't get used (rh #597088)
+    - nokia: N900 appears to need a longer port delay (rh #583691)
+    - novatel: detect CDMA home/roaming status
+    - novatel: fix S720 signal quality reporting
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Wed, 11 Aug 2010 10:57:27 -0400
+
+modemmanager (0.4+git.20100624t180933.6e79d15-1) unstable; urgency=low
+
+  [ Michael Biebl ]
+  * New upstream release. (Closes: #585957)
+  * Drop debian/patches/01-termios.patch, merged upstream.
+  * debian/rules
+    - Drop aclocal workaround, no longer required.
+    - Add intltoolize call to pre-build.
+
+  [ Mathieu Trudel-Lapierre ]
+  * upstream snapshot 2010-06-24 18:09:33 (GMT)
+    + 6e79d153efc30fb2030536f7f795c19ad4a0661a
+  * Add myself to Uploaders.
+    - update debian/control
+
+  [ Michael Biebl ]
+  * Use watch file to track new upstream releases.
+    - Add debian/watch.
+  * Add Build-Depends on intltool.
+    - Update debian/control.
+
+ -- Michael Biebl <biebl@debian.org>  Sun, 27 Jun 2010 02:46:38 +0200
+
+modemmanager (0.3-2) unstable; urgency=low
+
+  [ Alexander Sack ]
+  * also bump debhelper build-depends to >= 7
+    - update debian/control
+  * recommend usb-modeswitch
+    - update debian/control
+  * fix lintian warning about empty quilt series file; add
+    a single line comment
+    - update debian/patches/series
+  * add Michael Biebl <biebl@debian.org> to Uploaders
+    - update debian/control
+  * use asac@ubuntu.com as maintainer as the mailing list
+    bounces bug mail (Closes: #566833)
+    - update debian/control
+
+  [ Michael Biebl ]
+  * Bump Standards-Version to 3.8.4. No further changes.
+    - update debian/control
+  * Fix FTBFS on alpha by using the POSIX.1 struct termios interface instead
+    of the obsolete struct termio ioctl interface. (Closes: #570661)
+    - add debian/patches/01-termios.patch
+
+ -- Michael Biebl <biebl@debian.org>  Mon, 01 Mar 2010 18:07:54 +0100
+
+modemmanager (0.3-1) unstable; urgency=low
+
+  * initial upload to debian (Closes: #546587)
+  * address ftpmaster comments: refined debian/copyright to list all copyright
+    holders and explicitly declare doc-generator.xsl to be LGPL-2.1
+    - update debian/copyright
+  * use debhelper compat level 7 and bump Standards-Version to 3.8.3
+    - update debian/compat
+
+ -- Alexander Sack <asac@debian.org>  Sat, 23 Jan 2010 16:08:03 +0100
+
+modemmanager (0.3-0ubuntu1) lucid; urgency=low
+
+  * upstream snapshot: 2009-12-08 06:07:58 (GMT)
+    + 07114d4f43c6e724d22294108b1e73785e7aab2a
+    - release: bump version to 0.2.997
+    - gsm: handle different +COPS response behavior
+    - gsm: implement enable/connecting/disconnecting state handling
+    - core: fix ordering of DISABLING and DISABLED states
+    - cdma: reset previous state if disconnect failed
+    - cdma: correctly handle state update after disconnection
+    - cdma: handle interim enabling/disabling states better
+    - cdma: update for new modem states and make connect actually work
+    - mbm: update state after enabling the device
+    - core: schedule enabled/disabled callbacks to avoid infinite recursion	
+    - cdma: set correct modem state on connect failure
+    - build: require glib-2.0 >= 2.6.18 for g_set_error_literal()	
+    - zte: add missing ZTE device aux port tags
+    - gsm: more complete parsing of PIN responses
+    - gsm: fix unsolicited registration segfaults
+    - hso: ensure authentication works again after auth errors
+    - serial: don't run commands when there's already one in progress
+    - hso: fix up connection issues and error ignorance
+    - nozomi: fix detection (LP: #425312)
+    - gsm: CGDCONT parsing fixes (bgo #602552)
+    - core: don't allow double scheduled callbacks (fixes crash)
+    - serial: handle arbitrary amounts of <CF><LF> padding in responses
+    - gsm: make "X4 &C1" init arguments optional (LP: #455031)
+
+  * upstream release 0.3
+    - cdma: increase data call initiation timeout
+    - core: fix mm_modem_check_removed() to return errors correctly
+    - cdma: allow plugins to override AT+CSS? during registration checking (rh #547294)
+    - anydata: add plugin for AnyData CDMA devices (rh #547294)
+    - huawei-cdma: robustify SYSINFO parsing
+    - sierra: prefer primary port for status
+    - core: protect against modem removal in critical callbacks (rh #553953)
+    - cdma: prefer primary port unless it's connected
+    - probe: add CPIN request during the probing process (bgo #604369)
+    - zte: ignore SIM Build Main Menu requests (rh #551376)
+    - longcheer: new plugin for Longcheer (Alcatel etc) devices (bgo #606550)
+    - gsm: correctly parse Nokia N80 +COPS response
+    - gsm: split out +COPS response parsing and add testcases
+    - serial: prevent "hangs" by limiting EAGAIN retries on serial writes
+    - gsm: ensure registration state is reset when disabling the modem
+    - core: implement a PropertiesChanged signal for the MMModem class
+    - core: add Enabled property to org.freedesktop.ModemManager.Modem interface
+    - sierra: fix CDMA registration detection in some cases
+    - zte: handle unsolicited messages during probe
+    - cdma: fix quality parsing if modem doesn't prepend +CSQ:
+    - sierra: use at!pcstate on CDMA modems for power control
+    - option: always pick the right data port
+    - mbm: ensure various unsolicited responses are turned off when disabling
+    - cdma: try +CSQ? if CSQ fails
+    - cdma: accept SID 0 in some cases
+
+  [ Tony Espy <espy@ubuntu.com> ]
+  * add get-snapshot-info target to rules
+    - update debian/rules
+
+  [ Alexander Sack <asac@ubuntu.com> ]
+  * package improvements pointed out by mbiebl (thx)
+    + exclude pkglibdir and pppd from makeshlibs
+      - update debian/rules
+    + generate dbus spec during build and add it to package; build depend on
+      xsltproc accordingly
+      - update debian/rules
+      - update debian/control
+    + explicitly depend on libglib2.0-dev (>= 2.18)
+      - update debian/control
+    + fix git url in package description
+      - update debian/control
+
+ -- Tony Espy <espy@ubuntu.com>  Thu, 21 Jan 2010 19:07:37 -0500
+
+modemmanager (0.2.git.20091014t233208.16f3e00-0ubuntu1) karmic; urgency=low
+
+  New upstream snapshot: 2009-10-14 21:33:52 (GMT)
+  + 16f3e00f3438507aee06ffcaee560e337b8e8279
+  - gsm: fix unsolicited registration by calling the statemachine callback
+    info (LP: #416893)
+  - mbm: use generic get_signal_quality implementation rather than our own
+    CIND based one - helps to fix LP: #449037 as its less error prone
+  - mbm: implement AT*ENAP polling; needed for some mbm devices, like m300 (LP: #442967)
+  - gsm: don't issue CFUN=0 by default (LP: #438150)
+  - mbm: fix disable after 3b19a85727458821f5df20153f8c04bc7717ba30 (LP: #447347, #438150)
+  - nokia: fix class property overrides to stop modemmanager from sending AT+CFUN (LP: #450256)
+
+ -- Alexander Sack <asac@ubuntu.com>  Thu, 15 Oct 2009 02:03:37 +0200
+
+modemmanager (0.2.git.20091003t063318.aa78b5f-0ubuntu1) karmic; urgency=low
+
+  New upstream snapshot: 2009-10-03 06:33:18 (GMT)
+  + aa78b5f5e5319e04f5b57f928bfab69dd4b93d88
+  * fixes
+    - LP: #430576 - refuse to connect over Nokia N85, turns off the handset  
+    - LP: #416126 - various unsolicited messages for mbm cause fail on connect
+
+ -- Alexander Sack <asac@ubuntu.com>  Tue, 06 Oct 2009 01:02:12 +0200
+
+modemmanager (0.2.git.20090923t083842.f2a3825-0ubuntu1) karmic; urgency=low
+
+  New upstream snapshot 2009-09-23 08:38:42 (GMT)
+  + commit: f2a3825f9d10ecebc63ce3c8602473cbbb6ab72c
+  + fix LP: #430576 - refuse to connect over Nokia N85, turns off the handset
+  + fix various F3507g related issues on first connect
+
+ -- Alexander Sack <asac@ubuntu.com>  Thu, 24 Sep 2009 11:41:08 +0200
+
+modemmanager (0.2.git.20090909t142854.64b7be7-1) unstable; urgency=low
+
+  * initial upload to debian (Closes: #546587)
+
+ -- Alexander Sack <asac@ubuntu.com>  Mon, 14 Sep 2009 14:53:24 +0200
+
+modemmanager (0.2.git.20090909t142854.64b7be7-0ubuntu1) karmic; urgency=low
+
+  New upstream snapshot 2009-09-09 14:28:54 (GMT)
+  + commit: 64b7be7460c3a9dbb3c9981de5754b330a8d2cdd
+  + fix LP: #414604 - Modem Manager setting bad baud rate, breaking pppd
+    connections.
+  + fix LP: #416418 - First connection attempt via F3507g fails
+  + fix LP: #424603 - Not closing modems when disconnected
+
+  [ Alexander Sack <asac@ubuntu.com> ]
+  * address MIR comments (LP: #410259)
+    + cleanup debian/copyright
+    + set debhelper compat level to 5, matching debian/control
+      - add debian/compat
+    + remove not used patches
+      - delete debian/patches/ftbfs_hardy_glib_include_signal_h.patch
+    + use proper automake lower and upper version bounds matching the
+      versions referred to in debian/rules
+      - update debian/control
+    + don't redefine cdbs variables DEB_SOURCE, DEB_VERSION and
+      DEB_UPSTREAM_VERSION; in turn move DEB_MAJOR_VERSION definition
+      below the cdbs includes and use DEB_SOURCE_PACKAGE in GET_SOURCE
+      function
+      - update debian/rules
+    + document why we touch aclocal.m4 in pre-build::
+      - update debian/rules
+    + use Ubuntu Network Manager Team as Maintainer and add asac@debian.org
+      to Uploaders
+      - update debian/control
+
+ -- Alexander Sack <asac@ubuntu.com>  Mon, 14 Sep 2009 11:38:05 +0200
+
+modemmanager (0.2.git.20090820t183237.cd75023-0ubuntu1) karmic; urgency=low
+
+  [ Tony Espy <espy@ubuntu.com> ]
+  * upstream snapshot 2009-08-20 18:32:37 (GMT)
+    + cd750230687177b45c2b8e507a0f0b22095aeb02
+      - includes gsm and mbm fixes
+
+  [ Alexander Sack <asac@ubuntu.com> ]
+  * add LOCAL_BRANCH feature to play nicely with fta's build bot
+    - update debian/rules
+  * use automake 1.10 vs. 1.11 depending on what is currently available
+    on the system
+    - update debian/rules
+
+ -- Tony Espy <espy@ubuntu.com>  Thu, 20 Aug 2009 15:06:51 -0400
+
+modemmanager (0.2.git.20090806t105932.354a4cb-0ubuntu3) karmic; urgency=low
+
+  [ Tony Espy <espy@ubuntu.com> ]
+  * update automake1.10 to automake in Build-Depends:, as automake
+    provides automake1.10 now
+    - update debian/control
+
+  [ Alexander Sack <asac@ubuntu.com> ]
+  * fix LP: #410261 - do not ship .la and .a files in pkglibdir for
+    plugins; we strop .a and .la files in cdbs binary-post-install/modemmanager::
+    - update debian/rules
+
+ -- Alexander Sack <asac@ubuntu.com>  Tue, 11 Aug 2009 13:38:38 +0200
+
+modemmanager (0.2.git.20090806t105932.354a4cb-0ubuntu2) karmic; urgency=low
+
+  * fix LP: #409943 - modemmanager debian/copyright has LGPL, 
+    but upstream source is GPL
+    - update debian/copyright
+
+ -- Tony Espy <espy@ubuntu.com>  Thu, 06 Aug 2009 17:13:08 +0100
+
+modemmanager (0.2.git.20090806t105932.354a4cb-0ubuntu1) karmic; urgency=low
+
+  [ Tony Espy <espy@ubuntu.com> ]
+  * upstream snapshot 2009-08-06 10:59:32 (GMT)
+    + fixes license problems (LP: #403009)
+    + git://anongit.freedesktop.org/ModemManager/ModemManager
+  * drop patches superseded by upstream code base
+    - delete debian/patches/fix_makefile.patch
+    - update debian/patches/series
+  * add tarball generation code; added get-curr-source to
+    grab a specific version, and get-orig-source grabs the tip
+    of variable GIT_BRANCH; adjusted changelog version to the
+    new scheme.
+    - update debian/rules
+  * add real copyright notices and update git URL
+    - update debian/copyright
+
+  [ Alexander Sack <asac@ubuntu.com> ]
+  * Initial release.
+  * replace hal with gudev build dependency
+    - update debian/control
+  * signal.h is not implicitly included by hardy glib.h; add patch to
+    explicitly include this in src/main.c when SIGUSR1 is not defined
+    - add debian/patches/ftbfs_hardy_glib_include_signal_h.patch
+    - update debian/patches/series
+  * fix build failure due to gcc pickiness (committed upstream)
+    - add debian/patches/ftbfs_serial_quickfix.patch
+    - update debian/patches/series
+
+ -- Tony Espy <espy@ubuntu.com>  Thu, 06 Aug 2009 12:50:45 +0100

@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+# avoid cancelling of "stop" when NM D-BUS reactivates modemmanager
+if [ -d /run/systemd/system ] && [ "$1" = remove ]; then
+    systemctl mask --runtime ModemManager
+fi
+
+#DEBHELPER#
