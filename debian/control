@@ -1,0 +1,29 @@
+Source: modemmanager
+Section: net
+Priority: optional
+Maintainer: Ubuntu Network Manager Team <ubuntu-devel-discuss@lists.ubuntu.com>
+Uploaders: Alexander Sack <asac@debian.org>
+Build-Depends: debhelper (>= 5.0.0),
+	automake (>= 1:1.10), automake (<< 1:1.12),
+	cdbs,
+	quilt,
+	libtool,
+	libdbus-glib-1-dev (>= 0.75),
+	libglib2.0-dev (>= 2.18),
+	libgudev-1.0-dev,
+	xsltproc
+Standards-Version: 3.8.3
+Vcs-Bzr: https://code.launchpad.net/~modemmanager/modemmanager/ubuntu
+
+Package: modemmanager
+Architecture: any
+Depends: ${shlibs:Depends},
+	${misc:Depends}
+Description: D-Bus service for managing modems
+ Provides a D-Bus interface to communicate with mobile broadband (GSM, CDMA,
+ UMTS, ...) cards. Implements a loadable plugin interface to add work-arounds
+ for non standard devices. Also provides patches to use networkmanager (and
+ the applet) with modem manager.
+ .
+ Git Repository: http://cgit.freedesktop.org/ModemManager/ModemManager/
+

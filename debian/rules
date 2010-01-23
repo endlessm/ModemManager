@@ -1,0 +1,89 @@
+#!/usr/bin/make -f
+
+DEB_AUTO_UPDATE_LIBTOOL = pre
+DEB_AUTO_UPDATE_AUTOHEADER = 2.50
+DEB_AUTO_UPDATE_AUTOCONF = 2.50
+
+# use automake 1.10 ... or 1.11
+ifneq (,$(wildcard /usr/bin/aclocal-1.11))
+DEB_AUTO_UPDATE_ACLOCAL = 1.11
+DEB_AUTO_UPDATE_AUTOMAKE = 1.11 -a -c -f
+else
+DEB_AUTO_UPDATE_ACLOCAL = 1.10
+DEB_AUTO_UPDATE_AUTOMAKE = 1.10 -a -c -f
+endif
+
+include /usr/share/cdbs/1/class/autotools.mk
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/rules/patchsys-quilt.mk
+
+DEB_MAJOR_VERSION := $(shell echo $(DEB_UPSTREAM_VERSION) | sed -e 's/git.*//')
+
+DEB_DH_MAKESHLIBS_ARGS_modemmanager := -X/usr/lib/ModemManager/ -X/usr/lib/pppd/
+
+DEB_INSTALL_DOCS_ALL := README AUTHORS docs/spec.html
+
+DEB_CONFIGURE_EXTRA_FLAGS += \
+		--with-docs \
+		$(NULL)
+
+GIT_URL := git://anongit.freedesktop.org/ModemManager/ModemManager
+GIT_BRANCH := "master"
+GIT_BRANCH_NAME := ModemManager
+
+ifneq (,$(LOCAL_BRANCH))
+LOCAL_REAL_BRANCH = $(realpath $(LOCAL_BRANCH))
+endif
+
+pre-build::
+	# workaround cdbs that does not run aclocal if no aclocal.m4 file exists
+	touch aclocal.m4
+
+GET_SOURCE = \
+	set -e; \
+	tmpdir=`mktemp -d -t`; \
+	cd $$tmpdir; \
+		echo "cloning upstream repository ..."; \
+		git clone $(if $(LOCAL_BRANCH),$(call LOCAL_REAL_BRANCH)/$(GIT_BRANCH_NAME),$(GIT_URL)); \
+		echo "getting specific upstream revision/tag: $(1)"; \
+		cd `ls | head -n 1`; git checkout -b orig $(1); \
+		commit_id=`git log -n1 --abbrev-commit | grep '^commit ' | sed -e 's/commit //'`; \
+		raw=`date --utc --date="$$(git log --pretty=fuller -n1 --date=rfc | grep CommitDate: | sed -e 's/CommitDate:[^0-9]*//')" "+%Y%m%dt%H%M%S"`; \
+		if echo $(1) | grep -c "orig" > /dev/null || echo $(DEB_VERSION) | grep -c "git" > /dev/null; \
+		then \
+			upstream_version=$(DEB_MAJOR_VERSION)git.$$raw.$$commit_id; \
+		else \
+			upstream_version=$(DEB_UPSTREAM_VERSION); \
+		fi; \
+		cd ..; tar --exclude=.git -czf $(CURDIR)/$(DEB_SOURCE_PACKAGE)_$$upstream_version.orig.tar.gz `ls | head -n 1`; \
+		cd $(CURDIR); rm -rf $$tmpdir;
+
+binary-post-install/modemmanager::
+	find $(CURDIR)/debian/modemmanager/ -name \*.a | xargs rm
+	find $(CURDIR)/debian/modemmanager/ -name \*.la | xargs rm
+
+get-current-source:: $(if $(LOCAL_BRANCH), update-local-branch)
+	set -e; if echo $(DEB_VERSION) | grep -c "git" > /dev/null; \
+	then \
+		git_version=`echo $(DEB_VERSION) | sed -e 's/^.*git\.*\([0-9t]*\)\.\(.*\)-.*$$/\2/g'`; \
+	else \
+		git_version=$(DEB_UPSTREAM_VERSION); \
+	fi; \
+	$(call GET_SOURCE, $$git_version, "current")
+
+get-orig-source:: $(if $(LOCAL_BRANCH), update-local-branch)
+	$(call GET_SOURCE, $(GIT_BRANCH), "orig")
+
+update-local-branch::
+	@echo "updating local branch: $(LOCAL_BRANCH) ..."
+	@set -e; if ! test -d $(LOCAL_BRANCH); then mkdir -p $(LOCAL_BRANCH); fi
+	@set -e; if ! test -d $(LOCAL_BRANCH)/$(GIT_BRANCH_NAME); then git clone $(GIT_URL) $(LOCAL_BRANCH)/$(GIT_BRANCH_NAME); fi
+	@set -e; cd $(LOCAL_BRANCH)/$(GIT_BRANCH_NAME); git pull -f
+	@echo "updated local branch: $(LOCAL_BRANCH)."
+
+get-snapshot-info:: $(if $(LOCAL_BRANCH),update-local-branch)
+	@set -e; \
+	git_version=`echo $(DEB_VERSION) | sed -e 's/^.*git\.*\([0-9t]*\)\.\(.*\)-.*$$/\2/g'`; \
+	cd $(LOCAL_BRANCH)/$(GIT_BRANCH_NAME); \
+	raw=`date --utc --date="$$(git log --pretty=fuller -n1 --date=rfc $$git_version | grep CommitDate: | sed -e 's/CommitDate:[^0-9]*//')" "+%Y-%m-%d %H:%M:%S (GMT)"`; \
+	git log -n1 $$git_version --format="%n%s%n%n  * upstream snapshot $$raw%n    + %H%n";
