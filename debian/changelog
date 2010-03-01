@@ -1,3 +1,28 @@
+modemmanager (0.3-2) unstable; urgency=low
+
+  [ Alexander Sack ]
+  * also bump debhelper build-depends to >= 7
+    - update debian/control
+  * recommend usb-modeswitch
+    - update debian/control
+  * fix lintian warning about empty quilt series file; add
+    a single line comment
+    - update debian/patches/series
+  * add Michael Biebl <biebl@debian.org> to Uploaders
+    - update debian/control
+  * use asac@ubuntu.com as maintainer as the mailing list
+    bounces bug mail (Closes: #566833)
+    - update debian/control
+
+  [ Michael Biebl ]
+  * Bump Standards-Version to 3.8.4. No further changes.
+    - update debian/control
+  * Fix FTBFS on alpha by using the POSIX.1 struct termios interface instead
+    of the obsolete struct termio ioctl interface. (Closes: #570661)
+    - add debian/patches/01-termios.patch
+
+ -- Michael Biebl <biebl@debian.org>  Mon, 01 Mar 2010 18:07:54 +0100
+
 modemmanager (0.3-1) unstable; urgency=low
 
   * initial upload to debian (Closes: #546587)
@@ -211,7 +236,7 @@ modemmanager (0.2.git.20090806t105932.354a4cb-0ubuntu1) karmic; urgency=low
     - update debian/copyright
 
   [ Alexander Sack <asac@ubuntu.com> ]
-  * Initial release. (Closes: #XXXXXX)
+  * Initial release.
   * replace hal with gudev build dependency
     - update debian/control
   * signal.h is not implicitly included by hardy glib.h; add patch to
