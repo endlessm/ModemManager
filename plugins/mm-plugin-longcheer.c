@@ -11,12 +11,13 @@
  * GNU General Public License for more details:
  *
  * Copyright (C) 2008 - 2009 Novell, Inc.
- * Copyright (C) 2009 Red Hat, Inc.
+ * Copyright (C) 2009 - 2010 Red Hat, Inc.
  */
 
 #include <string.h>
 #include <gmodule.h>
 #include "mm-plugin-longcheer.h"
+#include "mm-modem-longcheer-gsm.h"
 #include "mm-generic-gsm.h"
 #include "mm-generic-cdma.h"
 
@@ -46,6 +47,8 @@ get_level_for_capabilities (guint32 capabilities)
     if (capabilities & MM_PLUGIN_BASE_PORT_CAP_GSM)
         return 10;
     if (capabilities & CAP_CDMA)
+        return 10;
+    if (capabilities & MM_PLUGIN_BASE_PORT_CAP_QCDM)
         return 10;
     return 0;
 }
@@ -80,7 +83,8 @@ supports_port (MMPluginBase *base,
     if (!mm_plugin_base_get_device_ids (base, subsys, name, &vendor, NULL))
         return MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
 
-    if (vendor != 0x1c9e)
+    /* Longcheer and TAMobile */
+    if (vendor != 0x1c9e && vendor != 0x1bbb)
         return MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
 
     if (mm_plugin_base_get_cached_port_capabilities (base, port, &cached)) {
@@ -105,7 +109,7 @@ grab_port (MMPluginBase *base,
            MMPluginBaseSupportsTask *task,
            GError **error)
 {
-    GUdevDevice *port = NULL, *physdev = NULL;
+    GUdevDevice *port = NULL;
     MMModem *modem = NULL;
     const char *name, *subsys, *sysfs_path;
     guint32 caps;
@@ -131,23 +135,16 @@ grab_port (MMPluginBase *base,
         && g_udev_device_get_property_as_boolean (port, "ID_MM_LONGCHEER_TAGGED"))
         ptype = MM_PORT_TYPE_IGNORED;
 
-    physdev = mm_plugin_base_supports_task_get_physdev (task);
-    g_assert (physdev);
-    sysfs_path = g_udev_device_get_sysfs_path (physdev);
-    if (!sysfs_path) {
-        g_set_error (error, 0, 0, "Could not get port's physical device sysfs path.");
-        return NULL;
-    }
-
     subsys = g_udev_device_get_subsystem (port);
     name = g_udev_device_get_name (port);
 
     caps = mm_plugin_base_supports_task_get_probed_capabilities (task);
+    sysfs_path = mm_plugin_base_supports_task_get_physdev_path (task);
     if (!existing) {
         if (caps & MM_PLUGIN_BASE_PORT_CAP_GSM) {
-            modem = mm_generic_gsm_new (sysfs_path,
-                                        mm_plugin_base_supports_task_get_driver (task),
-                                        mm_plugin_get_name (MM_PLUGIN (base)));
+            modem = mm_modem_longcheer_gsm_new (sysfs_path,
+                                                mm_plugin_base_supports_task_get_driver (task),
+                                                mm_plugin_get_name (MM_PLUGIN (base)));
         } else if (caps & CAP_CDMA) {
             modem = mm_generic_cdma_new (sysfs_path,
                                          mm_plugin_base_supports_task_get_driver (task),
@@ -162,12 +159,13 @@ grab_port (MMPluginBase *base,
                 return NULL;
             }
         }
-    } else {
-        if (caps & (MM_PLUGIN_BASE_PORT_CAP_GSM | CAP_CDMA)) {
-            modem = existing;
-            if (!mm_modem_grab_port (modem, subsys, name, ptype, NULL, error))
-                return NULL;
-        }
+    } else if (get_level_for_capabilities (caps)) {
+        if (caps & MM_PLUGIN_BASE_PORT_CAP_QCDM)
+            ptype = MM_PORT_TYPE_QCDM;
+
+        modem = existing;
+        if (!mm_modem_grab_port (modem, subsys, name, ptype, NULL, error))
+            return NULL;
     }
 
     return modem;

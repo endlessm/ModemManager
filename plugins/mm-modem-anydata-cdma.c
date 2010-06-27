@@ -112,7 +112,7 @@ int_from_match_item (GMatchInfo *match_info, guint32 num, gint *val)
 }
 
 static void
-evdo_state_done (MMSerialPort *port,
+evdo_state_done (MMAtSerialPort *port,
                  GString *response,
                  GError *error,
                  gpointer user_data)
@@ -123,15 +123,8 @@ evdo_state_done (MMSerialPort *port,
     GRegex *r;
     GMatchInfo *match_info;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->error) {
-        if (info->modem) {
-            /* If HSTATE returned an error, assume the device is not EVDO capable
-             * or EVDO is not registered.
-             */
-            mm_generic_cdma_query_reg_state_set_callback_evdo_state (info, MM_MODEM_CDMA_REGISTRATION_STATE_UNKNOWN);
-        }
-
+    if (error) {
+        /* Leave superclass' reg state alone if AT*HSTATE isn't supported */
         mm_callback_info_schedule (info);
         return;
     }
@@ -143,13 +136,8 @@ evdo_state_done (MMSerialPort *port,
                      G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
     if (!r) {
         /* Parse error; warn about it and assume EVDO is not available */
-        g_warning ("AnyData(%s): failed to create EVDO state regex: (%d) %s",
-                   __func__,
-                   error ? error->code : -1,
-                   error && error->message ? error->message : "(unknown)");
-        mm_generic_cdma_query_reg_state_set_callback_evdo_state (info, MM_MODEM_CDMA_REGISTRATION_STATE_UNKNOWN);
-        mm_callback_info_schedule (info);
-        return;
+        g_warning ("AnyDATA(%s): *HSTATE parse regex creation failed.", __func__);
+        goto done;
     }
 
     g_regex_match (r, reply, 0, &match_info);
@@ -185,13 +173,13 @@ evdo_state_done (MMSerialPort *port,
         }
     }
 
+done:
     mm_generic_cdma_query_reg_state_set_callback_evdo_state (info, reg_state);
-
     mm_callback_info_schedule (info);
 }
 
 static void
-state_done (MMSerialPort *port,
+state_done (MMAtSerialPort *port,
             GString *response,
             GError *error,
             gpointer user_data)
@@ -202,17 +190,8 @@ state_done (MMSerialPort *port,
     GRegex *r;
     GMatchInfo *match_info;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->error) {
-        if (info->modem) {
-            /* Assume if we got this far, we're registered even if an error
-             * occurred.  We're not sure if all AnyData CDMA modems support
-             * the *STATE and *HSTATE commands.
-             */
-            mm_generic_cdma_query_reg_state_set_callback_1x_state (info, MM_MODEM_CDMA_REGISTRATION_STATE_REGISTERED);
-            mm_generic_cdma_query_reg_state_set_callback_evdo_state (info, MM_MODEM_CDMA_REGISTRATION_STATE_UNKNOWN);
-        }
-
+    if (error) {
+        /* Leave superclass' reg state alone if AT*STATE isn't supported */
         mm_callback_info_schedule (info);
         return;
     }
@@ -223,9 +202,7 @@ state_done (MMSerialPort *port,
     r = g_regex_new ("\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*([^,\\)]*)\\s*,.*",
                      G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
     if (!r) {
-        info->error = g_error_new_literal (MM_MODEM_ERROR,
-                                           MM_MODEM_ERROR_GENERAL,
-                                           "Could not parse sysinfo results (regex creation failed).");
+        g_warning ("AnyDATA(%s): *STATE parse regex creation failed.", __func__);
         mm_callback_info_schedule (info);
         return;
     }
@@ -254,7 +231,7 @@ state_done (MMSerialPort *port,
                 reg_state = MM_MODEM_CDMA_REGISTRATION_STATE_REGISTERED;
                 break;
             default:
-                g_message ("ANYDATA: unknown *STATE (%d); assuming no service.", val);
+                g_warning ("ANYDATA: unknown *STATE (%d); assuming no service.", val);
                 /* fall through */
             case 0:  /* NO SERVICE */
                 break;
@@ -265,35 +242,28 @@ state_done (MMSerialPort *port,
     mm_generic_cdma_query_reg_state_set_callback_1x_state (info, reg_state);
 
     /* Try for EVDO state too */
-    mm_serial_port_queue_command (port, "*HSTATE?", 3, evdo_state_done, info);
+    mm_at_serial_port_queue_command (port, "*HSTATE?", 3, evdo_state_done, info);
 }
 
 static void
 query_registration_state (MMGenericCdma *cdma,
+                          MMModemCdmaRegistrationState cur_cdma_state,
+                          MMModemCdmaRegistrationState cur_evdo_state,
                           MMModemCdmaRegistrationStateFn callback,
                           gpointer user_data)
 {
     MMCallbackInfo *info;
-    MMSerialPort *primary, *secondary, *port;
+    MMAtSerialPort *port;
 
-    port = primary = mm_generic_cdma_get_port (cdma, MM_PORT_TYPE_PRIMARY);
-    secondary = mm_generic_cdma_get_port (cdma, MM_PORT_TYPE_SECONDARY);
+    info = mm_generic_cdma_query_reg_state_callback_info_new (cdma, cur_cdma_state, cur_evdo_state, callback, user_data);
 
-    info = mm_generic_cdma_query_reg_state_callback_info_new (cdma, callback, user_data);
-
-    if (mm_port_get_connected (MM_PORT (primary))) {
-        if (!secondary) {
-            info->error = g_error_new_literal (MM_MODEM_ERROR, MM_MODEM_ERROR_CONNECTED,
-                                               "Cannot get query registration state while connected");
-            mm_callback_info_schedule (info);
-            return;
-        }
-
-        /* Use secondary port if primary is connected */
-        port = secondary;        
+    port = mm_generic_cdma_get_best_at_port (cdma, &info->error);
+    if (!port) {
+        mm_callback_info_schedule (info);
+        return;
     }
 
-    mm_serial_port_queue_command (port, "*STATE?", 3, state_done, info);
+    mm_at_serial_port_queue_command (port, "*STATE?", 3, state_done, info);
 }
 
 /*****************************************************************************/
@@ -310,22 +280,22 @@ grab_port (MMModem *modem,
     GRegex *regex;
 
     port = mm_generic_cdma_grab_port (MM_GENERIC_CDMA (modem), subsys, name, suggested_type, user_data, error);
-    if (port && MM_IS_SERIAL_PORT (port)) {
+    if (port && MM_IS_AT_SERIAL_PORT (port)) {
         /* Data state notifications */
 
         /* Data call has connected */
         regex = g_regex_new ("\\r\\n\\*ACTIVE:(.*)\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
-        mm_serial_port_add_unsolicited_msg_handler (MM_SERIAL_PORT (port), regex, NULL, NULL, NULL);
+        mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (port), regex, NULL, NULL, NULL);
         g_regex_unref (regex);
 
         /* Data call disconnected */
         regex = g_regex_new ("\\r\\n\\*INACTIVE:(.*)\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
-        mm_serial_port_add_unsolicited_msg_handler (MM_SERIAL_PORT (port), regex, NULL, NULL, NULL);
+        mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (port), regex, NULL, NULL, NULL);
         g_regex_unref (regex);
 
         /* Modem is now dormant */
         regex = g_regex_new ("\\r\\n\\*DORMANT:(.*)\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
-        mm_serial_port_add_unsolicited_msg_handler (MM_SERIAL_PORT (port), regex, NULL, NULL, NULL);
+        mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (port), regex, NULL, NULL, NULL);
         g_regex_unref (regex);
 
         /* Abnomral state notifications
@@ -336,17 +306,17 @@ grab_port (MMModem *modem,
 
         /* Network acquisition fail */
         regex = g_regex_new ("\\r\\n\\*OFFLINE:(.*)\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
-        mm_serial_port_add_unsolicited_msg_handler (MM_SERIAL_PORT (port), regex, NULL, NULL, NULL);
+        mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (port), regex, NULL, NULL, NULL);
         g_regex_unref (regex);
 
         /* Registration fail */
         regex = g_regex_new ("\\r\\n\\*REGREQ:(.*)\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
-        mm_serial_port_add_unsolicited_msg_handler (MM_SERIAL_PORT (port), regex, NULL, NULL, NULL);
+        mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (port), regex, NULL, NULL, NULL);
         g_regex_unref (regex);
 
         /* Authentication fail */
         regex = g_regex_new ("\\r\\n\\*AUTHREQ:(.*)\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
-        mm_serial_port_add_unsolicited_msg_handler (MM_SERIAL_PORT (port), regex, NULL, NULL, NULL);
+        mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (port), regex, NULL, NULL, NULL);
         g_regex_unref (regex);
     }
 

@@ -36,8 +36,8 @@ LOCAL_REAL_BRANCH = $(realpath $(LOCAL_BRANCH))
 endif
 
 pre-build::
-	# workaround cdbs that does not run aclocal if no aclocal.m4 file exists
-	touch aclocal.m4
+	# run intltoolize before updating the build system
+	intltoolize -f
 
 GET_SOURCE = \
 	set -e; \

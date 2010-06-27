@@ -18,7 +18,7 @@
 #include <gmodule.h>
 #include "mm-plugin-novatel.h"
 #include "mm-modem-novatel-gsm.h"
-#include "mm-generic-cdma.h"
+#include "mm-modem-novatel-cdma.h"
 
 G_DEFINE_TYPE (MMPluginNovatel, mm_plugin_novatel, MM_TYPE_PLUGIN_BASE)
 
@@ -46,6 +46,8 @@ get_level_for_capabilities (guint32 capabilities)
     if (capabilities & MM_PLUGIN_BASE_PORT_CAP_GSM)
         return 10;
     if (capabilities & CAP_CDMA)
+        return 10;
+    if (capabilities & MM_PLUGIN_BASE_PORT_CAP_QCDM)
         return 10;
     return 0;
 }
@@ -109,7 +111,7 @@ grab_port (MMPluginBase *base,
            MMPluginBaseSupportsTask *task,
            GError **error)
 {
-    GUdevDevice *port = NULL, *physdev = NULL;
+    GUdevDevice *port = NULL;
     MMModem *modem = NULL;
     const char *name, *subsys, *devfile, *sysfs_path;
     guint32 caps;
@@ -123,29 +125,22 @@ grab_port (MMPluginBase *base,
         return NULL;
     }
 
-    physdev = mm_plugin_base_supports_task_get_physdev (task);
-    g_assert (physdev);
-    sysfs_path = g_udev_device_get_sysfs_path (physdev);
-    if (!sysfs_path) {
-        g_set_error (error, 0, 0, "Could not get port's physical device sysfs path.");
-        return NULL;
-    }
-
     subsys = g_udev_device_get_subsystem (port);
     name = g_udev_device_get_name (port);
 
     caps = mm_plugin_base_supports_task_get_probed_capabilities (task);
+    sysfs_path = mm_plugin_base_supports_task_get_physdev_path (task);
     if (!existing) {
         if (caps & MM_PLUGIN_BASE_PORT_CAP_GSM) {
             modem = mm_modem_novatel_gsm_new (sysfs_path,
                                               mm_plugin_base_supports_task_get_driver (task),
                                               mm_plugin_get_name (MM_PLUGIN (base)));
         } else if (caps & CAP_CDMA) {
-            modem = mm_generic_cdma_new (sysfs_path,
-                                         mm_plugin_base_supports_task_get_driver (task),
-                                         mm_plugin_get_name (MM_PLUGIN (base)),
-                                         !!(caps & MM_PLUGIN_BASE_PORT_CAP_IS856),
-                                         !!(caps & MM_PLUGIN_BASE_PORT_CAP_IS856_A));
+            modem = mm_modem_novatel_cdma_new (sysfs_path,
+                                               mm_plugin_base_supports_task_get_driver (task),
+                                               mm_plugin_get_name (MM_PLUGIN (base)),
+                                               !!(caps & MM_PLUGIN_BASE_PORT_CAP_IS856),
+                                               !!(caps & MM_PLUGIN_BASE_PORT_CAP_IS856_A));
         }
 
         if (modem) {
@@ -154,12 +149,15 @@ grab_port (MMPluginBase *base,
                 return NULL;
             }
         }
-    } else {
-        if (caps & (MM_PLUGIN_BASE_PORT_CAP_GSM | CAP_CDMA)) {
-            modem = existing;
-            if (!mm_modem_grab_port (modem, subsys, name, MM_PORT_TYPE_UNKNOWN, NULL, error))
-                return NULL;
-        }
+    } else if (get_level_for_capabilities (caps)) {
+        MMPortType ptype = MM_PORT_TYPE_UNKNOWN;
+
+        if (caps & MM_PLUGIN_BASE_PORT_CAP_QCDM)
+            ptype = MM_PORT_TYPE_QCDM;
+
+        modem = existing;
+        if (!mm_modem_grab_port (modem, subsys, name, ptype, NULL, error))
+            return NULL;
     }
 
     return modem;

@@ -47,6 +47,8 @@ get_level_for_capabilities (guint32 capabilities)
         return 10;
     if (capabilities & CAP_CDMA)
         return 10;
+    if (capabilities & MM_PLUGIN_BASE_PORT_CAP_QCDM)
+        return 10;
     return 0;
 }
 
@@ -100,7 +102,7 @@ supports_port (MMPluginBase *base,
      * 	1235f71b20c92cded4abd976ccc5010649aae1a0 and
      * 	f38ad328acfdc6ce29dd1380602c546b064161ae for more details.
      */
-    mm_plugin_base_supports_task_set_custom_init_command (task, "ATE0+CPMS?", 3, 4, TRUE);
+    mm_plugin_base_supports_task_set_custom_init_command (task, "ATE0+CPMS?", 3, 4, FALSE);
 
     if (mm_plugin_base_probe_port (base, task, NULL))
         return MM_PLUGIN_SUPPORTS_PORT_IN_PROGRESS;
@@ -114,7 +116,7 @@ grab_port (MMPluginBase *base,
            MMPluginBaseSupportsTask *task,
            GError **error)
 {
-    GUdevDevice *port = NULL, *physdev = NULL;
+    GUdevDevice *port = NULL;
     MMModem *modem = NULL;
     const char *name, *subsys, *sysfs_path;
     guint32 caps;
@@ -129,18 +131,11 @@ grab_port (MMPluginBase *base,
     else if (g_udev_device_get_property_as_boolean (port, "ID_MM_ZTE_PORT_TYPE_AUX"))
         ptype = MM_PORT_TYPE_SECONDARY;
 
-    physdev = mm_plugin_base_supports_task_get_physdev (task);
-    g_assert (physdev);
-    sysfs_path = g_udev_device_get_sysfs_path (physdev);
-    if (!sysfs_path) {
-        g_set_error (error, 0, 0, "Could not get port's physical device sysfs path.");
-        return NULL;
-    }
-
     subsys = g_udev_device_get_subsystem (port);
     name = g_udev_device_get_name (port);
 
     caps = mm_plugin_base_supports_task_get_probed_capabilities (task);
+    sysfs_path = mm_plugin_base_supports_task_get_physdev_path (task);
     if (!existing) {
         if (caps & MM_PLUGIN_BASE_PORT_CAP_GSM) {
             modem = mm_modem_zte_new (sysfs_path,
@@ -160,12 +155,13 @@ grab_port (MMPluginBase *base,
                 return NULL;
             }
         }
-    } else {
-        if (caps & (MM_PLUGIN_BASE_PORT_CAP_GSM | CAP_CDMA)) {
-            modem = existing;
-            if (!mm_modem_grab_port (modem, subsys, name, ptype, NULL, error))
-                return NULL;
-        }
+    } else if (get_level_for_capabilities (caps)) {
+        if (caps & MM_PLUGIN_BASE_PORT_CAP_QCDM)
+            ptype = MM_PORT_TYPE_QCDM;
+
+        modem = existing;
+        if (!mm_modem_grab_port (modem, subsys, name, ptype, NULL, error))
+            return NULL;
     }
 
     return modem;

@@ -70,6 +70,8 @@ struct _MMPlugin {
     MMPluginSupportsResult (*supports_port)  (MMPlugin *self,
                                               const char *subsys,
                                               const char *name,
+                                              const char *physdev_path,
+                                              MMModem *existing,
                                               MMSupportsPortResultFunc callback,
                                               gpointer user_data);
 
@@ -94,6 +96,7 @@ struct _MMPlugin {
     MMModem * (*grab_port)    (MMPlugin *self,
                                const char *subsys,
                                const char *name,
+                               MMModem *existing,
                                GError **error);
 };
 
@@ -104,6 +107,8 @@ const char *mm_plugin_get_name   (MMPlugin *plugin);
 MMPluginSupportsResult mm_plugin_supports_port  (MMPlugin *plugin,
                                                  const char *subsys,
                                                  const char *name,
+                                                 const char *physdev_path,
+                                                 MMModem *existing,
                                                  MMSupportsPortResultFunc callback,
                                                  gpointer user_data);
 
@@ -114,6 +119,7 @@ void mm_plugin_cancel_supports_port (MMPlugin *plugin,
 MMModem *mm_plugin_grab_port     (MMPlugin *plugin,
                                   const char *subsys,
                                   const char *name,
+                                  MMModem *existing,
                                   GError **error);
 
 #endif /* MM_PLUGIN_H */

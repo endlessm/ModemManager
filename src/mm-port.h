@@ -33,8 +33,9 @@ typedef enum {
     MM_PORT_TYPE_PRIMARY,
     MM_PORT_TYPE_SECONDARY,
     MM_PORT_TYPE_IGNORED,
+    MM_PORT_TYPE_QCDM,
 
-    MM_PORT_TYPE_LAST = MM_PORT_TYPE_IGNORED
+    MM_PORT_TYPE_LAST = MM_PORT_TYPE_QCDM
 } MMPortType;
 
 #define MM_TYPE_PORT            (mm_port_get_type ())
@@ -74,6 +75,8 @@ gboolean     mm_port_get_carrier_detect (MMPort *self);
 gboolean     mm_port_get_connected      (MMPort *self);
 
 void         mm_port_set_connected      (MMPort *self, gboolean connected);
+
+const char * mm_port_type_to_name       (MMPortType ptype);
 
 #endif /* MM_PORT_H */
 

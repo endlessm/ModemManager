@@ -37,18 +37,21 @@ mm_plugin_create (void)
 
 /*****************************************************************************/
 
+static guint32
+get_level_for_capabilities (guint32 capabilities)
+{
+    if (capabilities & MM_PLUGIN_BASE_PORT_CAP_GSM)
+        return 10;
+    return 0;
+}
+
 static void
 probe_result (MMPluginBase *base,
               MMPluginBaseSupportsTask *task,
               guint32 capabilities,
               gpointer user_data)
 {
-    guint32 level = 0;
-
-    if (capabilities & MM_PLUGIN_BASE_PORT_CAP_GSM)
-        level = 10;
-
-    mm_plugin_base_supports_task_complete (task, level);
+    mm_plugin_base_supports_task_complete (task, get_level_for_capabilities (capabilities));
 }
 
 static MMPluginSupportsResult
@@ -58,7 +61,7 @@ supports_port (MMPluginBase *base,
 {
     GUdevDevice *port;
     const char *tmp;
-    guint32 cached = 0;
+    guint32 cached = 0, level;
 
     /* Can't do anything with non-serial ports */
     port = mm_plugin_base_supports_task_get_port (task);
@@ -78,7 +81,8 @@ supports_port (MMPluginBase *base,
         return MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
 
     if (mm_plugin_base_get_cached_port_capabilities (base, port, &cached)) {
-        if (cached & MM_PLUGIN_BASE_PORT_CAP_GSM) {
+        level = get_level_for_capabilities (cached);
+        if (level) {
             mm_plugin_base_supports_task_complete (task, 10);
             return MM_PLUGIN_SUPPORTS_PORT_IN_PROGRESS;
         }
@@ -98,7 +102,7 @@ grab_port (MMPluginBase *base,
            MMPluginBaseSupportsTask *task,
            GError **error)
 {
-    GUdevDevice *port = NULL, *physdev = NULL;
+    GUdevDevice *port = NULL;
     MMModem *modem = NULL;
     const char *name, *subsys, *devfile, *sysfs_path;
 
@@ -111,17 +115,10 @@ grab_port (MMPluginBase *base,
         return NULL;
     }
 
-    physdev = mm_plugin_base_supports_task_get_physdev (task);
-    g_assert (physdev);
-    sysfs_path = g_udev_device_get_sysfs_path (physdev);
-    if (!sysfs_path) {
-        g_set_error (error, 0, 0, "Could not get port's physical device sysfs path.");
-        return NULL;
-    }
-
     subsys = g_udev_device_get_subsystem (port);
     name = g_udev_device_get_name (port);
 
+    sysfs_path = mm_plugin_base_supports_task_get_physdev_path (task);
     if (!existing) {
         modem = mm_modem_moto_c_gsm_new (sysfs_path,
                                          mm_plugin_base_supports_task_get_driver (task),

@@ -26,6 +26,7 @@
 #include "mm-modem-huawei-gsm.h"
 #include "mm-modem-huawei-cdma.h"
 #include "mm-serial-parsers.h"
+#include "mm-at-serial-port.h"
 
 G_DEFINE_TYPE (MMPluginHuawei, mm_plugin_huawei, MM_TYPE_PLUGIN_BASE)
 
@@ -54,6 +55,8 @@ get_level_for_capabilities (guint32 capabilities)
         return 10;
     if (capabilities & CAP_CDMA)
         return 10;
+    if (capabilities & MM_PLUGIN_BASE_PORT_CAP_QCDM)
+        return 10;
     return 0;
 }
 
@@ -69,9 +72,14 @@ probe_result (MMPluginBase *base,
 #define TAG_SUPPORTS_INFO "huawei-supports-info"
 
 typedef struct {
-    MMSerialPort *serial;
+    MMAtSerialPort *serial;
     guint id;
-    gboolean secondary;
+    MMPortType ptype;
+    /* Whether or not there's already a detected modem that "owns" this port,
+     * in which case we'll claim it, but if no capabilities are detected it'll
+     * just be ignored.
+     */
+    gboolean parent_modem;
 } HuaweiSupportsInfo;
 
 static void
@@ -100,13 +108,13 @@ probe_secondary_supported (gpointer user_data)
     info->serial = NULL;
 
     /* Yay, supported, we got an unsolicited message */
-    info->secondary = TRUE;
+    info->ptype = MM_PORT_TYPE_SECONDARY;
     mm_plugin_base_supports_task_complete (task, 10);
     return FALSE;
 }
 
 static void
-probe_secondary_handle_msg (MMSerialPort *port,
+probe_secondary_handle_msg (MMAtSerialPort *port,
                             GMatchInfo *match_info,
                             gpointer user_data)
 {
@@ -123,24 +131,30 @@ probe_secondary_timeout (gpointer user_data)
 {
     MMPluginBaseSupportsTask *task = user_data;
     HuaweiSupportsInfo *info;
+    guint level = 0;
 
     info = g_object_get_data (G_OBJECT (task), TAG_SUPPORTS_INFO);
     info->id = 0;
     g_object_unref (info->serial);
     info->serial = NULL;
 
-    /* Not supported by this plugin */
-    mm_plugin_base_supports_task_complete (task, 0);
+    /* Supported, but ignored if this port's parent device is already a modem */
+    if (info->parent_modem) {
+        info->ptype = MM_PORT_TYPE_IGNORED;
+        level = 10;
+    }
+
+    mm_plugin_base_supports_task_complete (task, level);
     return FALSE;
 }
 
 static void
-add_regex (MMSerialPort *port, const char *match, gpointer user_data)
+add_regex (MMAtSerialPort *port, const char *match, gpointer user_data)
 {
     GRegex *regex;
 
     regex = g_regex_new (match, G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
-    mm_serial_port_add_unsolicited_msg_handler (port, regex, probe_secondary_handle_msg, user_data, NULL);
+    mm_at_serial_port_add_unsolicited_msg_handler (port, regex, probe_secondary_handle_msg, user_data, NULL);
     g_regex_unref (regex);
 }
 
@@ -207,14 +221,15 @@ supports_port (MMPluginBase *base,
 
         /* Listen for Huawei-specific unsolicited messages */
         info = g_malloc0 (sizeof (HuaweiSupportsInfo));
+        info->parent_modem = !!existing;
 
-        info->serial = mm_serial_port_new (name, MM_PORT_TYPE_PRIMARY);
+        info->serial = mm_at_serial_port_new (name, MM_PORT_TYPE_PRIMARY);
         g_object_set (G_OBJECT (info->serial), MM_PORT_CARRIER_DETECT, FALSE, NULL);
 
-        mm_serial_port_set_response_parser (info->serial,
-                                            mm_serial_parser_v1_parse,
-                                            mm_serial_parser_v1_new (),
-                                            mm_serial_parser_v1_destroy);
+        mm_at_serial_port_set_response_parser (info->serial,
+                                               mm_serial_parser_v1_parse,
+                                               mm_serial_parser_v1_new (),
+                                               mm_serial_parser_v1_destroy);
 
         add_regex (info->serial, "\\r\\n\\^RSSI:(\\d+)\\r\\n", task);
         add_regex (info->serial, "\\r\\n\\^MODE:(\\d),(\\d)\\r\\n", task);
@@ -222,12 +237,12 @@ supports_port (MMPluginBase *base,
         add_regex (info->serial, "\\r\\n\\^BOOT:.+\\r\\n", task);
         add_regex (info->serial, "\\r\\r\\^BOOT:.+\\r\\r", task);
 
-        info->id = g_timeout_add (5000, probe_secondary_timeout, task);
+        info->id = g_timeout_add_seconds (7, probe_secondary_timeout, task);
 
         g_object_set_data_full (G_OBJECT (task), TAG_SUPPORTS_INFO,
                                 info, huawei_supports_info_destroy);
 
-        if (!mm_serial_port_open (info->serial, &error)) {
+        if (!mm_serial_port_open (MM_SERIAL_PORT (info->serial), &error)) {
             g_warning ("%s: (Huawei) %s: couldn't open serial port: (%d) %s",
                        __func__, name,
                        error ? error->code : -1,
@@ -249,7 +264,7 @@ grab_port (MMPluginBase *base,
            MMPluginBaseSupportsTask *task,
            GError **error)
 {
-    GUdevDevice *port = NULL, *physdev = NULL;
+    GUdevDevice *port = NULL;
     MMModem *modem = NULL;
     const char *name, *subsys, *devfile, *sysfs_path;
     guint32 caps;
@@ -264,14 +279,6 @@ grab_port (MMPluginBase *base,
         return NULL;
     }
 
-    physdev = mm_plugin_base_supports_task_get_physdev (task);
-    g_assert (physdev);
-    sysfs_path = g_udev_device_get_sysfs_path (physdev);
-    if (!sysfs_path) {
-        g_set_error (error, 0, 0, "Could not get port's physical device sysfs path.");
-        return NULL;
-    }
-
     subsys = g_udev_device_get_subsystem (port);
     name = g_udev_device_get_name (port);
 
@@ -281,18 +288,12 @@ grab_port (MMPluginBase *base,
     }
 
     caps = mm_plugin_base_supports_task_get_probed_capabilities (task);
+    sysfs_path = mm_plugin_base_supports_task_get_physdev_path (task);
     if (!existing) {
         if (caps & MM_PLUGIN_BASE_PORT_CAP_GSM) {
-            if (product == 0x1001) {
-                /* This modem is handled by generic GSM driver */
-                modem = mm_generic_gsm_new (sysfs_path,
-                                            mm_plugin_base_supports_task_get_driver (task),
-                                            mm_plugin_get_name (MM_PLUGIN (base)));
-            } else {
-                modem = mm_modem_huawei_gsm_new (sysfs_path,
-                                                 mm_plugin_base_supports_task_get_driver (task),
-                                                 mm_plugin_get_name (MM_PLUGIN (base)));
-            }
+            modem = mm_modem_huawei_gsm_new (sysfs_path,
+                                                mm_plugin_base_supports_task_get_driver (task),
+                                                mm_plugin_get_name (MM_PLUGIN (base)));
         } else if (caps & CAP_CDMA) {
             modem = mm_modem_huawei_cdma_new (sysfs_path,
                                               mm_plugin_base_supports_task_get_driver (task),
@@ -312,8 +313,10 @@ grab_port (MMPluginBase *base,
         MMPortType ptype = MM_PORT_TYPE_UNKNOWN;
 
         info = g_object_get_data (G_OBJECT (task), TAG_SUPPORTS_INFO);
-        if (info && info->secondary && (product != 0x1001))
-            ptype = MM_PORT_TYPE_SECONDARY;
+        if (info)
+            ptype = info->ptype;
+        else if (caps & MM_PLUGIN_BASE_PORT_CAP_QCDM)
+            ptype = MM_PORT_TYPE_QCDM;
 
         modem = existing;
         if (!mm_modem_grab_port (modem, subsys, name, ptype, NULL, error))

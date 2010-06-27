@@ -1,5 +1,14 @@
 SUBDIRS=. tests
 
+udevrulesdir = $(UDEV_BASE_DIR)/rules.d
+udevrules_DATA = \
+	77-mm-usb-device-blacklist.rules \
+	77-mm-pcmcia-device-blacklist.rules \
+	77-mm-platform-serial-whitelist.rules
+
+EXTRA_DIST = \
+	$(udevrules_DATA)
+
 noinst_LTLIBRARIES = libmodem-helpers.la
 
 libmodem_helpers_la_CPPFLAGS = \
@@ -9,38 +18,76 @@ libmodem_helpers_la_SOURCES = \
 	mm-errors.c \
 	mm-errors.h \
 	mm-modem-helpers.c \
-	mm-modem-helpers.h
+	mm-modem-helpers.h \
+	mm-charsets.c \
+	mm-charsets.h \
+	mm-utils.c \
+	mm-utils.h
 
 sbin_PROGRAMS = modem-manager
 
 modem_manager_CPPFLAGS = \
 	$(MM_CFLAGS) \
 	$(GUDEV_CFLAGS) \
+	-I$(top_srcdir) \
 	-I${top_builddir}/marshallers \
 	-DPLUGINDIR=\"$(pkglibdir)\"
+
+if WITH_POLKIT
+modem_manager_CPPFLAGS += $(POLKIT_CFLAGS)
+endif
 
 modem_manager_LDADD = \
 	$(MM_LIBS) \
 	$(GUDEV_LIBS) \
 	$(top_builddir)/marshallers/libmarshallers.la \
+	$(top_builddir)/libqcdm/src/libqcdm.la \
 	$(builddir)/libmodem-helpers.la
+
+if WITH_POLKIT
+modem_manager_LDADD += $(POLKIT_LIBS)
+endif
+
+auth_sources = \
+	mm-auth-request.c \
+	mm-auth-request.h \
+	mm-auth-provider.h \
+	mm-auth-provider.c \
+	mm-auth-provider-factory.c
+
+if WITH_POLKIT
+auth_sources += \
+	mm-auth-request-polkit.c \
+	mm-auth-request-polkit.h \
+	mm-auth-provider-polkit.c \
+	mm-auth-provider-polkit.h
+endif
+
+loc_sources = \
+	mm-modem-location.c \
+	mm-modem-location.h
 
 modem_manager_SOURCES = \
 	main.c \
 	mm-callback-info.c \
 	mm-callback-info.h \
+	$(auth_sources) \
 	mm-manager.c \
 	mm-manager.h \
 	mm-modem.c \
 	mm-modem.h \
 	mm-port.c \
 	mm-port.h \
-	mm-modem-base.c \
-	mm-modem-base.h \
 	mm-serial-port.c \
 	mm-serial-port.h \
+	mm-at-serial-port.c \
+	mm-at-serial-port.h \
+	mm-qcdm-serial-port.c \
+	mm-qcdm-serial-port.h \
 	mm-serial-parsers.c \
 	mm-serial-parsers.h \
+	mm-modem-base.c \
+	mm-modem-base.h \
 	mm-generic-cdma.c \
 	mm-generic-cdma.h \
 	mm-generic-gsm.c \
@@ -86,7 +133,6 @@ mm-modem-gsm-network-glue.h: $(top_srcdir)/introspection/mm-modem-gsm-network.xm
 mm-modem-gsm-sms-glue.h: $(top_srcdir)/introspection/mm-modem-gsm-sms.xml
 	dbus-binding-tool --prefix=mm_modem_gsm_sms --mode=glib-server --output=$@ $<
 
-
 BUILT_SOURCES = \
 	mm-manager-glue.h \
 	mm-modem-glue.h \
@@ -95,5 +141,16 @@ BUILT_SOURCES = \
 	mm-modem-gsm-card-glue.h \
 	mm-modem-gsm-network-glue.h \
 	mm-modem-gsm-sms-glue.h
+
+if WITH_LOCATION_API
+mm-modem-location-glue.h: $(top_srcdir)/introspection/mm-modem-location.xml
+	dbus-binding-tool --prefix=mm_modem_location --mode=glib-server --output=$@ $<
+
+modem_manager_SOURCES += $(loc_sources)
+
+BUILT_SOURCES += mm-modem-location-glue.h
+else
+EXTRA_DIST += $(loc_sources)
+endif
 
 CLEANFILES = $(BUILT_SOURCES)

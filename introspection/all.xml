@@ -25,6 +25,7 @@
   <xi:include href="mm-manager.xml"/>
   <xi:include href="mm-modem.xml"/>
   <xi:include href="mm-modem-simple.xml"/>
+  <xi:include href="mm-modem-location.xml"/>
   <xi:include href="mm-modem-cdma.xml"/>
   <xi:include href="mm-modem-gsm.xml"/>
   <xi:include href="mm-modem-gsm-card.xml"/>
@@ -32,6 +33,7 @@
   <xi:include href="mm-modem-gsm-network.xml"/>
   <xi:include href="mm-modem-gsm-sms.xml"/>
   <xi:include href="mm-modem-gsm-hso.xml"/>
+  <xi:include href="mm-modem-gsm-ussd.xml"/>
 
   <xi:include href="mm-serial-error.xml"/>
   <xi:include href="mm-modem-error.xml"/>

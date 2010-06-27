@@ -41,9 +41,18 @@ mm_modem_huawei_cdma_new (const char *device,
                          gboolean evdo_rev0,
                          gboolean evdo_revA)
 {
+    gboolean try_css = TRUE;
+
     g_return_val_if_fail (device != NULL, NULL);
     g_return_val_if_fail (driver != NULL, NULL);
     g_return_val_if_fail (plugin != NULL, NULL);
+
+    /* Don't use AT+CSS on EVDO-capable hardware for determining registration
+     * status, because often the device will have only an EVDO connection and
+     * AT+CSS won't necessarily report EVDO registration status, only 1X.
+     */
+    if (evdo_rev0 || evdo_revA)
+        try_css = FALSE;
 
     return MM_MODEM (g_object_new (MM_TYPE_MODEM_HUAWEI_CDMA,
                                    MM_MODEM_MASTER_DEVICE, device,
@@ -51,6 +60,7 @@ mm_modem_huawei_cdma_new (const char *device,
                                    MM_MODEM_PLUGIN, plugin,
                                    MM_GENERIC_CDMA_EVDO_REV0, evdo_rev0,
                                    MM_GENERIC_CDMA_EVDO_REVA, evdo_revA,
+                                   MM_GENERIC_CDMA_REGISTRATION_TRY_CSS, try_css,
                                    NULL));
 }
 
@@ -72,7 +82,7 @@ parse_quality (const char *str, const char *detail)
 }
 
 static void
-handle_1x_quality_change (MMSerialPort *port,
+handle_1x_quality_change (MMAtSerialPort *port,
                           GMatchInfo *match_info,
                           gpointer user_data)
 {
@@ -89,9 +99,9 @@ handle_1x_quality_change (MMSerialPort *port,
 }
 
 static void
-handle_evdo_quality_change (MMSerialPort *port,
-                          GMatchInfo *match_info,
-                          gpointer user_data)
+handle_evdo_quality_change (MMAtSerialPort *port,
+                            GMatchInfo *match_info,
+                            gpointer user_data)
 {
     MMModemHuaweiCdma *self = MM_MODEM_HUAWEI_CDMA (user_data);
     char *str;
@@ -142,7 +152,7 @@ uint_from_match_item (GMatchInfo *match_info, guint32 num, guint32 *val)
 }
 
 static void
-sysinfo_done (MMSerialPort *port,
+sysinfo_done (MMAtSerialPort *port,
               GString *response,
               GError *error,
               gpointer user_data)
@@ -151,12 +161,10 @@ sysinfo_done (MMSerialPort *port,
     GRegex *r;
     GMatchInfo *match_info;
     const char *reply;
-    gboolean success = FALSE;
 
     if (error) {
-        info->error = g_error_copy (error);
-        mm_callback_info_schedule (info);
-        return;
+        /* Leave superclass' reg state alone if AT^SYSINFO isn't supported */
+        goto done;
     }
 
     reply = strip_response (response->str, "^SYSINFO:");
@@ -165,9 +173,7 @@ sysinfo_done (MMSerialPort *port,
     r = g_regex_new ("\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)",
                      G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
     if (!r) {
-        info->error = g_error_new_literal (MM_MODEM_ERROR,
-                                           MM_MODEM_ERROR_GENERAL,
-                                           "Could not parse sysinfo results (regex creation failed).");
+        g_warning ("Huawei(%s): ^SYSINFO parse regex creation failed.", __func__);
         goto done;
     }
 
@@ -207,48 +213,35 @@ sysinfo_done (MMSerialPort *port,
             /* Say we're registered to something even though sysmode parsing failed */
             mm_generic_cdma_query_reg_state_set_callback_1x_state (info, reg_state);
         }
-        success = TRUE;
-    }
+    } else
+        g_warning ("Huawei(%s): failed to parse ^SYSINFO response.", __func__);
 
-done:
     g_match_info_free (match_info);
     g_regex_unref (r);
-    
-    if (!success && !info->error) {
-        info->error = g_error_new_literal (MM_MODEM_ERROR,
-                                           MM_MODEM_ERROR_GENERAL,
-                                           "Could not parse sysinfo results.");
-    }
 
+done:
     mm_callback_info_schedule (info);
 }
 
 static void
 query_registration_state (MMGenericCdma *cdma,
+                          MMModemCdmaRegistrationState cur_cdma_state,
+                          MMModemCdmaRegistrationState cur_evdo_state,
                           MMModemCdmaRegistrationStateFn callback,
                           gpointer user_data)
 {
     MMCallbackInfo *info;
-    MMSerialPort *primary, *secondary, *port;
+    MMAtSerialPort *port;
 
-    port = primary = mm_generic_cdma_get_port (cdma, MM_PORT_TYPE_PRIMARY);
-    secondary = mm_generic_cdma_get_port (cdma, MM_PORT_TYPE_SECONDARY);
+    info = mm_generic_cdma_query_reg_state_callback_info_new (cdma, cur_cdma_state, cur_evdo_state, callback, user_data);
 
-    info = mm_generic_cdma_query_reg_state_callback_info_new (cdma, callback, user_data);
-
-    if (mm_port_get_connected (MM_PORT (primary))) {
-        if (!secondary) {
-            info->error = g_error_new_literal (MM_MODEM_ERROR, MM_MODEM_ERROR_CONNECTED,
-                                               "Cannot get query registration state while connected");
-            mm_callback_info_schedule (info);
-            return;
-        }
-
-        /* Use secondary port if primary is connected */
-        port = secondary;
+    port = mm_generic_cdma_get_best_at_port (cdma, &info->error);
+    if (!port) {
+        mm_callback_info_schedule (info);
+        return;
     }
 
-    mm_serial_port_queue_command (port, "^SYSINFO", 3, sysinfo_done, info);
+    mm_at_serial_port_queue_command (port, "^SYSINFO", 3, sysinfo_done, info);
 }
 
 /*****************************************************************************/
@@ -265,14 +258,14 @@ grab_port (MMModem *modem,
     GRegex *regex;
 
 	port = mm_generic_cdma_grab_port (MM_GENERIC_CDMA (modem), subsys, name, suggested_type, user_data, error);
-    if (port && MM_IS_SERIAL_PORT (port)) {
+    if (port && MM_IS_AT_SERIAL_PORT (port)) {
         gboolean evdo0 = FALSE, evdoA = FALSE;
 
         g_object_set (G_OBJECT (port), MM_PORT_CARRIER_DETECT, FALSE, NULL);
 
         /* 1x signal level */
         regex = g_regex_new ("\\r\\n\\^RSSILVL:(\\d+)\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
-        mm_serial_port_add_unsolicited_msg_handler (MM_SERIAL_PORT (port), regex, handle_1x_quality_change, modem, NULL);
+        mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (port), regex, handle_1x_quality_change, modem, NULL);
         g_regex_unref (regex);
 
         g_object_get (G_OBJECT (modem),
@@ -283,7 +276,7 @@ grab_port (MMModem *modem,
         if (evdo0 || evdoA) {
             /* EVDO signal level */
             regex = g_regex_new ("\\r\\n\\^HRSSILVL:(\\d+)\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
-            mm_serial_port_add_unsolicited_msg_handler (MM_SERIAL_PORT (port), regex, handle_evdo_quality_change, modem, NULL);
+            mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (port), regex, handle_evdo_quality_change, modem, NULL);
             g_regex_unref (regex);
         }
     }

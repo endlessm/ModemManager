@@ -11,7 +11,7 @@
  * GNU General Public License for more details:
  *
  * Copyright (C) 2008 - 2009 Novell, Inc.
- * Copyright (C) 2009 Red Hat, Inc.
+ * Copyright (C) 2009 - 2010 Red Hat, Inc.
  */
 
 #define _GNU_SOURCE  /* for strcasestr */
@@ -26,10 +26,14 @@
 #include <gudev/gudev.h>
 
 #include "mm-plugin-base.h"
-#include "mm-serial-port.h"
+#include "mm-at-serial-port.h"
+#include "mm-qcdm-serial-port.h"
 #include "mm-serial-parsers.h"
 #include "mm-errors.h"
 #include "mm-marshal.h"
+#include "mm-utils.h"
+#include "libqcdm/src/commands.h"
+#include "libqcdm/src/utils.h"
 
 static void plugin_init (MMPlugin *plugin_class);
 
@@ -48,8 +52,6 @@ static GHashTable *cached_caps = NULL;
 typedef struct {
     char *name;
     GUdevClient *client;
-
-    GHashTable *modems;
     GHashTable *tasks;
 } MMPluginBasePrivate;
 
@@ -77,6 +79,8 @@ typedef enum {
     PROBE_STATE_LAST
 } ProbeState;
 
+static void probe_complete (MMPluginBaseSupportsTask *task);
+
 /*****************************************************************************/
 
 G_DEFINE_TYPE (MMPluginBaseSupportsTask, mm_plugin_base_supports_task, G_TYPE_OBJECT)
@@ -86,13 +90,15 @@ G_DEFINE_TYPE (MMPluginBaseSupportsTask, mm_plugin_base_supports_task, G_TYPE_OB
 typedef struct {
     MMPluginBase *plugin;
     GUdevDevice *port;
-    GUdevDevice *physdev;
+    char *physdev_path;
     char *driver;
 
     guint open_id;
     guint32 open_tries;
+    guint full_id;
 
-    MMSerialPort *probe_port;
+    MMAtSerialPort *probe_port;
+    MMQcdmSerialPort *qcdm_port;
     guint32 probed_caps;
     ProbeState probe_state;
     guint probe_id;
@@ -112,7 +118,7 @@ typedef struct {
 static MMPluginBaseSupportsTask *
 supports_task_new (MMPluginBase *self,
                    GUdevDevice *port,
-                   GUdevDevice *physdev,
+                   const char *physdev_path,
                    const char *driver,
                    MMSupportsPortResultFunc callback,
                    gpointer callback_data)
@@ -123,7 +129,7 @@ supports_task_new (MMPluginBase *self,
     g_return_val_if_fail (self != NULL, NULL);
     g_return_val_if_fail (MM_IS_PLUGIN_BASE (self), NULL);
     g_return_val_if_fail (port != NULL, NULL);
-    g_return_val_if_fail (physdev != NULL, NULL);
+    g_return_val_if_fail (physdev_path != NULL, NULL);
     g_return_val_if_fail (driver != NULL, NULL);
     g_return_val_if_fail (callback != NULL, NULL);
 
@@ -132,7 +138,7 @@ supports_task_new (MMPluginBase *self,
     priv = MM_PLUGIN_BASE_SUPPORTS_TASK_GET_PRIVATE (task);
     priv->plugin = self;
     priv->port = g_object_ref (port);
-    priv->physdev = g_object_ref (physdev);
+    priv->physdev_path = g_strdup (physdev_path);
     priv->driver = g_strdup (driver);
     priv->callback = callback;
     priv->callback_data = callback_data;
@@ -158,13 +164,13 @@ mm_plugin_base_supports_task_get_port (MMPluginBaseSupportsTask *task)
     return MM_PLUGIN_BASE_SUPPORTS_TASK_GET_PRIVATE (task)->port;
 }
 
-GUdevDevice *
-mm_plugin_base_supports_task_get_physdev (MMPluginBaseSupportsTask *task)
+const char *
+mm_plugin_base_supports_task_get_physdev_path (MMPluginBaseSupportsTask *task)
 {
     g_return_val_if_fail (task != NULL, NULL);
     g_return_val_if_fail (MM_IS_PLUGIN_BASE_SUPPORTS_TASK (task), NULL);
 
-    return MM_PLUGIN_BASE_SUPPORTS_TASK_GET_PRIVATE (task)->physdev;
+    return MM_PLUGIN_BASE_SUPPORTS_TASK_GET_PRIVATE (task)->physdev_path;
 }
 
 const char *
@@ -197,6 +203,11 @@ mm_plugin_base_supports_task_complete (MMPluginBaseSupportsTask *task,
 
     priv = MM_PLUGIN_BASE_SUPPORTS_TASK_GET_PRIVATE (task);
     g_return_if_fail (priv->callback != NULL);
+
+    if (priv->full_id) {
+        g_source_remove (priv->full_id);
+        priv->full_id = 0;
+    }
 
     subsys = g_udev_device_get_subsystem (priv->port);
     name = g_udev_device_get_name (priv->port);
@@ -239,11 +250,11 @@ supports_task_dispose (GObject *object)
 {
     MMPluginBaseSupportsTaskPrivate *priv = MM_PLUGIN_BASE_SUPPORTS_TASK_GET_PRIVATE (object);
 
-    if (MM_IS_SERIAL_PORT (priv->port))
-        mm_serial_port_flash_cancel (MM_SERIAL_PORT (priv->port));
+    if (MM_IS_SERIAL_PORT (priv->probe_port))
+        mm_serial_port_flash_cancel (MM_SERIAL_PORT (priv->probe_port));
 
     g_object_unref (priv->port);
-    g_object_unref (priv->physdev);
+    g_free (priv->physdev_path);
     g_free (priv->driver);
     g_free (priv->probe_resp);
     g_clear_error (&(priv->probe_error));
@@ -251,11 +262,19 @@ supports_task_dispose (GObject *object)
 
     if (priv->open_id)
         g_source_remove (priv->open_id);
+    if (priv->full_id)
+        g_source_remove (priv->full_id);
 
     if (priv->probe_id)
         g_source_remove (priv->probe_id);
-    if (priv->probe_port)
+    if (priv->probe_port) {
+        mm_serial_port_close (MM_SERIAL_PORT (priv->probe_port));
         g_object_unref (priv->probe_port);
+    }
+    if (priv->qcdm_port) {
+        mm_serial_port_close (MM_SERIAL_PORT (priv->qcdm_port));
+        g_object_unref (priv->qcdm_port);
+    }
 
     G_OBJECT_CLASS (mm_plugin_base_supports_task_parent_class)->dispose (object);
 }
@@ -334,7 +353,8 @@ parse_cpin (const char *buf)
         || strcasestr (buf, "PH-SP PIN")
         || strcasestr (buf, "PH-SP PUK")
         || strcasestr (buf, "PH-CORP PIN")
-        || strcasestr (buf, "PH-CORP PUK"))
+        || strcasestr (buf, "PH-CORP PUK")
+        || strcasestr (buf, "READY"))
         return MM_PLUGIN_BASE_PORT_CAP_GSM;
 
     return 0;
@@ -349,6 +369,49 @@ parse_cgmm (const char *buf)
     return 0;
 }
 
+static const char *dq_strings[] = {
+    /* Option Icera-based devices */
+    "option/faema_",
+    "os_logids.h",
+    /* Sierra CnS port */
+    "NETWORK SERVICE CHANGE",
+    NULL
+};
+
+static void
+port_buffer_full (MMSerialPort *port, GByteArray *buffer, gpointer user_data)
+{
+    MMPluginBaseSupportsTask *task = MM_PLUGIN_BASE_SUPPORTS_TASK (user_data);
+    MMPluginBaseSupportsTaskPrivate *priv = MM_PLUGIN_BASE_SUPPORTS_TASK_GET_PRIVATE (user_data);
+    const char **iter;
+    size_t iter_len;
+    int i;
+
+    /* Check for an immediate disqualification response.  There are some
+     * ports (Option Icera-based chipsets have them, as do Qualcomm Gobi
+     * devices before their firmware is loaded) that just shouldn't be
+     * probed if we get a certain response because we know they can't be
+     * used.  Kernel bugs (at least with 2.6.31 and 2.6.32) also trigger port
+     * flow control kernel oopses if we read too much data for these ports.
+     */
+
+    for (iter = &dq_strings[0]; iter && *iter; iter++) {
+        /* Search in the response for the item; the response could have embedded
+         * nulls so we can't use memcmp() or strstr() on the whole response.
+         */
+        iter_len = strlen (*iter);
+        for (i = 0; i < buffer->len - iter_len; i++) {
+            if (!memcmp (&buffer->data[i], *iter, iter_len)) {
+                /* Immediately close the port and complete probing */
+                priv->probed_caps = 0;
+                mm_serial_port_close (MM_SERIAL_PORT (priv->probe_port));
+                probe_complete (task);
+                return;
+            }
+        }
+    }
+}
+
 static gboolean
 emit_probe_result (gpointer user_data)
 {
@@ -356,9 +419,15 @@ emit_probe_result (gpointer user_data)
     MMPluginBaseSupportsTaskPrivate *task_priv = MM_PLUGIN_BASE_SUPPORTS_TASK_GET_PRIVATE (task);
     MMPlugin *self = mm_plugin_base_supports_task_get_plugin (task);
 
-    /* Close the serial port */
-    g_object_unref (task_priv->probe_port);
-    task_priv->probe_port = NULL;
+    /* Close the serial ports */
+    if (task_priv->probe_port) {
+        g_object_unref (task_priv->probe_port);
+        task_priv->probe_port = NULL;
+    }
+    if (task_priv->qcdm_port) {
+        g_object_unref (task_priv->qcdm_port);
+        task_priv->qcdm_port = NULL;
+    }
 
     task_priv->probe_id = 0;
     g_signal_emit (self, signals[PROBE_RESULT], 0, task, task_priv->probed_caps);
@@ -368,17 +437,122 @@ emit_probe_result (gpointer user_data)
 static void
 probe_complete (MMPluginBaseSupportsTask *task)
 {
-    MMPluginBaseSupportsTaskPrivate *task_priv = MM_PLUGIN_BASE_SUPPORTS_TASK_GET_PRIVATE (task);
+    MMPluginBaseSupportsTaskPrivate *priv = MM_PLUGIN_BASE_SUPPORTS_TASK_GET_PRIVATE (task);
+    MMPort *port;
 
+    port = priv->probe_port ? MM_PORT (priv->probe_port) : MM_PORT (priv->qcdm_port);
+    g_assert (port);
     g_hash_table_insert (cached_caps,
-                         g_strdup (mm_port_get_device (MM_PORT (task_priv->probe_port))),
-                         GUINT_TO_POINTER (task_priv->probed_caps));
+                         g_strdup (mm_port_get_device (port)),
+                         GUINT_TO_POINTER (priv->probed_caps));
 
-    task_priv->probe_id = g_idle_add (emit_probe_result, task);
+    priv->probe_id = g_idle_add (emit_probe_result, task);
 }
 
 static void
-parse_response (MMSerialPort *port,
+qcdm_verinfo_cb (MMQcdmSerialPort *port,
+                 GByteArray *response,
+                 GError *error,
+                 gpointer user_data)
+{
+    MMPluginBaseSupportsTask *task;
+    MMPluginBaseSupportsTaskPrivate *priv;
+    QCDMResult *result;
+    GError *dm_error = NULL;
+
+    /* Just the initial poke; ignore it */
+    if (!user_data)
+        return;
+
+    task = MM_PLUGIN_BASE_SUPPORTS_TASK (user_data);
+    priv = MM_PLUGIN_BASE_SUPPORTS_TASK_GET_PRIVATE (task);
+
+    if (error) {
+        /* Probably not a QCDM port */
+        goto done;
+    }
+
+    /* Parse the response */
+    result = qcdm_cmd_version_info_result ((const char *) response->data, response->len, &dm_error);
+    if (!result) {
+        g_warning ("(%s) failed to parse QCDM version info command result: (%d) %s.",
+                   g_udev_device_get_name (priv->port),
+                   dm_error ? dm_error->code : -1,
+                   dm_error && dm_error->message ? dm_error->message : "(unknown)");
+        g_clear_error (&dm_error);
+        goto done;
+    }
+
+    /* yay, probably a QCDM port */
+    qcdm_result_unref (result);
+    priv->probed_caps |= MM_PLUGIN_BASE_PORT_CAP_QCDM;
+
+done:
+    probe_complete (task);
+}
+
+static void
+try_qcdm_probe (MMPluginBaseSupportsTask *task)
+{
+    MMPluginBaseSupportsTaskPrivate *priv = MM_PLUGIN_BASE_SUPPORTS_TASK_GET_PRIVATE (task);
+    const char *name;
+    GError *error = NULL;
+    GByteArray *verinfo = NULL, *verinfo2;
+    gint len;
+
+    /* Close the AT port */
+    if (priv->probe_port) {
+        mm_serial_port_close (MM_SERIAL_PORT (priv->probe_port));
+        g_object_unref (priv->probe_port);
+        priv->probe_port = NULL;
+    }
+
+    /* Open the QCDM port */
+    name = g_udev_device_get_name (priv->port);
+    g_assert (name);
+    priv->qcdm_port = mm_qcdm_serial_port_new (name, MM_PORT_TYPE_PRIMARY);
+    if (priv->qcdm_port == NULL) {
+        g_warning ("(%s) failed to create new QCDM serial port.", name);
+        probe_complete (task);
+        return;
+    }
+
+    if (!mm_serial_port_open (MM_SERIAL_PORT (priv->qcdm_port), &error)) {
+        g_warning ("(%s) failed to open new QCDM serial port: (%d) %s.",
+                   name,
+                   error ? error->code : -1,
+                   error && error->message ? error->message : "(unknown)");
+        g_clear_error (&error);
+        probe_complete (task);
+        return;
+    }
+
+    /* Build up the probe command */
+    verinfo = g_byte_array_sized_new (50);
+    len = qcdm_cmd_version_info_new ((char *) verinfo->data, 50, &error);
+    if (len <= 0) {
+        g_byte_array_free (verinfo, TRUE);
+        g_warning ("(%s) failed to create QCDM version info command: (%d) %s.",
+                   name,
+                   error ? error->code : -1,
+                   error && error->message ? error->message : "(unknown)");
+        g_clear_error (&error);
+        probe_complete (task);
+        return;
+    }
+    verinfo->len = len;
+
+    /* Queuing the command takes ownership over it; copy it for the second try */
+    verinfo2 = g_byte_array_sized_new (verinfo->len);
+    g_byte_array_append (verinfo2, verinfo->data, verinfo->len);
+
+    /* Send the command twice; the ports often need to be woken up */
+    mm_qcdm_serial_port_queue_command (priv->qcdm_port, verinfo, 3, qcdm_verinfo_cb, NULL);
+    mm_qcdm_serial_port_queue_command (priv->qcdm_port, verinfo2, 3, qcdm_verinfo_cb, task);
+}
+
+static void
+parse_response (MMAtSerialPort *port,
                 GString *response,
                 GError *error,
                 gpointer user_data);
@@ -391,7 +565,7 @@ real_handle_probe_response (MMPluginBase *self,
                             const GError *error)
 {
     MMPluginBaseSupportsTaskPrivate *task_priv = MM_PLUGIN_BASE_SUPPORTS_TASK_GET_PRIVATE (task);
-    MMSerialPort *port = task_priv->probe_port;
+    MMAtSerialPort *port = task_priv->probe_port;
     gboolean ignore_error = FALSE;
 
     /* Some modems (Huawei E160g) won't respond to +GCAP with no SIM, but
@@ -401,16 +575,16 @@ real_handle_probe_response (MMPluginBase *self,
         ignore_error = TRUE;
 
     if (error && !ignore_error) {
-        if (error->code == MM_SERIAL_RESPONSE_TIMEOUT) {
+        if (g_error_matches (error, MM_SERIAL_ERROR, MM_SERIAL_ERROR_RESPONSE_TIMEOUT)) {
             /* Try GCAP again */
             if (task_priv->probe_state < PROBE_STATE_GCAP_TRY3) {
                 task_priv->probe_state++;
-                mm_serial_port_queue_command (port, "+GCAP", 3, parse_response, task);
+                mm_at_serial_port_queue_command (port, "+GCAP", 3, parse_response, task);
             } else {
                /* Otherwise, if all the GCAP tries timed out, ignore the port
-                * as it's probably not an AT-capable port.
+                * as it's probably not an AT-capable port.  Try QCDM.
                 */
-               probe_complete (task);
+               try_qcdm_probe (task);
             }
             return;
         }
@@ -459,19 +633,19 @@ real_handle_probe_response (MMPluginBase *self,
     switch (task_priv->probe_state) {
     case PROBE_STATE_GCAP_TRY2:
     case PROBE_STATE_GCAP_TRY3:
-        mm_serial_port_queue_command (port, "+GCAP", 3, parse_response, task);
+        mm_at_serial_port_queue_command (port, "+GCAP", 3, parse_response, task);
         break;
     case PROBE_STATE_ATI:
         /* After the last GCAP attempt, try ATI */
-        mm_serial_port_queue_command (port, "I", 3, parse_response, task);
+        mm_at_serial_port_queue_command (port, "I", 3, parse_response, task);
         break;
     case PROBE_STATE_CPIN:
         /* After the ATI attempt, try CPIN */
-        mm_serial_port_queue_command (port, "+CPIN?", 3, parse_response, task);
+        mm_at_serial_port_queue_command (port, "+CPIN?", 3, parse_response, task);
         break;
     case PROBE_STATE_CGMM:
         /* After the CPIN attempt, try CGMM */
-        mm_serial_port_queue_command (port, "+CGMM", 3, parse_response, task);
+        mm_at_serial_port_queue_command (port, "+CGMM", 3, parse_response, task);
         break;
     default:
         /* Probably not GSM or CDMA */
@@ -515,7 +689,7 @@ handle_probe_response (gpointer user_data)
 }
 
 static void
-parse_response (MMSerialPort *port,
+parse_response (MMAtSerialPort *port,
                 GString *response,
                 GError *error,
                 gpointer user_data)
@@ -545,7 +719,7 @@ parse_response (MMSerialPort *port,
 static void flash_done (MMSerialPort *port, GError *error, gpointer user_data);
 
 static void
-custom_init_response (MMSerialPort *port,
+custom_init_response (MMAtSerialPort *port,
                       GString *response,
                       GError *error,
                       gpointer user_data)
@@ -557,11 +731,11 @@ custom_init_response (MMSerialPort *port,
         task_priv->custom_init_tries++;
         if (task_priv->custom_init_tries < task_priv->custom_init_max_tries) {
             /* Try the custom command again */
-            flash_done (port, NULL, user_data);
+            flash_done (MM_SERIAL_PORT (port), NULL, user_data);
             return;
         } else if (task_priv->custom_init_fail_if_timeout) {
             /* Fail the probe if the plugin wanted it and the command timed out */
-            if (g_error_matches (error, MM_SERIAL_ERROR, MM_SERIAL_RESPONSE_TIMEOUT)) {
+            if (g_error_matches (error, MM_SERIAL_ERROR, MM_SERIAL_ERROR_RESPONSE_TIMEOUT)) {
                 probe_complete (task);
                 return;
             }
@@ -569,7 +743,7 @@ custom_init_response (MMSerialPort *port,
     }
 
     /* Otherwise proceed to probing */
-    mm_serial_port_queue_command (port, "+GCAP", 3, parse_response, user_data);
+    mm_at_serial_port_queue_command (port, "+GCAP", 3, parse_response, user_data);
 }
 
 static void
@@ -583,14 +757,14 @@ flash_done (MMSerialPort *port, GError *error, gpointer user_data)
     if (task_priv->custom_init) {
         if (!delay_secs)
             delay_secs = 3;
-        mm_serial_port_queue_command (port,
-                                      task_priv->custom_init,
-                                      delay_secs,
-                                      custom_init_response,
-                                      user_data);
+        mm_at_serial_port_queue_command (MM_AT_SERIAL_PORT (port),
+                                         task_priv->custom_init,
+                                         delay_secs,
+                                         custom_init_response,
+                                         user_data);
     } else {
         /* Otherwise start normal probing */
-        custom_init_response (port, NULL, NULL, user_data);
+        custom_init_response (MM_AT_SERIAL_PORT (port), NULL, NULL, user_data);
     }
 }
 
@@ -603,7 +777,7 @@ try_open (gpointer user_data)
 
     task_priv->open_id = 0;
 
-    if (!mm_serial_port_open (task_priv->probe_port, &error)) {
+    if (!mm_serial_port_open (MM_SERIAL_PORT (task_priv->probe_port), &error)) {
         if (++task_priv->open_tries > 4) {
             /* took too long to open the port; give up */
             g_warning ("(%s): failed to open after 4 tries.",
@@ -611,7 +785,7 @@ try_open (gpointer user_data)
             probe_complete (task);
         } else if (g_error_matches (error,
                                     MM_SERIAL_ERROR,
-                                    MM_SERIAL_OPEN_FAILED_NO_DEVICE)) {
+                                    MM_SERIAL_ERROR_OPEN_FAILED_NO_DEVICE)) {
             /* this is nozomi being dumb; try again */
             task_priv->open_id = g_timeout_add_seconds (1, try_open, task);
         } else {
@@ -626,10 +800,13 @@ try_open (gpointer user_data)
         port = mm_plugin_base_supports_task_get_port (task);
         g_assert (port);
 
+        task_priv->full_id = g_signal_connect (task_priv->probe_port, "buffer-full",
+                                               G_CALLBACK (port_buffer_full), task);
+
         g_debug ("(%s): probe requested by plugin '%s'",
                  g_udev_device_get_name (port),
                  mm_plugin_get_name (MM_PLUGIN (task_priv->plugin)));
-        mm_serial_port_flash (task_priv->probe_port, 100, flash_done, task);
+        mm_serial_port_flash (MM_SERIAL_PORT (task_priv->probe_port), 100, TRUE, flash_done, task);
     }
 
     return FALSE;
@@ -641,7 +818,7 @@ mm_plugin_base_probe_port (MMPluginBase *self,
                            GError **error)
 {
     MMPluginBaseSupportsTaskPrivate *task_priv = MM_PLUGIN_BASE_SUPPORTS_TASK_GET_PRIVATE (task);
-    MMSerialPort *serial;
+    MMAtSerialPort *serial;
     const char *name;
     GUdevDevice *port;
 
@@ -654,7 +831,7 @@ mm_plugin_base_probe_port (MMPluginBase *self,
     name = g_udev_device_get_name (port);
     g_assert (name);
 
-    serial = mm_serial_port_new (name, MM_PORT_TYPE_PRIMARY);
+    serial = mm_at_serial_port_new (name, MM_PORT_TYPE_PRIMARY);
     if (serial == NULL) {
         g_set_error_literal (error, MM_MODEM_ERROR, MM_MODEM_ERROR_GENERAL,
                              "Failed to create new serial port.");
@@ -666,10 +843,10 @@ mm_plugin_base_probe_port (MMPluginBase *self,
                   MM_PORT_CARRIER_DETECT, FALSE,
                   NULL);
 
-    mm_serial_port_set_response_parser (serial,
-                                        mm_serial_parser_v1_parse,
-                                        mm_serial_parser_v1_new (),
-                                        mm_serial_parser_v1_destroy);
+    mm_at_serial_port_set_response_parser (serial,
+                                           mm_serial_parser_v1_parse,
+                                           mm_serial_parser_v1_new (),
+                                           mm_serial_parser_v1_destroy);
 
     /* Open the port */
     task_priv->probe_port = serial;
@@ -695,20 +872,6 @@ mm_plugin_base_get_cached_port_capabilities (MMPluginBase *self,
 static void
 modem_destroyed (gpointer data, GObject *modem)
 {
-    MMPluginBase *self = MM_PLUGIN_BASE (data);
-    MMPluginBasePrivate *priv = MM_PLUGIN_BASE_GET_PRIVATE (self);
-    GHashTableIter iter;
-    gpointer key, value;
-
-    /* Remove it from the modems info */
-    g_hash_table_iter_init (&iter, priv->modems);
-    while (g_hash_table_iter_next (&iter, &key, &value)) {
-        if (value == modem) {
-            g_hash_table_iter_remove (&iter);
-            break;
-        }
-    }
-
     /* Since we don't track port cached capabilities on a per-modem basis,
      * we just have to live with blowing away the cached capabilities whenever
      * a modem gets removed.  Could do better here by storing a structure
@@ -718,48 +881,6 @@ modem_destroyed (gpointer data, GObject *modem)
      */
     g_hash_table_remove_all (cached_caps);
 }
-
-MMModem *
-mm_plugin_base_find_modem (MMPluginBase *self,
-                           const char *master_device)
-{
-    MMPluginBasePrivate *priv;
-
-    g_return_val_if_fail (self != NULL, NULL);
-    g_return_val_if_fail (MM_IS_PLUGIN_BASE (self), NULL);
-    g_return_val_if_fail (master_device != NULL, NULL);
-    g_return_val_if_fail (strlen (master_device) > 0, NULL);
-
-    priv = MM_PLUGIN_BASE_GET_PRIVATE (self);
-    return g_hash_table_lookup (priv->modems, master_device);
-}
-
-/* From hostap, Copyright (c) 2002-2005, Jouni Malinen <jkmaline@cc.hut.fi> */
-
-static int hex2num (char c)
-{
-	if (c >= '0' && c <= '9')
-		return c - '0';
-	if (c >= 'a' && c <= 'f')
-		return c - 'a' + 10;
-	if (c >= 'A' && c <= 'F')
-		return c - 'A' + 10;
-	return -1;
-}
-
-static int hex2byte (const char *hex)
-{
-	int a, b;
-	a = hex2num(*hex++);
-	if (a < 0)
-		return -1;
-	b = hex2num(*hex++);
-	if (b < 0)
-		return -1;
-	return (a << 4) | b;
-}
-
-/* End from hostap */
 
 gboolean
 mm_plugin_base_get_device_ids (MMPluginBase *self,
@@ -793,8 +914,8 @@ mm_plugin_base_get_device_ids (MMPluginBase *self,
         goto out;
 
     if (vendor) {
-        *vendor = (guint16) (hex2byte (vid + 2) & 0xFF);
-        *vendor |= (guint16) ((hex2byte (vid) & 0xFF) << 8);
+        *vendor = (guint16) (utils_hex2byte (vid + 2) & 0xFF);
+        *vendor |= (guint16) ((utils_hex2byte (vid) & 0xFF) << 8);
     }
 
     pid = g_udev_device_get_property (device, "ID_MODEL_ID");
@@ -804,8 +925,8 @@ mm_plugin_base_get_device_ids (MMPluginBase *self,
     }
 
     if (product) {
-        *product = (guint16) (hex2byte (pid + 2) & 0xFF);
-        *product |= (guint16) ((hex2byte (pid) & 0xFF) << 8);
+        *product = (guint16) (utils_hex2byte (pid + 2) & 0xFF);
+        *product |= (guint16) ((utils_hex2byte (pid) & 0xFF) << 8);
     }
 
     success = TRUE;
@@ -859,58 +980,21 @@ get_driver_name (GUdevDevice *device)
     return ret;
 }
 
-static GUdevDevice *
-real_find_physical_device (MMPluginBase *plugin, GUdevDevice *child)
-{
-    GUdevDevice *iter, *old = NULL;
-    GUdevDevice *physdev = NULL;
-    const char *subsys, *type;
-    guint32 i = 0;
-    gboolean is_usb = FALSE, is_pci = FALSE;
-
-    g_return_val_if_fail (child != NULL, NULL);
-
-    iter = g_object_ref (child);
-    while (iter && i++ < 8) {
-        subsys = g_udev_device_get_subsystem (iter);
-        if (subsys) {
-            if (is_usb || !strcmp (subsys, "usb")) {
-                is_usb = TRUE;
-                type = g_udev_device_get_devtype (iter);
-                if (type && !strcmp (type, "usb_device")) {
-                    physdev = iter;
-                    break;
-                }
-            } else if (is_pci || !strcmp (subsys, "pci")) {
-                is_pci = TRUE;
-                physdev = iter;
-                break;
-            }
-        }
-
-        old = iter;
-        iter = g_udev_device_get_parent (old);
-        g_object_unref (old);
-    }
-
-    return physdev;
-}
-
 static MMPluginSupportsResult
 supports_port (MMPlugin *plugin,
                const char *subsys,
                const char *name,
+               const char *physdev_path,
+               MMModem *existing,
                MMSupportsPortResultFunc callback,
                gpointer callback_data)
 {
     MMPluginBase *self = MM_PLUGIN_BASE (plugin);
     MMPluginBasePrivate *priv = MM_PLUGIN_BASE_GET_PRIVATE (self);
-    GUdevDevice *port = NULL, *physdev = NULL;
+    GUdevDevice *port = NULL;
     char *driver = NULL, *key = NULL;
     MMPluginBaseSupportsTask *task;
     MMPluginSupportsResult result = MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
-    MMModem *existing;
-    const char *master_path;
 
     key = get_key (subsys, name);
     task = g_hash_table_lookup (priv->tasks, key);
@@ -923,21 +1007,13 @@ supports_port (MMPlugin *plugin,
     if (!port)
         goto out;
 
-    physdev = MM_PLUGIN_BASE_GET_CLASS (self)->find_physical_device (self, port);
-    if (!physdev)
-        goto out;
-
     driver = get_driver_name (port);
     if (!driver)
         goto out;
 
-    task = supports_task_new (self, port, physdev, driver, callback, callback_data);
+    task = supports_task_new (self, port, physdev_path, driver, callback, callback_data);
     g_assert (task);
     g_hash_table_insert (priv->tasks, g_strdup (key), g_object_ref (task));
-
-    /* Help the plugin out a bit by finding an existing modem for this port */
-    master_path = g_udev_device_get_sysfs_path (physdev);
-    existing = g_hash_table_lookup (priv->modems, master_path);
 
     result = MM_PLUGIN_BASE_GET_CLASS (self)->supports_port (self, existing, task);
     if (result != MM_PLUGIN_SUPPORTS_PORT_IN_PROGRESS) {
@@ -949,8 +1025,6 @@ supports_port (MMPlugin *plugin,
     g_object_unref (task);
 
 out:
-    if (physdev)
-        g_object_unref (physdev);
     if (port)
         g_object_unref (port);
     g_free (key);
@@ -984,14 +1058,14 @@ static MMModem *
 grab_port (MMPlugin *plugin,
            const char *subsys,
            const char *name,
+           MMModem *existing,
            GError **error)
 {
     MMPluginBase *self = MM_PLUGIN_BASE (plugin);
     MMPluginBasePrivate *priv = MM_PLUGIN_BASE_GET_PRIVATE (self);
     MMPluginBaseSupportsTask *task;
+    MMModem *modem = NULL;
     char *key;
-    MMModem *existing = NULL, *modem = NULL;
-    const char *master_path;
 
     key = get_key (subsys, name);
     task = g_hash_table_lookup (priv->tasks, key);
@@ -1000,16 +1074,10 @@ grab_port (MMPlugin *plugin,
         g_return_val_if_fail (task != NULL, FALSE);
     }
 
-    /* Help the plugin out a bit by finding an existing modem for this port */
-    master_path = g_udev_device_get_sysfs_path (mm_plugin_base_supports_task_get_physdev (task));
-    existing = g_hash_table_lookup (priv->modems, master_path);
-
     /* Let the modem grab the port */
     modem = MM_PLUGIN_BASE_GET_CLASS (self)->grab_port (self, existing, task, error);
-    if (modem && !existing) {
-        g_hash_table_insert (priv->modems, g_strdup (master_path), modem);
+    if (modem && !existing)
         g_object_weak_ref (G_OBJECT (modem), modem_destroyed, self);
-    }
 
     g_hash_table_remove (priv->tasks, key);
     g_free (key);
@@ -1039,7 +1107,6 @@ mm_plugin_base_init (MMPluginBase *self)
 
     priv->client = g_udev_client_new (subsys);
 
-    priv->modems = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
     priv->tasks = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
                                          (GDestroyNotify) g_object_unref);
 }
@@ -1086,7 +1153,6 @@ finalize (GObject *object)
 
     g_object_unref (priv->client);
 
-    g_hash_table_destroy (priv->modems);
     g_hash_table_destroy (priv->tasks);
 
     G_OBJECT_CLASS (mm_plugin_base_parent_class)->finalize (object);
@@ -1099,7 +1165,6 @@ mm_plugin_base_class_init (MMPluginBaseClass *klass)
 
     g_type_class_add_private (object_class, sizeof (MMPluginBasePrivate));
 
-    klass->find_physical_device = real_find_physical_device;
     klass->handle_probe_response = real_handle_probe_response;
 
     /* Virtual methods */

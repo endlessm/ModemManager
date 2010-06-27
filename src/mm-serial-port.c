@@ -11,14 +11,14 @@
  * GNU General Public License for more details:
  *
  * Copyright (C) 2008 - 2009 Novell, Inc.
- * Copyright (C) 2009 Red Hat, Inc.
+ * Copyright (C) 2009 - 2010 Red Hat, Inc.
  */
 
 #define _GNU_SOURCE  /* for strcasestr() */
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <termio.h>
+#include <termios.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -51,20 +51,12 @@ enum {
 #define MM_SERIAL_PORT_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), MM_TYPE_SERIAL_PORT, MMSerialPortPrivate))
 
 typedef struct {
+    guint32 open_count;
     int fd;
     GHashTable *reply_cache;
     GIOChannel *channel;
     GQueue *queue;
-    GString *command;
-    GString *response;
-
-    gboolean connected;
-
-    /* Response parser data */
-    MMSerialResponseParserFn response_parser_fn;
-    gpointer response_parser_user_data;
-    GDestroyNotify response_parser_notify;
-    GSList *unsolicited_msg_handlers;
+    GByteArray *response;
 
     struct termios old_t;
 
@@ -148,12 +140,12 @@ void
 mm_serial_port_print_config (MMSerialPort *port, const char *detail)
 {
     MMSerialPortPrivate *priv = MM_SERIAL_PORT_GET_PRIVATE (port);
-    struct termio stbuf;
+    struct termios stbuf;
     int err;
 
-    err = ioctl (priv->fd, TCGETA, &stbuf);
+    err = tcgetattr (priv->fd, &stbuf);
     if (err) {
-        g_warning ("*** %s (%s): (%s) TCGETA error %d",
+        g_warning ("*** %s (%s): (%s) tcgetattr() error %d",
                    __func__, detail, mm_port_get_device (MM_PORT (port)), errno);
         return;
     }
@@ -164,33 +156,6 @@ mm_serial_port_print_config (MMSerialPort *port, const char *detail)
                baud_to_string (stbuf.c_cflag & CBAUD));
 }
 #endif
-
-typedef struct {
-    GRegex *regex;
-    MMSerialUnsolicitedMsgFn callback;
-    gpointer user_data;
-    GDestroyNotify notify;
-} MMUnsolicitedMsgHandler;
-
-static void
-mm_serial_port_set_cached_reply (MMSerialPort *self,
-                                 const char *command,
-                                 const char *reply)
-{
-    if (reply)
-        g_hash_table_insert (MM_SERIAL_PORT_GET_PRIVATE (self)->reply_cache,
-                             g_strdup (command),
-                             g_strdup (reply));
-    else
-        g_hash_table_remove (MM_SERIAL_PORT_GET_PRIVATE (self)->reply_cache, command);
-}
-
-static const char *
-mm_serial_port_get_cached_reply (MMSerialPort *self,
-                                 const char *command)
-{
-    return (char *) g_hash_table_lookup (MM_SERIAL_PORT_GET_PRIVATE (self)->reply_cache, command);
-}
 
 static int
 parse_baudrate (guint i)
@@ -327,10 +292,10 @@ parse_stopbits (guint i)
 }
 
 static gboolean
-config_fd (MMSerialPort *self, GError **error)
+real_config_fd (MMSerialPort *self, int fd, GError **error)
 {
     MMSerialPortPrivate *priv = MM_SERIAL_PORT_GET_PRIVATE (self);
-    struct termio stbuf;
+    struct termios stbuf;
     int speed;
     int bits;
     int parity;
@@ -341,9 +306,9 @@ config_fd (MMSerialPort *self, GError **error)
     parity = parse_parity (priv->parity);
     stopbits = parse_stopbits (priv->stopbits);
 
-    memset (&stbuf, 0, sizeof (struct termio));
-    if (ioctl (priv->fd, TCGETA, &stbuf) != 0) {
-        g_warning ("%s (%s): TCGETA error: %d",
+    memset (&stbuf, 0, sizeof (struct termios));
+    if (tcgetattr (fd, &stbuf) != 0) {
+        g_warning ("%s (%s): tcgetattr() error: %d",
                    __func__,
                    mm_port_get_device (MM_PORT (self)),
                    errno);
@@ -357,10 +322,16 @@ config_fd (MMSerialPort *self, GError **error)
     stbuf.c_cc[VTIME] = 0;
     stbuf.c_cc[VEOF] = 1;
 
-    stbuf.c_cflag &= ~(CBAUD | CSIZE | CSTOPB | CLOCAL | PARENB);
-    stbuf.c_cflag |= (speed | bits | CREAD | 0 | parity | stopbits);
+    /* Use software handshaking */
+    stbuf.c_iflag |= (IXON | IXOFF | IXANY);
 
-    if (ioctl (priv->fd, TCSETA, &stbuf) < 0) {
+    /* Set up port speed and serial attributes; also ignore modem control
+     * lines since most drivers don't implement RTS/CTS anyway.
+     */
+    stbuf.c_cflag &= ~(CBAUD | CSIZE | CSTOPB | PARENB | CRTSCTS);
+    stbuf.c_cflag |= (speed | bits | CREAD | 0 | parity | stopbits | CLOCAL);
+
+    if (tcsetattr (fd, TCSANOW, &stbuf) < 0) {
         g_set_error (error,
                      MM_MODEM_ERROR,
                      MM_MODEM_ERROR_GENERAL,
@@ -373,105 +344,99 @@ config_fd (MMSerialPort *self, GError **error)
 }
 
 static void
-serial_debug (MMSerialPort *self, const char *prefix, const char *buf, int len)
+serial_debug (MMSerialPort *self, const char *prefix, const char *buf, gsize len)
 {
-    static GString *debug = NULL;
-    const char *s;
+    g_return_if_fail (len > 0);
 
-    if (!mm_options_debug ())
-        return;
-
-    if (len < 0)
-        len = strlen (buf);
-
-    if (!debug)
-        debug = g_string_sized_new (256);
-
-    g_string_append (debug, prefix);
-    g_string_append (debug, " '");
-    
-    s = buf;
-    while (len--) {
-        if (g_ascii_isprint (*s))
-            g_string_append_c (debug, *s);
-        else if (*s == '\r')
-            g_string_append (debug, "<CR>");
-        else if (*s == '\n')
-            g_string_append (debug, "<LF>");
-        else
-            g_string_append_printf (debug, "\\%d", *s);
-
-        s++;
-    }
-
-    g_string_append_c (debug, '\'');
-    g_debug ("(%s): %s", mm_port_get_device (MM_PORT (self)), debug->str);
-    g_string_truncate (debug, 0);
+    if (mm_options_debug () && MM_SERIAL_PORT_GET_CLASS (self)->debug_log)
+        MM_SERIAL_PORT_GET_CLASS (self)->debug_log (self, prefix, buf, len);
 }
 
 static gboolean
 mm_serial_port_send_command (MMSerialPort *self,
-                             const char *command,
+                             GByteArray *command,
                              GError **error)
 {
     MMSerialPortPrivate *priv = MM_SERIAL_PORT_GET_PRIVATE (self);
-    const char *s;
-    int status;
+    int status, i = 0;
     int eagain_count = 1000;
+    const guint8 *p;
 
     if (priv->fd < 0) {
-        g_set_error (error, MM_SERIAL_ERROR, MM_SERIAL_SEND_FAILED,
+        g_set_error (error, MM_SERIAL_ERROR, MM_SERIAL_ERROR_SEND_FAILED,
                      "%s", "Sending command failed: device is not enabled");
         return FALSE;
     }
 
     if (mm_port_get_connected (MM_PORT (self))) {
-        g_set_error (error, MM_SERIAL_ERROR, MM_SERIAL_SEND_FAILED,
+        g_set_error (error, MM_SERIAL_ERROR, MM_SERIAL_ERROR_SEND_FAILED,
                      "%s", "Sending command failed: device is connected");
         return FALSE;
     }
 
-    g_string_truncate (priv->command, g_str_has_prefix (command, "AT") ? 0 : 2);
-    g_string_append (priv->command, command);
-
-    if (command[strlen (command)] != '\r')
-        g_string_append_c (priv->command, '\r');
-
-    serial_debug (self, "-->", priv->command->str, -1);
+    serial_debug (self, "-->", (const char *) command->data, command->len);
 
     /* Only accept about 3 seconds of EAGAIN */
     if (priv->send_delay > 0)
         eagain_count = 3000000 / priv->send_delay;
 
-    s = priv->command->str;
-    while (*s) {
-        status = write (priv->fd, s, 1);
+    while (i < command->len) {
+        p = &command->data[i];
+        status = write (priv->fd, p, 1);
         if (status < 0) {
             if (errno == EAGAIN) {
                 eagain_count--;
                 if (eagain_count <= 0) {
-                    g_set_error (error, MM_SERIAL_ERROR, MM_SERIAL_SEND_FAILED,
+                    g_set_error (error, MM_SERIAL_ERROR, MM_SERIAL_ERROR_SEND_FAILED,
                                  "Sending command failed: '%s'", strerror (errno));
                     break;
                 }
             } else {
-                g_set_error (error, MM_SERIAL_ERROR, MM_SERIAL_SEND_FAILED,
+                g_set_error (error, MM_SERIAL_ERROR, MM_SERIAL_ERROR_SEND_FAILED,
                              "Sending command failed: '%s'", strerror (errno));
                 break;
             }
         } else
-            s++;
+            i++;
 
         if (priv->send_delay)
             usleep (priv->send_delay);
     }
 
-    return *s == '\0';
+    return i == command->len;
+}
+
+static void
+mm_serial_port_set_cached_reply (MMSerialPort *self,
+                                 const GByteArray *command,
+                                 const GByteArray *response)
+{
+    MMSerialPortPrivate *priv = MM_SERIAL_PORT_GET_PRIVATE (self);
+
+    g_return_if_fail (self != NULL);
+    g_return_if_fail (MM_IS_SERIAL_PORT (self));
+    g_return_if_fail (command != NULL);
+
+    if (response) {
+        GByteArray *cmd_copy = g_byte_array_sized_new (command->len);
+        GByteArray *rsp_copy = g_byte_array_sized_new (response->len);
+
+        g_byte_array_append (cmd_copy, command->data, command->len);
+        g_byte_array_append (rsp_copy, response->data, response->len);
+        g_hash_table_insert (priv->reply_cache, cmd_copy, rsp_copy);
+    } else
+        g_hash_table_remove (MM_SERIAL_PORT_GET_PRIVATE (self)->reply_cache, command);
+}
+
+static const GByteArray *
+mm_serial_port_get_cached_reply (MMSerialPort *self, GByteArray *command)
+{
+    return (const GByteArray *) g_hash_table_lookup (MM_SERIAL_PORT_GET_PRIVATE (self)->reply_cache, command);
 }
 
 typedef struct {
-    char *command;
-    MMSerialResponseFn callback;
+    GByteArray *command;
+    GCallback callback;
     gpointer user_data;
     guint32 timeout;
     gboolean cached;
@@ -500,11 +465,25 @@ mm_serial_port_schedule_queue_process (MMSerialPort *self)
     g_source_unref (source);
 }
 
+static gsize
+real_handle_response (MMSerialPort *self,
+                      GByteArray *response,
+                      GError *error,
+                      GCallback callback,
+                      gpointer callback_data)
+{
+    MMSerialResponseFn response_callback = (MMSerialResponseFn) callback;
+
+    response_callback (self, response, error, callback_data);
+    return response->len;
+}
+
 static void
 mm_serial_port_got_response (MMSerialPort *self, GError *error)
 {
     MMSerialPortPrivate *priv = MM_SERIAL_PORT_GET_PRIVATE (self);
     MMQueueData *info;
+    gsize consumed = priv->response->len;
 
     if (priv->timeout_id) {
         g_source_remove (priv->timeout_id);
@@ -514,19 +493,26 @@ mm_serial_port_got_response (MMSerialPort *self, GError *error)
     info = (MMQueueData *) g_queue_pop_head (priv->queue);
     if (info) {
         if (info->cached && !error)
-            mm_serial_port_set_cached_reply (self, info->command, priv->response->str);
+            mm_serial_port_set_cached_reply (self, info->command, priv->response);
 
-        if (info->callback)
-            info->callback (self, priv->response, error, info->user_data);
+        if (info->callback) {
+            g_warn_if_fail (MM_SERIAL_PORT_GET_CLASS (self)->handle_response != NULL);
+            consumed = MM_SERIAL_PORT_GET_CLASS (self)->handle_response (self,
+                                                                         priv->response,
+                                                                         error,
+                                                                         info->callback,
+                                                                         info->user_data);
+        }
 
-        g_free (info->command);
+        g_byte_array_free (info->command, TRUE);
         g_slice_free (MMQueueData, info);
     }
 
     if (error)
         g_error_free (error);
 
-    g_string_truncate (priv->response, 0);
+    if (consumed)
+        g_byte_array_remove_range (priv->response, 0, consumed);
     if (!g_queue_is_empty (priv->queue))
         mm_serial_port_schedule_queue_process (self);
 }
@@ -541,7 +527,7 @@ mm_serial_port_timed_out (gpointer data)
     priv->timeout_id = 0;
 
     error = g_error_new_literal (MM_SERIAL_ERROR,
-                                 MM_SERIAL_RESPONSE_TIMEOUT,
+                                 MM_SERIAL_ERROR_RESPONSE_TIMEOUT,
                                  "Serial command timed out");
     /* FIXME: This is not completely correct - if the response finally arrives and there's
        some other command waiting for response right now, the other command will
@@ -566,10 +552,10 @@ mm_serial_port_queue_process (gpointer data)
         return FALSE;
 
     if (info->cached) {
-        const char *cached = mm_serial_port_get_cached_reply (self, info->command);
+        const GByteArray *cached = mm_serial_port_get_cached_reply (self, info->command);
 
         if (cached) {
-            g_string_append (priv->response, cached);
+            g_byte_array_append (priv->response, cached->data, cached->len);
             mm_serial_port_got_response (self, NULL);
             return FALSE;
         }
@@ -590,111 +576,16 @@ mm_serial_port_queue_process (gpointer data)
     return FALSE;
 }
 
-void
-mm_serial_port_add_unsolicited_msg_handler (MMSerialPort *self,
-                                            GRegex *regex,
-                                            MMSerialUnsolicitedMsgFn callback,
-                                            gpointer user_data,
-                                            GDestroyNotify notify)
-{
-    MMUnsolicitedMsgHandler *handler;
-    MMSerialPortPrivate *priv;
-
-    g_return_if_fail (MM_IS_SERIAL_PORT (self));
-    g_return_if_fail (regex != NULL);
-
-    handler = g_slice_new (MMUnsolicitedMsgHandler);
-    handler->regex = g_regex_ref (regex);
-    handler->callback = callback;
-    handler->user_data = user_data;
-    handler->notify = notify;
-
-    priv = MM_SERIAL_PORT_GET_PRIVATE (self);
-    priv->unsolicited_msg_handlers = g_slist_append (priv->unsolicited_msg_handlers, handler);
-}
-
-void
-mm_serial_port_set_response_parser (MMSerialPort *self,
-                                    MMSerialResponseParserFn fn,
-                                    gpointer user_data,
-                                    GDestroyNotify notify)
-{
-    MMSerialPortPrivate *priv = MM_SERIAL_PORT_GET_PRIVATE (self);
-
-    g_return_if_fail (MM_IS_SERIAL_PORT (self));
-
-    if (priv->response_parser_notify)
-        priv->response_parser_notify (priv->response_parser_user_data);
-
-    priv->response_parser_fn = fn;
-    priv->response_parser_user_data = user_data;
-    priv->response_parser_notify = notify;
-}
-
-static gboolean
-remove_eval_cb (const GMatchInfo *match_info,
-                GString *result,
-                gpointer user_data)
-{
-    int *result_len = (int *) user_data;
-    int start;
-    int end;
-
-    if (g_match_info_fetch_pos  (match_info, 0, &start, &end))
-        *result_len -= (end - start);
-
-    return FALSE;
-}
-
-static void
-parse_unsolicited_messages (MMSerialPort *self,
-                            GString *response)
-{
-    MMSerialPortPrivate *priv = MM_SERIAL_PORT_GET_PRIVATE (self);
-    GSList *iter;
-
-    for (iter = priv->unsolicited_msg_handlers; iter; iter = iter->next) {
-        MMUnsolicitedMsgHandler *handler = (MMUnsolicitedMsgHandler *) iter->data;
-        GMatchInfo *match_info;
-        gboolean matches;
-
-        matches = g_regex_match_full (handler->regex, response->str, response->len, 0, 0, &match_info, NULL);
-        if (handler->callback) {
-            while (g_match_info_matches (match_info)) {
-                handler->callback (self, match_info, handler->user_data);
-                g_match_info_next (match_info, NULL);
-            }
-        }
-
-        g_match_info_free (match_info);
-
-        if (matches) {
-            /* Remove matches */
-            char *str;
-            int result_len = response->len;
-
-            str = g_regex_replace_eval (handler->regex, response->str, response->len, 0, 0,
-                                        remove_eval_cb, &result_len, NULL);
-
-            g_string_truncate (response, 0);
-            g_string_append_len (response, str, result_len);
-            g_free (str);
-        }
-    }
-}
-
 static gboolean
 parse_response (MMSerialPort *self,
-                GString *response,
+                GByteArray *response,
                 GError **error)
 {
-    MMSerialPortPrivate *priv = MM_SERIAL_PORT_GET_PRIVATE (self);
+    if (MM_SERIAL_PORT_GET_CLASS (self)->parse_unsolicited)
+        MM_SERIAL_PORT_GET_CLASS (self)->parse_unsolicited (self, response);
 
-    g_return_val_if_fail (priv->response_parser_fn != NULL, FALSE);
-
-    parse_unsolicited_messages (self, response);
-
-    return priv->response_parser_fn (priv->response_parser_user_data, response, error);
+    g_return_val_if_fail (MM_SERIAL_PORT_GET_CLASS (self)->parse_response, FALSE);
+    return MM_SERIAL_PORT_GET_CLASS (self)->parse_response (self, response, error);
 }
 
 static gboolean
@@ -709,13 +600,15 @@ data_available (GIOChannel *source,
     GIOStatus status;
 
     if (condition & G_IO_HUP) {
-        g_string_truncate (priv->response, 0);
-        mm_serial_port_close (self);
+        if (priv->response->len)
+            g_byte_array_remove_range (priv->response, 0, priv->response->len);
+        mm_serial_port_close_force (self);
         return FALSE;
     }
 
     if (condition & G_IO_ERR) {
-        g_string_truncate (priv->response, 0);
+        if (priv->response->len)
+            g_byte_array_remove_range (priv->response, 0, priv->response->len);
         return TRUE;
     }
 
@@ -724,9 +617,13 @@ data_available (GIOChannel *source,
 
         status = g_io_channel_read_chars (source, buf, SERIAL_BUF_SIZE, &bytes_read, &err);
         if (status == G_IO_STATUS_ERROR) {
-            g_warning ("%s", err->message);
-            g_error_free (err);
-            err = NULL;
+            if (err && err->message)
+                g_warning ("%s", err->message);
+            g_clear_error (&err);
+
+            /* Serial port is closed; we're done */
+            if (priv->watch_id == 0)
+                break;
         }
 
         /* If no bytes read, just let g_io_channel wait for more data */
@@ -735,14 +632,14 @@ data_available (GIOChannel *source,
 
         if (bytes_read > 0) {
             serial_debug (self, "<--", buf, bytes_read);
-            g_string_append_len (priv->response, buf, bytes_read);
+            g_byte_array_append (priv->response, (const guint8 *) buf, bytes_read);
         }
 
-        /* Make sure the string doesn't grow too long */
-		if (priv->response->len > SERIAL_BUF_SIZE) {
-			g_warning ("%s (%s): response buffer filled before repsonse received",
-			           G_STRFUNC, mm_port_get_device (MM_PORT (self)));
-			g_string_erase (priv->response, 0, (SERIAL_BUF_SIZE / 2));
+        /* Make sure the response doesn't grow too long */
+        if (priv->response->len > SERIAL_BUF_SIZE) {
+            /* Notify listeners and then trim the buffer */
+            g_signal_emit_by_name (self, "buffer-full", priv->response);
+            g_byte_array_remove_range (priv->response, 0, (SERIAL_BUF_SIZE / 2));
         }
 
         if (parse_response (self, priv->response, &err))
@@ -792,12 +689,12 @@ mm_serial_port_open (MMSerialPort *self, GError **error)
 
     priv = MM_SERIAL_PORT_GET_PRIVATE (self);
 
-    if (priv->fd >= 0) {
-        /* Already open */
-        return TRUE;
-    }
-
     device = mm_port_get_device (MM_PORT (self));
+
+    if (priv->open_count) {
+        /* Already open */
+        goto success;
+    }
 
     g_message ("(%s) opening serial device...", device);
     devfile = g_strdup_printf ("/dev/%s", device);
@@ -812,32 +709,29 @@ mm_serial_port_open (MMSerialPort *self, GError **error)
          */
         g_set_error (error,
                      MM_SERIAL_ERROR,
-                     (errno == ENODEV) ? MM_SERIAL_OPEN_FAILED_NO_DEVICE : MM_SERIAL_OPEN_FAILED,
+                     (errno == ENODEV) ? MM_SERIAL_ERROR_OPEN_FAILED_NO_DEVICE : MM_SERIAL_ERROR_OPEN_FAILED,
                      "Could not open serial device %s: %s", device, strerror (errno));
         return FALSE;
     }
 
     if (ioctl (priv->fd, TIOCEXCL) < 0) {
-        g_set_error (error, MM_SERIAL_ERROR, MM_SERIAL_OPEN_FAILED,
+        g_set_error (error, MM_SERIAL_ERROR, MM_SERIAL_ERROR_OPEN_FAILED,
                      "Could not lock serial device %s: %s", device, strerror (errno));
-        close (priv->fd);
-        priv->fd = -1;
-        return FALSE;
+        goto error;
     }
 
-    if (ioctl (priv->fd, TCGETA, &priv->old_t) < 0) {
-        g_set_error (error, MM_SERIAL_ERROR, MM_SERIAL_OPEN_FAILED,
+    /* Flush any waiting IO */
+    tcflush (priv->fd, TCIOFLUSH);
+
+    if (tcgetattr (priv->fd, &priv->old_t) < 0) {
+        g_set_error (error, MM_SERIAL_ERROR, MM_SERIAL_ERROR_OPEN_FAILED,
                      "Could not open serial device %s: %s", device, strerror (errno));
-        close (priv->fd);
-        priv->fd = -1;
-        return FALSE;
+        goto error;
     }
 
-    if (!config_fd (self, error)) {
-        close (priv->fd);
-        priv->fd = -1;
-        return FALSE;
-    }
+    g_warn_if_fail (MM_SERIAL_PORT_GET_CLASS (self)->config_fd);
+    if (!MM_SERIAL_PORT_GET_CLASS (self)->config_fd (self, priv->fd, error))
+        goto error;
 
     priv->channel = g_io_channel_unix_new (priv->fd);
     g_io_channel_set_encoding (priv->channel, NULL, NULL);
@@ -849,17 +743,58 @@ mm_serial_port_open (MMSerialPort *self, GError **error)
     priv->connected_id = g_signal_connect (self, "notify::" MM_PORT_CONNECTED,
                                            G_CALLBACK (port_connected), NULL);
 
+success:
+    priv->open_count++;
+    if (mm_options_debug ()) {
+        GTimeVal tv;
+
+        g_get_current_time (&tv);
+        g_debug ("<%ld.%ld> (%s) device open count is %d (open)",
+                 tv.tv_sec, tv.tv_usec, device, priv->open_count);
+    }
     return TRUE;
+
+error:
+    close (priv->fd);
+    priv->fd = -1;
+    return FALSE;
+}
+
+gboolean
+mm_serial_port_is_open (MMSerialPort *self)
+{
+    g_return_val_if_fail (self != NULL, FALSE);
+    g_return_val_if_fail (MM_IS_SERIAL_PORT (self), FALSE);
+
+    return !!MM_SERIAL_PORT_GET_PRIVATE (self)->open_count;
 }
 
 void
 mm_serial_port_close (MMSerialPort *self)
 {
     MMSerialPortPrivate *priv;
+    const char *device;
+    int i;
 
     g_return_if_fail (MM_IS_SERIAL_PORT (self));
 
     priv = MM_SERIAL_PORT_GET_PRIVATE (self);
+    g_return_if_fail (priv->open_count > 0);
+
+    device = mm_port_get_device (MM_PORT (self));
+
+    priv->open_count--;
+
+    if (mm_options_debug ()) {
+        GTimeVal tv;
+
+        g_get_current_time (&tv);
+        g_debug ("<%ld.%ld> (%s) device open count is %d (close)",
+                 tv.tv_sec, tv.tv_usec, device, priv->open_count);
+    }
+
+    if (priv->open_count > 0)
+        return;
 
     if (priv->connected_id) {
         g_signal_handler_disconnect (self, priv->connected_id);
@@ -867,31 +802,74 @@ mm_serial_port_close (MMSerialPort *self)
     }
 
     if (priv->fd >= 0) {
-        g_message ("(%s) closing serial device...", mm_port_get_device (MM_PORT (self)));
+        g_message ("(%s) closing serial device...", device);
 
         mm_port_set_connected (MM_PORT (self), FALSE);
 
         if (priv->channel) {
             g_source_remove (priv->watch_id);
+            priv->watch_id = 0;
             g_io_channel_shutdown (priv->channel, TRUE, NULL);
             g_io_channel_unref (priv->channel);
             priv->channel = NULL;
         }
 
-        if (priv->flash_id > 0) {
-            g_source_remove (priv->flash_id);
-            priv->flash_id = 0;
-        }
+        mm_serial_port_flash_cancel (self);
 
-        ioctl (priv->fd, TCSETA, &priv->old_t);
+        tcsetattr (priv->fd, TCSANOW, &priv->old_t);
         close (priv->fd);
         priv->fd = -1;
     }
+
+    /* Clear the command queue */
+    for (i = 0; i < g_queue_get_length (priv->queue); i++) {
+        MMQueueData *item = g_queue_peek_nth (priv->queue, i);
+
+        if (item->callback) {
+            GError *error;
+            GByteArray *response;
+
+            g_warn_if_fail (MM_SERIAL_PORT_GET_CLASS (self)->handle_response != NULL);
+            error = g_error_new_literal (MM_SERIAL_ERROR,
+                                         MM_SERIAL_ERROR_SEND_FAILED,
+                                         "Serial port is now closed");
+            response = g_byte_array_sized_new (1);
+            g_byte_array_append (response, (const guint8 *) "\0", 1);
+            MM_SERIAL_PORT_GET_CLASS (self)->handle_response (self,
+                                                              response,
+                                                              error,
+                                                              item->callback,
+                                                              item->user_data);
+            g_error_free (error);
+            g_byte_array_free (response, TRUE);
+        }
+
+        g_byte_array_free (item->command, TRUE);
+        g_slice_free (MMQueueData, item);
+    }
+    g_queue_clear (priv->queue);
+}
+
+void
+mm_serial_port_close_force (MMSerialPort *self)
+{
+    MMSerialPortPrivate *priv;
+
+    g_return_if_fail (self != NULL);
+    g_return_if_fail (MM_IS_SERIAL_PORT (self));
+
+    priv = MM_SERIAL_PORT_GET_PRIVATE (self);
+    g_return_if_fail (priv->open_count > 0);
+
+    /* Force the port to close */
+    priv->open_count = 1;
+    mm_serial_port_close (self);
 }
 
 static void
 internal_queue_command (MMSerialPort *self,
-                        const char *command,
+                        GByteArray *command,
+                        gboolean take_command,
                         gboolean cached,
                         guint32 timeout_seconds,
                         MMSerialResponseFn callback,
@@ -904,15 +882,20 @@ internal_queue_command (MMSerialPort *self,
     g_return_if_fail (command != NULL);
 
     info = g_slice_new0 (MMQueueData);
-    info->command = g_strdup (command);
+    if (take_command)
+        info->command = command;
+    else {
+        info->command = g_byte_array_sized_new (command->len);
+        g_byte_array_append (info->command, command->data, command->len);
+    }
     info->cached = cached;
     info->timeout = timeout_seconds;
-    info->callback = callback;
+    info->callback = (GCallback) callback;
     info->user_data = user_data;
 
     /* Clear the cached value for this command if not asking for cached value */
     if (!cached)
-        mm_serial_port_set_cached_reply (self, command, NULL);
+        mm_serial_port_set_cached_reply (self, info->command, NULL);
 
     g_queue_push_tail (priv->queue, info);
 
@@ -922,22 +905,24 @@ internal_queue_command (MMSerialPort *self,
 
 void
 mm_serial_port_queue_command (MMSerialPort *self,
-                              const char *command,
+                              GByteArray *command,
+                              gboolean take_command,
                               guint32 timeout_seconds,
                               MMSerialResponseFn callback,
                               gpointer user_data)
 {
-    internal_queue_command (self, command, FALSE, timeout_seconds, callback, user_data);
+    internal_queue_command (self, command, take_command, FALSE, timeout_seconds, callback, user_data);
 }
 
 void
 mm_serial_port_queue_command_cached (MMSerialPort *self,
-                                     const char *command,
+                                     GByteArray *command,
+                                     gboolean take_command,
                                      guint32 timeout_seconds,
                                      MMSerialResponseFn callback,
                                      gpointer user_data)
 {
-    internal_queue_command (self, command, TRUE, timeout_seconds, callback, user_data);
+    internal_queue_command (self, command, take_command, TRUE, timeout_seconds, callback, user_data);
 }
 
 typedef struct {
@@ -1030,8 +1015,14 @@ flash_do (gpointer data)
 
     priv->flash_id = 0;
 
-    if (!set_speed (info->port, info->current_speed, &error))
-        g_assert (error);
+    if (info->current_speed) {
+        if (!set_speed (info->port, info->current_speed, &error))
+            g_assert (error);
+    } else {
+        error = g_error_new_literal (MM_SERIAL_ERROR,
+                                     MM_SERIAL_ERROR_FLASH_FAILED,
+                                     "Failed to retrieve current speed");
+    }
 
     info->callback (info->port, error, info->user_data);
     g_clear_error (&error);
@@ -1042,6 +1033,7 @@ flash_do (gpointer data)
 gboolean
 mm_serial_port_flash (MMSerialPort *self,
                       guint32 flash_time,
+                      gboolean ignore_errors,
                       MMSerialFlashFn callback,
                       gpointer user_data)
 {
@@ -1049,11 +1041,21 @@ mm_serial_port_flash (MMSerialPort *self,
     MMSerialPortPrivate *priv;
     speed_t cur_speed = 0;
     GError *error = NULL;
+    gboolean success;
 
     g_return_val_if_fail (MM_IS_SERIAL_PORT (self), FALSE);
     g_return_val_if_fail (callback != NULL, FALSE);
 
     priv = MM_SERIAL_PORT_GET_PRIVATE (self);
+
+    if (!mm_serial_port_is_open (self)) {
+        error = g_error_new_literal (MM_SERIAL_ERROR,
+                                     MM_SERIAL_ERROR_NOT_OPEN,
+                                     "The serial port is not open.");
+        callback (self, error, user_data);
+        g_error_free (error);
+        return FALSE;
+    }
 
     if (priv->flash_id > 0) {
         error = g_error_new_literal (MM_MODEM_ERROR,
@@ -1064,11 +1066,13 @@ mm_serial_port_flash (MMSerialPort *self,
         return FALSE;
     }
 
-    if (!get_speed (self, &cur_speed, &error)) {
+    success = get_speed (self, &cur_speed, &error);
+    if (!success && !ignore_errors) {
         callback (self, error, user_data);
         g_error_free (error);
         return FALSE;
     }
+    g_clear_error (&error);
 
     info = g_slice_new0 (FlashInfo);
     info->port = self;
@@ -1076,7 +1080,8 @@ mm_serial_port_flash (MMSerialPort *self,
     info->callback = callback;
     info->user_data = user_data;
 
-    if (!set_speed (self, B0, &error)) {
+    success = set_speed (self, B0, &error);
+    if (!success && !ignore_errors) {
         callback (self, error, user_data);
         g_error_free (error);
         return FALSE;
@@ -1113,12 +1118,54 @@ mm_serial_port_new (const char *name, MMPortType ptype)
                                          NULL));
 }
 
+static gboolean
+ba_equal (gconstpointer v1, gconstpointer v2)
+{
+    const GByteArray *a = v1;
+    const GByteArray *b = v2;
+
+    if (!a && b)
+        return -1;
+    else if (a && !b)
+        return 1;
+    else if (!a && !b)
+        return 0;
+
+    g_assert (a && b);
+    if (a->len < b->len)
+        return -1;
+    else if (a->len > b->len)
+        return 1;
+
+    g_assert (a->len == b->len);
+    return !memcmp (a->data, b->data, a->len);
+}
+
+static guint
+ba_hash (gconstpointer v)
+{
+    /* 31 bit hash function */
+    const GByteArray *array = v;
+    guint32 i, h = (const signed char) array->data[0];
+
+    for (i = 1; i < array->len; i++)
+        h = (h << 5) - h + (const signed char) array->data[i];
+
+    return h;
+}
+
+static void
+ba_free (gpointer v)
+{
+    g_byte_array_free ((GByteArray *) v, TRUE);
+}
+
 static void
 mm_serial_port_init (MMSerialPort *self)
 {
     MMSerialPortPrivate *priv = MM_SERIAL_PORT_GET_PRIVATE (self);
 
-    priv->reply_cache = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+    priv->reply_cache = g_hash_table_new_full (ba_hash, ba_equal, ba_free, ba_free);
 
     priv->fd = -1;
     priv->baud = 57600;
@@ -1128,8 +1175,7 @@ mm_serial_port_init (MMSerialPort *self)
     priv->send_delay = 1000;
 
     priv->queue = g_queue_new ();
-    priv->command  = g_string_new_len   ("AT", SERIAL_BUF_SIZE);
-    priv->response = g_string_sized_new (SERIAL_BUF_SIZE);
+    priv->response = g_byte_array_sized_new (500);
 }
 
 static void
@@ -1191,7 +1237,10 @@ get_property (GObject *object, guint prop_id,
 static void
 dispose (GObject *object)
 {
-    mm_serial_port_close (MM_SERIAL_PORT (object));
+    if (mm_serial_port_is_open (MM_SERIAL_PORT (object)))
+        mm_serial_port_close_force (MM_SERIAL_PORT (object));
+
+    mm_serial_port_flash_cancel (MM_SERIAL_PORT (object));
 
     G_OBJECT_CLASS (mm_serial_port_parent_class)->dispose (object);
 }
@@ -1203,24 +1252,8 @@ finalize (GObject *object)
     MMSerialPortPrivate *priv = MM_SERIAL_PORT_GET_PRIVATE (self);
 
     g_hash_table_destroy (priv->reply_cache);
+    g_byte_array_free (priv->response, TRUE);
     g_queue_free (priv->queue);
-    g_string_free (priv->command, TRUE);
-    g_string_free (priv->response, TRUE);
-
-    while (priv->unsolicited_msg_handlers) {
-        MMUnsolicitedMsgHandler *handler = (MMUnsolicitedMsgHandler *) priv->unsolicited_msg_handlers->data;
-
-        if (handler->notify)
-            handler->notify (handler->user_data);
-
-        g_regex_unref (handler->regex);
-        g_slice_free (MMUnsolicitedMsgHandler, handler);
-        priv->unsolicited_msg_handlers = g_slist_delete_link (priv->unsolicited_msg_handlers,
-                                                              priv->unsolicited_msg_handlers);
-    }
-
-    if (priv->response_parser_notify)
-        priv->response_parser_notify (priv->response_parser_user_data);
 
     G_OBJECT_CLASS (mm_serial_port_parent_class)->finalize (object);
 }
@@ -1237,6 +1270,9 @@ mm_serial_port_class_init (MMSerialPortClass *klass)
     object_class->get_property = get_property;
     object_class->dispose = dispose;
     object_class->finalize = finalize;
+
+    klass->config_fd = real_config_fd;
+    klass->handle_response = real_handle_response;
 
     /* Properties */
     g_object_class_install_property
@@ -1278,4 +1314,14 @@ mm_serial_port_class_init (MMSerialPortClass *klass)
                               "Send delay",
                               0, G_MAXUINT64, 0,
                               G_PARAM_READWRITE));
+
+    /* Signals */
+    g_signal_new ("buffer-full",
+                  G_OBJECT_CLASS_TYPE (object_class),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (MMSerialPortClass, buffer_full),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__POINTER,
+                  G_TYPE_NONE, 1, G_TYPE_POINTER);
 }
+

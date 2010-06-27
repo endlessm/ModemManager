@@ -42,8 +42,10 @@ mm_plugin_create (void)
 static guint32
 get_level_for_capabilities (guint32 capabilities)
 {
-    /* Only CDMA for now */
+    /* Only CDMA and QCDM for now */
     if (capabilities & CAP_CDMA)
+        return 10;
+    if (capabilities & MM_PLUGIN_BASE_PORT_CAP_QCDM)
         return 10;
 
     return 0;
@@ -104,7 +106,7 @@ grab_port (MMPluginBase *base,
            MMPluginBaseSupportsTask *task,
            GError **error)
 {
-    GUdevDevice *port = NULL, *physdev = NULL;
+    GUdevDevice *port = NULL;
     MMModem *modem = NULL;
     const char *name, *subsys, *devfile, *sysfs_path;
     guint32 caps;
@@ -118,14 +120,6 @@ grab_port (MMPluginBase *base,
         return NULL;
     }
 
-    physdev = mm_plugin_base_supports_task_get_physdev (task);
-    g_assert (physdev);
-    sysfs_path = g_udev_device_get_sysfs_path (physdev);
-    if (!sysfs_path) {
-        g_set_error (error, 0, 0, "Could not get port's physical device sysfs path.");
-        return NULL;
-    }
-
     subsys = g_udev_device_get_subsystem (port);
     name = g_udev_device_get_name (port);
 
@@ -135,6 +129,7 @@ grab_port (MMPluginBase *base,
         return NULL;
     }
 
+    sysfs_path = mm_plugin_base_supports_task_get_physdev_path (task);
     if (!existing) {
         if (caps & CAP_CDMA) {
             modem = mm_modem_anydata_cdma_new (sysfs_path,
@@ -150,12 +145,15 @@ grab_port (MMPluginBase *base,
                 return NULL;
             }
         }
-    } else {
-        if (caps & CAP_CDMA) {
-            modem = existing;
-            if (!mm_modem_grab_port (modem, subsys, name, MM_PORT_TYPE_UNKNOWN, NULL, error))
-                return NULL;
-        }
+    } else if (get_level_for_capabilities (caps)) {
+        MMPortType ptype = MM_PORT_TYPE_UNKNOWN;
+
+        if (caps & MM_PLUGIN_BASE_PORT_CAP_QCDM)
+            ptype = MM_PORT_TYPE_QCDM;
+
+        modem = existing;
+        if (!mm_modem_grab_port (modem, subsys, name, ptype, NULL, error))
+            return NULL;
     }
 
     return modem;

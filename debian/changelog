@@ -1,3 +1,26 @@
+modemmanager (0.4+git.20100624t180933.6e79d15-1) unstable; urgency=low
+
+  [ Michael Biebl ]
+  * New upstream release. (Closes: #585957)
+  * Drop debian/patches/01-termios.patch, merged upstream.
+  * debian/rules
+    - Drop aclocal workaround, no longer required.
+    - Add intltoolize call to pre-build.
+
+  [ Mathieu Trudel-Lapierre ]
+  * upstream snapshot 2010-06-24 18:09:33 (GMT)
+    + 6e79d153efc30fb2030536f7f795c19ad4a0661a
+  * Add myself to Uploaders.
+    - update debian/control
+
+  [ Michael Biebl ]
+  * Use watch file to track new upstream releases.
+    - Add debian/watch.
+  * Add Build-Depends on intltool.
+    - Update debian/control.
+
+ -- Michael Biebl <biebl@debian.org>  Sun, 27 Jun 2010 02:46:38 +0200
+
 modemmanager (0.3-2) unstable; urgency=low
 
   [ Alexander Sack ]

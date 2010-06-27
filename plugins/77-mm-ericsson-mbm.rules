@@ -20,8 +20,14 @@ ATTRS{idVendor}=="0bdb", ATTRS{idProduct}=="1909", ENV{ID_MM_ERICSSON_MBM}="1"
 # Ericsson C3607w
 ATTRS{idVendor}=="0bdb", ATTRS{idProduct}=="1049", ENV{ID_MM_ERICSSON_MBM}="1"
 
+# Ericsson C3607w v2
+ATTRS{idVendor}=="0bdb", ATTRS{idProduct}=="190b", ENV{ID_MM_ERICSSON_MBM}="1"
+
 # Sony-Ericsson MD300
 ATTRS{idVendor}=="0fce", ATTRS{idProduct}=="d0cf", ENV{ID_MM_ERICSSON_MBM}="1"
+
+# Sony-Ericsson MD400
+ATTRS{idVendor}=="0fce", ATTRS{idProduct}=="d0e1", ENV{ID_MM_ERICSSON_MBM}="1"
 
 # Dell 5530 HSDPA
 ATTRS{idVendor}=="413c", ATTRS{idProduct}=="8147", ENV{ID_MM_ERICSSON_MBM}="1"
@@ -29,6 +35,10 @@ ATTRS{idVendor}=="413c", ATTRS{idProduct}=="8147", ENV{ID_MM_ERICSSON_MBM}="1"
 # Dell F3607gw
 ATTRS{idVendor}=="413c", ATTRS{idProduct}=="8183", ENV{ID_MM_ERICSSON_MBM}="1"
 ATTRS{idVendor}=="413c", ATTRS{idProduct}=="8184", ENV{ID_MM_ERICSSON_MBM}="1"
+
+# Dell F3307
+ATTRS{idVendor}=="413c", ATTRS{idProduct}=="818b", ENV{ID_MM_ERICSSON_MBM}="1"
+ATTRS{idVendor}=="413c", ATTRS{idProduct}=="818c", ENV{ID_MM_ERICSSON_MBM}="1"
 
 # Toshiba
 ATTRS{idVendor}=="0930", ATTRS{idProduct}=="130b", ENV{ID_MM_ERICSSON_MBM}="1"
