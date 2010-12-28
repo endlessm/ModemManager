@@ -1,0 +1,30 @@
+From 56665c19af431234ebe1b22cff9f0f9b9fb3d02f Mon Sep 17 00:00:00 2001
+From: Dan Williams <dcbw@redhat.com>
+Date: Fri, 09 Jul 2010 19:35:36 +0000
+Subject: nokia: N900 appears to need a longer port delay (rh #583691)
+
+---
+diff --git a/plugins/mm-modem-nokia.c b/plugins/mm-modem-nokia.c
+index eb90287..3cbea00 100644
+--- a/plugins/mm-modem-nokia.c
++++ b/plugins/mm-modem-nokia.c
+@@ -54,6 +54,7 @@ grab_port (MMModem *modem,
+     MMGenericGsm *gsm = MM_GENERIC_GSM (modem);
+     MMPortType ptype = MM_PORT_TYPE_IGNORED;
+     MMPort *port = NULL;
++    gulong send_delay = 5000;
+ 
+     if (suggested_type == MM_PORT_TYPE_UNKNOWN) {
+         if (!mm_generic_gsm_get_at_port (gsm, MM_PORT_TYPE_PRIMARY))
+@@ -71,6 +72,9 @@ grab_port (MMModem *modem,
+                                                mm_serial_parser_v1_e1_destroy);
+     }
+ 
++    /* N900 appears to need longer delay between port bytes */
++    g_object_set (G_OBJECT (port), MM_SERIAL_PORT_SEND_DELAY, send_delay, NULL);
++
+     return !!port;
+ }
+ 
+--
+cgit v0.8.3-6-g21f6
