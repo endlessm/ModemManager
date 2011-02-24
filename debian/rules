@@ -15,7 +15,6 @@ endif
 
 include /usr/share/cdbs/1/class/autotools.mk
 include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/rules/patchsys-quilt.mk
 
 DEB_MAJOR_VERSION := $(shell echo $(DEB_UPSTREAM_VERSION) | sed -e 's/git.*//')
 

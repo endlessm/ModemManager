@@ -11,7 +11,7 @@
  * GNU General Public License for more details:
  *
  * Copyright (C) 2008 - 2009 Novell, Inc.
- * Copyright (C) 2009 Red Hat, Inc.
+ * Copyright (C) 2009 - 2010 Red Hat, Inc.
  */
 
 #ifndef MM_MODEM_H
@@ -40,7 +40,9 @@ typedef enum {
 } MMModemState;
 
 typedef enum {
-    MM_MODEM_STATE_REASON_NONE = 0
+    MM_MODEM_STATE_REASON_NONE = 0,
+    MM_MODEM_STATE_REASON_USER_REQUESTED,
+    MM_MODEM_STATE_REASON_SUSPEND
 } MMModemStateReason;
 
 #define DBUS_PATH_TAG "dbus-path"
@@ -59,11 +61,14 @@ typedef enum {
 #define MM_MODEM_IP_METHOD     "ip-method"
 #define MM_MODEM_ENABLED       "enabled"
 #define MM_MODEM_EQUIPMENT_IDENTIFIER "equipment-identifier"
+#define MM_MODEM_DEVICE_IDENTIFIER "device-identifier"
 #define MM_MODEM_UNLOCK_REQUIRED  "unlock-required"
 #define MM_MODEM_UNLOCK_RETRIES   "unlock-retries"
 #define MM_MODEM_VALID         "valid"      /* not exported */
 #define MM_MODEM_PLUGIN        "plugin"     /* not exported */
 #define MM_MODEM_STATE         "state"      /* not exported */
+#define MM_MODEM_HW_VID        "hw-vid"     /* not exported */
+#define MM_MODEM_HW_PID        "hw-pid"     /* not exported */
 
 #define MM_MODEM_TYPE_UNKNOWN  0
 #define MM_MODEM_TYPE_GSM      1
@@ -87,7 +92,10 @@ typedef enum {
     MM_MODEM_PROP_ENABLED,
     MM_MODEM_PROP_EQUIPMENT_IDENTIFIER,
     MM_MODEM_PROP_UNLOCK_REQUIRED,
-    MM_MODEM_PROP_UNLOCK_RETRIES
+    MM_MODEM_PROP_UNLOCK_RETRIES,
+    MM_MODEM_PROP_DEVICE_IDENTIFIER,
+    MM_MODEM_PROP_HW_VID,       /* Not exported */
+    MM_MODEM_PROP_HW_PID        /* Not exported */
 } MMModemProp;
 
 typedef struct _MMModem MMModem;
@@ -188,6 +196,10 @@ struct _MMModem {
                               MMAuthRequest *req,
                               GError **error);
 
+    void (*reset)            (MMModem *self,
+                              MMModemFn callback,
+                              gpointer user_data);
+
     void (*factory_reset) (MMModem *self,
                            const char *code,
                            MMModemFn callback,
@@ -250,6 +262,10 @@ void mm_modem_set_charset (MMModem *self,
                            MMModemCharset charset,
                            MMModemFn callback,
                            gpointer user_data);
+
+void mm_modem_reset         (MMModem *self,
+                             MMModemFn callback,
+                             gpointer user_data);
 
 void mm_modem_factory_reset (MMModem *self,
                              const char *code,

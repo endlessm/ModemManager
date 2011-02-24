@@ -27,6 +27,7 @@
 #include "mm-callback-info.h"
 #include "mm-serial-port.h"
 #include "mm-serial-parsers.h"
+#include "mm-log.h"
 
 static void modem_init (MMModem *modem_class);
 
@@ -39,7 +40,9 @@ mm_modem_huawei_cdma_new (const char *device,
                          const char *driver,
                          const char *plugin,
                          gboolean evdo_rev0,
-                         gboolean evdo_revA)
+                         gboolean evdo_revA,
+                         guint32 vendor,
+                         guint32 product)
 {
     gboolean try_css = TRUE;
 
@@ -61,6 +64,8 @@ mm_modem_huawei_cdma_new (const char *device,
                                    MM_GENERIC_CDMA_EVDO_REV0, evdo_rev0,
                                    MM_GENERIC_CDMA_EVDO_REVA, evdo_revA,
                                    MM_GENERIC_CDMA_REGISTRATION_TRY_CSS, try_css,
+                                   MM_MODEM_HW_VID, vendor,
+                                   MM_MODEM_HW_PID, product,
                                    NULL));
 }
 
@@ -75,7 +80,7 @@ parse_quality (const char *str, const char *detail)
     quality = strtol (str, NULL, 10);
     if (errno == 0) {
         quality = CLAMP (quality, 0, 100);
-        g_debug ("%s: %ld", detail, quality);
+        mm_dbg ("%s: %ld", detail, quality);
         return (gint) quality;
     }
     return -1;
@@ -173,7 +178,7 @@ sysinfo_done (MMAtSerialPort *port,
     r = g_regex_new ("\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)",
                      G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
     if (!r) {
-        g_warning ("Huawei(%s): ^SYSINFO parse regex creation failed.", __func__);
+        mm_warn ("Huawei: ^SYSINFO parse regex creation failed.");
         goto done;
     }
 
@@ -214,7 +219,7 @@ sysinfo_done (MMAtSerialPort *port,
             mm_generic_cdma_query_reg_state_set_callback_1x_state (info, reg_state);
         }
     } else
-        g_warning ("Huawei(%s): failed to parse ^SYSINFO response.", __func__);
+        mm_warn ("Huawei: failed to parse ^SYSINFO response.");
 
     g_match_info_free (match_info);
     g_regex_unref (r);

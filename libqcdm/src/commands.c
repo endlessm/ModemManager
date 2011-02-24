@@ -119,6 +119,8 @@ bin2hexstr (const guint8 *bytes, int len)
     return result;
 }
 
+/**********************************************************************/
+
 static gboolean
 check_command (const char *buf, gsize len, guint8 cmd, gsize min_len, GError **error)
 {
@@ -152,6 +154,11 @@ check_command (const char *buf, gsize len, guint8 cmd, gsize min_len, GError **e
     case DIAG_CMD_BAD_MODE:
         g_set_error (error, QCDM_COMMAND_ERROR, QCDM_COMMAND_BAD_MODE,
                      "DM command %d not allowed in the current device mode",
+                     cmd);
+        return FALSE;
+    case DIAG_CMD_BAD_SPC_MODE:
+        g_set_error (error, QCDM_COMMAND_ERROR, QCDM_COMMAND_SPC_LOCKED,
+                     "DM command %d not allowed because the Service Programming Code is locked",
                      cmd);
         return FALSE;
     default:
@@ -424,6 +431,52 @@ qcdm_cmd_sw_version_result (const char *buf, gsize len, GError **error)
     g_assert (sizeof (rsp->comp_time) <= sizeof (tmp));
     memcpy (tmp, rsp->comp_time, sizeof (rsp->comp_time));
     qcdm_result_add_string (result, QCDM_CMD_SW_VERSION_ITEM_COMP_TIME, tmp);
+
+    return result;
+}
+
+/**********************************************************************/
+
+gsize
+qcdm_cmd_status_snapshot_new (char *buf, gsize len, GError **error)
+{
+    char cmdbuf[3];
+    DMCmdHeader *cmd = (DMCmdHeader *) &cmdbuf[0];
+
+    g_return_val_if_fail (buf != NULL, 0);
+    g_return_val_if_fail (len >= sizeof (*cmd) + DIAG_TRAILER_LEN, 0);
+
+    memset (cmd, 0, sizeof (*cmd));
+    cmd->code = DIAG_CMD_STATUS_SNAPSHOT;
+
+    return dm_encapsulate_buffer (cmdbuf, sizeof (*cmd), sizeof (cmdbuf), buf, len);
+}
+
+static guint8
+snapshot_state_to_qcdm (guint8 cdma_state)
+{
+    /* CDMA_STATUS_SNAPSHOT_STATE_* -> QCDM_STATUS_SNAPSHOT_STATE_* */
+    return cdma_state + 1;
+}
+
+QCDMResult *
+qcdm_cmd_status_snapshot_result (const char *buf, gsize len, GError **error)
+{
+    QCDMResult *result = NULL;
+    DMCmdStatusSnapshotRsp *rsp = (DMCmdStatusSnapshotRsp *) buf;
+
+    g_return_val_if_fail (buf != NULL, NULL);
+
+    if (!check_command (buf, len, DIAG_CMD_STATUS_SNAPSHOT, sizeof (*rsp), error))
+        return NULL;
+
+    result = qcdm_result_new ();
+
+    qcdm_result_add_uint8 (result, QCDM_CMD_STATUS_SNAPSHOT_ITEM_BAND_CLASS, cdma_band_class_to_qcdm (rsp->band_class));
+    qcdm_result_add_uint8 (result, QCDM_CMD_STATUS_SNAPSHOT_ITEM_BASE_STATION_PREV, cdma_prev_to_qcdm (rsp->prev));
+    qcdm_result_add_uint8 (result, QCDM_CMD_STATUS_SNAPSHOT_ITEM_MOBILE_PREV, cdma_prev_to_qcdm (rsp->mob_prev));
+    qcdm_result_add_uint8 (result, QCDM_CMD_STATUS_SNAPSHOT_ITEM_PREV_IN_USE, cdma_prev_to_qcdm (rsp->prev_in_use));
+    qcdm_result_add_uint8 (result, QCDM_CMD_STATUS_SNAPSHOT_ITEM_STATE, snapshot_state_to_qcdm (rsp->state & 0xF));
 
     return result;
 }
@@ -820,6 +873,107 @@ qcdm_cmd_nv_set_mode_pref_result (const char *buf, gsize len, GError **error)
 
 /**********************************************************************/
 
+static gboolean
+hdr_rev_pref_validate (guint8 dm)
+{
+    if (   dm == DIAG_NV_HDR_REV_PREF_0
+        || dm == DIAG_NV_HDR_REV_PREF_A
+        || dm == DIAG_NV_HDR_REV_PREF_EHRPD)
+        return TRUE;
+    return FALSE;
+}
+
+gsize
+qcdm_cmd_nv_get_hdr_rev_pref_new (char *buf, gsize len, GError **error)
+{
+    char cmdbuf[sizeof (DMCmdNVReadWrite) + 2];
+    DMCmdNVReadWrite *cmd = (DMCmdNVReadWrite *) &cmdbuf[0];
+
+    g_return_val_if_fail (buf != NULL, 0);
+    g_return_val_if_fail (len >= sizeof (*cmd) + DIAG_TRAILER_LEN, 0);
+
+    memset (cmd, 0, sizeof (*cmd));
+    cmd->code = DIAG_CMD_NV_READ;
+    cmd->nv_item = GUINT16_TO_LE (DIAG_NV_HDR_REV_PREF);
+
+    return dm_encapsulate_buffer (cmdbuf, sizeof (*cmd), sizeof (cmdbuf), buf, len);
+}
+
+QCDMResult *
+qcdm_cmd_nv_get_hdr_rev_pref_result (const char *buf, gsize len, GError **error)
+{
+    QCDMResult *result = NULL;
+    DMCmdNVReadWrite *rsp = (DMCmdNVReadWrite *) buf;
+    DMNVItemHdrRevPref *rev;
+
+    g_return_val_if_fail (buf != NULL, NULL);
+
+    if (!check_command (buf, len, DIAG_CMD_NV_READ, sizeof (DMCmdNVReadWrite), error))
+        return NULL;
+
+    if (!check_nv_cmd (rsp, DIAG_NV_HDR_REV_PREF, error))
+        return NULL;
+
+    rev = (DMNVItemHdrRevPref *) &rsp->data[0];
+
+    if (!hdr_rev_pref_validate (rev->rev_pref)) {
+        g_set_error (error, QCDM_COMMAND_ERROR, QCDM_COMMAND_BAD_PARAMETER,
+                     "Unknown HDR revision preference 0x%X",
+                     rev->rev_pref);
+        return NULL;
+    }
+
+    result = qcdm_result_new ();
+    qcdm_result_add_uint8 (result, QCDM_CMD_NV_GET_HDR_REV_PREF_ITEM_REV_PREF, rev->rev_pref);
+
+    return result;
+}
+
+gsize
+qcdm_cmd_nv_set_hdr_rev_pref_new (char *buf,
+                                  gsize len,
+                                  guint8 rev_pref,
+                                  GError **error)
+{
+    char cmdbuf[sizeof (DMCmdNVReadWrite) + 2];
+    DMCmdNVReadWrite *cmd = (DMCmdNVReadWrite *) &cmdbuf[0];
+    DMNVItemHdrRevPref *req;
+
+    g_return_val_if_fail (buf != NULL, 0);
+    g_return_val_if_fail (len >= sizeof (*cmd) + DIAG_TRAILER_LEN, 0);
+
+    if (!hdr_rev_pref_validate (rev_pref)) {
+        g_set_error (error, QCDM_COMMAND_ERROR, QCDM_COMMAND_BAD_PARAMETER,
+                     "Invalid HDR revision preference %d", rev_pref);
+        return 0;
+    }
+
+    memset (cmd, 0, sizeof (*cmd));
+    cmd->code = DIAG_CMD_NV_WRITE;
+    cmd->nv_item = GUINT16_TO_LE (DIAG_NV_HDR_REV_PREF);
+
+    req = (DMNVItemHdrRevPref *) &cmd->data[0];
+    req->rev_pref = rev_pref;
+
+    return dm_encapsulate_buffer (cmdbuf, sizeof (*cmd), sizeof (cmdbuf), buf, len);
+}
+
+QCDMResult *
+qcdm_cmd_nv_set_hdr_rev_pref_result (const char *buf, gsize len, GError **error)
+{
+    g_return_val_if_fail (buf != NULL, NULL);
+
+    if (!check_command (buf, len, DIAG_CMD_NV_WRITE, sizeof (DMCmdNVReadWrite), error))
+        return NULL;
+
+    if (!check_nv_cmd ((DMCmdNVReadWrite *) buf, DIAG_NV_HDR_REV_PREF, error))
+        return NULL;
+
+    return qcdm_result_new ();
+}
+
+/**********************************************************************/
+
 gsize
 qcdm_cmd_cm_subsys_state_info_new (char *buf, gsize len, GError **error)
 {
@@ -935,6 +1089,137 @@ qcdm_cmd_hdr_subsys_state_info_result (const char *buf, gsize len, GError **erro
     qcdm_result_add_uint8 (result, QCDM_CMD_HDR_SUBSYS_STATE_INFO_ITEM_HDR_HYBRID_MODE, rsp->hdr_hybrid_mode);
 
     return result;
+}
+
+/**********************************************************************/
+
+gsize
+qcdm_cmd_ext_logmask_new (char *buf,
+                          gsize len,
+                          GSList *items,
+                          guint16 maxlog,
+                          GError **error)
+{
+    char cmdbuf[sizeof (DMCmdExtLogMask) + 2];
+    DMCmdExtLogMask *cmd = (DMCmdExtLogMask *) &cmdbuf[0];
+    GSList *iter;
+    guint16 highest = 0;
+    gsize total = 3;
+
+    g_return_val_if_fail (buf != NULL, 0);
+    g_return_val_if_fail (len >= sizeof (*cmd) + DIAG_TRAILER_LEN, 0);
+
+    memset (cmd, 0, sizeof (*cmd));
+    cmd->code = DIAG_CMD_EXT_LOGMASK;
+
+    for (iter = items; iter; iter = g_slist_next (iter)) {
+        guint32 item = GPOINTER_TO_UINT (iter->data);
+
+        g_warn_if_fail (item > 0);
+        g_warn_if_fail (item < 4095);
+        cmd->mask[item / 8] |= 1 << item % 8;
+
+        if (item > highest)
+            highest = item;
+    }
+
+    g_return_val_if_fail (highest <= maxlog, 0);
+    cmd->len = GUINT16_TO_LE (maxlog);
+    total += maxlog / 8;
+    if (maxlog && maxlog % 8)
+        total++;
+
+    return dm_encapsulate_buffer (cmdbuf, total, sizeof (cmdbuf), buf, len);
+}
+
+QCDMResult *
+qcdm_cmd_ext_logmask_result (const char *buf,
+                             gsize len,
+                             GError **error)
+{
+    QCDMResult *result = NULL;
+    DMCmdExtLogMask *rsp = (DMCmdExtLogMask *) buf;
+    guint32 masklen = 0, maxlog = 0;
+    gsize minlen = 0;
+
+    g_return_val_if_fail (buf != NULL, NULL);
+
+    /* Ensure size is at least enough for the command header */
+    if (len < 1) {
+        g_set_error (error, QCDM_COMMAND_ERROR, QCDM_COMMAND_BAD_LENGTH,
+                     "DM command %d response not long enough (got %zu, expected "
+                     "at least %d).", DIAG_CMD_EXT_LOGMASK, len, 3);
+        return FALSE;
+    }
+
+    /* Result of a 'set' operation will be only 1 byte in size; result of
+     * a 'get' operation (ie setting len to 0x0000 in the request) will be
+     * the size of the header (3) plus the max log length.
+     */
+
+    if (len == 1)
+        minlen = 1;
+    else {
+        /* Ensure size is equal to max # of log items + 3 */
+        maxlog = GUINT16_FROM_LE (rsp->len);
+        masklen = maxlog / 8;
+        if (maxlog % 8)
+            masklen++;
+
+        if (len < (masklen + 3)) {
+            g_set_error (error, QCDM_COMMAND_ERROR, QCDM_COMMAND_BAD_LENGTH,
+                         "DM command %d response not long enough (got %zu, expected "
+                         "at least %d).", DIAG_CMD_EXT_LOGMASK, len, masklen + 3);
+            return FALSE;
+        }
+        minlen = masklen + 3;
+    }
+
+    if (!check_command (buf, len, DIAG_CMD_EXT_LOGMASK, minlen, error))
+        return NULL;
+
+    result = qcdm_result_new ();
+
+    if (minlen != 4)
+        qcdm_result_add_uint32 (result, QCDM_CMD_EXT_LOGMASK_ITEM_MAX_ITEMS, maxlog);
+
+    return result;
+}
+
+gboolean
+qcmd_cmd_ext_logmask_result_get_item (QCDMResult *result,
+                                      guint16 item)
+{
+    return FALSE;
+}
+
+/**********************************************************************/
+
+gsize
+qcdm_cmd_event_report_new (char *buf, gsize len, gboolean start, GError **error)
+{
+    char cmdbuf[4];
+    DMCmdEventReport *cmd = (DMCmdEventReport *) &cmdbuf[0];
+
+    g_return_val_if_fail (buf != NULL, 0);
+    g_return_val_if_fail (len >= sizeof (*cmd) + DIAG_TRAILER_LEN, 0);
+
+    memset (cmd, 0, sizeof (*cmd));
+    cmd->code = DIAG_CMD_EVENT_REPORT;
+    cmd->on = start ? 1 : 0;
+
+    return dm_encapsulate_buffer (cmdbuf, sizeof (*cmd), sizeof (cmdbuf), buf, len);
+}
+
+QCDMResult *
+qcdm_cmd_event_report_result (const char *buf, gsize len, GError **error)
+{
+    g_return_val_if_fail (buf != NULL, NULL);
+
+    if (!check_command (buf, len, DIAG_CMD_EVENT_REPORT, sizeof (DMCmdEventReport), error))
+        return NULL;
+
+    return qcdm_result_new ();
 }
 
 /**********************************************************************/

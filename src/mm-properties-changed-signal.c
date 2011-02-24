@@ -11,7 +11,7 @@
  * GNU General Public License for more details:
  *
  * Copyright (C) 2007 - 2008 Novell, Inc.
- * Copyright (C) 2008 - 2009 Red Hat, Inc.
+ * Copyright (C) 2008 - 2010 Red Hat, Inc.
  */
 
 #include <string.h>
@@ -20,17 +20,28 @@
 #include <dbus/dbus-glib.h>
 #include "mm-marshal.h"
 #include "mm-properties-changed-signal.h"
+#include "mm-properties-changed-glue.h"
+#include "mm-log.h"
 
-#define DBUS_TYPE_G_MAP_OF_VARIANT (dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE))
+#define DBUS_TYPE_G_MAP_OF_VARIANT  (dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE))
+#define DBUS_TYPE_G_ARRAY_OF_STRING (dbus_g_type_get_collection ("GPtrArray", G_TYPE_STRING))
 
-#define PC_SIGNAL_NAME "mm-properties-changed"
+#define MM_PC_SIGNAL_NAME "mm-properties-changed"
+#define DBUS_PC_SIGNAL_NAME "properties-changed"
 #define MM_DBUS_PROPERTY_CHANGED "MM_DBUS_PROPERTY_CHANGED"
+
+/*****************************************************************************/
+
+typedef struct {
+    char *real_property;
+    char *interface;
+} ChangeInfo;
 
 typedef struct {
     /* Whitelist of GObject property names for which changes will be emitted
      * over the bus.
      *
-     * Mapping of {property-name -> dbus-interface}
+     * Mapping of {property-name -> ChangeInfo}
      */
     GHashTable *registered;
 
@@ -42,7 +53,6 @@ typedef struct {
      */
     GHashTable *hash;
 
-    gulong signal_id;
     guint idle_id;
 } PropertiesChangedInfo;
 
@@ -55,6 +65,17 @@ destroy_value (gpointer data)
     g_slice_free (GValue, val);
 }
 
+static void
+change_info_free (gpointer data)
+{
+    ChangeInfo *info = data;
+
+    g_free (info->real_property);
+    g_free (info->interface);
+    memset (info, 0, sizeof (ChangeInfo));
+    g_free (info);
+}
+
 static PropertiesChangedInfo *
 properties_changed_info_new (void)
 {
@@ -62,7 +83,7 @@ properties_changed_info_new (void)
 
     info = g_slice_new0 (PropertiesChangedInfo);
 
-    info->registered = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+    info->registered = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, change_info_free);
     info->hash = g_hash_table_new_full (g_str_hash, g_str_equal, 
                                         (GDestroyNotify) g_free,
                                         (GDestroyNotify) g_hash_table_destroy);
@@ -124,20 +145,23 @@ properties_changed (gpointer data)
     while (g_hash_table_iter_next (&iter, &key, &value)) {
         const char *interface = (const char *) key;
         GHashTable *props = (GHashTable *) value;
+        GPtrArray *ignore = g_ptr_array_new ();
 
 #ifdef DEBUG
         {
             char buf[2048] = { 0, };
             g_hash_table_foreach (props, add_to_string, &buf);
-            g_message ("%s: %s -> (%s) %s", __func__,
-                       G_OBJECT_TYPE_NAME (object),
-                       interface,
-                       buf);
+            mm_dbg ("%s: %s -> (%s) %s", __func__,
+                    G_OBJECT_TYPE_NAME (object),
+                    interface,
+                    buf);
         }
 #endif
 
         /* Send the PropertiesChanged signal */
-        g_signal_emit (object, info->signal_id, 0, interface, props);
+        g_signal_emit_by_name (object, MM_PC_SIGNAL_NAME, interface, props);
+        g_signal_emit_by_name (object, DBUS_PC_SIGNAL_NAME, interface, props, ignore);
+        g_ptr_array_free (ignore, TRUE);
     }
     g_hash_table_remove_all (info->hash);
 
@@ -191,8 +215,6 @@ get_properties_changed_info (GObject *object)
     if (!info) {
         info = properties_changed_info_new ();
         g_object_set_data_full (object, MM_DBUS_PROPERTY_CHANGED, info, properties_changed_info_destroy);
-        info->signal_id = g_signal_lookup (PC_SIGNAL_NAME, G_OBJECT_TYPE (object));
-        g_assert (info->signal_id);
     }
 
     g_assert (info);
@@ -204,23 +226,23 @@ notify (GObject *object, GParamSpec *pspec)
 {
     GHashTable *interfaces;
     PropertiesChangedInfo *info;
-    const char *interface;
+    ChangeInfo *ch_info;
     GValue *value;
 
     info = get_properties_changed_info (object);
 
-    interface = g_hash_table_lookup (info->registered, pspec->name);
-    if (!interface)
+    ch_info = g_hash_table_lookup (info->registered, pspec->name);
+    if (!ch_info)
         return;
 
     /* Check if there are other changed properties for this interface already,
      * otherwise create a new hash table for all changed properties for this
      * D-Bus interface.
      */
-    interfaces = g_hash_table_lookup (info->hash, interface);
+    interfaces = g_hash_table_lookup (info->hash, ch_info->interface);
     if (!interfaces) {
         interfaces = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, destroy_value);
-        g_hash_table_insert (info->hash, g_strdup (interface), interfaces);
+        g_hash_table_insert (info->hash, g_strdup (ch_info->interface), interfaces);
     }
 
     /* Now put the changed property value into the hash table of changed values
@@ -229,7 +251,9 @@ notify (GObject *object, GParamSpec *pspec)
     value = g_slice_new0 (GValue);
     g_value_init (value, pspec->value_type);
     g_object_get_property (object, pspec->name, value);
-    g_hash_table_insert (interfaces, uscore_to_wincaps (pspec->name), value);
+
+    /* Use real property name, which takes shadow properties into accound */
+    g_hash_table_insert (interfaces, uscore_to_wincaps (ch_info->real_property), value);
 
     if (!info->idle_id)
         info->idle_id = g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, properties_changed, object, idle_id_reset);
@@ -237,11 +261,12 @@ notify (GObject *object, GParamSpec *pspec)
 
 void
 mm_properties_changed_signal_register_property (GObject *object,
-                                                const char *property,
+                                                const char *gobject_property,
+                                                const char *real_property,
                                                 const char *interface)
 {
     PropertiesChangedInfo *info;
-    const char *tmp;
+    ChangeInfo *ch_info;
 
     /* All exported properties need to be registered explicitly for now since
      * dbus-glib doesn't expose any method to find out the properties registered
@@ -249,28 +274,79 @@ mm_properties_changed_signal_register_property (GObject *object,
      */
 
     info = get_properties_changed_info (object);
-    tmp = g_hash_table_lookup (info->registered, property);
-    if (tmp) {
+    ch_info = g_hash_table_lookup (info->registered, gobject_property);
+    if (ch_info) {
         g_warning ("%s: property '%s' already registerd on interface '%s'",
-                   __func__, property, tmp);
-    } else
-        g_hash_table_insert (info->registered, g_strdup (property), g_strdup (interface));
+                   __func__, gobject_property, ch_info->interface);
+    } else {
+        ch_info = g_malloc0 (sizeof (ChangeInfo));
+        ch_info->real_property = g_strdup (real_property ? real_property : gobject_property);
+        ch_info->interface = g_strdup (interface);
+        g_hash_table_insert (info->registered, g_strdup (gobject_property), ch_info);
+    }
 }
 
-guint
-mm_properties_changed_signal_new (GObjectClass *object_class)
+void
+mm_properties_changed_signal_enable (GObjectClass *object_class)
 {
-    guint id;
-
     object_class->notify = notify;
-
-    id = g_signal_new (PC_SIGNAL_NAME,
-                       G_OBJECT_CLASS_TYPE (object_class),
-                       G_SIGNAL_RUN_FIRST,
-                       0, NULL, NULL,
-                       mm_marshal_VOID__STRING_BOXED,
-                       G_TYPE_NONE, 2, G_TYPE_STRING, DBUS_TYPE_G_MAP_OF_VARIANT);
-
-    return id;
 }
 
+/*****************************************************************************/
+
+static void
+mm_properties_changed_init (gpointer g_iface)
+{
+    static gboolean initialized = FALSE;
+
+    if (initialized)
+        return;
+
+    g_signal_new (MM_PC_SIGNAL_NAME,
+                  G_TYPE_FROM_INTERFACE (g_iface),
+                  G_SIGNAL_RUN_FIRST,
+                  0, NULL, NULL,
+                  mm_marshal_VOID__STRING_BOXED,
+                  G_TYPE_NONE, 2, G_TYPE_STRING, DBUS_TYPE_G_MAP_OF_VARIANT);
+
+    g_signal_new (DBUS_PC_SIGNAL_NAME,
+                  G_TYPE_FROM_INTERFACE (g_iface),
+                  G_SIGNAL_RUN_FIRST,
+                  0, NULL, NULL,
+                  mm_marshal_VOID__STRING_BOXED_BOXED,
+                  G_TYPE_NONE, 3,
+                  G_TYPE_STRING,
+                  DBUS_TYPE_G_MAP_OF_VARIANT,
+                  DBUS_TYPE_G_ARRAY_OF_STRING);
+
+    initialized = TRUE;
+}
+
+GType
+mm_properties_changed_get_type (void)
+{
+    static GType pc_type = 0;
+
+    if (!G_UNLIKELY (pc_type)) {
+        const GTypeInfo pc_info = {
+            sizeof (MMPropertiesChanged), /* class_size */
+            mm_properties_changed_init,   /* base_init */
+            NULL,       /* base_finalize */
+            NULL,
+            NULL,       /* class_finalize */
+            NULL,       /* class_data */
+            0,
+            0,              /* n_preallocs */
+            NULL
+        };
+
+        pc_type = g_type_register_static (G_TYPE_INTERFACE,
+                                          "MMPropertiesChanged",
+                                          &pc_info, 0);
+
+        g_type_interface_add_prerequisite (pc_type, G_TYPE_OBJECT);
+        dbus_g_object_type_install_info (pc_type, &dbus_glib_mm_properties_changed_object_info);
+    }
+
+    return pc_type;
+}

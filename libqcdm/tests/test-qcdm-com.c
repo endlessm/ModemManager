@@ -38,19 +38,19 @@ prev_to_string (guint8 prev)
 {
     switch (prev) {
     case QCDM_CDMA_PREV_IS_95:
-        return "IS-95";
+        return "1 (IS-95)";
     case QCDM_CDMA_PREV_IS_95A:
-        return "IS-95A";
+        return "2 (IS-95A)";
     case QCDM_CDMA_PREV_IS_95A_TSB74:
-        return "IS-95A TSB-74";
+        return "3 (IS-95A TSB-74)";
     case QCDM_CDMA_PREV_IS_95B_PHASE1:
-        return "IS-95B Phase I";
+        return "4 (IS-95B Phase I)";
     case QCDM_CDMA_PREV_IS_95B_PHASE2:
-        return "IS-95B Phase II";
+        return "5 (IS-95B Phase II)";
     case QCDM_CDMA_PREV_IS2000_REL0:
-        return "IS-2000 Release 0";
+        return "6 (IS-2000 Release 0)";
     case QCDM_CDMA_PREV_IS2000_RELA:
-        return "IS-2000 Release A";
+        return "7 (IS-2000 Release A)";
     default:
         break;
     }
@@ -101,6 +101,54 @@ hdr_rev_to_string (guint8 hdr_rev)
         return "0";
     case QCDM_HDR_REV_A:
         return "A";
+    default:
+        break;
+    }
+    return "unknown";
+}
+
+static const char *
+status_snapshot_state_to_string (guint8 state)
+{
+    switch (state) {
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_NO_SERVICE:
+        return "no service";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_INITIALIZATION:
+        return "initialization";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_IDLE:
+        return "idle";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_VOICE_CHANNEL_INIT:
+        return "voice channel init";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_WAITING_FOR_ORDER:
+        return "waiting for order";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_WAITING_FOR_ANSWER:
+        return "waiting for answer";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_CONVERSATION:
+        return "conversation";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_RELEASE:
+        return "release";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_SYSTEM_ACCESS:
+        return "system access";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_OFFLINE_CDMA:
+        return "offline CDMA";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_OFFLINE_HDR:
+        return "offline HDR";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_OFFLINE_ANALOG:
+        return "offline analog";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_RESET:
+        return "reset";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_POWER_DOWN:
+        return "power down";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_POWER_SAVE:
+        return "power save";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_POWER_UP:
+        return "power up";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_LOW_POWER_MODE:
+        return "low power mode";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_SEARCHER_DSMM:
+        return "searcher DSMM";
+    case QCDM_CMD_STATUS_SNAPSHOT_STATE_HDR:
+        return "HDR";
     default:
         break;
     }
@@ -442,6 +490,9 @@ test_com_read_roam_pref (void *f, void *data)
 
     /* Parse the response into a result structure */
     result = qcdm_cmd_nv_get_roam_pref_result (buf, reply_len, &error);
+    if (error && (error->code == QCDM_COMMAND_NVCMD_FAILED))
+        return;
+
     g_assert (result);
 
     g_print ("\n");
@@ -493,7 +544,9 @@ test_com_read_mode_pref (void *f, void *data)
     /* Parse the response into a result structure */
     result = qcdm_cmd_nv_get_mode_pref_result (buf, reply_len, &error);
     if (!result) {
-        g_assert_error (error, QCDM_COMMAND_ERROR, QCDM_COMMAND_NVCMD_FAILED);
+        g_assert (error);
+        g_assert (error->domain == QCDM_COMMAND_ERROR);
+        g_assert (error->code == QCDM_COMMAND_NVCMD_FAILED || error->code == QCDM_COMMAND_BAD_PARAMETER);
         return;
     }
 
@@ -517,6 +570,62 @@ test_com_read_mode_pref (void *f, void *data)
         break;
     }
     g_message ("%s: Mode preference: 0x%02X (%s)", __func__, pref, msg);
+
+    qcdm_result_unref (result);
+}
+
+void
+test_com_read_hdr_rev_pref (void *f, void *data)
+{
+    TestComData *d = data;
+    gboolean success;
+    GError *error = NULL;
+    char buf[512];
+    guint8 pref;
+    const char *msg;
+    gint len;
+    QCDMResult *result;
+    gsize reply_len;
+
+    len = qcdm_cmd_nv_get_hdr_rev_pref_new (buf, sizeof (buf), NULL);
+    g_assert (len > 0);
+
+    /* Send the command */
+    success = send_command (d, buf, len);
+    g_assert (success);
+
+    /* Get a response */
+    reply_len = wait_reply (d, buf, sizeof (buf));
+
+    /* Parse the response into a result structure */
+    result = qcdm_cmd_nv_get_hdr_rev_pref_result (buf, reply_len, &error);
+    if (!result) {
+        g_assert (error);
+        g_assert (error->domain == QCDM_COMMAND_ERROR);
+        g_assert (error->code == QCDM_COMMAND_NVCMD_FAILED || error->code == QCDM_COMMAND_BAD_PARAMETER);
+        return;
+    }
+
+    g_print ("\n");
+
+    success = qcdm_result_get_uint8 (result, QCDM_CMD_NV_GET_HDR_REV_PREF_ITEM_REV_PREF, &pref);
+    g_assert (success);
+
+    switch (pref) {
+    case QCDM_CMD_NV_HDR_REV_PREF_ITEM_REV_PREF_0:
+        msg = "rev0";
+        break;
+    case QCDM_CMD_NV_HDR_REV_PREF_ITEM_REV_PREF_A:
+        msg = "revA";
+        break;
+    case QCDM_CMD_NV_HDR_REV_PREF_ITEM_REV_PREF_EHRPD:
+        msg = "eHRPD";
+        break;
+    default:
+        msg = "unknown";
+        break;
+    }
+    g_message ("%s: HDR rev preference: 0x%02X (%s)", __func__, pref, msg);
 
     qcdm_result_unref (result);
 }
@@ -684,6 +793,57 @@ test_com_sw_version (void *f, void *data)
 }
 
 void
+test_com_status_snapshot (void *f, void *data)
+{
+    TestComData *d = data;
+    gboolean success;
+    GError *error = NULL;
+    char buf[100];
+    gint len;
+    QCDMResult *result;
+    gsize reply_len;
+    guint8 n8;
+
+    len = qcdm_cmd_status_snapshot_new (buf, sizeof (buf), NULL);
+    g_assert (len == 4);
+
+    /* Send the command */
+    success = send_command (d, buf, len);
+    g_assert (success);
+
+    /* Get a response */
+    reply_len = wait_reply (d, buf, sizeof (buf));
+
+    /* Parse the response into a result structure */
+    result = qcdm_cmd_status_snapshot_result (buf, reply_len, &error);
+    g_assert (result);
+
+    g_print ("\n");
+
+    n8 = 0;
+    qcdm_result_get_uint8 (result, QCDM_CMD_STATUS_SNAPSHOT_ITEM_BAND_CLASS, &n8);
+    g_message ("%s: Band Class: %s", __func__, band_class_to_string (n8));
+
+    n8 = 0;
+    qcdm_result_get_uint8 (result, QCDM_CMD_STATUS_SNAPSHOT_ITEM_BASE_STATION_PREV, &n8);
+    g_message ("%s: Base station P_REV: %s", __func__, prev_to_string (n8));
+
+    n8 = 0;
+    qcdm_result_get_uint8 (result, QCDM_CMD_STATUS_SNAPSHOT_ITEM_MOBILE_PREV, &n8);
+    g_message ("%s: Mobile P_REV: %s", __func__, prev_to_string (n8));
+
+    n8 = 0;
+    qcdm_result_get_uint8 (result, QCDM_CMD_STATUS_SNAPSHOT_ITEM_PREV_IN_USE, &n8);
+    g_message ("%s: P_REV in-use: %s", __func__, prev_to_string (n8));
+
+    n8 = 0;
+    qcdm_result_get_uint8 (result, QCDM_CMD_STATUS_SNAPSHOT_ITEM_STATE, &n8);
+    g_message ("%s: State: %d (%s)", __func__, n8, status_snapshot_state_to_string (n8));
+
+    qcdm_result_unref (result);
+}
+
+void
 test_com_pilot_sets (void *f, void *data)
 {
     TestComData *d = data;
@@ -801,6 +961,9 @@ test_com_cm_subsys_state_info (void *f, void *data)
         break;
     case QCDM_CMD_CM_SUBSYS_STATE_INFO_SYSTEM_MODE_WCDMA:
         detail = "WCDMA";
+        break;
+    case QCDM_CMD_CM_SUBSYS_STATE_INFO_SYSTEM_MODE_LTE:
+        detail = "LTE";
         break;
     default:
         detail = "unknown";
@@ -1088,6 +1251,108 @@ test_com_hdr_subsys_state_info (void *f, void *data)
     g_message ("%s: HDR Hybrid Mode: %u", __func__, num);
 
     qcdm_result_unref (result);
+}
+
+void
+test_com_ext_logmask (void *f, void *data)
+{
+    TestComData *d = data;
+    gboolean success;
+    GError *error = NULL;
+    char buf[520];
+    gint len;
+    QCDMResult *result;
+    gsize reply_len;
+    GSList *items = NULL;
+    guint32 maxlog = 0;
+
+    /* First get # of items the device supports */
+    len = qcdm_cmd_ext_logmask_new (buf, sizeof (buf), NULL, 0, NULL);
+
+    /* Send the command */
+    success = send_command (d, buf, len);
+    g_assert (success);
+
+    /* Get a response */
+    reply_len = wait_reply (d, buf, sizeof (buf));
+
+    g_print ("\n");
+
+    /* Parse the response into a result structure */
+    result = qcdm_cmd_ext_logmask_result (buf, reply_len, &error);
+    g_assert (result);
+
+    qcdm_result_get_uint32 (result, QCDM_CMD_EXT_LOGMASK_ITEM_MAX_ITEMS, &maxlog);
+    g_message ("%s: Max # Log Items: %u (0x%X)", __func__, maxlog, maxlog);
+
+    qcdm_result_unref (result);
+
+    /* Now enable some log items */
+    items = g_slist_append (items, GUINT_TO_POINTER (0x002C));
+    items = g_slist_append (items, GUINT_TO_POINTER (0x002E));
+    len = qcdm_cmd_ext_logmask_new (buf, sizeof (buf), items, (guint16) maxlog, NULL);
+    g_slist_free (items);
+
+    /* Send the command */
+    success = send_command (d, buf, len);
+    g_assert (success);
+
+    /* Get a response */
+    reply_len = wait_reply (d, buf, sizeof (buf));
+
+    g_print ("\n");
+
+    /* Parse the response into a result structure */
+    result = qcdm_cmd_ext_logmask_result (buf, reply_len, &error);
+    g_assert (result);
+
+    qcdm_result_unref (result);
+
+    /* Wait for a log packet */
+    reply_len = wait_reply (d, buf, sizeof (buf));
+}
+
+void
+test_com_event_report (void *f, void *data)
+{
+    TestComData *d = data;
+    gboolean success;
+    GError *error = NULL;
+    char buf[520];
+    gint len;
+    QCDMResult *result;
+    gsize reply_len;
+
+    /* Turn event reporting on */
+    len = qcdm_cmd_event_report_new (buf, sizeof (buf), TRUE, NULL);
+
+    /* Send the command */
+    success = send_command (d, buf, len);
+    g_assert (success);
+
+    /* Get a response */
+    reply_len = wait_reply (d, buf, sizeof (buf));
+
+    g_print ("\n");
+
+    /* Parse the response into a result structure */
+    result = qcdm_cmd_event_report_result (buf, reply_len, &error);
+    g_assert (result);
+
+    qcdm_result_unref (result);
+
+    /* Wait for an event */
+    reply_len = wait_reply (d, buf, sizeof (buf));
+
+    /* Turn event reporting off */
+    len = qcdm_cmd_event_report_new (buf, sizeof (buf), FALSE, NULL);
+
+    /* Send the command */
+    success = send_command (d, buf, len);
+    g_assert (success);
+
+    /* Get a response */
+    reply_len = wait_reply (d, buf, sizeof (buf));
 }
 
 void

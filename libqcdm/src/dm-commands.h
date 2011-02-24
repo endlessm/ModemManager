@@ -180,6 +180,28 @@ enum {
     CDMA_BAND_CLASS_12_PAMR_800      = 12
 };
 
+enum {
+    CDMA_STATUS_SNAPSHOT_STATE_NO_SERVICE         = 0x00,
+    CDMA_STATUS_SNAPSHOT_STATE_INITIALIZATION     = 0x01,
+    CDMA_STATUS_SNAPSHOT_STATE_IDLE               = 0x02,
+    CDMA_STATUS_SNAPSHOT_STATE_VOICE_CHANNEL_INIT = 0x03,
+    CDMA_STATUS_SNAPSHOT_STATE_WAITING_FOR_ORDER  = 0x04,
+    CDMA_STATUS_SNAPSHOT_STATE_WAITING_FOR_ANSWER = 0x05,
+    CDMA_STATUS_SNAPSHOT_STATE_CONVERSATION       = 0x06,
+    CDMA_STATUS_SNAPSHOT_STATE_RELEASE            = 0x07,
+    CDMA_STATUS_SNAPSHOT_STATE_SYSTEM_ACCESS      = 0x08,
+    CDMA_STATUS_SNAPSHOT_STATE_OFFLINE_CDMA       = 0x10,
+    CDMA_STATUS_SNAPSHOT_STATE_OFFLINE_HDR        = 0x11,
+    CDMA_STATUS_SNAPSHOT_STATE_OFFLINE_ANALOG     = 0x12,
+    CDMA_STATUS_SNAPSHOT_STATE_RESET              = 0x13,
+    CDMA_STATUS_SNAPSHOT_STATE_POWER_DOWN         = 0x14,
+    CDMA_STATUS_SNAPSHOT_STATE_POWER_SAVE         = 0x15,
+    CDMA_STATUS_SNAPSHOT_STATE_POWER_UP           = 0x16,
+    CDMA_STATUS_SNAPSHOT_STATE_LOW_POWER_MODE     = 0x17,
+    CDMA_STATUS_SNAPSHOT_STATE_SEARCHER_DSMM      = 0x18, /* Dedicated System Measurement Mode */
+    CDMA_STATUS_SNAPSHOT_STATE_HDR                = 0x40,
+};
+
 /* Generic DM command header */
 struct DMCmdHeader {
     guint8 code;
@@ -265,6 +287,29 @@ struct DMCmdSwVersionRsp {
 } __attribute__ ((packed));
 typedef struct DMCmdSwVersionRsp DMCmdSwVersionRsp;
 
+/* DIAG_CMD_STATUS_SNAPSHOT */
+struct DMCmdStatusSnapshotRsp {
+    guint8 code;
+    guint8 esn[4];
+    guint8 imsi_s1[4];
+    guint8 imsi_s2[2];
+    guint8 imsi_s[8];
+    guint8 imsi_11_12;
+    guint16 mcc;
+    guint8 imsi_addr_num;
+    guint16 sid;
+    guint16 nid;
+    guint8 prev;
+    guint8 prev_in_use;
+    guint8 mob_prev;
+    guint8 band_class;
+    guint16 frequency;
+    guint8 oper_mode;
+    guint8 state;
+    guint8 sub_state;
+} __attribute__ ((packed));
+typedef struct DMCmdStatusSnapshotRsp DMCmdStatusSnapshotRsp;
+
 /* DIAG_SUBSYS_CM_STATE_INFO subsys command */
 struct DMCmdSubsysCMStateInfoRsp {
     DMCmdSubsysHeader header;
@@ -322,6 +367,29 @@ struct DMCmdPilotSetsRsp {
     DMCmdPilotSetsSet sets[52];
 } __attribute__ ((packed));
 typedef struct DMCmdPilotSetsRsp DMCmdPilotSetsRsp;
+
+struct DMCmdExtLogMask {
+    guint8 code;
+    /* Bit number of highest '1' in 'mask'; set to 0 to get current mask. */
+    guint16 len;
+    /* Bitfield of log messages to receive */
+    guint8 mask[512];
+} __attribute__ ((packed));
+typedef struct DMCmdExtLogMask DMCmdExtLogMask;
+
+struct DMCmdEventReport {
+    guint8 code;
+    guint8 on;
+} __attribute__ ((packed));
+typedef struct DMCmdEventReport DMCmdEventReport;
+
+struct DMCmdEventReportRsp {
+    guint8 code;
+    guint16 len;
+    guint16 event_id;
+    guint8 data[0];
+} __attribute__ ((packed));
+typedef struct DMCmdEventReportRsp DMCmdEventReportRsp;
 
 /* DIAG_SUBSYS_NW_CONTROL_* subsys command */
 struct DMCmdSubsysNwSnapshotReq {

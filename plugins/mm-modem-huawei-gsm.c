@@ -29,6 +29,7 @@
 #include "mm-callback-info.h"
 #include "mm-at-serial-port.h"
 #include "mm-serial-parsers.h"
+#include "mm-log.h"
 
 static void modem_init (MMModem *modem_class);
 static void modem_gsm_network_init (MMModemGsmNetwork *gsm_network_class);
@@ -50,7 +51,9 @@ typedef struct {
 MMModem *
 mm_modem_huawei_gsm_new (const char *device,
                          const char *driver,
-                         const char *plugin)
+                         const char *plugin,
+                         guint32 vendor,
+                         guint32 product)
 {
     g_return_val_if_fail (device != NULL, NULL);
     g_return_val_if_fail (driver != NULL, NULL);
@@ -60,6 +63,8 @@ mm_modem_huawei_gsm_new (const char *device,
                                    MM_MODEM_MASTER_DEVICE, device,
                                    MM_MODEM_DRIVER, driver,
                                    MM_MODEM_PLUGIN, plugin,
+                                   MM_MODEM_HW_VID, vendor,
+                                   MM_MODEM_HW_PID, product,
                                    NULL));
 }
 
@@ -362,6 +367,35 @@ get_band (MMModemGsmNetwork *modem,
     mm_at_serial_port_queue_command (port, "AT^SYSCFG?", 3, get_band_done, info);
 }
 
+static MMModemGsmAccessTech
+huawei_sysinfo_to_act (int huawei)
+{
+    switch (huawei) {
+    case 1:
+        return MM_MODEM_GSM_ACCESS_TECH_GSM;
+    case 2:
+        return MM_MODEM_GSM_ACCESS_TECH_GPRS;
+    case 3:
+        return MM_MODEM_GSM_ACCESS_TECH_EDGE;
+    case 4:
+        return MM_MODEM_GSM_ACCESS_TECH_UMTS;
+    case 5:
+        return MM_MODEM_GSM_ACCESS_TECH_HSDPA;
+    case 6:
+        return MM_MODEM_GSM_ACCESS_TECH_HSUPA;
+    case 7:
+        return MM_MODEM_GSM_ACCESS_TECH_HSPA;
+    case 9:
+        return MM_MODEM_GSM_ACCESS_TECH_HSPA_PLUS;
+    case 8:
+        /* TD-SCDMA */
+    default:
+        break;
+    }
+
+    return MM_MODEM_GSM_ACCESS_TECH_UNKNOWN;
+}
+
 static void
 get_act_request_done (MMAtSerialPort *port,
                       GString *response,
@@ -404,22 +438,8 @@ get_act_request_done (MMAtSerialPort *port,
     if (srv_stat != 0) {
         /* Valid service */
         str = g_match_info_fetch (match_info, 7);
-        if (str && strlen (str)) {
-            if (str[0] == '1')
-                act = MM_MODEM_GSM_ACCESS_TECH_GSM;
-            else if (str[0] == '2')
-                act = MM_MODEM_GSM_ACCESS_TECH_GPRS;
-            else if (str[0] == '3')
-                act = MM_MODEM_GSM_ACCESS_TECH_EDGE;
-            else if (str[0] == '4')
-                act = MM_MODEM_GSM_ACCESS_TECH_UMTS;
-            else if (str[0] == '5')
-                act = MM_MODEM_GSM_ACCESS_TECH_HSDPA;
-            else if (str[0] == '6')
-                act = MM_MODEM_GSM_ACCESS_TECH_HSUPA;
-            else if (str[0] == '7')
-                act = MM_MODEM_GSM_ACCESS_TECH_HSPA;
-        }
+        if (str && strlen (str))
+            act = huawei_sysinfo_to_act (atoi (str));
         g_free (str);
     }
 
@@ -514,7 +534,7 @@ send_huawei_cpin_done (MMAtSerialPort *port,
     else if (strstr (pin_type, MM_MODEM_GSM_CARD_SIM_PIN2))
         num = 5;
     else {
-        g_debug ("%s: unhandled pin type '%s'", __func__, pin_type);
+        mm_dbg ("unhandled pin type '%s'", pin_type);
 
         info->error = g_error_new_literal (MM_MODEM_ERROR, MM_MODEM_ERROR_GENERAL, "Unhandled PIN type");
     }
@@ -556,7 +576,7 @@ get_unlock_retries (MMModemGsmCard *modem,
     char *command;
     MMCallbackInfo *info = mm_callback_info_uint_new (MM_MODEM (modem), callback, user_data);
 
-    g_debug ("%s: pin type '%s'", __func__, pin_type);
+    mm_dbg ("pin type '%s'", pin_type);
 
     /* Ensure we have a usable port to use for the command */
     port = mm_generic_gsm_get_best_at_port (MM_GENERIC_GSM (modem), &info->error);
@@ -622,40 +642,30 @@ handle_mode_change (MMAtSerialPort *port,
     MMModemGsmAccessTech act = MM_MODEM_GSM_ACCESS_TECH_UNKNOWN;
     char *str;
     int a;
-    int b;
 
     str = g_match_info_fetch (match_info, 1);
     a = atoi (str);
     g_free (str);
 
     str = g_match_info_fetch (match_info, 2);
-    b = atoi (str);
+    act = huawei_sysinfo_to_act (atoi (str));
     g_free (str);
 
     if (a == 3) {   /* GSM/GPRS mode */
-        if (b == 1)
-            act = MM_MODEM_GSM_ACCESS_TECH_GSM;
-        else if (b == 2)
-            act = MM_MODEM_GSM_ACCESS_TECH_GPRS;
-        else if (b == 3)
-            act = MM_MODEM_GSM_ACCESS_TECH_EDGE;
+        if (act > MM_MODEM_GSM_ACCESS_TECH_EDGE)
+            act = MM_MODEM_GSM_ACCESS_TECH_UNKNOWN;
     } else if (a == 5) {  /* WCDMA mode */
-        if (b == 4)
-            act = MM_MODEM_GSM_ACCESS_TECH_UMTS;
-        else if (b == 5)
-            act = MM_MODEM_GSM_ACCESS_TECH_HSDPA;
-        else if (b == 6)
-            act = MM_MODEM_GSM_ACCESS_TECH_HSUPA;
-        else if (b == 7)
-            act = MM_MODEM_GSM_ACCESS_TECH_HSPA;
+        if (act < MM_MODEM_GSM_ACCESS_TECH_UMTS)
+            act = MM_MODEM_GSM_ACCESS_TECH_UNKNOWN;
     } else if (a == 0)
         act = MM_MODEM_GSM_ACCESS_TECH_UNKNOWN;
     else {
-        g_warning ("Couldn't parse mode change value: '%s'", str);
+        mm_warn ("Couldn't parse mode change value: '%s'", str);
         return;
     }
 
-    g_debug ("Access Technology: %d", act);
+    mm_dbg ("Access Technology: %d", act);
+
     mm_generic_gsm_update_access_technology (MM_GENERIC_GSM (self), act);
 }
 
@@ -669,8 +679,8 @@ handle_status_change (MMAtSerialPort *port,
 
     str = g_match_info_fetch (match_info, 1);
     if (sscanf (str, "%x,%x,%x,%x,%x,%x,%x", &n1, &n2, &n3, &n4, &n5, &n6, &n7)) {
-        g_debug ("Duration: %d Up: %d Kbps Down: %d Kbps Total: %d Total: %d\n",
-                 n1, n2 * 8 / 1000, n3  * 8 / 1000, n4 / 1024, n5 / 1024);
+        mm_dbg ("Duration: %d Up: %d Kbps Down: %d Kbps Total: %d Total: %d\n",
+                n1, n2 * 8 / 1000, n3  * 8 / 1000, n4 / 1024, n5 / 1024);
     }
     g_free (str);
 }

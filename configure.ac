@@ -2,6 +2,7 @@ AC_PREREQ(2.52)
 
 AC_INIT(ModemManager, 0.4, dcbw@redhat.com, ModemManager)
 AM_INIT_AUTOMAKE([1.9 subdir-objects tar-ustar no-dist-gzip dist-bzip2])
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AM_MAINTAINER_MODE
 
 AC_CONFIG_MACRO_DIR([m4])
@@ -26,7 +27,7 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Gettext package])
 IT_PROG_INTLTOOL([0.35.0])
 AM_GLIB_GNU_GETTEXT
 
-PKG_CHECK_MODULES(MM, dbus-glib-1 >= 0.75 glib-2.0 >= 2.18 gmodule-2.0 gobject-2.0)
+PKG_CHECK_MODULES(MM, dbus-glib-1 >= 0.86 glib-2.0 >= 2.18 gmodule-2.0 gobject-2.0)
 
 PKG_CHECK_MODULES(GUDEV, gudev-1.0)
 AC_SUBST(GUDEV_CFLAGS)
@@ -63,11 +64,21 @@ case $with_polkit in
 	AC_DEFINE(WITH_POLKIT, 1, [Define if you want to use PolicyKit])
 	AC_SUBST(POLKIT_CFLAGS)
 	AC_SUBST(POLKIT_LIBS)
+
+	# Check for polkit_authority_get_sync()
+	AC_CHECK_LIB([polkit-gobject-1], [polkit_authority_get_sync], ac_have_pk_auth_get_sync="1", ac_have_pk_auth_get_sync="0")
+	AC_DEFINE_UNQUOTED(HAVE_POLKIT_AUTHORITY_GET_SYNC, $ac_have_pk_auth_get_sync, [Define if you have a polkit with polkit_authority_get_sync()])
         ;;
     *)
         with_polkit=no
         ;;
 esac
+
+dnl
+dnl Checks for new dbus-glib property access function
+dnl
+AC_CHECK_LIB([dbus-glib-1], [dbus_glib_global_set_disable_legacy_property_access], ac_have_dg_prop="1", ac_have_dg_prop="0")
+AC_DEFINE_UNQUOTED(HAVE_DBUS_GLIB_DISABLE_LEGACY_PROP_ACCESS, $ac_have_dg_prop, [Define if you have a dbus-glib with dbus_glib_global_set_disable_legacy_property_access()])
 
 # PPPD
 AC_CHECK_HEADERS(pppd/pppd.h, have_pppd_headers="yes", have_pppd_headers="no")
@@ -113,18 +124,6 @@ esac
 
 NM_COMPILER_WARNINGS
 
-
-dnl
-dnl dbus-glib >= 0.86 is required for Location API support
-dnl
-with_location_api=no
-PKG_CHECK_MODULES(DBUS_GLIB, dbus-glib-1 >= 0.86, with_location_api="yes", with_location_api="no")
-if test x"$with_location_api" = xyes; then
-    AC_DEFINE(LOCATION_API, 1, [Define if you have dbus-glib 0.86 or higher])
-else
-    AC_MSG_WARN([dbus-glib >= 0.86 is required for Location API support])
-fi
-AM_CONDITIONAL(WITH_LOCATION_API, test "x$with_location_api" = "xyes")
 
 dnl
 dnl Distribution version string

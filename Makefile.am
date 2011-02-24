@@ -1,10 +1,11 @@
+XSLTPROC = xsltproc --xinclude --nonet
+
+XMLS = $(wildcard introspection/*.xml)
+
 if WITH_DOCS
 
 all:
 
-XSLTPROC = xsltproc --xinclude --nonet
-
-XMLS = $(wildcard introspection/mm-*.xml)
 # Figure out if we need ASYNC_INTROSPECT and add it later
 
 GENERATED_FILES = \
@@ -42,8 +43,19 @@ dbusactivationdir = $(datadir)/dbus-1/system-services
 dbusactivation_in_files = org.freedesktop.ModemManager.service.in
 dbusactivation_DATA = $(dbusactivation_in_files:.service.in=.service)
 
+includedir = @includedir@/mm
+
+include_HEADERS = include/mm-modem.h
+
+include/mm-modem.h: $(XMLS) introspection/all.xml header-generator.xsl
+	@install -d include
+	$(XSLTPROC) header-generator.xsl introspection/all.xml > $@
+
 %service: %service.in
 	$(edit) $< >$@
+
+xmldir = $(datadir)/dbus-1/interfaces
+xml_DATA = $(XMLS)
 
 edit = @sed \
 	-e 's|@sbindir[@]|$(sbindir)|g' \
@@ -51,7 +63,7 @@ edit = @sed \
 	-e 's|@localstatedir[@]|$(localstatedir)|g' \
 	-e 's|@libexecdir[@]|$(libexecdir)|g'
 
-DISTCHECK_CONFIGURE_FLAGS = --with-udev-base-dir=$dc_install_base
+DISTCHECK_CONFIGURE_FLAGS = --with-udev-base-dir=$dc_install_base --with-tests=yes
 
 INTLTOOL_FILES = \
 	intltool-extract.in \
@@ -68,6 +80,7 @@ DISTCLEANFILES = \
 
 EXTRA_DIST = \
 	doc-generator.xsl \
+	header-generator.xsl \
 	$(dbusactivation_in_files) \
 	$(INTLTOOL_FILES) \
 	$(dbusservice_file_polkit) \

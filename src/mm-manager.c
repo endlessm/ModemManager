@@ -24,6 +24,7 @@
 #include "mm-manager.h"
 #include "mm-errors.h"
 #include "mm-plugin.h"
+#include "mm-log.h"
 
 static gboolean impl_manager_enumerate_devices (MMManager *manager,
                                                 GPtrArray **devices,
@@ -112,9 +113,9 @@ load_plugin (const char *path)
     plugin = (*plugin_create_func) ();
     if (plugin) {
         g_object_weak_ref (G_OBJECT (plugin), (GWeakNotify) g_module_close, module);
-        g_message ("Loaded plugin %s", mm_plugin_get_name (plugin));
+        mm_info ("Loaded plugin %s", mm_plugin_get_name (plugin));
     } else
-        g_warning ("Could not load plugin %s: initialization failed", path);
+        mm_warn ("Could not load plugin %s: initialization failed", path);
 
  out:
     if (!plugin)
@@ -196,7 +197,7 @@ remove_modem (MMManager *manager, MMModem *modem)
 
     device = mm_modem_get_device (modem);
     g_assert (device);
-    g_debug ("Removed modem %s", device);
+    mm_dbg ("Removed modem %s", device);
 
     g_signal_emit (manager, signals[DEVICE_REMOVED], 0, modem);
     g_hash_table_remove (priv->modems, device);
@@ -234,8 +235,8 @@ check_export_modem (MMManager *self, MMModem *modem)
         SupportsInfo *info = value;
 
         if (!strcmp (info->physdev_path, modem_physdev)) {
-            g_debug ("(%s/%s): outstanding support task prevents export of %s",
-                     info->subsys, info->name, modem_physdev);
+            mm_dbg ("(%s/%s): outstanding support task prevents export of %s",
+                    info->subsys, info->name, modem_physdev);
             goto out;
         }
     }
@@ -248,18 +249,34 @@ check_export_modem (MMManager *self, MMModem *modem)
 
     /* No outstanding port tasks, so if the modem is valid we can export it */
     if (mm_modem_get_valid (modem)) {
-        static guint32 id = 0;
+        static guint32 id = 0, vid = 0, pid = 0;
         char *path, *data_device = NULL;
+        GUdevDevice *physdev;
+        const char *subsys = NULL;
 
         path = g_strdup_printf (MM_DBUS_PATH"/Modems/%d", id++);
         dbus_g_connection_register_g_object (priv->connection, path, G_OBJECT (modem));
         g_object_set_data_full (G_OBJECT (modem), DBUS_PATH_TAG, path, (GDestroyNotify) g_free);
 
-        g_debug ("Exported modem %s as %s", modem_physdev, path);
+        mm_dbg ("Exported modem %s as %s", modem_physdev, path);
 
-        g_object_get (G_OBJECT (modem), MM_MODEM_DATA_DEVICE, &data_device, NULL);
-        g_debug ("(%s): data port is %s", path, data_device);
+        physdev = g_udev_client_query_by_sysfs_path (priv->udev, modem_physdev);
+        if (physdev)
+            subsys = g_udev_device_get_subsystem (physdev);
+
+        g_object_get (G_OBJECT (modem),
+                      MM_MODEM_DATA_DEVICE, &data_device,
+                      MM_MODEM_HW_VID, &vid,
+                      MM_MODEM_HW_PID, &pid,
+                      NULL);
+        mm_dbg ("(%s): VID 0x%04X PID 0x%04X (%s)",
+                 path, (vid & 0xFFFF), (pid & 0xFFFF),
+                 subsys ? subsys : "unknown");
+        mm_dbg ("(%s): data port is %s", path, data_device);
         g_free (data_device);
+
+        if (physdev)
+            g_object_unref (physdev);
 
         g_signal_emit (self, signals[DEVICE_ADDED], 0, modem);
     }
@@ -293,7 +310,7 @@ add_modem (MMManager *manager, MMModem *modem, MMPlugin *plugin)
         g_hash_table_insert (priv->modems, g_strdup (device), modem);
         g_object_set_data (G_OBJECT (modem), MANAGER_PLUGIN_TAG, plugin);
 
-        g_debug ("Added modem %s", device);
+        mm_dbg ("Added modem %s", device);
         g_signal_connect (modem, "notify::" MM_MODEM_VALID, G_CALLBACK (modem_valid), manager);
         check_export_modem (manager, modem);
     }
@@ -430,7 +447,7 @@ supports_defer_timeout (gpointer user_data)
 
     existing = find_modem_for_device (info->manager, info->physdev_path);
 
-    g_debug ("(%s): re-checking support...", info->name);
+    mm_dbg ("(%s): re-checking support...", info->name);
     try_supports_port (info->manager,
                        MM_PLUGIN (info->cur_plugin->data),
                        existing,
@@ -462,9 +479,9 @@ try_supports_port (MMManager *manager,
         supports_callback (plugin, info->subsys, info->name, 0, info);
         break;
     case MM_PLUGIN_SUPPORTS_PORT_DEFER:
-        g_debug ("(%s): (%s) deferring support check",
-                 mm_plugin_get_name (plugin),
-                 info->name);
+        mm_dbg ("(%s): (%s) deferring support check",
+                mm_plugin_get_name (plugin),
+                info->name);
         if (info->defer_id)
             g_source_remove (info->defer_id);
 
@@ -533,22 +550,21 @@ do_grab_port (gpointer user_data)
                 type_name = "CDMA";
 
             device = mm_modem_get_device (modem);
-            g_message ("(%s): %s modem %s claimed port %s",
-                        mm_plugin_get_name (info->best_plugin),
-                        type_name,
-                        device,
-                        info->name);
+            mm_info ("(%s): %s modem %s claimed port %s",
+                     mm_plugin_get_name (info->best_plugin),
+                     type_name,
+                     device,
+                     info->name);
             g_free (device);
 
             add_modem (info->manager, modem, info->best_plugin);
         } else {
-            g_warning ("%s: plugin '%s' claimed to support %s/%s but couldn't: (%d) %s",
-                        __func__,
-                        mm_plugin_get_name (info->best_plugin),
-                        info->subsys,
-                        info->name,
-                        error ? error->code : -1,
-                        (error && error->message) ? error->message : "(unknown)");
+            mm_warn ("plugin '%s' claimed to support %s/%s but couldn't: (%d) %s",
+                     mm_plugin_get_name (info->best_plugin),
+                     info->subsys,
+                     info->name,
+                     error ? error->code : -1,
+                     (error && error->message) ? error->message : "(unknown)");
             modem = existing;
         }
     }
@@ -597,8 +613,8 @@ supports_callback (MMPlugin *plugin,
                  * support this port, but this plugin is clearly the right plugin
                  * since it claimed this port's physical modem, just drop the port.
                  */
-                g_debug ("(%s/%s): ignoring port unsupported by physical modem's plugin",
-                         info->subsys, info->name);
+                mm_dbg ("(%s/%s): ignoring port unsupported by physical modem's plugin",
+                        info->subsys, info->name);
                 supports_cleanup (info->manager, info->subsys, info->name, existing);
                 return;
             }
@@ -615,14 +631,14 @@ supports_callback (MMPlugin *plugin,
              */
             next_plugin = existing_plugin;
         } else {
-            g_debug ("(%s/%s): plugin %p (%s) existing %p (%s) info->best %p (%s)",
-                     info->subsys, info->name,
-                     plugin,
-                     plugin ? mm_plugin_get_name (plugin) : "none",
-                     existing_plugin,
-                     existing_plugin ? mm_plugin_get_name (existing_plugin) : "none",
-                     info->best_plugin,
-                     info->best_plugin ? mm_plugin_get_name (info->best_plugin) : "none");
+            mm_dbg ("(%s/%s): plugin %p (%s) existing %p (%s) info->best %p (%s)",
+                    info->subsys, info->name,
+                    plugin,
+                    plugin ? mm_plugin_get_name (plugin) : "none",
+                    existing_plugin,
+                    existing_plugin ? mm_plugin_get_name (existing_plugin) : "none",
+                    info->best_plugin,
+                    info->best_plugin ? mm_plugin_get_name (info->best_plugin) : "none");
             g_assert_not_reached ();
         }
     } else {
@@ -717,7 +733,7 @@ device_added (MMManager *manager, GUdevDevice *device)
     const char *subsys, *name, *physdev_path, *physdev_subsys;
     SupportsInfo *info;
     char *key;
-    gboolean found;
+    gboolean found, is_candidate;
     GUdevDevice *physdev = NULL;
     MMPlugin *plugin;
     MMModem *existing;
@@ -732,6 +748,17 @@ device_added (MMManager *manager, GUdevDevice *device)
 
     /* ignore VTs */
     if (strncmp (name, "tty", 3) == 0 && isdigit (name[3]))
+        return;
+
+    /* Ignore devices that aren't completely configured by udev yet.  If
+     * ModemManager is started in parallel with udev, explicitly requesting
+     * devices may return devices for which not all udev rules have yet been
+     * applied (a bug in udev/gudev).  Since we often need those rules to match
+     * the device to a specific ModemManager driver, we need to ensure that all
+     * rules have been processed before handling a device.
+     */
+    is_candidate = g_udev_device_get_property_as_boolean (device, "ID_MM_CANDIDATE");
+    if (!is_candidate)
         return;
 
     if (find_modem_for_port (manager, subsys, name))
@@ -756,14 +783,14 @@ device_added (MMManager *manager, GUdevDevice *device)
             && strcmp (name, "lo")
             && strcmp (name, "tty")
             && !strstr (name, "virbr"))
-            g_debug ("(%s/%s): could not get port's parent device", subsys, name);
+            mm_dbg ("(%s/%s): could not get port's parent device", subsys, name);
 
         goto out;
     }
 
     /* Is the device blacklisted? */
     if (g_udev_device_get_property_as_boolean (physdev, "ID_MM_DEVICE_IGNORE")) {
-        g_debug ("(%s/%s): port's parent device is blacklisted", subsys, name);
+        mm_dbg ("(%s/%s): port's parent device is blacklisted", subsys, name);
         goto out;
     }
 
@@ -772,13 +799,13 @@ device_added (MMManager *manager, GUdevDevice *device)
     if (   physdev_subsys
         && !strcmp (physdev_subsys, "platform")
         && !g_udev_device_get_property_as_boolean (physdev, "ID_MM_PLATFORM_DRIVER_PROBE")) {
-        g_debug ("(%s/%s): port's parent platform driver is not whitelisted", subsys, name);
+        mm_dbg ("(%s/%s): port's parent platform driver is not whitelisted", subsys, name);
         goto out;
     }
 
     physdev_path = g_udev_device_get_sysfs_path (physdev);
     if (!physdev_path) {
-        g_debug ("(%s/%s): could not get port's parent device sysfs path", subsys, name);
+        mm_dbg ("(%s/%s): could not get port's parent device sysfs path", subsys, name);
         goto out;
     }
 
@@ -809,7 +836,7 @@ device_removed (MMManager *manager, GUdevDevice *device)
     MMManagerPrivate *priv = MM_MANAGER_GET_PRIVATE (manager);
     MMModem *modem;
     const char *subsys, *name;
-    char *key;
+    char *key, *modem_device;
     SupportsInfo *info;
 
     g_return_if_fail (device != NULL);
@@ -824,6 +851,9 @@ device_removed (MMManager *manager, GUdevDevice *device)
         /* find_modem_for_port handles tty and net removal */
         modem = find_modem_for_port (manager, subsys, name);
         if (modem) {
+            modem_device = mm_modem_get_device (modem);
+            mm_info ("(%s/%s): released by modem %s", subsys, name, modem_device);
+            g_free (modem_device);
             mm_modem_release_port (modem, subsys, name);
             return;
         }
@@ -838,10 +868,9 @@ device_removed (MMManager *manager, GUdevDevice *device)
          */
         const char *sysfs_path = g_udev_device_get_sysfs_path (device);
 
-        // g_debug ("Looking for a modem for removed device %s", sysfs_path);
         modem = find_modem_for_device (manager, sysfs_path);
         if (modem) {
-            g_debug ("Removing modem claimed by removed device %s", sysfs_path);
+            mm_dbg ("Removing modem claimed by removed device %s", sysfs_path);
             remove_modem (manager, modem);
             return;
         }

@@ -17,6 +17,8 @@
 #ifndef MM_GENERIC_GSM_H
 #define MM_GENERIC_GSM_H
 
+#include <config.h>
+
 #include "mm-modem-gsm.h"
 #include "mm-modem-gsm-network.h"
 #include "mm-modem-base.h"
@@ -46,7 +48,15 @@ typedef enum {
     MM_GENERIC_GSM_PROP_SUPPORTED_MODES,
     MM_GENERIC_GSM_PROP_INIT_CMD_OPTIONAL,
     MM_GENERIC_GSM_PROP_ALLOWED_MODE,
-    MM_GENERIC_GSM_PROP_ACCESS_TECHNOLOGY
+    MM_GENERIC_GSM_PROP_ACCESS_TECHNOLOGY,
+    MM_GENERIC_GSM_PROP_LOC_CAPABILITIES,
+    MM_GENERIC_GSM_PROP_LOC_ENABLED,
+    MM_GENERIC_GSM_PROP_LOC_SIGNAL,
+    MM_GENERIC_GSM_PROP_LOC_LOCATION,
+    MM_GENERIC_GSM_PROP_SIM_IDENTIFIER,
+    MM_GENERIC_GSM_PROP_USSD_STATE,
+    MM_GENERIC_GSM_PROP_USSD_NETWORK_REQUEST,
+    MM_GENERIC_GSM_PROP_USSD_NETWORK_NOTIFICATION,
 } MMGenericGsmProp;
 
 typedef enum {
@@ -110,13 +120,30 @@ typedef struct {
     void (*get_access_technology) (MMGenericGsm *self,
                                    MMModemUIntFn callback,
                                    gpointer user_data);
+
+    /* Called by the generic class to get additional Location capabilities that
+     * subclasses may implement.  The MM_MODEM_LOCATION_CAPABILITY_GSM_LAC_CI
+     * capabilities is automatically provided by the generic class, and
+     * subclasses should return a bitfield of additional location capabilities
+     * they support in the callback here.
+     */
+    void (*loc_get_capabilities) (MMGenericGsm *self,
+                                  MMModemUIntFn callback,
+                                  gpointer user_data);
+
+    /* Called by the generic class to retrieve the SIM's ICCID */
+    void (*get_sim_iccid) (MMGenericGsm *self,
+                           MMModemStringFn callback,
+                           gpointer user_data);
 } MMGenericGsmClass;
 
 GType mm_generic_gsm_get_type (void);
 
 MMModem *mm_generic_gsm_new (const char *device,
                              const char *driver,
-                             const char *plugin);
+                             const char *plugin,
+                             guint vendor,
+                             guint product);
 
 /* Private, for subclasses */
 

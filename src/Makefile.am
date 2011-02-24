@@ -4,12 +4,13 @@ udevrulesdir = $(UDEV_BASE_DIR)/rules.d
 udevrules_DATA = \
 	77-mm-usb-device-blacklist.rules \
 	77-mm-pcmcia-device-blacklist.rules \
-	77-mm-platform-serial-whitelist.rules
+	77-mm-platform-serial-whitelist.rules \
+	80-mm-candidate.rules
 
 EXTRA_DIST = \
 	$(udevrules_DATA)
 
-noinst_LTLIBRARIES = libmodem-helpers.la
+noinst_LTLIBRARIES = libmodem-helpers.la libserial.la
 
 libmodem_helpers_la_CPPFLAGS = \
 	$(MM_CFLAGS)
@@ -23,6 +24,20 @@ libmodem_helpers_la_SOURCES = \
 	mm-charsets.h \
 	mm-utils.c \
 	mm-utils.h
+
+libserial_la_CPPFLAGS = \
+	$(MM_CFLAGS) \
+	-I$(top_srcdir)
+
+libserial_la_SOURCES = \
+	mm-port.c \
+	mm-port.h \
+	mm-serial-port.c \
+	mm-serial-port.h \
+	mm-at-serial-port.c \
+	mm-at-serial-port.h \
+	mm-qcdm-serial-port.c \
+	mm-qcdm-serial-port.h
 
 sbin_PROGRAMS = modem-manager
 
@@ -41,8 +56,9 @@ modem_manager_LDADD = \
 	$(MM_LIBS) \
 	$(GUDEV_LIBS) \
 	$(top_builddir)/marshallers/libmarshallers.la \
-	$(top_builddir)/libqcdm/src/libqcdm.la \
-	$(builddir)/libmodem-helpers.la
+	$(builddir)/libmodem-helpers.la \
+	$(builddir)/libserial.la \
+	$(top_builddir)/libqcdm/src/libqcdm.la
 
 if WITH_POLKIT
 modem_manager_LDADD += $(POLKIT_LIBS)
@@ -63,12 +79,10 @@ auth_sources += \
 	mm-auth-provider-polkit.h
 endif
 
-loc_sources = \
-	mm-modem-location.c \
-	mm-modem-location.h
-
 modem_manager_SOURCES = \
 	main.c \
+	mm-log.c \
+	mm-log.h \
 	mm-callback-info.c \
 	mm-callback-info.h \
 	$(auth_sources) \
@@ -76,14 +90,6 @@ modem_manager_SOURCES = \
 	mm-manager.h \
 	mm-modem.c \
 	mm-modem.h \
-	mm-port.c \
-	mm-port.h \
-	mm-serial-port.c \
-	mm-serial-port.h \
-	mm-at-serial-port.c \
-	mm-at-serial-port.h \
-	mm-qcdm-serial-port.c \
-	mm-qcdm-serial-port.h \
 	mm-serial-parsers.c \
 	mm-serial-parsers.h \
 	mm-modem-base.c \
@@ -101,37 +107,45 @@ modem_manager_SOURCES = \
 	mm-modem-gsm-network.h \
 	mm-modem-gsm-sms.c \
 	mm-modem-gsm-sms.h \
+	mm-modem-gsm-ussd.c \
+	mm-modem-gsm-ussd.h \
 	mm-modem-simple.c \
 	mm-modem-simple.h \
-	mm-options.c \
-	mm-options.h \
 	mm-plugin.c \
 	mm-plugin.h \
 	mm-plugin-base.c \
 	mm-plugin-base.h \
 	mm-properties-changed-signal.c \
-	mm-properties-changed-signal.h
+	mm-properties-changed-signal.h \
+	mm-modem-location.c \
+	mm-modem-location.h
 
-mm-manager-glue.h: $(top_srcdir)/introspection/mm-manager.xml
-	dbus-binding-tool --prefix=mm_manager --mode=glib-server --output=$@ $<
+mm-manager-glue.h: $(top_srcdir)/introspection/org.freedesktop.ModemManager.xml
+	$(AM_V_GEN) dbus-binding-tool --prefix=mm_manager --mode=glib-server --output=$@ $<
 
-mm-modem-glue.h: $(top_srcdir)/introspection/mm-modem.xml
-	dbus-binding-tool --prefix=mm_modem --mode=glib-server --output=$@ $<
+mm-modem-glue.h: $(top_srcdir)/introspection/org.freedesktop.ModemManager.Modem.xml
+	$(AM_V_GEN) dbus-binding-tool --prefix=mm_modem --mode=glib-server --output=$@ $<
 
-mm-modem-simple-glue.h: $(top_srcdir)/introspection/mm-modem-simple.xml
-	dbus-binding-tool --prefix=mm_modem_simple --mode=glib-server --output=$@ $<
+mm-modem-simple-glue.h: $(top_srcdir)/introspection/org.freedesktop.ModemManager.Modem.Simple.xml
+	$(AM_V_GEN) dbus-binding-tool --prefix=mm_modem_simple --mode=glib-server --output=$@ $<
 
-mm-modem-cdma-glue.h: $(top_srcdir)/introspection/mm-modem-cdma.xml
-	dbus-binding-tool --prefix=mm_modem_cdma --mode=glib-server --output=$@ $<
+mm-modem-cdma-glue.h: $(top_srcdir)/introspection/org.freedesktop.ModemManager.Modem.Cdma.xml
+	$(AM_V_GEN) dbus-binding-tool --prefix=mm_modem_cdma --mode=glib-server --output=$@ $<
 
-mm-modem-gsm-card-glue.h: $(top_srcdir)/introspection/mm-modem-gsm-card.xml
-	dbus-binding-tool --prefix=mm_modem_gsm_card --mode=glib-server --output=$@ $<
+mm-modem-gsm-card-glue.h: $(top_srcdir)/introspection/org.freedesktop.ModemManager.Modem.Gsm.Card.xml
+	$(AM_V_GEN) dbus-binding-tool --prefix=mm_modem_gsm_card --mode=glib-server --output=$@ $<
 
-mm-modem-gsm-network-glue.h: $(top_srcdir)/introspection/mm-modem-gsm-network.xml
-	dbus-binding-tool --prefix=mm_modem_gsm_network --mode=glib-server --output=$@ $<
+mm-modem-gsm-network-glue.h: $(top_srcdir)/introspection/org.freedesktop.ModemManager.Modem.Gsm.Network.xml
+	$(AM_V_GEN) dbus-binding-tool --prefix=mm_modem_gsm_network --mode=glib-server --output=$@ $<
 
-mm-modem-gsm-sms-glue.h: $(top_srcdir)/introspection/mm-modem-gsm-sms.xml
-	dbus-binding-tool --prefix=mm_modem_gsm_sms --mode=glib-server --output=$@ $<
+mm-modem-gsm-sms-glue.h: $(top_srcdir)/introspection/org.freedesktop.ModemManager.Modem.Gsm.SMS.xml
+	$(AM_V_GEN) dbus-binding-tool --prefix=mm_modem_gsm_sms --mode=glib-server --output=$@ $<
+
+mm-modem-gsm-ussd-glue.h: $(top_srcdir)/introspection/org.freedesktop.ModemManager.Modem.Gsm.Ussd.xml
+	$(AM_V_GEN) dbus-binding-tool --prefix=mm_modem_gsm_ussd --mode=glib-server --output=$@ $<
+
+mm-properties-changed-glue.h: $(top_srcdir)/introspection/org.freedesktop.DBus.Properties.xml
+	$(AM_V_GEN) dbus-binding-tool --prefix=mm_properties_changed --mode=glib-server --output=$@ $<
 
 BUILT_SOURCES = \
 	mm-manager-glue.h \
@@ -140,17 +154,15 @@ BUILT_SOURCES = \
 	mm-modem-cdma-glue.h \
 	mm-modem-gsm-card-glue.h \
 	mm-modem-gsm-network-glue.h \
-	mm-modem-gsm-sms-glue.h
+	mm-modem-gsm-sms-glue.h \
+	mm-modem-gsm-ussd-glue.h \
+	mm-properties-changed-glue.h
 
-if WITH_LOCATION_API
-mm-modem-location-glue.h: $(top_srcdir)/introspection/mm-modem-location.xml
-	dbus-binding-tool --prefix=mm_modem_location --mode=glib-server --output=$@ $<
+mm-modem-location-glue.h: $(top_srcdir)/introspection/org.freedesktop.ModemManager.Modem.Location.xml
+	$(AM_V_GEN) dbus-binding-tool --prefix=mm_modem_location --mode=glib-server --output=$@ $<
 
 modem_manager_SOURCES += $(loc_sources)
 
 BUILT_SOURCES += mm-modem-location-glue.h
-else
-EXTRA_DIST += $(loc_sources)
-endif
 
 CLEANFILES = $(BUILT_SOURCES)

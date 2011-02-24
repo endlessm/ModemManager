@@ -11,7 +11,7 @@
  * GNU General Public License for more details:
  *
  * Copyright (C) 2008 - 2009 Novell, Inc.
- * Copyright (C) 2009 Red Hat, Inc.
+ * Copyright (C) 2009 - 2010 Red Hat, Inc.
  */
 
 #include <string.h>
@@ -73,9 +73,6 @@ supports_port (MMPluginBase *base,
 
     /* Can't do anything with non-serial ports */
     port = mm_plugin_base_supports_task_get_port (task);
-    if (strcmp (g_udev_device_get_subsystem (port), "tty"))
-        return MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
-
     subsys = g_udev_device_get_subsystem (port);
     name = g_udev_device_get_name (port);
 
@@ -83,6 +80,20 @@ supports_port (MMPluginBase *base,
         return MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
 
     if (vendor != 0x19d2)
+        return MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
+
+    if (!strcmp (subsys, "net")) {
+        /* If we don't know the modem's type yet, defer grabbing the port
+         * until we know the type.
+         */
+        if (!existing)
+            return MM_PLUGIN_SUPPORTS_PORT_DEFER;
+
+        mm_plugin_base_supports_task_complete (task, 10);
+        return MM_PLUGIN_SUPPORTS_PORT_IN_PROGRESS;
+    }
+
+    if (strcmp (subsys, "tty"))
         return MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
 
     if (mm_plugin_base_get_cached_port_capabilities (base, port, &cached)) {
@@ -121,6 +132,7 @@ grab_port (MMPluginBase *base,
     const char *name, *subsys, *sysfs_path;
     guint32 caps;
     MMPortType ptype = MM_PORT_TYPE_UNKNOWN;
+    guint16 vendor = 0, product = 0;
 
     port = mm_plugin_base_supports_task_get_port (task);
     g_assert (port);
@@ -134,19 +146,28 @@ grab_port (MMPluginBase *base,
     subsys = g_udev_device_get_subsystem (port);
     name = g_udev_device_get_name (port);
 
+    if (!mm_plugin_base_get_device_ids (base, subsys, name, &vendor, &product)) {
+        g_set_error (error, 0, 0, "Could not get modem product ID.");
+        return NULL;
+    }
+
     caps = mm_plugin_base_supports_task_get_probed_capabilities (task);
     sysfs_path = mm_plugin_base_supports_task_get_physdev_path (task);
     if (!existing) {
         if (caps & MM_PLUGIN_BASE_PORT_CAP_GSM) {
             modem = mm_modem_zte_new (sysfs_path,
                                       mm_plugin_base_supports_task_get_driver (task),
-                                      mm_plugin_get_name (MM_PLUGIN (base)));
+                                      mm_plugin_get_name (MM_PLUGIN (base)),
+                                      vendor,
+                                      product);
         } else if (caps & CAP_CDMA) {
             modem = mm_generic_cdma_new (sysfs_path,
                                          mm_plugin_base_supports_task_get_driver (task),
                                          mm_plugin_get_name (MM_PLUGIN (base)),
                                          !!(caps & MM_PLUGIN_BASE_PORT_CAP_IS856),
-                                         !!(caps & MM_PLUGIN_BASE_PORT_CAP_IS856_A));
+                                         !!(caps & MM_PLUGIN_BASE_PORT_CAP_IS856_A),
+                                         vendor,
+                                         product);
         }
 
         if (modem) {
@@ -155,7 +176,7 @@ grab_port (MMPluginBase *base,
                 return NULL;
             }
         }
-    } else if (get_level_for_capabilities (caps)) {
+    } else if (get_level_for_capabilities (caps) || (!strcmp (subsys, "net"))) {
         if (caps & MM_PLUGIN_BASE_PORT_CAP_QCDM)
             ptype = MM_PORT_TYPE_QCDM;
 

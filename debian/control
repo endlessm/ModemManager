@@ -6,14 +6,13 @@ Uploaders: Alexander Sack <asac@debian.org>, Michael Biebl <biebl@debian.org>, M
 Build-Depends: debhelper (>= 7),
 	automake (>= 1:1.10), automake (<< 1:1.12),
 	cdbs,
-	quilt,
 	libtool,
-	libdbus-glib-1-dev (>= 0.75),
+	libdbus-glib-1-dev (>= 0.86),
 	libglib2.0-dev (>= 2.18),
 	libgudev-1.0-dev,
 	xsltproc,
 	intltool
-Standards-Version: 3.8.4
+Standards-Version: 3.9.1
 Vcs-Bzr: https://code.launchpad.net/~modemmanager/modemmanager/ubuntu
 
 Package: modemmanager

@@ -1,9 +1,53 @@
-modemmanager (0.4+git.20100624t180933.6e79d15-2) unstable; urgency=low
+modemmanager (0.4+git.20110124t203624.00b6cce-1) unstable; urgency=low
 
-  * Nokia N900 appears to need a longer port delay.
-    Patch cherry-picked from upstream Git. (Closes: #607982)
+  * Upload to unstable.
+  * Fixes GTest build failures. (Closes: #614448)
+  * Switch to source format 3.0 (quilt)
+    - Add debian/source/format.
+    - Drop Build-Depends on quilt.
+    - Remove /usr/share/cdbs/1/rules/patchsys-quilt.mk from debian/rules.
+  * Bump Standards-Version to 3.9.1. No further changes.
+  * Bump Build-Depends on libdbus-glib-1-dev to (>= 0.86).
 
- -- Michael Biebl <biebl@debian.org>  Tue, 28 Dec 2010 10:24:52 +0100
+ -- Michael Biebl <biebl@debian.org>  Fri, 25 Feb 2011 00:08:15 +0100
+
+modemmanager (0.4+git.20110124t203624.00b6cce-0ubuntu1) natty; urgency=low
+
+  * upstream snapshot 2011-01-24 20:36:24 (GMT)
+    + 00b6cce4df7d4acbf3e580a03c2f044e18589d2c
+    - rules: blacklist some unlikely USB serial dongles
+    - gsm: enable unsolicited codes on secondary ports too
+    - test: handle cancel and distinguish between initiate and respond
+    - gsm: wire up USSD Respond function
+    - api: add reply parameter to USSD Respond method
+    - linktop: add plugin for Linktop/Teracom LW273
+    - gsm: prefer AT+CIND signal quality for modems that support it (LP: #682282)
+    - huawei: don't spam syslog with tx/rx stats (LP: #673457, #662791)
+    - gsm: query signal strength with +CIND if modem does not support +CSQ
+    - gsm: add preliminary USSD support
+    - huawei: fix potential double-free on error
+    - core: prefer CDMA capabilities over GSM for dual-mode devices
+    - gsm: allow use of GSM 03.38 character set
+    - polkit: fix for polkit >= 0.97
+    - core: work around dbus-glib property access bug (CVE-2010-1172)
+  * debian/patches/qdl-blacklist.patch: add a blacklist of Gobi QDL devices so
+    that we don't break firmware loading by trying to initialize them before
+    the modem is really ready. (LP: #686418)
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Wed, 26 Jan 2011 21:03:12 -0500
+
+modemmanager (0.4+git.20100809t153145.be28089-0ubuntu1) maverick; urgency=low
+
+  * upstream snapshot 2010-08-09 15:31:45 (GMT)
+    + be28089dc4c1b07d9def45a3c763f432ae8322c4
+    - cdma: determine EVDO registration even when in 1X mode
+    - zte: add more port tags
+    - gsm: ensure invalid operator names don't get used (rh #597088)
+    - nokia: N900 appears to need a longer port delay (rh #583691)
+    - novatel: detect CDMA home/roaming status
+    - novatel: fix S720 signal quality reporting
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Wed, 11 Aug 2010 10:57:27 -0400
 
 modemmanager (0.4+git.20100624t180933.6e79d15-1) unstable; urgency=low
 

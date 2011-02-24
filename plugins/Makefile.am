@@ -1,3 +1,24 @@
+
+##########################
+# Icera-specific support #
+##########################
+
+noinst_LTLIBRARIES = libicera-utils.la
+
+libicera_utils_la_SOURCES = \
+	mm-modem-icera.c \
+	mm-modem-icera.h
+
+libicera_utils_la_CPPFLAGS = \
+	$(MM_CFLAGS) \
+	$(GUDEV_CFLAGS) \
+	-I$(top_srcdir)/src
+
+libicera_utils_la_LIBADD = \
+	$(GUDEV_LDFLAGS)
+
+########################################
+
 pkglib_LTLIBRARIES = \
 	libmm-plugin-generic.la \
 	libmm-plugin-moto-c.la \
@@ -12,7 +33,9 @@ pkglib_LTLIBRARIES = \
 	libmm-plugin-mbm.la \
 	libmm-plugin-longcheer.la \
 	libmm-plugin-anydata.la \
-	libmm-plugin-simtech.la
+	libmm-plugin-simtech.la \
+	libmm-plugin-x22x.la \
+	libmm-plugin-linktop.la
 
 # Generic
 
@@ -95,8 +118,8 @@ libmm_plugin_hso_la_SOURCES = \
 	mm-modem-hso.c \
 	mm-modem-hso.h
 
-mm-modem-gsm-hso-glue.h: $(top_srcdir)/introspection/mm-modem-gsm-hso.xml
-	dbus-binding-tool --prefix=mm_modem_gsm_hso --mode=glib-server --output=$@ $<
+mm-modem-gsm-hso-glue.h: $(top_srcdir)/introspection/org.freedesktop.ModemManager.Modem.Gsm.Hso.xml
+	$(AM_V_GEN) dbus-binding-tool --prefix=mm_modem_gsm_hso --mode=glib-server --output=$@ $<
 
 libmm_plugin_hso_la_CPPFLAGS = \
 	$(MM_CFLAGS) \
@@ -177,7 +200,8 @@ libmm_plugin_novatel_la_SOURCES = \
 libmm_plugin_novatel_la_CPPFLAGS = \
 	$(MM_CFLAGS) \
 	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
+	-I$(top_srcdir)/src \
+	-I$(top_srcdir)
 
 libmm_plugin_novatel_la_LDFLAGS = \
 	$(GUDEV_LDFLAGS) \
@@ -217,6 +241,7 @@ libmm_plugin_zte_la_CPPFLAGS = \
 
 libmm_plugin_zte_la_LDFLAGS = \
 	$(GUDEV_LDFLAGS) \
+	$(builddir)/libicera-utils.la \
 	-module \
 	-avoid-version
 
@@ -274,13 +299,49 @@ libmm_plugin_simtech_la_LDFLAGS = \
 	-module \
 	-avoid-version
 
+# Alcatel/TCT/JRD x220D and possibly others
+
+libmm_plugin_x22x_la_SOURCES = \
+	mm-plugin-x22x.c \
+	mm-plugin-x22x.h \
+	mm-modem-x22x-gsm.c \
+	mm-modem-x22x-gsm.h
+
+libmm_plugin_x22x_la_CPPFLAGS = \
+	$(MM_CFLAGS) \
+	$(GUDEV_CFLAGS) \
+	-I$(top_srcdir)/src
+
+libmm_plugin_x22x_la_LDFLAGS = \
+	$(GUDEV_LDFLAGS) \
+	-module \
+	-avoid-version
+
+# Linktop
+
+libmm_plugin_linktop_la_SOURCES = \
+	mm-plugin-linktop.c \
+	mm-plugin-linktop.h \
+	mm-modem-linktop.c \
+	mm-modem-linktop.h
+
+libmm_plugin_linktop_la_CPPFLAGS = \
+	$(MM_CFLAGS) \
+	$(GUDEV_CFLAGS) \
+	-I$(top_srcdir)/src
+
+libmm_plugin_linktop_la_LDFLAGS = \
+	$(GUDEV_LDFLAGS) \
+	-module \
+	-avoid-version
 
 udevrulesdir = $(UDEV_BASE_DIR)/rules.d
 udevrules_DATA = \
 	77-mm-ericsson-mbm.rules \
 	77-mm-zte-port-types.rules \
 	77-mm-longcheer-port-types.rules \
-	77-mm-simtech-port-types.rules
+	77-mm-simtech-port-types.rules \
+	77-mm-x22x-port-types.rules
 
 BUILT_SOURCES = \
 	mm-modem-gsm-hso-glue.h
