@@ -1,0 +1,33 @@
+From c9772e14aa0bf4e252213b319b9211d7aef5bf15 Mon Sep 17 00:00:00 2001
+From: Michael Biebl <biebl@debian.org>
+Date: Fri, 25 Feb 2011 11:08:18 +0100
+Subject: [PATCH] Use type glong for secs and usecs
+
+GVariant defines tv_sec and tv_usec as type glong and suseconds_t is not
+guaranteed to be of type long on sparc, which results in a build
+failure.
+
+http://lxr.free-electrons.com/source/arch/sparc/include/asm/posix_types.h#L41
+https://buildd.debian.org/fetch.cgi?pkg=modemmanager&arch=sparc&ver=0.4%2Bgit.20110124t203624.00b6cce-1&stamp=1298595733&file=log&as=raw
+---
+ src/mm-log.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/mm-log.c b/src/mm-log.c
+index bcf806a..3e3bd83 100644
+--- a/src/mm-log.c
++++ b/src/mm-log.c
+@@ -77,8 +77,8 @@ _mm_log (const char *loc,
+         g_get_current_time (&tv);
+         snprintf (&tsbuf[0], sizeof (tsbuf), " [%09ld.%06ld]", tv.tv_sec, tv.tv_usec);
+     } else if (ts_flags == TS_FLAG_REL) {
+-        time_t secs;
+-        suseconds_t usecs;
++        glong secs;
++        glong usecs;
+ 
+         g_get_current_time (&tv);
+         secs = tv.tv_sec - rel_start.tv_sec;
+-- 
+1.7.4.1
+

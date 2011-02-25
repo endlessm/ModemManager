@@ -1,3 +1,12 @@
+modemmanager (0.4+git.20110124t203624.00b6cce-2) unstable; urgency=low
+
+  * debian/patches/0001-Use-type-glong-for-secs-and-usecs.patch
+    - GVariant defines tv_usec  as glong and suseconds_t is not guaranteed to
+      be of type long on sparc, resulting in a build failure.
+      So use type glong instead for sec and usecs.
+
+ -- Michael Biebl <biebl@debian.org>  Fri, 25 Feb 2011 11:16:05 +0100
+
 modemmanager (0.4+git.20110124t203624.00b6cce-1) unstable; urgency=low
 
   * Upload to unstable.

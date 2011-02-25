@@ -1,2 +1,3 @@
 # patches for modemmanager
 qdl-blacklist.patch
+0001-Use-type-glong-for-secs-and-usecs.patch
