@@ -85,9 +85,7 @@ static BandTable bands[] = {
     /* 2G second */
     { MM_MODEM_GSM_BAND_DCS,   0x00000080 },
     { MM_MODEM_GSM_BAND_EGSM,  0x00000300 }, /* 0x100 = Extended GSM, 0x200 = Primary GSM */
-    { MM_MODEM_GSM_BAND_PCS,   0x00200000 },
-    /* And ANY last since it's most inclusive */
-    { MM_MODEM_GSM_BAND_ANY,   0x3FFFFFFF },
+    { MM_MODEM_GSM_BAND_PCS,   0x00200000 }
 };
 
 static gboolean
@@ -95,13 +93,19 @@ band_mm_to_huawei (MMModemGsmBand band, guint32 *out_huawei)
 {
     int i;
 
-    for (i = 0; i < sizeof (bands) / sizeof (BandTable); i++) {
-        if (bands[i].mm == band) {
-            *out_huawei = bands[i].huawei;
-            return TRUE;
+    /* Treat ANY as a special case: All huawei flags enabled */
+    if (band == MM_MODEM_GSM_BAND_ANY) {
+        *out_huawei = 0x3FFFFFFF;
+        return TRUE;
+    }
+
+    *out_huawei = 0;
+    for (i = 0; i < G_N_ELEMENTS (bands); i++) {
+        if (bands[i].mm & band) {
+            *out_huawei |= bands[i].huawei;
         }
     }
-    return FALSE;
+    return (*out_huawei > 0 ? TRUE : FALSE);
 }
 
 static gboolean
@@ -109,16 +113,13 @@ band_huawei_to_mm (guint32 huawei, MMModemGsmBand *out_mm)
 {
     int i;
 
-    for (i = 0; i < sizeof (bands) / sizeof (BandTable); i++) {
-        /* The dongle returns a bitfield, but since we don't support that
-         * yet in MM, take the "best" band and return it.
-         */
+    *out_mm = 0;
+    for (i = 0; i < G_N_ELEMENTS (bands); i++) {
         if (bands[i].huawei & huawei) {
-            *out_mm = bands[i].mm;
-            return TRUE;
+            *out_mm |= bands[i].mm;
         }
     }
-    return FALSE;
+    return (*out_mm > 0 ? TRUE : FALSE);
 }
 
 /*****************************************************************************/
@@ -687,6 +688,71 @@ handle_status_change (MMAtSerialPort *port,
 
 /*****************************************************************************/
 
+static void
+do_enable_power_up_done (MMGenericGsm *gsm,
+                         GString *response,
+                         GError *error,
+                         MMCallbackInfo *info)
+{
+    if (!error) {
+        MMAtSerialPort *primary;
+
+        /* Enable unsolicited result codes */
+        primary = mm_generic_gsm_get_at_port (gsm, MM_PORT_TYPE_PRIMARY);
+        g_assert (primary);
+
+        mm_at_serial_port_queue_command (primary, "^CURC=1", 5, NULL, NULL);
+    }
+
+    /* Chain up to parent */
+    MM_GENERIC_GSM_CLASS (mm_modem_huawei_gsm_parent_class)->do_enable_power_up_done (gsm, NULL, error, info);
+}
+
+/*****************************************************************************/
+
+typedef struct {
+    MMModem *modem;
+    MMModemFn callback;
+    gpointer user_data;
+} DisableInfo;
+
+static void
+disable_unsolicited_done (MMAtSerialPort *port,
+                          GString *response,
+                          GError *error,
+                          gpointer user_data)
+
+{
+    MMModem *parent_modem_iface;
+    DisableInfo *info = user_data;
+
+    parent_modem_iface = g_type_interface_peek_parent (MM_MODEM_GET_INTERFACE (info->modem));
+    parent_modem_iface->disable (info->modem, info->callback, info->user_data);
+    g_free (info);
+}
+
+static void
+disable (MMModem *modem,
+         MMModemFn callback,
+         gpointer user_data)
+{
+    MMAtSerialPort *primary;
+    DisableInfo *info;
+
+    info = g_malloc0 (sizeof (DisableInfo));
+    info->callback = callback;
+    info->user_data = user_data;
+    info->modem = modem;
+
+    primary = mm_generic_gsm_get_at_port (MM_GENERIC_GSM (modem), MM_PORT_TYPE_PRIMARY);
+    g_assert (primary);
+
+    /* Turn off unsolicited responses */
+    mm_at_serial_port_queue_command (primary, "^CURC=0", 5, disable_unsolicited_done, info);
+}
+
+/*****************************************************************************/
+
 static gboolean
 grab_port (MMModem *modem,
            const char *subsys,
@@ -766,6 +832,7 @@ static void
 modem_init (MMModem *modem_class)
 {
     modem_class->grab_port = grab_port;
+    modem_class->disable = disable;
 }
 
 static void
@@ -798,5 +865,6 @@ mm_modem_huawei_gsm_class_init (MMModemHuaweiGsmClass *klass)
     gsm_class->set_allowed_mode = set_allowed_mode;
     gsm_class->get_allowed_mode = get_allowed_mode;
     gsm_class->get_access_technology = get_access_technology;
+    gsm_class->do_enable_power_up_done = do_enable_power_up_done;
 }
 

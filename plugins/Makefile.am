@@ -35,7 +35,9 @@ pkglib_LTLIBRARIES = \
 	libmm-plugin-anydata.la \
 	libmm-plugin-simtech.la \
 	libmm-plugin-x22x.la \
-	libmm-plugin-linktop.la
+	libmm-plugin-linktop.la \
+	libmm-plugin-samsung.la \
+	libmm-plugin-wavecom.la
 
 # Generic
 
@@ -187,6 +189,24 @@ libmm_plugin_sierra_la_LDFLAGS = \
 	-module \
 	-avoid-version
 
+# Wavecom (Sierra Airlink)
+
+libmm_plugin_wavecom_la_SOURCES = \
+	mm-plugin-wavecom.c \
+	mm-plugin-wavecom.h \
+	mm-modem-wavecom-gsm.c \
+	mm-modem-wavecom-gsm.h
+
+libmm_plugin_wavecom_la_CPPFLAGS = \
+	$(MM_CFLAGS) \
+	$(GUDEV_CFLAGS) \
+	-I$(top_srcdir)/src
+
+libmm_plugin_wavecom_la_LDFLAGS = \
+	$(GUDEV_LDFLAGS) \
+	-module \
+	-avoid-version
+
 # Novatel
 
 libmm_plugin_novatel_la_SOURCES = \
@@ -241,9 +261,11 @@ libmm_plugin_zte_la_CPPFLAGS = \
 
 libmm_plugin_zte_la_LDFLAGS = \
 	$(GUDEV_LDFLAGS) \
-	$(builddir)/libicera-utils.la \
 	-module \
 	-avoid-version
+
+libmm_plugin_zte_la_LIBADD = \
+	$(builddir)/libicera-utils.la
 
 # Longcheer (and rebranded dongles)
 
@@ -331,6 +353,24 @@ libmm_plugin_linktop_la_CPPFLAGS = \
 	-I$(top_srcdir)/src
 
 libmm_plugin_linktop_la_LDFLAGS = \
+	$(GUDEV_LDFLAGS) \
+	-module \
+	-avoid-version
+
+# Samsung modem
+
+libmm_plugin_samsung_la_SOURCES = \
+	mm-plugin-samsung.c \
+	mm-plugin-samsung.h \
+	mm-modem-samsung-gsm.c \
+	mm-modem-samsung-gsm.h
+
+libmm_plugin_samsung_la_CPPFLAGS = \
+	$(MM_CFLAGS) \
+	$(GUDEV_CFLAGS) \
+	-I$(top_srcdir)/src
+
+libmm_plugin_samsung_la_LDFLAGS = \
 	$(GUDEV_LDFLAGS) \
 	-module \
 	-avoid-version

@@ -1,3 +1,49 @@
+modemmanager (0.4+git.20110429t103114.863dbca-1) unstable; urgency=low
+
+  [ Thomas Bechtold ]
+  * debian/rules, debian/control: migrate from CDBS to using dh
+
+  [ Mathieu Trudel-Lapierre ]
+  * upstream snapshot 2011-04-29 10:31:14 (GMT)
+    + 863dbca63132b820fca6c48a9c212f852752ee16
+  * debian/README.source: add instructions for using this packaging branch and
+    how to build from it; adapted from the NetworkManager package.
+  * debian/rules, debian/control: update control and rules to use dh-autoreconf
+    rather than just autoreconf.
+  * debian/control: bump Standards-Version to 3.9.2.
+  * debian/rules: re-add DEB_* variables which got dropped from the dh
+    migration, since we no longer include buildvars.mk.
+  * debian/patches/git-backport-e208c52-to-0c4b944.patch,
+    debian/patches/git-backport-verbose-cmee-errors-7d20acc.patch: dropped,
+    applied upstream.
+  * debian/control: bump debhelper Build-Depends to 8.
+  * debian/compat: bump to compat level 8, according to the debhelper update.
+  * debian/rules: cleanup extra files left behind by intltoolize.
+
+ -- Michael Biebl <biebl@debian.org>  Wed, 04 May 2011 13:17:33 +0200
+
+modemmanager (0.4+git.20110124t203624.00b6cce-2ubuntu1) natty; urgency=low
+
+  * debian/patches/git-backport-e208c52-to-0c4b944.patch: backport a number of
+    upstream bug fixes:
+    - gsm: fix for parsing malformed Gobi CREG response
+    - core: allow plugins to handle custom init responses (LP: #712580)
+    - policy: loosen permissions somewhat for reading device info (kde#266807)
+    - logging: use glong for secs and usecs
+    - cdma: ensure the ActivationStateChanged signal exists
+    - log: fix spacing so messages line up
+    - simtech: add port tags for SCT U300 (Element Mobile)
+    - core: allow platform devices without a VID/PID
+    - zte: fix handling of Icera simple connect process
+    - icera: fix username and password ordering for authentication
+  * debian/patches/0001-Use-type-glong-for-secs-and-usecs.patch: drop, included
+    in the above backports from upstream.
+  * debian/patches/git-backport-verbose-cmee-errors-7d20acc.patch: backport
+    patch to make sure error reporting is set to verbose when asking modems
+    about PIN status, so we get a useful message instead of a generic error.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Sun, 10 Apr 2011 18:16:54 -0400
+
 modemmanager (0.4+git.20110124t203624.00b6cce-2) unstable; urgency=low
 
   * debian/patches/0001-Use-type-glong-for-secs-and-usecs.patch

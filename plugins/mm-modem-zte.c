@@ -39,10 +39,12 @@ G_DEFINE_TYPE_EXTENDED (MMModemZte, mm_modem_zte, MM_TYPE_GENERIC_GSM, 0,
 #define MM_MODEM_ZTE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), MM_TYPE_MODEM_ZTE, MMModemZtePrivate))
 
 typedef struct {
+    gboolean disposed;
     gboolean init_retried;
     guint32 cpms_tries;
     guint cpms_timeout;
     gboolean is_icera;
+    MMModemIceraPrivate *icera;
 } MMModemZtePrivate;
 
 MMModem *
@@ -52,17 +54,23 @@ mm_modem_zte_new (const char *device,
                   guint32 vendor,
                   guint32 product)
 {
+    MMModem *modem;
+
     g_return_val_if_fail (device != NULL, NULL);
     g_return_val_if_fail (driver != NULL, NULL);
     g_return_val_if_fail (plugin != NULL, NULL);
 
-    return MM_MODEM (g_object_new (MM_TYPE_MODEM_ZTE,
-                                   MM_MODEM_MASTER_DEVICE, device,
-                                   MM_MODEM_DRIVER, driver,
-                                   MM_MODEM_PLUGIN, plugin,
-                                   MM_MODEM_HW_VID, vendor,
-                                   MM_MODEM_HW_PID, product,
-                                   NULL));
+    modem = MM_MODEM (g_object_new (MM_TYPE_MODEM_ZTE,
+                                    MM_MODEM_MASTER_DEVICE, device,
+                                    MM_MODEM_DRIVER, driver,
+                                    MM_MODEM_PLUGIN, plugin,
+                                    MM_MODEM_HW_VID, vendor,
+                                    MM_MODEM_HW_PID, product,
+                                    NULL));
+    if (modem)
+        MM_MODEM_ZTE_GET_PRIVATE (modem)->icera = mm_modem_icera_init_private ();
+
+    return modem;
 }
 
 /*****************************************************************************/
@@ -547,12 +555,13 @@ simple_connect (MMModemSimple *simple,
                 MMModemFn callback,
                 gpointer user_data)
 {
-    MMModemZtePrivate *priv = MM_MODEM_ZTE_GET_PRIVATE (simple);
+    MMModemZte *self = MM_MODEM_ZTE (simple);
+    MMModemZtePrivate *priv = MM_MODEM_ZTE_GET_PRIVATE (self);
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
     MMModemSimple *parent_iface;
 
     if (priv->is_icera)
-        mm_modem_icera_simple_connect (MM_MODEM_ICERA (simple), properties);
+        mm_modem_icera_simple_connect (MM_MODEM_ICERA (self), properties);
 
     parent_iface = g_type_interface_peek_parent (MM_MODEM_SIMPLE_GET_INTERFACE (simple));
     parent_iface->connect (MM_MODEM_SIMPLE (simple), properties, callback, info);
@@ -619,6 +628,14 @@ grab_port (MMModem *modem,
 
 /*****************************************************************************/
 
+static MMModemIceraPrivate *
+get_icera_private (MMModemIcera *icera)
+{
+    return MM_MODEM_ZTE_GET_PRIVATE (icera)->icera;
+}
+
+/*****************************************************************************/
+
 static void
 modem_init (MMModem *modem_class)
 {
@@ -629,9 +646,9 @@ modem_init (MMModem *modem_class)
 }
 
 static void
-modem_icera_init (MMModemIcera *icera_class)
+modem_icera_init (MMModemIcera *icera)
 {
-    mm_modem_icera_prepare (icera_class);
+    icera->get_private = get_icera_private;
 }
 
 static void
@@ -651,10 +668,14 @@ dispose (GObject *object)
     MMModemZte *self = MM_MODEM_ZTE (object);
     MMModemZtePrivate *priv = MM_MODEM_ZTE_GET_PRIVATE (self);
 
-    if (priv->cpms_timeout)
-        g_source_remove (priv->cpms_timeout);
+    if (priv->disposed == FALSE) {
+        priv->disposed = TRUE;
 
-    mm_modem_icera_cleanup (MM_MODEM_ICERA (self));
+        if (priv->cpms_timeout)
+            g_source_remove (priv->cpms_timeout);
+
+        mm_modem_icera_dispose_private (MM_MODEM_ICERA (self));
+    }
 
     G_OBJECT_CLASS (mm_modem_zte_parent_class)->dispose (object);
 }

@@ -1,30 +1,42 @@
 #!/usr/bin/make -f
 
-DEB_AUTO_UPDATE_LIBTOOL = pre
-DEB_AUTO_UPDATE_AUTOHEADER = 2.50
-DEB_AUTO_UPDATE_AUTOCONF = 2.50
+#For debhelper debugging
+#export DH_VERBOSE=1
 
-# use automake 1.10 ... or 1.11
-ifneq (,$(wildcard /usr/bin/aclocal-1.11))
-DEB_AUTO_UPDATE_ACLOCAL = 1.11
-DEB_AUTO_UPDATE_AUTOMAKE = 1.11 -a -c -f
-else
-DEB_AUTO_UPDATE_ACLOCAL = 1.10
-DEB_AUTO_UPDATE_AUTOMAKE = 1.10 -a -c -f
-endif
+#always exclude any data from version control systems
+DH_ALWAYS_EXCLUDE=.svn:.git:.bzr
 
-include /usr/share/cdbs/1/class/autotools.mk
-include /usr/share/cdbs/1/rules/debhelper.mk
+%:
+	dh $@ --with autoreconf
 
+override_dh_autoreconf:
+	intltoolize --force
+	dh_autoreconf
+
+override_dh_autoreconf_clean:
+	dh_autoreconf_clean
+	rm -f intltool-*.in po/Makefile.in.in m4/intltool.m4 || true
+
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		--with-docs
+
+override_dh_makeshlibs:
+	dh_makeshlibs -X/usr/lib/ModemManager/ -X/usr/lib/pppd/
+
+override_dh_install:
+	find $(CURDIR)/debian/modemmanager/ -name \*.a | xargs rm
+	find $(CURDIR)/debian/modemmanager/ -name \*.la | xargs rm
+	dh_install
+
+override_dh_installdocs:
+	dh_installdocs -A README AUTHORS docs/spec.html
+
+DEB_SOURCE_PACKAGE := $(shell dpkg-parsechangelog | egrep '^Source:' | cut -f 2 -d ' ')
+DEB_VERSION := $(shell dpkg-parsechangelog | egrep '^Version:' | cut -f 2 -d ' ')
+DEB_NOEPOCH_VERSION := $(shell echo $(DEB_VERSION) | cut -d: -f2-)
+DEB_UPSTREAM_VERSION := $(shell echo $(DEB_NOEPOCH_VERSION) | sed 's/-[^-]*$$//')
 DEB_MAJOR_VERSION := $(shell echo $(DEB_UPSTREAM_VERSION) | sed -e 's/git.*//')
-
-DEB_DH_MAKESHLIBS_ARGS_modemmanager := -X/usr/lib/ModemManager/ -X/usr/lib/pppd/
-
-DEB_INSTALL_DOCS_ALL := README AUTHORS docs/spec.html
-
-DEB_CONFIGURE_EXTRA_FLAGS += \
-		--with-docs \
-		$(NULL)
 
 GIT_URL := git://anongit.freedesktop.org/ModemManager/ModemManager
 GIT_BRANCH := "master"
@@ -33,10 +45,6 @@ GIT_BRANCH_NAME := ModemManager
 ifneq (,$(LOCAL_BRANCH))
 LOCAL_REAL_BRANCH = $(realpath $(LOCAL_BRANCH))
 endif
-
-pre-build::
-	# run intltoolize before updating the build system
-	intltoolize -f
 
 GET_SOURCE = \
 	set -e; \
@@ -56,10 +64,6 @@ GET_SOURCE = \
 		fi; \
 		cd ..; tar --exclude=.git -czf $(CURDIR)/$(DEB_SOURCE_PACKAGE)_$$upstream_version.orig.tar.gz `ls | head -n 1`; \
 		cd $(CURDIR); rm -rf $$tmpdir;
-
-binary-post-install/modemmanager::
-	find $(CURDIR)/debian/modemmanager/ -name \*.a | xargs rm
-	find $(CURDIR)/debian/modemmanager/ -name \*.la | xargs rm
 
 get-current-source:: $(if $(LOCAL_BRANCH), update-local-branch)
 	set -e; if echo $(DEB_VERSION) | grep -c "git" > /dev/null; \

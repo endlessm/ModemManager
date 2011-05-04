@@ -1,29 +1,30 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+
 /*
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details:
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
  *
- * Copyright (C) 2008 - 2009 Novell, Inc.
- * Copyright (C) 2009 Red Hat, Inc.
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * Copyright (C) 2011 Ammonit Gesellschaft für Messtechnik mbH
  */
 
 #include <string.h>
 #include <gmodule.h>
-#define G_UDEV_API_IS_SUBJECT_TO_CHANGE
-#include <gudev/gudev.h>
+#include "mm-plugin-wavecom.h"
+#include "mm-modem-wavecom-gsm.h"
 
-#include "mm-plugin-gobi.h"
-#include "mm-modem-gobi-gsm.h"
-#include "mm-generic-cdma.h"
-
-G_DEFINE_TYPE (MMPluginGobi, mm_plugin_gobi, MM_TYPE_PLUGIN_BASE)
+G_DEFINE_TYPE (MMPluginWavecom, mm_plugin_wavecom, MM_TYPE_PLUGIN_BASE)
 
 int mm_plugin_major_version = MM_PLUGIN_MAJOR_VERSION;
 int mm_plugin_minor_version = MM_PLUGIN_MINOR_VERSION;
@@ -31,24 +32,15 @@ int mm_plugin_minor_version = MM_PLUGIN_MINOR_VERSION;
 G_MODULE_EXPORT MMPlugin *
 mm_plugin_create (void)
 {
-    return MM_PLUGIN (g_object_new (MM_TYPE_PLUGIN_GOBI,
-                                    MM_PLUGIN_BASE_NAME, "Gobi",
+    return MM_PLUGIN (g_object_new (MM_TYPE_PLUGIN_WAVECOM,
+                                    MM_PLUGIN_BASE_NAME, "Wavecom",
                                     NULL));
 }
-
-/*****************************************************************************/
-
-#define CAP_CDMA (MM_PLUGIN_BASE_PORT_CAP_IS707_A | \
-                  MM_PLUGIN_BASE_PORT_CAP_IS707_P | \
-                  MM_PLUGIN_BASE_PORT_CAP_IS856 | \
-                  MM_PLUGIN_BASE_PORT_CAP_IS856_A)
 
 static guint32
 get_level_for_capabilities (guint32 capabilities)
 {
     if (capabilities & MM_PLUGIN_BASE_PORT_CAP_GSM)
-        return 10;
-    if (capabilities & CAP_CDMA)
         return 10;
     return 0;
 }
@@ -69,15 +61,22 @@ supports_port (MMPluginBase *base,
 {
     GUdevDevice *port;
     guint32 cached = 0, level;
-    const char *driver;
+    const char *subsys, *name;
+    guint16 vendor = 0;
 
     /* Can't do anything with non-serial ports */
     port = mm_plugin_base_supports_task_get_port (task);
     if (strcmp (g_udev_device_get_subsystem (port), "tty"))
         return MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
 
-    driver = mm_plugin_base_supports_task_get_driver (task);
-    if (!driver || strcmp (driver, "qcserial"))
+    subsys = g_udev_device_get_subsystem (port);
+    name = g_udev_device_get_name (port);
+
+    if (!mm_plugin_base_get_device_ids (base, subsys, name, &vendor, NULL))
+        return MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
+
+    /* Vendor: Wavecom */
+    if (vendor != 0x114f)
         return MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
 
     if (mm_plugin_base_get_cached_port_capabilities (base, port, &cached)) {
@@ -123,19 +122,11 @@ grab_port (MMPluginBase *base,
     sysfs_path = mm_plugin_base_supports_task_get_physdev_path (task);
     if (!existing) {
         if (caps & MM_PLUGIN_BASE_PORT_CAP_GSM) {
-            modem = mm_modem_gobi_gsm_new (sysfs_path,
-                                           mm_plugin_base_supports_task_get_driver (task),
-                                           mm_plugin_get_name (MM_PLUGIN (base)),
-                                           vendor,
-                                           product);
-        } else if (caps & CAP_CDMA) {
-            modem = mm_generic_cdma_new (sysfs_path,
-                                         mm_plugin_base_supports_task_get_driver (task),
-                                         mm_plugin_get_name (MM_PLUGIN (base)),
-                                         !!(caps & MM_PLUGIN_BASE_PORT_CAP_IS856),
-                                         !!(caps & MM_PLUGIN_BASE_PORT_CAP_IS856_A),
-                                         vendor,
-                                         product);
+            modem = mm_modem_wavecom_gsm_new (sysfs_path,
+                                              mm_plugin_base_supports_task_get_driver (task),
+                                              mm_plugin_get_name (MM_PLUGIN (base)),
+                                              vendor,
+                                              product);
         }
 
         if (modem) {
@@ -156,17 +147,16 @@ grab_port (MMPluginBase *base,
 /*****************************************************************************/
 
 static void
-mm_plugin_gobi_init (MMPluginGobi *self)
+mm_plugin_wavecom_init (MMPluginWavecom *self)
 {
     g_signal_connect (self, "probe-result", G_CALLBACK (probe_result), NULL);
 }
 
 static void
-mm_plugin_gobi_class_init (MMPluginGobiClass *klass)
+mm_plugin_wavecom_class_init (MMPluginWavecomClass *klass)
 {
     MMPluginBaseClass *pb_class = MM_PLUGIN_BASE_CLASS (klass);
 
     pb_class->supports_port = supports_port;
     pb_class->grab_port = grab_port;
 }
-

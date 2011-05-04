@@ -45,7 +45,7 @@ struct _MMModemIceraPrivate {
     MMModemGsmAccessTech last_act;
 };
 
-#define MM_MODEM_ICERA_GET_PRIVATE(m) (MM_MODEM_ICERA_GET_INTERFACE(m)->priv)
+#define MM_MODEM_ICERA_GET_PRIVATE(m) (MM_MODEM_ICERA_GET_INTERFACE (m)->get_private(m))
 
 static void
 get_allowed_mode_done (MMAtSerialPort *port,
@@ -172,11 +172,15 @@ static MMModemGsmAccessTech
 nwstate_to_act (const char *str)
 {
     /* small 'g' means CS, big 'G' means PS */
-    if (!strcmp (str, "2G-GPRS"))
+    if (!strcmp (str, "2g"))
+        return MM_MODEM_GSM_ACCESS_TECH_GSM;
+    else if (!strcmp (str, "2G-GPRS"))
         return MM_MODEM_GSM_ACCESS_TECH_GPRS;
     else if (!strcmp (str, "2G-EDGE"))
         return MM_MODEM_GSM_ACCESS_TECH_EDGE;
     else if (!strcmp (str, "3G"))
+        return MM_MODEM_GSM_ACCESS_TECH_UMTS;
+    else if (!strcmp (str, "3g"))
         return MM_MODEM_GSM_ACCESS_TECH_UMTS;
     else if (!strcmp (str, "3G-HSDPA"))
         return MM_MODEM_GSM_ACCESS_TECH_HSDPA;
@@ -447,10 +451,10 @@ icera_connect_timed_out (gpointer data)
 }
 
 static void
-icera_enabled (MMAtSerialPort *port,
-               GString *response,
-               GError *error,
-               gpointer user_data)
+icera_connected (MMAtSerialPort *port,
+                 GString *response,
+                 GError *error,
+                 gpointer user_data)
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
 
@@ -478,7 +482,7 @@ old_context_clear_done (MMAtSerialPort *port,
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
 
     /* Activate the PDP context and start the data session */
-    icera_call_control (MM_MODEM_ICERA (info->modem), TRUE, icera_enabled, info);
+    icera_call_control (MM_MODEM_ICERA (info->modem), TRUE, icera_connected, info);
 }
 
 static void
@@ -526,8 +530,8 @@ mm_modem_icera_do_connect (MMModemIcera *self,
     else {
         command = g_strdup_printf ("%%IPDPCFG=%d,0,1,\"%s\",\"%s\"",
                                    cid,
-                                   priv->password ? priv->password : "",
-                                   priv->username ? priv->username : "");
+                                   priv->username ? priv->username : "",
+                                   priv->password ? priv->password : "");
 
     }
 
@@ -671,7 +675,7 @@ mm_modem_icera_register_unsolicted_handlers (MMModemIcera *self,
     GRegex *regex;
 
     /* %NWSTATE: <rssi>,<mccmnc>,<tech>,<connected>,<regulation> */
-    regex = g_regex_new ("\\r\\n%NWSTATE:\\s*(\\d+),(\\d+),([^,]*),([^,]*),(\\d+)\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
+    regex = g_regex_new ("\\r\\n%NWSTATE:\\s*(-?\\d+),(\\d+),([^,]*),([^,]*),(\\d+)\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
     mm_at_serial_port_add_unsolicited_msg_handler (port, regex, nwstate_changed, self, NULL);
     g_regex_unref (regex);
 
@@ -731,14 +735,6 @@ mm_modem_icera_is_icera (MMModemIcera *self,
     mm_at_serial_port_queue_command (port, "%IPSYS?", 5, is_icera_done, info);
 }
 
-/****************************************************************/
-
-void
-mm_modem_icera_prepare (MMModemIcera *self)
-{
-    self->priv = g_malloc0 (sizeof (MMModemIceraPrivate));
-}
-
 void
 mm_modem_icera_cleanup (MMModemIcera *self)
 {
@@ -748,20 +744,32 @@ mm_modem_icera_cleanup (MMModemIcera *self)
     connect_pending_done (self);
 
     g_free (priv->username);
+    priv->username = NULL;
     g_free (priv->password);
+    priv->password = NULL;
+}
 
-    memset (priv, 0, sizeof (MMModemIceraPrivate));
+/****************************************************************/
+
+MMModemIceraPrivate *
+mm_modem_icera_init_private (void)
+{
+    return g_malloc0 (sizeof (MMModemIceraPrivate));
+}
+
+void
+mm_modem_icera_dispose_private (MMModemIcera *self)
+{
+    MMModemIceraPrivate *priv = MM_MODEM_ICERA_GET_PRIVATE (self);
+
+    mm_modem_icera_cleanup (self);
+    memset (priv, 0, sizeof (*priv));
     g_free (priv);
 }
 
 static void
 mm_modem_icera_init (gpointer g_iface)
 {
-    static gboolean initialized = FALSE;
-
-    if (!initialized) {
-        initialized = TRUE;
-    }
 }
 
 GType
