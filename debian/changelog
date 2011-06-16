@@ -1,3 +1,17 @@
+modemmanager (0.4.997-1) unstable; urgency=low
+
+  * debian/watch: Switch to .bz2 tarballs.
+  * Upload to unstable.
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 16 Jun 2011 17:12:41 +0200
+
+modemmanager (0.4.997-0ubuntu1) oneiric; urgency=low
+
+  * New upstream release 0.4.997.
+    + switch to git branch MM_05. 
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Thu, 09 Jun 2011 09:41:20 -0400
+
 modemmanager (0.4+git.20110429t103114.863dbca-1) unstable; urgency=low
 
   [ Thomas Bechtold ]

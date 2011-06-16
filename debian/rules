@@ -39,7 +39,7 @@ DEB_UPSTREAM_VERSION := $(shell echo $(DEB_NOEPOCH_VERSION) | sed 's/-[^-]*$$//'
 DEB_MAJOR_VERSION := $(shell echo $(DEB_UPSTREAM_VERSION) | sed -e 's/git.*//')
 
 GIT_URL := git://anongit.freedesktop.org/ModemManager/ModemManager
-GIT_BRANCH := "master"
+GIT_BRANCH := "MM_05"
 GIT_BRANCH_NAME := ModemManager
 
 ifneq (,$(LOCAL_BRANCH))

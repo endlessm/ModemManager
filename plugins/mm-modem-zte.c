@@ -103,9 +103,15 @@ get_allowed_mode_done (MMAtSerialPort *port,
     GRegex *r = NULL;
     GMatchInfo *match_info;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->error)
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error) {
+        info->error = g_error_copy (error);
         goto done;
+    }
 
     r = g_regex_new ("+ZSNT:\\s*(\\d),(\\d),(\\d)", G_REGEX_UNGREEDY, 0, NULL);
     if (!r) {
@@ -192,6 +198,11 @@ set_allowed_mode_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
 
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
     if (error)
         info->error = g_error_copy (error);
 
@@ -259,6 +270,11 @@ get_act_request_done (MMAtSerialPort *port,
     MMCallbackInfo *info = user_data;
     MMModemGsmAccessTech act = MM_MODEM_GSM_ACCESS_TECH_UNKNOWN;
     const char *p;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
 
     if (error)
         info->error = g_error_copy (error);
@@ -346,7 +362,14 @@ cpms_try_done (MMAtSerialPort *port,
                gpointer user_data)
 {
     MMCallbackInfo *info = user_data;
-    MMModemZtePrivate *priv = MM_MODEM_ZTE_GET_PRIVATE (info->modem);
+    MMModemZtePrivate *priv;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    priv = MM_MODEM_ZTE_GET_PRIVATE (info->modem);
 
     if (error && g_error_matches (error, MM_MOBILE_ERROR, MM_MOBILE_ERROR_SIM_BUSY)) {
         if (priv->cpms_tries++ < 4) {
@@ -376,6 +399,11 @@ init_modem_done (MMAtSerialPort *port,
                  gpointer user_data)
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
 
     mm_at_serial_port_queue_command (port, "E0", 5, NULL, NULL);
 
@@ -417,8 +445,16 @@ pre_init_done (MMAtSerialPort *port,
                gpointer user_data)
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
-    MMModemZte *self = MM_MODEM_ZTE (info->modem);
-    MMModemZtePrivate *priv = MM_MODEM_ZTE_GET_PRIVATE (self);
+    MMModemZte *self;
+    MMModemZtePrivate *priv;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    self = MM_MODEM_ZTE (info->modem);
+    priv = MM_MODEM_ZTE_GET_PRIVATE (self);
 
     if (error) {
         /* Retry the init string one more time; the modem sometimes throws it away */
@@ -464,12 +500,6 @@ do_enable (MMGenericGsm *modem, MMModemFn callback, gpointer user_data)
 
 /*****************************************************************************/
 
-typedef struct {
-    MMModem *modem;
-    MMModemFn callback;
-    gpointer user_data;
-} DisableInfo;
-
 static void
 disable_unsolicited_done (MMAtSerialPort *port,
                           GString *response,
@@ -477,12 +507,29 @@ disable_unsolicited_done (MMAtSerialPort *port,
                           gpointer user_data)
 
 {
-    MMModem *parent_modem_iface;
-    DisableInfo *info = user_data;
+    MMCallbackInfo *info = (MMCallbackInfo *) user_data;
 
-    parent_modem_iface = g_type_interface_peek_parent (MM_MODEM_GET_INTERFACE (info->modem));
-    parent_modem_iface->disable (info->modem, info->callback, info->user_data);
-    g_free (info);
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    /* Ignore all errors */
+    mm_callback_info_schedule (info);
+}
+
+static void
+invoke_call_parent_disable_fn (MMCallbackInfo *info)
+{
+    /* Note: we won't call the parent disable if info->modem is no longer
+     * valid. The invoke is called always once the info gets scheduled, which
+     * may happen during removed modem detection. */
+    if (info->modem) {
+        MMModem *parent_modem_iface;
+
+        parent_modem_iface = g_type_interface_peek_parent (MM_MODEM_GET_INTERFACE (info->modem));
+        parent_modem_iface->disable (info->modem, (MMModemFn)info->callback, info->user_data);
+    }
 }
 
 static void
@@ -492,14 +539,14 @@ disable (MMModem *modem,
 {
     MMModemZtePrivate *priv = MM_MODEM_ZTE_GET_PRIVATE (modem);
     MMAtSerialPort *primary;
-    DisableInfo *info;
+    MMCallbackInfo *info;
+
+    info = mm_callback_info_new_full (modem,
+                                      invoke_call_parent_disable_fn,
+                                      (GCallback)callback,
+                                      user_data);
 
     priv->init_retried = FALSE;
-
-    info = g_malloc0 (sizeof (DisableInfo));
-    info->callback = callback;
-    info->user_data = user_data;
-    info->modem = modem;
 
     primary = mm_generic_gsm_get_at_port (MM_GENERIC_GSM (modem), MM_PORT_TYPE_PRIMARY);
     g_assert (primary);
