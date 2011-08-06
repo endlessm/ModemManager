@@ -9,13 +9,16 @@ DH_ALWAYS_EXCLUDE=.svn:.git:.bzr
 %:
 	dh $@ --with autoreconf
 
-override_dh_autoreconf:
-	intltoolize --force
-	dh_autoreconf
+autoreconf:
+	intltoolize -f
+	autoreconf -f -i
 
-override_dh_autoreconf_clean:
-	dh_autoreconf_clean
-	rm -f intltool-*.in po/Makefile.in.in m4/intltool.m4 || true
+override_dh_autoreconf:
+	dh_autoreconf debian/rules -- autoreconf
+
+override_dh_auto_clean:
+	rm -f $(CURDIR)/debian/modemmanager.upstart
+	dh_auto_clean
 
 override_dh_auto_configure:
 	dh_auto_configure -- \
@@ -24,9 +27,15 @@ override_dh_auto_configure:
 override_dh_makeshlibs:
 	dh_makeshlibs -X/usr/lib/ModemManager/ -X/usr/lib/pppd/
 
+override_dh_strip:
+	dh_strip --dbg-package=modemmanager-dbg
+
 override_dh_install:
-	find $(CURDIR)/debian/modemmanager/ -name \*.a | xargs rm
-	find $(CURDIR)/debian/modemmanager/ -name \*.la | xargs rm
+	if dpkg-vendor --is ubuntu; then \
+		cp $(CURDIR)/debian/ubuntu/modemmanager.upstart $(CURDIR)/debian; \
+	fi
+	find $(CURDIR)/debian/tmp/ -name \*.a -exec rm {} \;
+	find $(CURDIR)/debian/tmp/ -name \*.la -exec rm {} \;
 	dh_install
 
 override_dh_installdocs:

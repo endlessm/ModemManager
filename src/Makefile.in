@@ -64,7 +64,8 @@ libmodem_helpers_la_LIBADD =
 am_libmodem_helpers_la_OBJECTS = libmodem_helpers_la-mm-errors.lo \
 	libmodem_helpers_la-mm-modem-helpers.lo \
 	libmodem_helpers_la-mm-charsets.lo \
-	libmodem_helpers_la-mm-utils.lo
+	libmodem_helpers_la-mm-utils.lo \
+	libmodem_helpers_la-mm-sms-utils.lo
 libmodem_helpers_la_OBJECTS = $(am_libmodem_helpers_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
@@ -394,7 +395,9 @@ libmodem_helpers_la_SOURCES = \
 	mm-charsets.c \
 	mm-charsets.h \
 	mm-utils.c \
-	mm-utils.h
+	mm-utils.h \
+	mm-sms-utils.c \
+	mm-sms-utils.h
 
 libserial_la_CPPFLAGS = \
 	$(MM_CFLAGS) \
@@ -542,6 +545,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmodem_helpers_la-mm-charsets.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmodem_helpers_la-mm-errors.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmodem_helpers_la-mm-modem-helpers.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmodem_helpers_la-mm-sms-utils.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmodem_helpers_la-mm-utils.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libserial_la-mm-at-serial-port.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libserial_la-mm-port.Plo@am__quote@
@@ -630,6 +634,14 @@ libmodem_helpers_la-mm-utils.lo: mm-utils.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='mm-utils.c' object='libmodem_helpers_la-mm-utils.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libmodem_helpers_la-mm-utils.lo `test -f 'mm-utils.c' || echo '$(srcdir)/'`mm-utils.c
+
+libmodem_helpers_la-mm-sms-utils.lo: mm-sms-utils.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libmodem_helpers_la-mm-sms-utils.lo -MD -MP -MF $(DEPDIR)/libmodem_helpers_la-mm-sms-utils.Tpo -c -o libmodem_helpers_la-mm-sms-utils.lo `test -f 'mm-sms-utils.c' || echo '$(srcdir)/'`mm-sms-utils.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmodem_helpers_la-mm-sms-utils.Tpo $(DEPDIR)/libmodem_helpers_la-mm-sms-utils.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='mm-sms-utils.c' object='libmodem_helpers_la-mm-sms-utils.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libmodem_helpers_la-mm-sms-utils.lo `test -f 'mm-sms-utils.c' || echo '$(srcdir)/'`mm-sms-utils.c
 
 libserial_la-mm-port.lo: mm-port.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libserial_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libserial_la-mm-port.lo -MD -MP -MF $(DEPDIR)/libserial_la-mm-port.Tpo -c -o libserial_la-mm-port.lo `test -f 'mm-port.c' || echo '$(srcdir)/'`mm-port.c

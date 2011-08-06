@@ -1,0 +1,14 @@
+# modemmanager - modem manager
+#
+# The Network Manager daemon manages the system's network connections,
+# automatically switching between the best available.
+
+description	"modem connection manager"
+
+start on starting network-manager
+stop on stopping network-manager
+
+expect fork
+respawn
+
+exec /usr/sbin/modem-manager &

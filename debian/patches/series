@@ -1,2 +1,3 @@
 # patches for modemmanager
 qdl-blacklist.patch
+lp700316_usb_blacklist.patch

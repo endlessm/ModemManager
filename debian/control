@@ -28,3 +28,18 @@ Description: D-Bus service for managing modems
  .
  Git Repository: http://cgit.freedesktop.org/ModemManager/ModemManager/
 
+Package: modemmanager-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends: modemmanager (= ${binary:Version}),
+	${misc:Depends}
+Description: D-Bus service for managing modems - debugging symbols
+ Provides a D-Bus interface to communicate with mobile broadband (GSM, CDMA,
+ UMTS, ...) cards. Implements a loadable plugin interface to add work-arounds
+ for non standard devices. Also provides patches to use networkmanager (and
+ the applet) with modem manager.
+ .
+ Git Repository: http://cgit.freedesktop.org/ModemManager/ModemManager/
+ .
+ This package contains debugging symbols for ModemManager.

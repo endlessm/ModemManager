@@ -194,7 +194,7 @@ libmm_plugin_option_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(AM_CFLAGS) $(CFLAGS) $(libmm_plugin_option_la_LDFLAGS) \
 	$(LDFLAGS) -o $@
-libmm_plugin_samsung_la_LIBADD =
+libmm_plugin_samsung_la_DEPENDENCIES = $(builddir)/libicera-utils.la
 am_libmm_plugin_samsung_la_OBJECTS =  \
 	libmm_plugin_samsung_la-mm-plugin-samsung.lo \
 	libmm_plugin_samsung_la-mm-modem-samsung-gsm.lo
@@ -833,6 +833,9 @@ libmm_plugin_samsung_la_LDFLAGS = \
 	$(GUDEV_LDFLAGS) \
 	-module \
 	-avoid-version
+
+libmm_plugin_samsung_la_LIBADD = \
+	$(builddir)/libicera-utils.la
 
 udevrulesdir = $(UDEV_BASE_DIR)/rules.d
 udevrules_DATA = \

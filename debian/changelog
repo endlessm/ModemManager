@@ -1,3 +1,35 @@
+modemmanager (0.5-1) unstable; urgency=low
+
+  * debian/rules: override dh_autoreconf in a nicer way so we don't have to
+    clean up manually afterwards.
+
+ -- Michael Biebl <biebl@debian.org>  Sun, 07 Aug 2011 01:47:27 +0200
+
+modemmanager (0.5-0ubuntu1) oneiric; urgency=low
+
+  * New upstream release 0.5.
+    - gsm: send init command twice to make the N900 happy (LP: #765516)
+    - fix sierra modems' sleep mode command (LP: #459052, #738005)
+  * debian/patches/lp700316_usb_blacklist.patch: add extra devices to blacklist
+    of USB devices known to usually be serial dongles or other things MM should
+    not touch. (LP: #700316)
+  * debian/control, debian/rules: add a -dbg package for modemmanager, and
+    override dh_strip accordingly. (LP: #415394)
+  * debian/rules: fix .la/.a file removal to not fail if there is nothing to
+    remove.
+  * debian/modemmanager.install: install files to the modemmanager package
+    explicitly now that it's not the only binary package.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Fri, 05 Aug 2011 12:46:32 -0400
+
+modemmanager (0.4.997-1ubuntu1) oneiric; urgency=low
+
+  * debian/modemmanager.upstart: add an upstart config file so ModemManager
+    gets started just before NM, and stopped along with it. (LP: #806082)
+  * debian/rules: install upstart file only for Ubuntu.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Fri, 08 Jul 2011 15:32:13 -0400
+
 modemmanager (0.4.997-1) unstable; urgency=low
 
   * debian/watch: Switch to .bz2 tarballs.
