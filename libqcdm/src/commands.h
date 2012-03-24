@@ -18,8 +18,7 @@
 #ifndef LIBQCDM_COMMANDS_H
 #define LIBQCDM_COMMANDS_H
 
-#include <glib.h>
-
+#include "utils.h"
 #include "result.h"
 
 /**********************************************************************/
@@ -75,25 +74,21 @@ enum {
 #define QCDM_CMD_VERSION_INFO_ITEM_RELEASE_TIME "release-time"
 #define QCDM_CMD_VERSION_INFO_ITEM_MODEL "model"
 
-gsize       qcdm_cmd_version_info_new    (char *buf,
-                                          gsize len,
-                                          GError **error);
+size_t      qcdm_cmd_version_info_new    (char *buf, size_t len);
 
-QCDMResult *qcdm_cmd_version_info_result (const char *buf,
-                                          gsize len,
-                                          GError **error);
+QcdmResult *qcdm_cmd_version_info_result (const char *buf,
+                                          size_t len,
+                                          int *out_error);
 
 /**********************************************************************/
 
 #define QCDM_CMD_ESN_ITEM_ESN "esn"
 
-gsize       qcdm_cmd_esn_new    (char *buf,
-                                 gsize len,
-                                 GError **error);
+size_t      qcdm_cmd_esn_new    (char *buf, size_t len);
 
-QCDMResult *qcdm_cmd_esn_result (const char *buf,
-                                 gsize len,
-                                 GError **error);
+QcdmResult *qcdm_cmd_esn_result (const char *buf,
+                                 size_t len,
+                                 int *out_error);
 
 /**********************************************************************/
 
@@ -127,13 +122,11 @@ enum {
 #define QCDM_CMD_CDMA_STATUS_ITEM_SID             "sid"
 #define QCDM_CMD_CDMA_STATUS_ITEM_NID             "nid"
 
-gsize       qcdm_cmd_cdma_status_new    (char *buf,
-                                         gsize len,
-                                         GError **error);
+size_t      qcdm_cmd_cdma_status_new    (char *buf, size_t len);
 
-QCDMResult *qcdm_cmd_cdma_status_result (const char *buf,
-                                         gsize len,
-                                         GError **error);
+QcdmResult *qcdm_cmd_cdma_status_result (const char *buf,
+                                         size_t len,
+                                         int *out_error);
 
 /**********************************************************************/
 
@@ -145,13 +138,11 @@ QCDMResult *qcdm_cmd_cdma_status_result (const char *buf,
 #define QCDM_CMD_SW_VERSION_ITEM_COMP_DATE "comp-date"
 #define QCDM_CMD_SW_VERSION_ITEM_COMP_TIME "comp-time"
 
-gsize       qcdm_cmd_sw_version_new    (char *buf,
-                                        gsize len,
-                                        GError **error);
+size_t      qcdm_cmd_sw_version_new    (char *buf, size_t len);
 
-QCDMResult *qcdm_cmd_sw_version_result (const char *buf,
-                                        gsize len,
-                                        GError **error);
+QcdmResult *qcdm_cmd_sw_version_result (const char *buf,
+                                        size_t len,
+                                        int *out_error);
 
 /**********************************************************************/
 
@@ -193,13 +184,11 @@ enum {
 /* The protocol revision currently in-use.  One of QCDM_STATUS_SNAPSHOT_STATE_* */
 #define QCDM_CMD_STATUS_SNAPSHOT_ITEM_STATE              "state"
 
-gsize       qcdm_cmd_status_snapshot_new    (char *buf,
-                                             gsize len,
-                                             GError **error);
+size_t      qcdm_cmd_status_snapshot_new    (char *buf, size_t len);
 
-QCDMResult *qcdm_cmd_status_snapshot_result (const char *buf,
-                                             gsize len,
-                                             GError **error);
+QcdmResult *qcdm_cmd_status_snapshot_result (const char *buf,
+                                             size_t len,
+                                             int *out_error);
 
 /**********************************************************************/
 
@@ -210,23 +199,21 @@ enum {
     QCDM_CMD_PILOT_SETS_TYPE_NEIGHBOR = 3,
 };
 
-gsize       qcdm_cmd_pilot_sets_new    (char *buf,
-                                        gsize len,
-                                        GError **error);
+size_t      qcdm_cmd_pilot_sets_new    (char *buf, size_t len);
 
-QCDMResult *qcdm_cmd_pilot_sets_result (const char *buf,
-                                        gsize len,
-                                        GError **error);
+QcdmResult *qcdm_cmd_pilot_sets_result (const char *buf,
+                                        size_t len,
+                                        int *out_error);
 
-gboolean    qcdm_cmd_pilot_sets_result_get_num   (QCDMResult *result,
-                                                  guint32 set_type,
-                                                  guint32 *out_num);
+qcdmbool    qcdm_cmd_pilot_sets_result_get_num   (QcdmResult *result,
+                                                  u_int32_t set_type,
+                                                  u_int32_t *out_num);
 
-gboolean    qcdm_cmd_pilot_sets_result_get_pilot (QCDMResult *result,
-                                                  guint32 set_type,
-                                                  guint32 num,
-                                                  guint32 *out_pn_offset,
-                                                  guint32 *out_ecio,
+qcdmbool    qcdm_cmd_pilot_sets_result_get_pilot (QcdmResult *result,
+                                                  u_int32_t set_type,
+                                                  u_int32_t num,
+                                                  u_int32_t *out_pn_offset,
+                                                  u_int32_t *out_ecio,
                                                   float *out_db);
 
 /**********************************************************************/
@@ -234,14 +221,11 @@ gboolean    qcdm_cmd_pilot_sets_result_get_pilot (QCDMResult *result,
 #define QCDM_CMD_NV_GET_MDN_ITEM_PROFILE "profile"
 #define QCDM_CMD_NV_GET_MDN_ITEM_MDN "mdn"
 
-gsize       qcdm_cmd_nv_get_mdn_new    (char *buf,
-                                        gsize len,
-                                        guint8 profile,
-                                        GError **error);
+size_t      qcdm_cmd_nv_get_mdn_new    (char *buf, size_t len, u_int8_t profile);
 
-QCDMResult *qcdm_cmd_nv_get_mdn_result (const char *buf,
-                                        gsize len,
-                                        GError **error);
+QcdmResult *qcdm_cmd_nv_get_mdn_result (const char *buf,
+                                        size_t len,
+                                        int *out_error);
 
 /**********************************************************************/
 
@@ -255,55 +239,56 @@ enum {
 #define QCDM_CMD_NV_GET_ROAM_PREF_ITEM_PROFILE   "profile"
 #define QCDM_CMD_NV_GET_ROAM_PREF_ITEM_ROAM_PREF "roam-pref"
 
-gsize       qcdm_cmd_nv_get_roam_pref_new    (char *buf,
-                                              gsize len,
-                                              guint8 profile,
-                                              GError **error);
+size_t      qcdm_cmd_nv_get_roam_pref_new    (char *buf,
+                                              size_t len,
+                                              u_int8_t profile);
 
-QCDMResult *qcdm_cmd_nv_get_roam_pref_result (const char *buf,
-                                              gsize len,
-                                              GError **error);
+QcdmResult *qcdm_cmd_nv_get_roam_pref_result (const char *buf,
+                                              size_t len,
+                                              int *out_error);
 
-gsize       qcdm_cmd_nv_set_roam_pref_new    (char *buf,
-                                              gsize len,
-                                              guint8 profile,
-                                              guint8 roam_pref,
-                                              GError **error);
+size_t      qcdm_cmd_nv_set_roam_pref_new    (char *buf,
+                                              size_t len,
+                                              u_int8_t profile,
+                                              u_int8_t roam_pref);
 
-QCDMResult *qcdm_cmd_nv_set_roam_pref_result (const char *buf,
-                                              gsize len,
-                                              GError **error);
+QcdmResult *qcdm_cmd_nv_set_roam_pref_result (const char *buf,
+                                              size_t len,
+                                              int *out_error);
 
 /**********************************************************************/
 
 /* Values for QCDM_CMD_NV_GET_MODE_PREF_ITEM_MODE_PREF */
 enum {
-    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_AUTO = 0x04,
-    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_1X_ONLY = 0x09,
-    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_HDR_ONLY = 0x0A,
+    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_DIGITAL         = 0x00,
+    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_DIGITAL_ONLY    = 0x01,
+    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_AUTO            = 0x04,
+    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_1X_ONLY         = 0x09,
+    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_HDR_ONLY        = 0x0A,
+    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_1X_HDR_ONLY     = 0x0D,
+    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_LTE_ONLY        = 0x1E,
+    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_1X_HDR_LTE_ONLY = 0x24,
 };
 
 #define QCDM_CMD_NV_GET_MODE_PREF_ITEM_PROFILE   "profile"
 #define QCDM_CMD_NV_GET_MODE_PREF_ITEM_MODE_PREF "mode-pref"
 
-gsize       qcdm_cmd_nv_get_mode_pref_new    (char *buf,
-                                              gsize len,
-                                              guint8 profile,
-                                              GError **error);
+size_t      qcdm_cmd_nv_get_mode_pref_new    (char *buf,
+                                              size_t len,
+                                              u_int8_t profile);
 
-QCDMResult *qcdm_cmd_nv_get_mode_pref_result (const char *buf,
-                                              gsize len,
-                                              GError **error);
+QcdmResult *qcdm_cmd_nv_get_mode_pref_result (const char *buf,
+                                              size_t len,
+                                              int *out_error);
 
-gsize       qcdm_cmd_nv_set_mode_pref_new    (char *buf,
-                                              gsize len,
-                                              guint8 profile,
-                                              guint8 mode_pref,
-                                              GError **error);
+size_t      qcdm_cmd_nv_set_mode_pref_new    (char *buf,
+                                              size_t len,
+                                              u_int8_t profile,
+                                              u_int8_t mode_pref);
 
-QCDMResult *qcdm_cmd_nv_set_mode_pref_result (const char *buf,
-                                              gsize len,
-                                              GError **error);
+QcdmResult *qcdm_cmd_nv_set_mode_pref_result (const char *buf,
+                                              size_t len,
+                                              int *out_error);
 
 /**********************************************************************/
 
@@ -316,28 +301,32 @@ enum {
 
 #define QCDM_CMD_NV_GET_HDR_REV_PREF_ITEM_REV_PREF "rev-pref"
 
-gsize       qcdm_cmd_nv_get_hdr_rev_pref_new    (char *buf,
-                                                 gsize len,
-                                                 GError **error);
+size_t      qcdm_cmd_nv_get_hdr_rev_pref_new    (char *buf, size_t len);
 
-QCDMResult *qcdm_cmd_nv_get_hdr_rev_pref_result (const char *buf,
-                                                 gsize len,
-                                                 GError **error);
+QcdmResult *qcdm_cmd_nv_get_hdr_rev_pref_result (const char *buf,
+                                                 size_t len,
+                                                 int *out_error);
 
-gsize       qcdm_cmd_nv_set_hdr_rev_pref_new    (char *buf,
-                                                 gsize len,
-                                                 guint8 rev_pref,
-                                                 GError **error);
+size_t      qcdm_cmd_nv_set_hdr_rev_pref_new    (char *buf,
+                                                 size_t len,
+                                                 u_int8_t rev_pref);
 
-QCDMResult *qcdm_cmd_nv_set_hdr_rev_pref_result (const char *buf,
-                                                 gsize len,
-                                                 GError **error);
+QcdmResult *qcdm_cmd_nv_set_hdr_rev_pref_result (const char *buf,
+                                                 size_t len,
+                                                 int *out_error);
 
 /**********************************************************************/
 
 /* Values for QCDM_CMD_CM_SUBSYS_STATE_INFO_ITEM_OPERATING_MODE */
 enum {
-    QCDM_CMD_CM_SUBSYS_STATE_INFO_OPERATING_MODE_ONLINE = 5
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_OPERATING_MODE_POWER_OFF = 0,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_OPERATING_MODE_FIELD_TEST_MODE = 1,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_OPERATING_MODE_OFFLINE = 2,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_OPERATING_MODE_OFFLINE_AMPS = 3,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_OPERATING_MODE_OFFLINE_CDMA = 4,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_OPERATING_MODE_ONLINE = 5,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_OPERATING_MODE_LOW_POWER_MODE = 6,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_OPERATING_MODE_RESET = 7
 };
 
 /* Values for QCDM_CMD_CM_SUBSYS_STATE_INFO_ITEM_SYSTEM_MODE */
@@ -354,6 +343,14 @@ enum {
     QCDM_CMD_CM_SUBSYS_STATE_INFO_SYSTEM_MODE_LTE = 9,
 };
 
+enum {
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_CALL_STATE_IDLE = 0,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_CALL_STATE_ORIGINATING = 1,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_CALL_STATE_ALERTING = 3,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_CALL_STATE_ORIGINATION_ALERTING = 4,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_CALL_STATE_CONVERSATION = 5,
+};
+
 /* Values for QCDM_CMD_CM_SUBSYS_STATE_INFO_ITEM_ROAM_PREF */
 enum {
     QCDM_CMD_CM_SUBSYS_STATE_INFO_ROAM_PREF_HOME_ONLY = 0x01,
@@ -366,10 +363,18 @@ enum {
     /* Note: not the same values as QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF has;
      * AUTO really is 0x02 here, not 0x04 like the NV item value for AUTO.
      */
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_AMPS_ONLY = 0x00,
     QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_DIGITAL_ONLY = 0x01,
     QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_AUTO = 0x02,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_EMERGENCY = 0x03,
     QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_1X_ONLY = 0x09,
     QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_HDR_ONLY = 0x0A,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_1X_AMPS_ONLY = 0x0B,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_GPS_ONLY = 0x0C,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_GSM_ONLY = 0x0D,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_WCDMA_ONLY = 0x0E,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_PERSISTENT_MODE = 0x0F,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_NO_CHANGE = 0x10,
 };
 
 #define QCDM_CMD_CM_SUBSYS_STATE_INFO_ITEM_CALL_STATE             "call-state"
@@ -383,13 +388,11 @@ enum {
 #define QCDM_CMD_CM_SUBSYS_STATE_INFO_ITEM_HYBRID_PREF            "hybrid-pref"
 #define QCDM_CMD_CM_SUBSYS_STATE_INFO_ITEM_NETWORK_SELECTION_PREF "network-selection-pref"
 
-gsize       qcdm_cmd_cm_subsys_state_info_new    (char *buf,
-                                                  gsize len,
-                                                  GError **error);
+size_t      qcdm_cmd_cm_subsys_state_info_new    (char *buf, size_t len);
 
-QCDMResult *qcdm_cmd_cm_subsys_state_info_result (const char *buf,
-                                                  gsize len,
-                                                  GError **error);
+QcdmResult *qcdm_cmd_cm_subsys_state_info_result (const char *buf,
+                                                  size_t len,
+                                                  int *out_error);
 
 /**********************************************************************/
 
@@ -468,55 +471,78 @@ enum {
 #define QCDM_CMD_HDR_SUBSYS_STATE_INFO_ITEM_OVERHEAD_MSG_STATE "overhead-msg-state"
 #define QCDM_CMD_HDR_SUBSYS_STATE_INFO_ITEM_HDR_HYBRID_MODE    "hdr-hybrid-mode"
 
-gsize       qcdm_cmd_hdr_subsys_state_info_new    (char *buf,
-                                                   gsize len,
-                                                   GError **error);
+size_t      qcdm_cmd_hdr_subsys_state_info_new    (char *buf, size_t len);
 
-QCDMResult *qcdm_cmd_hdr_subsys_state_info_result (const char *buf,
-                                                   gsize len,
-                                                   GError **error);
+QcdmResult *qcdm_cmd_hdr_subsys_state_info_result (const char *buf,
+                                                   size_t len,
+                                                   int *out_error);
 
 /**********************************************************************/
 
 /* Max # of log items this device supports */
 #define QCDM_CMD_EXT_LOGMASK_ITEM_MAX_ITEMS   "max-items"
 
-gsize       qcdm_cmd_ext_logmask_new    (char *buf,
-                                         gsize len,
-                                         GSList *items,
-                                         guint16 maxlog,
-                                         GError **error);
+size_t      qcdm_cmd_ext_logmask_new    (char *buf,
+                                         size_t len,
+                                         u_int32_t items[], /* terminated by 0 */
+                                         u_int16_t maxlog);
 
-QCDMResult *qcdm_cmd_ext_logmask_result (const char *buf,
-                                         gsize len,
-                                         GError **error);
+QcdmResult *qcdm_cmd_ext_logmask_result (const char *buf,
+                                         size_t len,
+                                         int *out_error);
 
 /* Returns TRUE if 'item' is set in the log mask */
-gboolean    qcmd_cmd_ext_logmask_result_get_item (QCDMResult *result,
-                                                  guint16 item);
+qcdmbool    qcmd_cmd_ext_logmask_result_get_item (QcdmResult *result,
+                                                  u_int16_t item);
 
 /**********************************************************************/
 
-gsize       qcdm_cmd_event_report_new    (char *buf,
-                                          gsize len,
-                                          gboolean start,
-                                          GError **error);
+size_t      qcdm_cmd_event_report_new    (char *buf,
+                                          size_t len,
+                                          qcdmbool start);
 
-QCDMResult *qcdm_cmd_event_report_result (const char *buf,
-                                          gsize len,
-                                          GError **error);
+QcdmResult *qcdm_cmd_event_report_result (const char *buf,
+                                          size_t len,
+                                          int *out_error);
+
+/**********************************************************************/
+
+size_t qcdm_cmd_log_config_get_mask_new (char *buf,
+                                         size_t len,
+                                         u_int32_t equip_id);
+
+size_t qcdm_cmd_log_config_set_mask_new (char *buf,
+                                         size_t len,
+                                         u_int32_t equip_id,
+                                         u_int16_t items[]);
+
+#define QCDM_CMD_LOG_CONFIG_MASK_ITEM_EQUIP_ID  "equip-id"
+
+#define QCDM_CMD_LOG_CONFIG_MASK_ITEM_NUM_ITEMS "num-items"
+
+#define QCDM_CMD_LOG_CONFIG_MASK_ITEM_ITEMS     "items"
+
+QcdmResult *qcdm_cmd_log_config_get_mask_result (const char *buf,
+                                                 size_t len,
+                                                 int *out_error);
+
+QcdmResult *qcdm_cmd_log_config_set_mask_result (const char *buf,
+                                                 size_t len,
+                                                 int *out_error);
+
+qcdmbool    qcmd_cmd_log_config_mask_result_code_set (QcdmResult *result,
+                                                      u_int32_t equipid,
+                                                      u_int16_t log_code);
 
 /**********************************************************************/
 
 #define QCDM_CMD_ZTE_SUBSYS_STATUS_ITEM_SIGNAL_INDICATOR    "signal-indicator"
 
-gsize       qcdm_cmd_zte_subsys_status_new    (char *buf,
-                                               gsize len,
-                                               GError **error);
+size_t      qcdm_cmd_zte_subsys_status_new    (char *buf, size_t len);
 
-QCDMResult *qcdm_cmd_zte_subsys_status_result (const char *buf,
-                                               gsize len,
-                                               GError **error);
+QcdmResult *qcdm_cmd_zte_subsys_status_result (const char *buf,
+                                               size_t len,
+                                               int *out_error);
 
 /**********************************************************************/
 
@@ -539,14 +565,74 @@ enum {
     QCDM_NW_CHIPSET_6800 = 2,
 };
 
-gsize       qcdm_cmd_nw_subsys_modem_snapshot_cdma_new    (char *buf,
-                                                           gsize len,
-                                                           guint8 chipset,
-                                                           GError **error);
+size_t      qcdm_cmd_nw_subsys_modem_snapshot_cdma_new    (char *buf,
+                                                           size_t len,
+                                                           u_int8_t chipset);
 
-QCDMResult *qcdm_cmd_nw_subsys_modem_snapshot_cdma_result (const char *buf,
-                                                           gsize len,
-                                                           GError **error);
+QcdmResult *qcdm_cmd_nw_subsys_modem_snapshot_cdma_result (const char *buf,
+                                                           size_t len,
+                                                           int *out_error);
+
+/**********************************************************************/
+
+#define QCDM_CMD_WCDMA_SUBSYS_STATE_INFO_ITEM_IMEI     "imei"
+
+#define QCDM_CMD_WCDMA_SUBSYS_STATE_INFO_ITEM_IMSI     "imsi"
+
+/* Values for QCDM_CMD_WCDMA_SUBSYS_STATE_INFO_ITEM_L1_STATE */
+
+enum {
+    QCDM_WCDMA_L1_STATE_INIT = 0,
+    QCDM_WCDMA_L1_STATE_IDLE = 1,
+    QCDM_WCDMA_L1_STATE_FS = 2,
+    QCDM_WCDMA_L1_STATE_ACQ = 3,
+    QCDM_WCDMA_L1_STATE_BCH = 4,
+    QCDM_WCDMA_L1_STATE_PCH = 5,
+    QCDM_WCDMA_L1_STATE_FACH = 6,
+    QCDM_WCDMA_L1_STATE_DCH = 7,
+    QCDM_WCDMA_L1_STATE_DEACTIVATE = 8,
+    QCDM_WCDMA_L1_STATE_DEEP_SLEEP = 9,
+    QCDM_WCDMA_L1_STATE_STOPPED = 10,
+    QCDM_WCDMA_L1_STATE_SUSPENDED = 11,
+};
+
+/* One of QCDM_WCDMA_L1_STATE_* */
+#define QCDM_CMD_WCDMA_SUBSYS_STATE_INFO_ITEM_L1_STATE "l1-state"
+
+size_t      qcdm_cmd_wcdma_subsys_state_info_new    (char *buf, size_t len);
+
+QcdmResult *qcdm_cmd_wcdma_subsys_state_info_result (const char *buf,
+                                                     size_t len,
+                                                     int *out_error);
+
+/**********************************************************************/
+
+#define QCDM_CMD_GSM_SUBSYS_STATE_INFO_ITEM_IMEI     "imei"
+
+#define QCDM_CMD_GSM_SUBSYS_STATE_INFO_ITEM_IMSI     "imsi"
+
+#define QCDM_CMD_GSM_SUBSYS_STATE_INFO_ITEM_LAI_MCC  "lai-mcc"
+
+#define QCDM_CMD_GSM_SUBSYS_STATE_INFO_ITEM_LAI_MNC  "lai-mnc"
+
+#define QCDM_CMD_GSM_SUBSYS_STATE_INFO_ITEM_LAI_LAC  "lai-lac"
+
+#define QCDM_CMD_GSM_SUBSYS_STATE_INFO_ITEM_CELLID   "cellid"
+
+/* One of QCDM_CMD_CM_SUBSYS_STATE_INFO_CALL_STATE_* */
+#define QCDM_CMD_GSM_SUBSYS_STATE_INFO_ITEM_CM_CALL_STATE  "cm-call-state"
+
+/* One of QCDM_CMD_CM_SUBSYS_STATE_INFO_OPERATING_MODE_* */
+#define QCDM_CMD_GSM_SUBSYS_STATE_INFO_ITEM_CM_OP_MODE     "cm-op-mode"
+
+/* One of QCDM_CMD_CM_SUBSYS_STATE_INFO_SYSTEM_MODE_* */
+#define QCDM_CMD_GSM_SUBSYS_STATE_INFO_ITEM_CM_SYS_MODE    "cm-sys-mode"
+
+size_t      qcdm_cmd_gsm_subsys_state_info_new    (char *buf, size_t len);
+
+QcdmResult *qcdm_cmd_gsm_subsys_state_info_result (const char *buf,
+                                                   size_t len,
+                                                   int *out_error);
 
 /**********************************************************************/
 

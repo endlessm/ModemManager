@@ -59,6 +59,22 @@ probe_result (MMPluginBase *base,
     mm_plugin_base_supports_task_complete (task, get_level_for_capabilities (capabilities));
 }
 
+static gboolean
+custom_init_response_cb (MMPluginBaseSupportsTask *task,
+                         GString *response,
+                         GError *error,
+                         guint32 tries,
+                         gboolean *out_stop,
+                         guint32 *out_level,
+                         gpointer user_data)
+{
+    if (error)
+        return tries <= 4 ? TRUE : FALSE;
+
+    /* No error, assume success */
+    return FALSE;
+}
+
 static MMPluginSupportsResult
 supports_port (MMPluginBase *base,
                MMModem *existing,
@@ -92,6 +108,12 @@ supports_port (MMPluginBase *base,
         return MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
     }
 
+    mm_plugin_base_supports_task_add_custom_init_command (task,
+                                                          "ATE1 E0",
+                                                          3,
+                                                          custom_init_response_cb,
+                                                          NULL);
+
     /* Otherwise kick off a probe */
     if (mm_plugin_base_probe_port (base, task, 100000, NULL))
         return MM_PLUGIN_SUPPORTS_PORT_IN_PROGRESS;
@@ -110,6 +132,7 @@ grab_port (MMPluginBase *base,
     const char *name, *subsys, *devfile, *sysfs_path;
     guint32 caps;
     guint16 vendor = 0, product = 0;
+    MMPortType ptype = MM_PORT_TYPE_UNKNOWN;
 
     port = mm_plugin_base_supports_task_get_port (task);
     g_assert (port);
@@ -127,6 +150,12 @@ grab_port (MMPluginBase *base,
         g_set_error (error, 0, 0, "Could not get modem product ID.");
         return NULL;
     }
+
+    /* Look for port type hints */
+    if (g_udev_device_get_property_as_boolean (port, "ID_MM_NOKIA_PORT_TYPE_MODEM"))
+        ptype = MM_PORT_TYPE_PRIMARY;
+    else if (g_udev_device_get_property_as_boolean (port, "ID_MM_NOKIA_PORT_TYPE_AUX"))
+        ptype = MM_PORT_TYPE_SECONDARY;
 
     caps = mm_plugin_base_supports_task_get_probed_capabilities (task);
     sysfs_path = mm_plugin_base_supports_task_get_physdev_path (task);
@@ -148,14 +177,14 @@ grab_port (MMPluginBase *base,
         }
 
         if (modem) {
-            if (!mm_modem_grab_port (modem, subsys, name, MM_PORT_TYPE_UNKNOWN, NULL, error)) {
+            if (!mm_modem_grab_port (modem, subsys, name, ptype, NULL, error)) {
                 g_object_unref (modem);
                 return NULL;
             }
         }
     } else if (get_level_for_capabilities (caps)) {
         modem = existing;
-        if (!mm_modem_grab_port (modem, subsys, name, MM_PORT_TYPE_UNKNOWN, NULL, error))
+        if (!mm_modem_grab_port (modem, subsys, name, ptype, NULL, error))
             return NULL;
     }
 

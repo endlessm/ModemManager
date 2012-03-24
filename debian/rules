@@ -64,10 +64,10 @@ GET_SOURCE = \
 		echo "getting specific upstream revision/tag: $(1)"; \
 		cd `ls | head -n 1`; git checkout -b orig $(1); \
 		commit_id=`git log -n1 --abbrev-commit | grep '^commit ' | sed -e 's/commit //'`; \
-		raw=`date --utc --date="$$(git log --pretty=fuller -n1 --date=rfc | grep CommitDate: | sed -e 's/CommitDate:[^0-9]*//')" "+%Y%m%dt%H%M%S"`; \
+		raw=`date --utc --date="$$(git log --pretty=fuller -n1 --date=rfc | grep CommitDate: | sed -e 's/CommitDate:[^0-9]*//')" "+%Y%m%d%H%M"`; \
 		if echo $(1) | grep -c "orig" > /dev/null || echo $(DEB_VERSION) | grep -c "git" > /dev/null; \
 		then \
-			upstream_version=$(DEB_MAJOR_VERSION)git.$$raw.$$commit_id; \
+			upstream_version=$(DEB_MAJOR_VERSION)git$$raw.$$commit_id; \
 		else \
 			upstream_version=$(DEB_UPSTREAM_VERSION); \
 		fi; \

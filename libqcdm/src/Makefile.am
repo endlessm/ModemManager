@@ -7,12 +7,13 @@ libqcdm_la_CPPFLAGS = \
 libqcdm_la_SOURCES = \
 	dm-commands.h \
 	nv-items.h \
+	log-items.h \
 	com.c \
 	com.h \
 	commands.c \
 	commands.h \
-	error.c \
-	error.h \
+	errors.c \
+	errors.h \
 	result.c \
 	result.h \
 	result-private.h \

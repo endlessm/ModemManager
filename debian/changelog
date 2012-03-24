@@ -1,3 +1,78 @@
+modemmanager (0.5.2.0-1) unstable; urgency=low
+
+  * Upload to unstable.
+  * debian/watch: Track .xz tarballs.
+
+ -- Michael Biebl <biebl@debian.org>  Sat, 24 Mar 2012 01:24:48 +0100
+
+modemmanager (0.5.2.0-0ubuntu1) precise; urgency=low
+
+  * New upstream bugfix release (stable release 0.5.2).
+    - hso: disable echo removal (LP: #953294)
+    - gsm: retry sending SMS in PDU mode if text fails and PDU is supported
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Wed, 14 Mar 2012 12:19:08 -0400
+
+modemmanager (0.5.1.97-0ubuntu1) precise; urgency=low
+
+  * New upstream bugfix release.
+    - release: update NEWS
+    - cdma: fix crash on NULL error (bgo #670145)
+    - Revert "huawei: rework probing and detection" (LP: #868034)
+    - core: fix loop limits in echo removal
+    - at-serial-port: implement built-in echo/garbage removal (LP: #916038)
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Wed, 07 Mar 2012 16:22:00 -0500
+
+modemmanager (0.5.1.96+git201202081807.635fce1-0ubuntu3) precise; urgency=low
+
+  * debian/ubuntu/modemmanager.upstart: Remove unnecessary expect fork as
+    this does the same thing as just exec'ing. Also check for existence of
+    modemmanager in case it has been removed but not purged. (LP: #942908)
+
+ -- Clint Byrum <clint@ubuntu.com>  Tue, 28 Feb 2012 14:35:15 -0800
+
+modemmanager (0.5.1.96+git201202081807.635fce1-0ubuntu2) precise; urgency=low
+
+  * debian/ubuntu/modemmanager.upstart: fix stop condition to make sure we stop
+    only when NetworkManager is stopped as much as possible, to avoid being
+    respawned by it via DBus. (LP: #869635, #919071)
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Thu, 16 Feb 2012 10:43:54 -0500
+
+modemmanager (0.5.1.96+git201202081807.635fce1-0ubuntu1) precise; urgency=low
+
+  * upstream snapshot 2012-02-08 18:07:13 (GMT)
+    + 635fce193ff3a1dbbdee2abab9aa3ab121df25f0
+  * debian/rules: as for NetworkManager, drop a few characters from the version
+    number for git snapshots.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Wed, 08 Feb 2012 15:47:24 -0500
+
+modemmanager (0.5+git.20111231t174444.1e332ab-0ubuntu1) precise; urgency=low
+
+  [ Mathieu Trudel-Lapierre ]
+  * upstream snapshot 2011-12-31 17:44:44 (GMT)
+    + 1e332abc957d7eea4521c95d1e28b097de5427e5
+
+  [ Artem Popov ]
+  * debian/patches/arduino-blacklist.patch: add Arduino devices to blacklist
+    to prevent managing Arduino devices. (LP: #910736)
+    - [0403:6001] FT232 USB-Serial (UART) IC.
+    - [03eb:204b] Atmel Corp. LUFA USB to Serial Adapter Project.
+    - Anything with the Arduino VID (2341).
+
+ -- Artem Popov <artfwo@ubuntu.com>  Mon, 02 Jan 2012 13:32:18 +0700
+
+modemmanager (0.5-1ubuntu1) oneiric; urgency=low
+
+  * debian/patches/qdl-blacklist.patch: add more devices to the blacklist of
+    Gobi QDL devices. (LP: #842702, #807889)
+    - [1410:a014] Novatel Gobi found in the Google CR-48.
+    - [03f0:241d] HP un2420 Gobi found in the HP Mini 5102 and Mini 5103.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Tue, 06 Sep 2011 10:09:17 -0400
+
 modemmanager (0.5-1) unstable; urgency=low
 
   * debian/rules: override dh_autoreconf in a nicer way so we don't have to

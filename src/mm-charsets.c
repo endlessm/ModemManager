@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "mm-charsets.h"
 #include "mm-utils.h"
@@ -36,8 +37,8 @@ static CharsetEntry charset_map[] = {
     { "IRA",     "ASCII",  "ASCII",     "ASCII//TRANSLIT",     MM_MODEM_CHARSET_IRA },
     { "GSM",     NULL,     NULL,        NULL,                  MM_MODEM_CHARSET_GSM },
     { "8859-1",  NULL,     "ISO8859-1", "ISO8859-1//TRANSLIT", MM_MODEM_CHARSET_8859_1 },
-    { "PCCP437", NULL,     NULL,        NULL,                  MM_MODEM_CHARSET_PCCP437 },
-    { "PCDN",    NULL,     NULL,        NULL,                  MM_MODEM_CHARSET_PCDN },
+    { "PCCP437", "CP437",  "CP437",     "CP437//TRANSLIT",     MM_MODEM_CHARSET_PCCP437 },
+    { "PCDN",    "CP850",  "CP850",     "CP850//TRANSLIT",     MM_MODEM_CHARSET_PCDN },
     { "HEX",     NULL,     NULL,        NULL,                  MM_MODEM_CHARSET_HEX },
     { NULL,      NULL,     NULL,        NULL,                  MM_MODEM_CHARSET_UNKNOWN }
 };
@@ -160,7 +161,8 @@ mm_modem_charset_hex_to_utf8 (const char *src, MMModemCharset charset)
     g_return_val_if_fail (iconv_from != NULL, FALSE);
 
     unconverted = utils_hexstr2bin (src, &unconverted_len);
-    g_return_val_if_fail (unconverted != NULL, NULL);
+    if (!unconverted)
+        return NULL;
 
     if (charset == MM_MODEM_CHARSET_UTF8 || charset == MM_MODEM_CHARSET_IRA)
         return unconverted;
@@ -425,6 +427,180 @@ mm_charset_utf8_to_unpacked_gsm (const char *utf8, guint32 *out_len)
     return g_byte_array_free (gsm, FALSE);
 }
 
+static gboolean
+gsm_is_subset (gunichar c, const char *utf8, gsize ulen, guint *out_clen)
+{
+    guint8 gsm;
+
+    *out_clen = 1;
+    if (utf8_to_gsm_def_char (utf8, ulen, &gsm))
+        return TRUE;
+    if (utf8_to_gsm_ext_char (utf8, ulen, &gsm)) {
+        *out_clen = 2;
+        return TRUE;
+    }
+    return FALSE;
+}
+
+static gboolean
+ira_is_subset (gunichar c, const char *utf8, gsize ulen, guint *out_clen)
+{
+    *out_clen = 1;
+    return (ulen == 1);
+}
+
+static gboolean
+ucs2_is_subset (gunichar c, const char *utf8, gsize ulen, guint *out_clen)
+{
+    *out_clen = 2;
+    return (c <= 0xFFFF);
+}
+
+static gboolean
+iso88591_is_subset (gunichar c, const char *utf8, gsize ulen, guint *out_clen)
+{
+    *out_clen = 1;
+    return (c <= 0xFF);
+}
+
+static gboolean
+pccp437_is_subset (gunichar c, const char *utf8, gsize ulen, guint *out_clen)
+{
+    static const gunichar t[] = {
+        0x00c7, 0x00fc, 0x00e9, 0x00e2, 0x00e4, 0x00e0, 0x00e5, 0x00e7, 0x00ea,
+        0x00eb, 0x00e8, 0x00ef, 0x00ee, 0x00ec, 0x00c4, 0x00c5, 0x00c9, 0x00e6,
+        0x00c6, 0x00f4, 0x00f6, 0x00f2, 0x00fb, 0x00f9, 0x00ff, 0x00d6, 0x00dc,
+        0x00a2, 0x00a3, 0x00a5, 0x20a7, 0x0192, 0x00e1, 0x00ed, 0x00f3, 0x00fa,
+        0x00f1, 0x00d1, 0x00aa, 0x00ba, 0x00bf, 0x2310, 0x00ac, 0x00bd, 0x00bc,
+        0x00a1, 0x00ab, 0x00bb, 0x2591, 0x2592, 0x2593, 0x2502, 0x2524, 0x2561,
+        0x2562, 0x2556, 0x2555, 0x2563, 0x2551, 0x2557, 0x255d, 0x255c, 0x255b,
+        0x2510, 0x2514, 0x2534, 0x252c, 0x251c, 0x2500, 0x253c, 0x255e, 0x255f,
+        0x255a, 0x2554, 0x2569, 0x2566, 0x2560, 0x2550, 0x256c, 0x2567, 0x2568,
+        0x2564, 0x2565, 0x2559, 0x2558, 0x2552, 0x2553, 0x256b, 0x256a, 0x2518,
+        0x250c, 0x2588, 0x2584, 0x258c, 0x2590, 0x2580, 0x03b1, 0x00df, 0x0393,
+        0x03c0, 0x03a3, 0x03c3, 0x00b5, 0x03c4, 0x03a6, 0x0398, 0x03a9, 0x03b4,
+        0x221e, 0x03c6, 0x03b5, 0x2229, 0x2261, 0x00b1, 0x2265, 0x2264, 0x2320,
+        0x2321, 0x00f7, 0x2248, 0x00b0, 0x2219, 0x00b7, 0x221a, 0x207f, 0x00b2,
+        0x25a0, 0x00a0
+    };
+    int i;
+
+    *out_clen = 1;
+
+    if (c <= 0x7F)
+        return TRUE;
+    for (i = 0; i < sizeof (t) / sizeof (t[0]); i++) {
+        if (c == t[i])
+            return TRUE;
+    }
+    return FALSE;
+}
+
+static gboolean
+pcdn_is_subset (gunichar c, const char *utf8, gsize ulen, guint *out_clen)
+{
+    static const gunichar t[] = {
+        0x00c7, 0x00fc, 0x00e9, 0x00e2, 0x00e4, 0x00e0, 0x00e5, 0x00e7, 0x00ea,
+        0x00eb, 0x00e8, 0x00ef, 0x00ee, 0x00ec, 0x00c4, 0x00c5, 0x00c9, 0x00e6,
+        0x00c6, 0x00f4, 0x00f6, 0x00f2, 0x00fb, 0x00f9, 0x00ff, 0x00d6, 0x00dc,
+        0x00f8, 0x00a3, 0x00d8, 0x00d7, 0x0192, 0x00e1, 0x00ed, 0x00f3, 0x00fa,
+        0x00f1, 0x00d1, 0x00aa, 0x00ba, 0x00bf, 0x00ae, 0x00ac, 0x00bd, 0x00bc,
+        0x00a1, 0x00ab, 0x00bb, 0x2591, 0x2592, 0x2593, 0x2502, 0x2524, 0x00c1,
+        0x00c2, 0x00c0, 0x00a9, 0x2563, 0x2551, 0x2557, 0x255d, 0x00a2, 0x00a5,
+        0x2510, 0x2514, 0x2534, 0x252c, 0x251c, 0x2500, 0x253c, 0x00e3, 0x00c3,
+        0x255a, 0x2554, 0x2569, 0x2566, 0x2560, 0x2550, 0x256c, 0x00a4, 0x00f0,
+        0x00d0, 0x00ca, 0x00cb, 0x00c8, 0x0131, 0x00cd, 0x00ce, 0x00cf, 0x2518,
+        0x250c, 0x2588, 0x2584, 0x00a6, 0x00cc, 0x2580, 0x00d3, 0x00df, 0x00d4,
+        0x00d2, 0x00f5, 0x00d5, 0x00b5, 0x00fe, 0x00de, 0x00da, 0x00db, 0x00d9,
+        0x00fd, 0x00dd, 0x00af, 0x00b4, 0x00ad, 0x00b1, 0x2017, 0x00be, 0x00b6,
+        0x00a7, 0x00f7, 0x00b8, 0x00b0, 0x00a8, 0x00b7, 0x00b9, 0x00b3, 0x00b2,
+        0x25a0, 0x00a0
+    };
+    int i;
+
+    *out_clen = 1;
+
+    if (c <= 0x7F)
+        return TRUE;
+    for (i = 0; i < sizeof (t) / sizeof (t[0]); i++) {
+        if (c == t[i])
+            return TRUE;
+    }
+    return FALSE;
+}
+
+typedef struct {
+    MMModemCharset cs;
+    gboolean (*func) (gunichar c, const char *utf8, gsize ulen, guint *out_clen);
+    guint charsize;
+} SubsetEntry;
+
+SubsetEntry subset_table[] = {
+    { MM_MODEM_CHARSET_GSM,     gsm_is_subset },
+    { MM_MODEM_CHARSET_IRA,     ira_is_subset },
+    { MM_MODEM_CHARSET_UCS2,    ucs2_is_subset },
+    { MM_MODEM_CHARSET_8859_1,  iso88591_is_subset },
+    { MM_MODEM_CHARSET_PCCP437, pccp437_is_subset },
+    { MM_MODEM_CHARSET_PCDN,    pcdn_is_subset },
+    { MM_MODEM_CHARSET_UNKNOWN, NULL },
+};
+
+/**
+ * mm_charset_get_encoded_len:
+ *
+ * @utf8: UTF-8 valid string
+ * @charset: the #MMModemCharset to check the length of @utf8 in
+ * @out_unsupported: on return, number of characters of @utf8 that are not fully
+ * representable in @charset
+ *
+ * Returns: the size in bytes of the string if converted from UTF-8 into @charset.
+ **/
+guint
+mm_charset_get_encoded_len (const char *utf8,
+                            MMModemCharset charset,
+                            guint *out_unsupported)
+{
+    const char *p = utf8, *next;
+    guint len = 0, unsupported = 0;
+    SubsetEntry *e;
+
+    g_return_val_if_fail (charset != MM_MODEM_CHARSET_UNKNOWN, 0);
+    g_return_val_if_fail (utf8 != NULL, 0);
+
+    if (charset == MM_MODEM_CHARSET_UTF8)
+        return strlen (utf8);
+
+    /* Find the charset in our subset table */
+    for (e = &subset_table[0];
+         e->cs != charset && e->cs != MM_MODEM_CHARSET_UNKNOWN;
+         e++);
+    g_return_val_if_fail (e->cs != MM_MODEM_CHARSET_UNKNOWN, 0);        
+
+    while (*p) {
+        gunichar c;
+        const char *end;
+        guint clen = 0;
+
+        c = g_utf8_get_char_validated (p, -1);
+        g_return_val_if_fail (c != (gunichar) -1, 0);
+        end = next = g_utf8_find_next_char (p, NULL);
+        if (end == NULL) {
+            /* Find the end... */
+            end = p;
+            while (*end++);
+        }
+        
+        if (!e->func (c, p, (end - p), &clen))
+            unsupported++;
+        len += clen;
+        p = next;
+    }
+
+    if (out_unsupported)
+        *out_unsupported = unsupported;
+    return len;
+}
+
 guint8 *
 gsm_unpack (const guint8 *gsm,
             guint32 num_septets,
@@ -467,37 +643,127 @@ gsm_pack (const guint8 *src,
           guint8 start_offset,
           guint32 *out_packed_len)
 {
-    GByteArray *packed;
-    guint8 c, add_last = 0;
-    int i;
+    guint8 *packed;
+    guint octet = 0, lshift, plen;
+    int i = 0;
 
-    packed = g_byte_array_sized_new (src_len);
+    g_return_val_if_fail (start_offset < 8, NULL);
 
-    for (i = 0, c = 0; i < src_len; i++) {
-        guint8 bits_here, offset;
-        guint32 start_bit;
+    plen = (src_len * 7) + start_offset; /* total length in bits */
+    if (plen % 8)
+        plen += 8;
+    plen /= 8;  /* now in bytes */
 
-        start_bit = start_offset + (i * 7); /* Overall bit offset of char in buffer */
-        offset = start_bit % 8; /* Offset to start of char in this byte */
-        bits_here = offset ? (8 - offset) : 7;
+    packed = g_malloc0 (plen);
 
-        c |= (src[i] & 0x7F) << offset;
-        if (offset) {
-            /* Add this packed byte */
-            g_byte_array_append (packed, &c, 1);
-            c = add_last = 0;
+    for (i = 0, lshift = start_offset; i < src_len; i++) {
+        packed[octet] |= (src[i] & 0x7F) << lshift;
+        if (lshift > 1) {
+            /* Grab the lost bits and add to next octet */
+            g_assert (octet + 1 < plen);
+            packed[octet + 1] = (src[i] & 0x7F) >> (8 - lshift);
         }
-
-        /* Pack the rest of this char into the next byte */
-        if (bits_here != 7) {
-            c = (src[i] & 0x7F) >> bits_here;
-            add_last = 1;
-        }
+        if (lshift)
+            octet++;
+        lshift = lshift ? lshift - 1 : 7;
     }
-    if (add_last)
-        g_byte_array_append (packed, &c, 1);
 
-    *out_packed_len = packed->len;
-    return g_byte_array_free (packed, FALSE);
+    if (out_packed_len)
+        *out_packed_len = plen;
+    return packed;
 }
 
+/* We do all our best to get the given string, which is possibly given in the
+ * specified charset, to UTF8. It may happen that the given string is really
+ * the hex representation of the charset-encoded string, so we need to cope with
+ * that case. */
+gchar *
+mm_charset_take_and_convert_to_utf8 (gchar *str,
+                                     MMModemCharset charset)
+{
+    gchar *utf8 = NULL;
+
+    if (!str)
+        return NULL;
+
+    switch (charset) {
+    case MM_MODEM_CHARSET_UNKNOWN:
+        g_warn_if_reached ();
+        utf8 = str;
+        break;
+
+    case MM_MODEM_CHARSET_HEX:
+        /* We'll assume that the HEX string is really valid ASCII at the end */
+        utf8 = str;
+        break;
+
+    case MM_MODEM_CHARSET_GSM:
+    case MM_MODEM_CHARSET_8859_1:
+    case MM_MODEM_CHARSET_PCCP437:
+    case MM_MODEM_CHARSET_PCDN: {
+        const gchar *iconv_from;
+        GError *error = NULL;
+
+        iconv_from = charset_iconv_from (charset);
+        utf8 = g_convert (str, strlen (str),
+                          "UTF-8//TRANSLIT", iconv_from,
+                          NULL, NULL, &error);
+        if (!utf8 || error) {
+            g_clear_error (&error);
+            utf8 = NULL;
+        }
+
+        g_free (str);
+        break;
+    }
+
+    case MM_MODEM_CHARSET_UCS2: {
+        gsize len;
+        gboolean possibly_hex = TRUE;
+
+        /* If the string comes in hex-UCS-2, len needs to be a multiple of 4 */
+        len = strlen (str);
+        if ((len < 4) || ((len % 4) != 0))
+            possibly_hex = FALSE;
+        else {
+            const gchar *p = str;
+
+            /* All chars in the string must be hex */
+            while (*p && possibly_hex)
+                possibly_hex = isxdigit (*p++);
+        }
+
+        /* If we get UCS-2, we expect the HEX representation of the string */
+        if (possibly_hex) {
+            utf8 = mm_modem_charset_hex_to_utf8 (str, charset);
+            if (!utf8) {
+                /* If we couldn't convert the string as HEX-UCS-2, try to see if
+                 * the string is valid UTF-8 itself. */
+                utf8 = str;
+            } else
+                g_free (str);
+        } else
+            /* If we already know it's not hex, try to use the string as it is */
+            utf8 = str;
+
+        break;
+    }
+
+    /* If the given charset is ASCII or UTF8, we really expect the final string
+     * already here */
+    case MM_MODEM_CHARSET_IRA:
+    case MM_MODEM_CHARSET_UTF8:
+        utf8 = str;
+        break;
+    }
+
+    /* Validate UTF-8 always before returning. This result will be exposed in DBus
+     * very likely... */
+    if (!g_utf8_validate (utf8, -1, NULL)) {
+        /* Better return NULL than an invalid UTF-8 string */
+        g_free (utf8);
+        utf8 = NULL;
+    }
+
+    return utf8;
+}

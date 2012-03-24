@@ -43,7 +43,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/compiler_warnings.m4 \
 	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/libtool.m4 \
 	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
 	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -293,8 +293,11 @@ EXTRA_DIST = \
 	info.py \
 	list-modems.py \
 	location.py \
-	mm-send-sms.py \
-	send-pin.py
+	sms-send.py \
+	sms-get.py \
+	send-pin.py \
+	ussd.py \
+	scan.py
 
 all: all-am
 

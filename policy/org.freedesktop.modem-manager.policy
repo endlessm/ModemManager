@@ -28,7 +28,7 @@
 
   <action id="org.freedesktop.ModemManager.Contacts">
     <description>Add, modify, and delete mobile broadband contacts</description>
-    <message>System policy prevents adding, modifying, or deleteing this device's contacts.</message>
+    <message>System policy prevents adding, modifying, or deleting this device's contacts.</message>
     <defaults>
       <allow_inactive>no</allow_inactive>
       <allow_active>auth_self_keep</allow_active>

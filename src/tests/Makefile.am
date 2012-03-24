@@ -5,6 +5,7 @@ noinst_PROGRAMS = \
 	test-modem-helpers \
 	test-charsets \
 	test-qcdm-serial-port \
+	test-at-serial-port \
 	test-sms
 
 test_modem_helpers_SOURCES = \
@@ -41,6 +42,20 @@ test_qcdm_serial_port_LDADD = \
 	$(top_builddir)/libqcdm/src/libqcdm.la \
 	-lutil
 
+test_at_serial_port_SOURCES = \
+	test-at-serial-port.c
+
+test_at_serial_port_CPPFLAGS = \
+	$(MM_CFLAGS) \
+	-I$(top_srcdir) \
+	-I$(top_srcdir)/src
+
+test_at_serial_port_LDADD = \
+	$(MM_LIBS) \
+	$(top_builddir)/src/libserial.la \
+	$(top_builddir)/src/libmodem-helpers.la \
+	-lutil
+
 test_sms_SOURCES = \
 	test-sms.c
 
@@ -60,4 +75,3 @@ check-local: test-modem-helpers
 	$(abs_builddir)/test-sms
 
 endif
-

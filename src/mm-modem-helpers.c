@@ -11,7 +11,7 @@
  * GNU General Public License for more details:
  *
  * Copyright (C) 2008 - 2009 Novell, Inc.
- * Copyright (C) 2009 - 2010 Red Hat, Inc.
+ * Copyright (C) 2009 - 2011 Red Hat, Inc.
  */
 
 #include <config.h>
@@ -112,9 +112,9 @@ mm_gsm_parse_scan_response (const char *reply, GError **error)
      *       +COPS: (2,"","T-Mobile","31026",0),(1,"AT&T","AT&T","310410"),0)
      */
 
-    r = g_regex_new ("\\((\\d),([^,\\)]*),([^,\\)]*),([^,\\)]*)[\\)]?,(\\d)\\)", G_REGEX_UNGREEDY, 0, NULL);
+    r = g_regex_new ("\\((\\d),([^,\\)]*),([^,\\)]*),([^,\\)]*)[\\)]?,(\\d)\\)", G_REGEX_UNGREEDY, 0, &err);
     if (err) {
-        g_error ("Invalid regular expression: %s", err->message);
+        mm_err ("Invalid regular expression: %s", err->message);
         g_error_free (err);
         g_set_error_literal (error,
                              MM_MODEM_ERROR, MM_MODEM_ERROR_GENERAL,
@@ -125,10 +125,8 @@ mm_gsm_parse_scan_response (const char *reply, GError **error)
     /* If we didn't get any hits, try the pre-UMTS format match */
     if (!g_regex_match (r, reply, 0, &match_info)) {
         g_regex_unref (r);
-        if (match_info) {
-            g_match_info_free (match_info);
-            match_info = NULL;
-        }
+        g_match_info_free (match_info);
+        match_info = NULL;
 
         /* Pre-UMTS format doesn't include the cell access technology after
          * the numeric operator element.
@@ -143,9 +141,9 @@ mm_gsm_parse_scan_response (const char *reply, GError **error)
          *       +COPS: (2,"T - Mobile",,"31026"),(1,"Einstein PCS",,"31064"),(1,"Cingular",,"31041"),,(0,1,3),(0,2)
          */
 
-        r = g_regex_new ("\\((\\d),([^,\\)]*),([^,\\)]*),([^\\)]*)\\)", G_REGEX_UNGREEDY, 0, NULL);
+        r = g_regex_new ("\\((\\d),([^,\\)]*),([^,\\)]*),([^\\)]*)\\)", G_REGEX_UNGREEDY, 0, &err);
         if (err) {
-            g_error ("Invalid regular expression: %s", err->message);
+            mm_err ("Invalid regular expression: %s", err->message);
             g_error_free (err);
             g_set_error_literal (error,
                                  MM_MODEM_ERROR, MM_MODEM_ERROR_GENERAL,
@@ -247,6 +245,9 @@ mm_gsm_destroy_scan_data (gpointer data)
 /* '<CR><LF>+CREG: 2,1,000B,2816, B, C2816<CR><LF><CR><LF>OK<CR><LF>' */
 #define CREG7 "\\+(CREG|CGREG):\\s*(\\d{1}),\\s*(\\d{1})\\s*,\\s*([^,\\s]*)\\s*,\\s*([^,\\s]*)\\s*,\\s*([^,\\s]*)\\s*,\\s*[^,\\s]*"
 
+/* +CREG: <stat>,<lac>,<ci>,<AcT>,<RAC> (ETSI 27.007 v9.20 CREG=2 unsolicited with RAC) */
+#define CREG8 "\\+(CREG|CGREG):\\s*(\\d{1})\\s*,\\s*([^,\\s]*)\\s*,\\s*([^,\\s]*)\\s*,\\s*(\\d{1,2})\\s*,\\s*([^,\\s]*)"
+
 GPtrArray *
 mm_gsm_creg_regex_get (gboolean solicited)
 {
@@ -309,6 +310,14 @@ mm_gsm_creg_regex_get (gboolean solicited)
     g_assert (regex);
     g_ptr_array_add (array, regex);
 
+    /* #8 */
+    if (solicited)
+        regex = g_regex_new (CREG8 "$", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
+    else
+        regex = g_regex_new ("\\r\\n" CREG8 "\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
+    g_assert (regex);
+    g_ptr_array_add (array, regex);
+
     return array;
 }
 
@@ -346,6 +355,20 @@ parse_uint (char *str, int base, glong nmin, glong nmax, gboolean *valid)
     return *valid ? (guint) ret : 0;
 }
 
+static gboolean
+item_is_lac_not_stat (GMatchInfo *info, guint32 item)
+{
+    char *str;
+    gboolean is_lac = FALSE;
+
+    /* A <stat> will always be a single digit, without quotes */
+    str = g_match_info_fetch (info, item);
+    g_assert (str);
+    is_lac = (strchr (str, '"') || strlen (str) > 1);
+    g_free (str);
+    return is_lac;
+}
+
 gboolean
 mm_gsm_parse_creg_response (GMatchInfo *info,
                             guint32 *out_reg_state,
@@ -371,6 +394,7 @@ mm_gsm_parse_creg_response (GMatchInfo *info,
     str = g_match_info_fetch (info, 1);
     if (str && strstr (str, "CGREG"))
         *out_cgreg = TRUE;
+    g_free (str);
 
     /* Normally the number of matches could be used to determine what each
      * item is, but we have overlap in one case.
@@ -392,13 +416,8 @@ mm_gsm_parse_creg_response (GMatchInfo *info,
          * CREG=2 (non-standard): +CREG: <n>,<stat>,<lac>,<ci>
          */
 
-        /* To distinguish, check length of the third match item.  If it's
-         * more than one digit or has quotes in it then it's a LAC and we
-         * got the first format.
-         */
-        str = g_match_info_fetch (info, 3);
-        if (str && (strchr (str, '"') || strlen (str) > 1)) {
-            g_free (str);
+        /* Check if the third item is the LAC to distinguish the two cases */
+        if (item_is_lac_not_stat (info, 3)) {
             istat = 2;
             ilac = 3;
             ici = 4;
@@ -409,12 +428,23 @@ mm_gsm_parse_creg_response (GMatchInfo *info,
             ici = 5;
         }
     } else if (n_matches == 7) {
-        /* CREG=2 (non-standard): +CREG: <n>,<stat>,<lac>,<ci>,<AcT> */
-        istat = 3;
-        ilac = 4;
-        ici = 5;
-        iact = 6;
-    }
+        /* CREG=2 (solicited):            +CREG: <n>,<stat>,<lac>,<ci>,<AcT>
+         * CREG=2 (unsolicited with RAC): +CREG: <stat>,<lac>,<ci>,<AcT>,<RAC>
+         */
+
+        /* Check if the third item is the LAC to distinguish the two cases */
+        if (item_is_lac_not_stat (info, 3)) {
+            istat = 2;
+            ilac = 3;
+            ici = 4;
+            iact = 5;
+        } else {
+            istat = 3;
+            ilac = 4;
+            ici = 5;
+            iact = 6;
+        }
+     }
 
     /* Status */
     str = g_match_info_fetch (info, istat);
@@ -778,8 +808,8 @@ mm_gsm_parse_cscs_support_response (const char *reply,
             g_match_info_next (match_info, NULL);
             success = TRUE;
         }
-        g_match_info_free (match_info);
     }
+    g_match_info_free (match_info);
     g_regex_unref (r);
 
     if (success)
@@ -855,8 +885,10 @@ mm_create_device_identifier (guint vid,
     if (manf)
         g_string_append (devid, manf);
 
-    if (!strlen (devid->str))
+    if (!strlen (devid->str)) {
+        g_string_free (devid, TRUE);
         return NULL;
+    }
 
     p = devid->str;
     msg = g_string_sized_new (strlen (devid->str) + 17);
@@ -888,6 +920,7 @@ mm_create_device_identifier (guint vid,
     mm_dbg ("Device ID source '%s'", msg->str);
     mm_dbg ("Device ID '%s'", ret);
     g_string_free (msg, TRUE);
+    g_string_free (devid, TRUE);
 
     return ret;
 }
@@ -1020,8 +1053,8 @@ mm_parse_cind_test_response (const char *reply, GError **error)
 
             g_match_info_next (match_info, NULL);
         }
-        g_match_info_free (match_info);
     }
+    g_match_info_free (match_info);
     g_regex_unref (r);
 
     return hash;
@@ -1086,11 +1119,10 @@ mm_parse_cind_query_response(const char *reply, GError **error)
         g_free (str);
         g_match_info_next (match_info, NULL);
     }
-    g_match_info_free (match_info);
 
 done:
-    if (r)
-        g_regex_unref (r);
+    g_match_info_free (match_info);
+    g_regex_unref (r);
 
     return array;
 }

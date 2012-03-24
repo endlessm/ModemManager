@@ -39,15 +39,15 @@ host_triplet = @host@
 subdir = .
 DIST_COMMON = README $(am__configure_deps) $(include_HEADERS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(srcdir)/config.h.in $(top_srcdir)/configure AUTHORS COPYING \
-	ChangeLog INSTALL NEWS compile config.guess config.sub depcomp \
-	install-sh ltmain.sh missing
+	$(srcdir)/config.h.in $(top_srcdir)/configure ABOUT-NLS \
+	AUTHORS COPYING ChangeLog INSTALL NEWS compile config.guess \
+	config.rpath config.sub depcomp install-sh ltmain.sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/compiler_warnings.m4 \
 	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/libtool.m4 \
 	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
 	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
@@ -312,7 +312,7 @@ dbusactivation_in_files = org.freedesktop.ModemManager.service.in
 dbusactivation_DATA = $(dbusactivation_in_files:.service.in=.service)
 include_HEADERS = include/mm-modem.h
 xmldir = $(datadir)/dbus-1/interfaces
-xml_DATA = $(filter-out introspection/all.xml, $(XMLS))
+xml_DATA = $(filter-out introspection/all.xml introspection/org.freedesktop.DBus.Properties.xml, $(XMLS))
 edit = @sed \
 	-e 's|@sbindir[@]|$(sbindir)|g' \
 	-e 's|@sysconfdir[@]|$(sysconfdir)|g' \
@@ -939,8 +939,9 @@ uninstall-am: uninstall-dbusactivationDATA uninstall-dbusserviceDATA \
 
 @WITH_DOCS_TRUE@all: $(GENERATED_FILES)
 
-org.freedesktop.ModemManager.conf:
+@WITH_POLKIT_TRUE@org.freedesktop.ModemManager.conf: $(top_srcdir)/$(dbusservice_file_polkit)
 @WITH_POLKIT_TRUE@	cp -f $(top_srcdir)/$(dbusservice_file_polkit) $(dbusservice_DATA)
+@WITH_POLKIT_FALSE@org.freedesktop.ModemManager.conf: $(top_srcdir)/$(dbusservice_file_nopolkit)
 @WITH_POLKIT_FALSE@	cp -f $(top_srcdir)/$(dbusservice_file_nopolkit) $(dbusservice_DATA)
 
 include/mm-modem.h: $(XMLS) introspection/all.xml header-generator.xsl

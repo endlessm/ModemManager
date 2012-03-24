@@ -958,6 +958,15 @@ internal_queue_command (MMSerialPort *self,
     g_return_if_fail (MM_IS_SERIAL_PORT (self));
     g_return_if_fail (command != NULL);
 
+    if (priv->open_count == 0) {
+        GError *error = g_error_new_literal (MM_SERIAL_ERROR,
+                                             MM_SERIAL_ERROR_SEND_FAILED,
+                                             "Sending command failed: device is not enabled");
+        callback (self, NULL, error, user_data);
+        g_error_free (error);
+        return;
+    }
+
     info = g_slice_new0 (MMQueueData);
     if (take_command)
         info->command = command;
@@ -1290,7 +1299,11 @@ set_property (GObject *object, guint prop_id,
         priv->bits = g_value_get_uint (value);
         break;
     case PROP_PARITY:
+#if GLIB_CHECK_VERSION(2,31,0)
+        priv->parity = g_value_get_schar (value);
+#else
         priv->parity = g_value_get_char (value);
+#endif
         break;
     case PROP_STOPBITS:
         priv->stopbits = g_value_get_uint (value);
@@ -1327,7 +1340,11 @@ get_property (GObject *object, guint prop_id,
         g_value_set_uint (value, priv->bits);
         break;
     case PROP_PARITY:
+#if GLIB_CHECK_VERSION(2,31,0)
+        g_value_set_schar (value, priv->parity);
+#else
         g_value_set_char (value, priv->parity);
+#endif
         break;
     case PROP_STOPBITS:
         g_value_set_uint (value, priv->stopbits);

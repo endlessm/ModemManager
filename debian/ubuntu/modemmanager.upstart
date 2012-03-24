@@ -1,14 +1,17 @@
 # modemmanager - modem manager
 #
-# The Network Manager daemon manages the system's network connections,
-# automatically switching between the best available.
+# The ModemManager daemon manages the system's mobile broadband connections
+# for NetworkManager.
 
 description	"modem connection manager"
 
 start on starting network-manager
-stop on stopping network-manager
+stop on stopped network-manager
 
-expect fork
 respawn
 
-exec /usr/sbin/modem-manager &
+pre-start script
+    [ -x /usr/sbin/modem-manager ] || stop
+end script
+
+exec /usr/sbin/modem-manager

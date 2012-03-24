@@ -36,6 +36,7 @@
 #include "mm-utils.h"
 #include "libqcdm/src/commands.h"
 #include "libqcdm/src/utils.h"
+#include "libqcdm/src/errors.h"
 #include "mm-log.h"
 
 static void plugin_init (MMPlugin *plugin_class);
@@ -403,6 +404,11 @@ static const char *dq_strings[] = {
     NULL
 };
 
+static guint8 zerobuf[32] = {
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
+
 static void
 port_buffer_full (MMSerialPort *port, GByteArray *buffer, gpointer user_data)
 {
@@ -411,6 +417,13 @@ port_buffer_full (MMSerialPort *port, GByteArray *buffer, gpointer user_data)
     const char **iter;
     size_t iter_len;
     int i;
+
+    /* Some devices (observed on a ZTE branded "QUALCOMM INCORPORATED" model
+     * "154") spew NULLs from some ports.
+     */
+    if (   (buffer->len >= sizeof (zerobuf))
+        && (memcmp (buffer->data, zerobuf, sizeof (zerobuf)) == 0))
+        goto stop_probing;
 
     /* Check for an immediate disqualification response.  There are some
      * ports (Option Icera-based chipsets have them, as do Qualcomm Gobi
@@ -428,13 +441,16 @@ port_buffer_full (MMSerialPort *port, GByteArray *buffer, gpointer user_data)
         for (i = 0; i < buffer->len - iter_len; i++) {
             if (!memcmp (&buffer->data[i], *iter, iter_len)) {
                 /* Immediately close the port and complete probing */
-                priv->probed_caps = 0;
-                mm_serial_port_close (MM_SERIAL_PORT (priv->probe_port));
-                probe_complete (task);
-                return;
+                goto stop_probing;
             }
         }
     }
+    return;
+
+stop_probing:
+    priv->probed_caps = 0;
+    mm_serial_port_close (MM_SERIAL_PORT (priv->probe_port));
+    probe_complete (task);
 }
 
 static gboolean
@@ -482,8 +498,8 @@ qcdm_verinfo_cb (MMQcdmSerialPort *port,
 {
     MMPluginBaseSupportsTask *task;
     MMPluginBaseSupportsTaskPrivate *priv;
-    QCDMResult *result;
-    GError *dm_error = NULL;
+    QcdmResult *result;
+    int err = QCDM_SUCCESS;
 
     /* Just the initial poke; ignore it */
     if (!user_data)
@@ -498,13 +514,10 @@ qcdm_verinfo_cb (MMQcdmSerialPort *port,
     }
 
     /* Parse the response */
-    result = qcdm_cmd_version_info_result ((const char *) response->data, response->len, &dm_error);
+    result = qcdm_cmd_version_info_result ((const char *) response->data, response->len, &err);
     if (!result) {
-        g_warning ("(%s) failed to parse QCDM version info command result: (%d) %s.",
-                   g_udev_device_get_name (priv->port),
-                   dm_error ? dm_error->code : -1,
-                   dm_error && dm_error->message ? dm_error->message : "(unknown)");
-        g_clear_error (&dm_error);
+        g_warning ("(%s) failed to parse QCDM version info command result: %d",
+                   g_udev_device_get_name (priv->port), err);
         goto done;
     }
 
@@ -554,14 +567,10 @@ try_qcdm_probe (MMPluginBaseSupportsTask *task)
 
     /* Build up the probe command */
     verinfo = g_byte_array_sized_new (50);
-    len = qcdm_cmd_version_info_new ((char *) verinfo->data, 50, &error);
+    len = qcdm_cmd_version_info_new ((char *) verinfo->data, 50);
     if (len <= 0) {
         g_byte_array_free (verinfo, TRUE);
-        g_warning ("(%s) failed to create QCDM version info command: (%d) %s.",
-                   name,
-                   error ? error->code : -1,
-                   error && error->message ? error->message : "(unknown)");
-        g_clear_error (&error);
+        g_warning ("(%s) failed to create QCDM version info command", name);
         probe_complete (task);
         return;
     }

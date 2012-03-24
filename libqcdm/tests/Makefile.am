@@ -1,5 +1,8 @@
+if WITH_TESTS
+
 INCLUDES = \
-	-I$(top_srcdir)/libqcdm/src
+	-I$(top_srcdir)/libqcdm/src \
+	-I$(top_srcdir)/src
 
 noinst_PROGRAMS = test-qcdm
 
@@ -16,14 +19,15 @@ test_qcdm_SOURCES = \
 	test-qcdm-result.h \
 	test-qcdm.c
 
-test_qcdm_CPPFLAGS = \
-	$(MM_CFLAGS)
+test_qcdm_CPPFLAGS = $(MM_CFLAGS)
 
-test_qcdm_LDADD = \
-	$(top_builddir)/libqcdm/src/libqcdm.la \
-	$(MM_LIBS)
+test_qcdm_LDADD = $(MM_LIBS)
 
-if WITH_TESTS
+if QCDM_STANDALONE
+test_qcdm_LDADD += $(top_builddir)/src/libqcdm.la
+else
+test_qcdm_LDADD += $(top_builddir)/libqcdm/src/libqcdm.la
+endif
 
 check-local: test-qcdm
 	$(abs_builddir)/test-qcdm
