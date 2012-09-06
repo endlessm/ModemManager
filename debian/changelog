@@ -1,3 +1,13 @@
+modemmanager (0.5.2.0-2) unstable; urgency=low
+
+  * debian/patches/dbus_remove_max_replies_per_connection_limit.patch: Remove
+    'max_replies_per_connection' limit from D-Bus configuration which sets it
+    to 512. It was intended to increase the limit from its historical value of
+    32. However, since 2007 the default limit has been 8192, so this is actually
+    a reduction. (Closes: #678964)
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 06 Sep 2012 17:07:18 +0200
+
 modemmanager (0.5.2.0-1) unstable; urgency=low
 
   * Upload to unstable.
