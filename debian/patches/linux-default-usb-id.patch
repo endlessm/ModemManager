@@ -1,0 +1,16 @@
+---
+ src/77-mm-usb-device-blacklist.rules |    3 +++
+ 1 file changed, 3 insertions(+)
+
+Index: modemmanager-0.7.990/src/77-mm-usb-device-blacklist.rules
+===================================================================
+--- modemmanager-0.7.990.orig/src/77-mm-usb-device-blacklist.rules	2013-03-14 23:37:34.282210727 +0100
++++ modemmanager-0.7.990/src/77-mm-usb-device-blacklist.rules	2013-03-14 23:37:34.226210727 +0100
+@@ -93,4 +93,7 @@
+ ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="204b", ENV{ID_MM_DEVICE_IGNORE}="1"
+ ATTRS{idVendor}=="2341", ENV{ID_MM_DEVICE_IGNORE}="1"
+ 
++# Netchip Technology, Inc. Linux-USB Serial Gadget (CDC ACM mode)
++ATTRS{idVendor}=="0525", ATTRS{idProduct}=="a4a7", ENV{ID_MM_DEVICE_IGNORE}="1"
++
+ LABEL="mm_usb_device_blacklist_end"

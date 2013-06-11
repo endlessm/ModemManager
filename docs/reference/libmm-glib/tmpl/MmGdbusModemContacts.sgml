@@ -1,0 +1,336 @@
+<!-- ##### SECTION Title ##### -->
+MmGdbusModemContacts
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### STRUCT MmGdbusModemContacts ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SIGNAL MmGdbusModemContacts::added ##### -->
+<para>
+
+</para>
+
+@mmgdbusmodemcontacts: the object which received the signal.
+@arg1: 
+@arg2: 
+
+<!-- ##### SIGNAL MmGdbusModemContacts::deleted ##### -->
+<para>
+
+</para>
+
+@mmgdbusmodemcontacts: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL MmGdbusModemContacts::handle-add ##### -->
+<para>
+
+</para>
+
+@mmgdbusmodemcontacts: the object which received the signal.
+@arg1: 
+@arg2: 
+@Returns: 
+
+<!-- ##### SIGNAL MmGdbusModemContacts::handle-delete ##### -->
+<para>
+
+</para>
+
+@mmgdbusmodemcontacts: the object which received the signal.
+@arg1: 
+@arg2: 
+@Returns: 
+
+<!-- ##### SIGNAL MmGdbusModemContacts::handle-find ##### -->
+<para>
+
+</para>
+
+@mmgdbusmodemcontacts: the object which received the signal.
+@arg1: 
+@arg2: 
+@Returns: 
+
+<!-- ##### SIGNAL MmGdbusModemContacts::handle-get ##### -->
+<para>
+
+</para>
+
+@mmgdbusmodemcontacts: the object which received the signal.
+@arg1: 
+@arg2: 
+@Returns: 
+
+<!-- ##### SIGNAL MmGdbusModemContacts::handle-get-count ##### -->
+<para>
+
+</para>
+
+@mmgdbusmodemcontacts: the object which received the signal.
+@arg1: 
+@Returns: 
+
+<!-- ##### SIGNAL MmGdbusModemContacts::handle-list ##### -->
+<para>
+
+</para>
+
+@mmgdbusmodemcontacts: the object which received the signal.
+@arg1: 
+@Returns: 
+
+<!-- ##### STRUCT MmGdbusModemContactsIface ##### -->
+<para>
+
+</para>
+
+@parent_iface: 
+@handle_add: 
+@handle_delete: 
+@handle_find: 
+@handle_get: 
+@handle_get_count: 
+@handle_list: 
+@added: 
+@deleted: 
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_add ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@arg_properties: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_add_finish ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@out_index: 
+@res: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_add_sync ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@arg_properties: 
+@out_index: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_delete ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@arg_index: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_delete_finish ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@res: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_delete_sync ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@arg_index: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_find ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@arg_pattern: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_find_finish ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@out_results: 
+@res: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_find_sync ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@arg_pattern: 
+@out_results: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_get ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@arg_index: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_get_finish ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@out_properties: 
+@res: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_get_sync ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@arg_index: 
+@out_properties: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_get_count ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_get_count_finish ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@out_count: 
+@res: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_get_count_sync ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@out_count: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_list ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_list_finish ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@out_results: 
+@res: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_call_list_sync ##### -->
+<para>
+
+</para>
+
+@proxy: 
+@out_results: 
+@cancellable: 
+@error: 
+@Returns: 
+
+

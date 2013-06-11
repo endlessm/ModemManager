@@ -3,23 +3,26 @@ Section: net
 Priority: optional
 Maintainer: Alexander Sack <asac@ubuntu.com>
 Uploaders: Alexander Sack <asac@debian.org>, Michael Biebl <biebl@debian.org>, Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>
-Build-Depends: debhelper (>= 8),
-	dh-autoreconf,
-	automake (>= 1:1.10),
-	libtool,
-	libdbus-glib-1-dev (>= 0.86),
-	libglib2.0-dev (>= 2.18),
-	libgudev-1.0-dev,
-	xsltproc,
-	intltool
-Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 9),
+               dh-autoreconf,
+               automake,
+               libtool,
+               intltool,
+               gtk-doc-tools,
+               gnome-common,
+               libglib2.0-dev (>= 2.30.2),
+               libgudev-1.0-dev (>= 147),
+               libqmi-glib-dev,
+               libglib2.0-doc,
+Standards-Version: 3.9.4
 Vcs-Bzr: https://code.launchpad.net/~modemmanager/modemmanager/ubuntu
 
 Package: modemmanager
 Architecture: any
 Depends: ${shlibs:Depends},
-	${misc:Depends}
+         ${misc:Depends},
 Recommends: usb-modeswitch
+Breaks: network-manager (<< 0.9.8.2-1)
 Description: D-Bus service for managing modems
  Provides a D-Bus interface to communicate with mobile broadband (GSM, CDMA,
  UMTS, ...) cards. Implements a loadable plugin interface to add work-arounds
@@ -33,7 +36,7 @@ Architecture: any
 Section: debug
 Priority: extra
 Depends: modemmanager (= ${binary:Version}),
-	${misc:Depends}
+         ${misc:Depends},
 Description: D-Bus service for managing modems - debugging symbols
  Provides a D-Bus interface to communicate with mobile broadband (GSM, CDMA,
  UMTS, ...) cards. Implements a loadable plugin interface to add work-arounds
@@ -43,3 +46,90 @@ Description: D-Bus service for managing modems - debugging symbols
  Git Repository: http://cgit.freedesktop.org/ModemManager/ModemManager/
  .
  This package contains debugging symbols for ModemManager.
+
+Package: modemmanager-dev
+Section: libdevel
+Architecture: any
+Depends: ${misc:Depends}
+Replaces: modemmanager (<< 0.7.990)
+Breaks: modemmanager (<< 0.7.990)
+Suggests: modemmanager-doc
+Description: D-Bus service for managing modems - development files
+ Provides a D-Bus interface to communicate with mobile broadband (GSM, CDMA,
+ UMTS, ...) cards. Implements a loadable plugin interface to add work-arounds
+ for non standard devices. Also provides patches to use networkmanager (and
+ the applet) with modem manager.
+ .
+ Git Repository: http://cgit.freedesktop.org/ModemManager/ModemManager/
+ .
+ This package contains header files for ModemManager.
+
+Package: modemmanager-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}
+Suggests: devhelp
+Description: D-Bus service for managing modems - documentation files
+ Provides a D-Bus interface to communicate with mobile broadband (GSM, CDMA,
+ UMTS, ...) cards. Implements a loadable plugin interface to add work-arounds
+ for non standard devices. Also provides patches to use networkmanager (and
+ the applet) with modem manager.
+ .
+ Git Repository: http://cgit.freedesktop.org/ModemManager/ModemManager/
+ .
+ This package contains documenation of the d-bus protocol to interface
+ ModemManager.
+
+Package: libmm-glib0
+Architecture: any
+Section: libs
+Pre-Depends: ${misc:Pre-Depends},
+Multi-Arch: same
+Depends: ${shlibs:Depends},
+         ${misc:Depends}
+Recommends: modemmanager (>= ${binary:Version})
+Description: D-Bus service for managing modems - shared libraries
+ Provides a D-Bus interface to communicate with mobile broadband (GSM, CDMA,
+ UMTS, ...) cards. Implements a loadable plugin interface to add work-arounds
+ for non standard devices. Also provides patches to use networkmanager (and
+ the applet) with modem manager.
+ .
+ Git Repository: http://cgit.freedesktop.org/ModemManager/ModemManager/
+ .
+ This package contains shared libraries for applications interfacing with
+ ModemManager.
+
+Package: libmm-glib-dev
+Architecture: any
+Section: libdevel
+Depends: libmm-glib0 (= ${binary:Version}),
+         modemmanager-dev,
+         ${shlibs:Depends},
+         ${misc:Depends},
+Suggests: libmm-glib-doc
+Description: D-Bus service for managing modems - library development files
+ Provides a D-Bus interface to communicate with mobile broadband (GSM, CDMA,
+ UMTS, ...) cards. Implements a loadable plugin interface to add work-arounds
+ for non standard devices. Also provides patches to use networkmanager (and
+ the applet) with modem manager.
+ .
+ Git Repository: http://cgit.freedesktop.org/ModemManager/ModemManager/
+ .
+ This package contains development files to use when writing applications that
+ interface with ModemManager.
+
+Package: libmm-glib-doc
+Architecture: all
+Section: doc
+Depends: ${misc:Depends}
+Suggests: devhelp
+Description: D-Bus service for managing modems - library documentation
+ Provides a D-Bus interface to communicate with mobile broadband (GSM, CDMA,
+ UMTS, ...) cards. Implements a loadable plugin interface to add work-arounds
+ for non standard devices. Also provides patches to use networkmanager (and
+ the applet) with modem manager.
+ .
+ Git Repository: http://cgit.freedesktop.org/ModemManager/ModemManager/
+ .
+ This package contains documentation of libmm-glib to use when writing
+ applications that interface with ModemManager.

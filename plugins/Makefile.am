@@ -1,401 +1,358 @@
 
-##########################
-# Icera-specific support #
-##########################
+# Common CPPFLAGS and LDFLAGS
 
-noinst_LTLIBRARIES = libicera-utils.la
-
-libicera_utils_la_SOURCES = \
-	mm-modem-icera.c \
-	mm-modem-icera.h
-
-libicera_utils_la_CPPFLAGS = \
+PLUGIN_COMMON_COMPILER_FLAGS = \
 	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
+	$(GUDEV_CFLAGS)	\
+	-I$(top_srcdir) \
+	-I$(top_srcdir)/src \
+	-I$(top_builddir)/src \
+	-I$(top_srcdir)/include \
+	-I$(top_builddir)/include \
+	-I$(top_srcdir)/libmm-glib \
+	-I$(top_srcdir)/libmm-glib/generated \
+	-I$(top_builddir)/libmm-glib/generated
 
-libicera_utils_la_LIBADD = \
-	$(GUDEV_LDFLAGS)
+PLUGIN_COMMON_LINKER_FLAGS = \
+	$(GUDEV_LDFLAGS) \
+	-module \
+	-avoid-version
+
+if WITH_QMI
+PLUGIN_COMMON_COMPILER_FLAGS += $(QMI_CFLAGS)
+endif
+
+if WITH_MBIM
+PLUGIN_COMMON_COMPILER_FLAGS += $(MBIM_CFLAGS)
+endif
+
+# UDev rules
+udevrulesdir = $(UDEV_BASE_DIR)/rules.d
+udevrules_DATA =
+
+########################################
+
+# Icera-specific support
+noinst_LTLIBRARIES = libmm-utils-icera.la
+libmm_utils_icera_la_SOURCES = \
+	icera/mm-broadband-modem-icera.h \
+	icera/mm-broadband-modem-icera.c \
+	icera/mm-broadband-bearer-icera.h \
+	icera/mm-broadband-bearer-icera.c
+libmm_utils_icera_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_utils_icera_la_LIBADD = $(GUDEV_LDFLAGS)
+
+ICERA_COMMON_COMPILER_FLAGS = -I$(top_srcdir)/plugins/icera
+ICERA_COMMON_LIBADD_FLAGS = $(builddir)/libmm-utils-icera.la
 
 ########################################
 
 pkglib_LTLIBRARIES = \
 	libmm-plugin-generic.la \
-	libmm-plugin-moto-c.la \
-	libmm-plugin-gobi.la \
-	libmm-plugin-huawei.la \
-	libmm-plugin-hso.la \
-	libmm-plugin-option.la \
-	libmm-plugin-sierra.la \
-	libmm-plugin-novatel.la \
 	libmm-plugin-nokia.la \
-	libmm-plugin-zte.la \
-	libmm-plugin-mbm.la \
-	libmm-plugin-longcheer.la \
-	libmm-plugin-anydata.la \
-	libmm-plugin-simtech.la \
-	libmm-plugin-x22x.la \
-	libmm-plugin-linktop.la \
+	libmm-plugin-nokia-icera.la \
+	libmm-plugin-cinterion.la \
+	libmm-plugin-iridium.la \
+	libmm-plugin-gobi.la \
+	libmm-plugin-motorola.la \
+	libmm-plugin-novatel.la \
+	libmm-plugin-novatel-lte.la \
+	libmm-plugin-altair-lte.la \
 	libmm-plugin-samsung.la \
-	libmm-plugin-wavecom.la
+	libmm-plugin-option.la \
+	libmm-plugin-hso.la \
+	libmm-plugin-anydata.la \
+	libmm-plugin-linktop.la \
+	libmm-plugin-simtech.la \
+	libmm-plugin-wavecom.la \
+	libmm-plugin-huawei.la \
+	libmm-plugin-longcheer.la \
+	libmm-plugin-x22x.la \
+	libmm-plugin-pantech.la \
+	libmm-plugin-zte.la \
+	libmm-plugin-sierra.la \
+	libmm-plugin-mbm.la \
+	libmm-plugin-via.la \
+	libmm-plugin-telit.la
 
 # Generic
-
 libmm_plugin_generic_la_SOURCES = \
-	mm-plugin-generic.c \
-	mm-plugin-generic.h
+	generic/mm-plugin-generic.c \
+	generic/mm-plugin-generic.h
+libmm_plugin_generic_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_generic_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
-libmm_plugin_generic_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
+## Motorola
+libmm_plugin_motorola_la_SOURCES = \
+	motorola/mm-plugin-motorola.c \
+	motorola/mm-plugin-motorola.h \
+	motorola/mm-broadband-modem-motorola.c \
+	motorola/mm-broadband-modem-motorola.h
+libmm_plugin_motorola_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_motorola_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
-libmm_plugin_generic_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
-
-# Motorola C-series phones
-
-libmm_plugin_moto_c_la_SOURCES = \
-	mm-plugin-moto-c.c \
-	mm-plugin-moto-c.h \
-	mm-modem-moto-c-gsm.c \
-	mm-modem-moto-c-gsm.h
-
-libmm_plugin_moto_c_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
-
-libmm_plugin_moto_c_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
-
-# Qualcomm Gobi
-
+# Gobi
 libmm_plugin_gobi_la_SOURCES = \
-	mm-plugin-gobi.c \
-	mm-plugin-gobi.h \
-	mm-modem-gobi-gsm.c \
-	mm-modem-gobi-gsm.h
-
-libmm_plugin_gobi_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
-
-libmm_plugin_gobi_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
+	gobi/mm-plugin-gobi.c \
+	gobi/mm-plugin-gobi.h \
+	gobi/mm-broadband-modem-gobi.c \
+	gobi/mm-broadband-modem-gobi.h
+libmm_plugin_gobi_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_gobi_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
 # Huawei
-
 libmm_plugin_huawei_la_SOURCES = \
-	mm-plugin-huawei.c \
-	mm-plugin-huawei.h \
-	mm-modem-huawei-gsm.c \
-	mm-modem-huawei-gsm.h \
-	mm-modem-huawei-cdma.c \
-	mm-modem-huawei-cdma.h
+	huawei/mm-plugin-huawei.c \
+	huawei/mm-plugin-huawei.h \
+	huawei/mm-broadband-modem-huawei.c \
+	huawei/mm-broadband-modem-huawei.h \
+	huawei/mm-broadband-bearer-huawei.c \
+	huawei/mm-broadband-bearer-huawei.h
 
-libmm_plugin_huawei_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
-
-libmm_plugin_huawei_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
-
-# HSO
-
-libmm_plugin_hso_la_SOURCES = \
-	mm-plugin-hso.c \
-	mm-plugin-hso.h \
-	mm-modem-gsm-hso-glue.h \
-	mm-modem-hso.c \
-	mm-modem-hso.h
-
-mm-modem-gsm-hso-glue.h: $(top_srcdir)/introspection/org.freedesktop.ModemManager.Modem.Gsm.Hso.xml
-	$(AM_V_GEN) dbus-binding-tool --prefix=mm_modem_gsm_hso --mode=glib-server --output=$@ $<
-
-libmm_plugin_hso_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
-
-libmm_plugin_hso_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
+libmm_plugin_huawei_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_huawei_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
+udevrules_DATA += huawei/77-mm-huawei-net-port-types.rules
 
 # MBM
-
 libmm_plugin_mbm_la_SOURCES = \
-	mm-plugin-mbm.c \
-	mm-plugin-mbm.h \
-	mm-modem-mbm.c \
-	mm-modem-mbm.h
-
-libmm_plugin_mbm_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
-
-libmm_plugin_mbm_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
+	mbm/mm-plugin-mbm.c \
+	mbm/mm-plugin-mbm.h \
+	mbm/mm-broadband-modem-mbm.c \
+	mbm/mm-broadband-modem-mbm.h \
+	mbm/mm-broadband-bearer-mbm.c \
+	mbm/mm-broadband-bearer-mbm.h \
+	mbm/mm-sim-mbm.c \
+	mbm/mm-sim-mbm.h
+libmm_plugin_mbm_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_mbm_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
+udevrules_DATA += mbm/77-mm-ericsson-mbm.rules
 
 # Option
-
 libmm_plugin_option_la_SOURCES = \
-	mm-plugin-option.c \
-	mm-plugin-option.h \
-	mm-modem-option.c \
-	mm-modem-option.h
+	option/mm-plugin-option.c \
+	option/mm-plugin-option.h \
+	option/mm-broadband-modem-option.c \
+	option/mm-broadband-modem-option.h
+libmm_plugin_option_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_option_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
-libmm_plugin_option_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
-
-libmm_plugin_option_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
+# HSO
+libmm_plugin_hso_la_SOURCES = \
+	option/mm-plugin-hso.c \
+	option/mm-plugin-hso.h \
+	option/mm-broadband-modem-option.c \
+	option/mm-broadband-modem-option.h \
+	option/mm-broadband-bearer-hso.c \
+	option/mm-broadband-bearer-hso.h \
+	option/mm-broadband-modem-hso.c \
+	option/mm-broadband-modem-hso.h
+libmm_plugin_hso_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_hso_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
 # Sierra
-
 libmm_plugin_sierra_la_SOURCES = \
-	mm-plugin-sierra.c \
-	mm-plugin-sierra.h \
-	mm-modem-sierra-gsm.c \
-	mm-modem-sierra-gsm.h \
-	mm-modem-sierra-cdma.c \
-	mm-modem-sierra-cdma.h
-
-libmm_plugin_sierra_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
-
-libmm_plugin_sierra_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
-
-libmm_plugin_sierra_la_LIBADD = \
-	$(builddir)/libicera-utils.la
+	sierra/mm-plugin-sierra.c \
+	sierra/mm-plugin-sierra.h \
+	sierra/mm-common-sierra.c \
+	sierra/mm-common-sierra.h \
+	sierra/mm-sim-sierra.c \
+	sierra/mm-sim-sierra.h \
+	sierra/mm-broadband-bearer-sierra.c \
+	sierra/mm-broadband-bearer-sierra.h \
+	sierra/mm-broadband-modem-sierra.c \
+	sierra/mm-broadband-modem-sierra.h \
+	sierra/mm-broadband-modem-sierra-icera.c \
+	sierra/mm-broadband-modem-sierra-icera.h
+libmm_plugin_sierra_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS) $(ICERA_COMMON_COMPILER_FLAGS)
+libmm_plugin_sierra_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
+libmm_plugin_sierra_la_LIBADD = $(ICERA_COMMON_LIBADD_FLAGS)
 
 # Wavecom (Sierra Airlink)
-
 libmm_plugin_wavecom_la_SOURCES = \
-	mm-plugin-wavecom.c \
-	mm-plugin-wavecom.h \
-	mm-modem-wavecom-gsm.c \
-	mm-modem-wavecom-gsm.h
-
-libmm_plugin_wavecom_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
-
-libmm_plugin_wavecom_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
-
-# Novatel
-
-libmm_plugin_novatel_la_SOURCES = \
-	mm-plugin-novatel.c \
-	mm-plugin-novatel.h \
-	mm-modem-novatel-gsm.c \
-	mm-modem-novatel-gsm.h \
-	mm-modem-novatel-cdma.c \
-	mm-modem-novatel-cdma.h
-
-libmm_plugin_novatel_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src \
-	-I$(top_srcdir)
-
-libmm_plugin_novatel_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
+	wavecom/mm-plugin-wavecom.c \
+	wavecom/mm-plugin-wavecom.h \
+	wavecom/mm-broadband-modem-wavecom.c \
+	wavecom/mm-broadband-modem-wavecom.h
+libmm_plugin_wavecom_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_wavecom_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
 # Nokia
-
 libmm_plugin_nokia_la_SOURCES = \
-	mm-plugin-nokia.c \
-	mm-plugin-nokia.h \
-	mm-modem-nokia.c \
-	mm-modem-nokia.h
+	nokia/mm-plugin-nokia.c \
+	nokia/mm-plugin-nokia.h \
+	nokia/mm-sim-nokia.c \
+	nokia/mm-sim-nokia.h \
+	nokia/mm-broadband-modem-nokia.c \
+	nokia/mm-broadband-modem-nokia.h
+libmm_plugin_nokia_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_nokia_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
-libmm_plugin_nokia_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
-
-libmm_plugin_nokia_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
+# Nokia (Icera)
+libmm_plugin_nokia_icera_la_SOURCES = \
+	nokia/mm-plugin-nokia-icera.c \
+	nokia/mm-plugin-nokia-icera.h
+libmm_plugin_nokia_icera_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS) $(ICERA_COMMON_COMPILER_FLAGS)
+libmm_plugin_nokia_icera_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
+libmm_plugin_nokia_icera_la_LIBADD = $(ICERA_COMMON_LIBADD_FLAGS)
+udevrules_DATA += nokia/77-mm-nokia-port-types.rules
 
 # Zte
-
 libmm_plugin_zte_la_SOURCES = \
-	mm-plugin-zte.c \
-	mm-plugin-zte.h \
-	mm-modem-zte.c \
-	mm-modem-zte.h
-
-libmm_plugin_zte_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
-
-libmm_plugin_zte_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
-
-libmm_plugin_zte_la_LIBADD = \
-	$(builddir)/libicera-utils.la
+	zte/mm-plugin-zte.c \
+	zte/mm-plugin-zte.h \
+	zte/mm-common-zte.h \
+	zte/mm-common-zte.c \
+	zte/mm-broadband-modem-zte.h \
+	zte/mm-broadband-modem-zte.c \
+	zte/mm-broadband-modem-zte-icera.h \
+	zte/mm-broadband-modem-zte-icera.c
+libmm_plugin_zte_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS) $(ICERA_COMMON_COMPILER_FLAGS)
+libmm_plugin_zte_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
+libmm_plugin_zte_la_LIBADD = $(ICERA_COMMON_LIBADD_FLAGS)
+udevrules_DATA += zte/77-mm-zte-port-types.rules
 
 # Longcheer (and rebranded dongles)
-
 libmm_plugin_longcheer_la_SOURCES = \
-	mm-plugin-longcheer.c \
-	mm-plugin-longcheer.h \
-	mm-modem-longcheer-gsm.c \
-	mm-modem-longcheer-gsm.h
-
-libmm_plugin_longcheer_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
-
-libmm_plugin_longcheer_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
+	longcheer/mm-plugin-longcheer.c \
+	longcheer/mm-plugin-longcheer.h \
+	longcheer/mm-broadband-modem-longcheer.h \
+	longcheer/mm-broadband-modem-longcheer.c
+libmm_plugin_longcheer_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_longcheer_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
+udevrules_DATA += longcheer/77-mm-longcheer-port-types.rules
 
 # AnyData CDMA
-
 libmm_plugin_anydata_la_SOURCES = \
-	mm-plugin-anydata.c \
-	mm-plugin-anydata.h \
-	mm-modem-anydata-cdma.c \
-	mm-modem-anydata-cdma.h
+	anydata/mm-plugin-anydata.c \
+	anydata/mm-plugin-anydata.h \
+	anydata/mm-broadband-modem-anydata.h \
+	anydata/mm-broadband-modem-anydata.c
+libmm_plugin_anydata_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_anydata_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
-libmm_plugin_anydata_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
-
-libmm_plugin_anydata_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
+# Linktop CDMA
+libmm_plugin_linktop_la_SOURCES = \
+	linktop/mm-plugin-linktop.c \
+	linktop/mm-plugin-linktop.h \
+	linktop/mm-broadband-modem-linktop.h \
+	linktop/mm-broadband-modem-linktop.c
+libmm_plugin_linktop_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_linktop_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
 # SimTech
-
 libmm_plugin_simtech_la_SOURCES = \
-	mm-plugin-simtech.c \
-	mm-plugin-simtech.h \
-	mm-modem-simtech-gsm.c \
-	mm-modem-simtech-gsm.h
-
-libmm_plugin_simtech_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
-
-libmm_plugin_simtech_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
+	simtech/mm-plugin-simtech.c \
+	simtech/mm-plugin-simtech.h \
+	simtech/mm-broadband-modem-simtech.h \
+	simtech/mm-broadband-modem-simtech.c
+libmm_plugin_simtech_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_simtech_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
+udevrules_DATA += simtech/77-mm-simtech-port-types.rules
 
 # Alcatel/TCT/JRD x220D and possibly others
-
 libmm_plugin_x22x_la_SOURCES = \
-	mm-plugin-x22x.c \
-	mm-plugin-x22x.h \
-	mm-modem-x22x-gsm.c \
-	mm-modem-x22x-gsm.h
+	x22x/mm-plugin-x22x.c \
+	x22x/mm-plugin-x22x.h \
+	x22x/mm-broadband-modem-x22x.h \
+	x22x/mm-broadband-modem-x22x.c
+libmm_plugin_x22x_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_x22x_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
+udevrules_DATA += x22x/77-mm-x22x-port-types.rules
 
-libmm_plugin_x22x_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
-
-libmm_plugin_x22x_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
-
-# Linktop
-
-libmm_plugin_linktop_la_SOURCES = \
-	mm-plugin-linktop.c \
-	mm-plugin-linktop.h \
-	mm-modem-linktop.c \
-	mm-modem-linktop.h
-
-libmm_plugin_linktop_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
-
-libmm_plugin_linktop_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
+# Pantech
+libmm_plugin_pantech_la_SOURCES = \
+	pantech/mm-plugin-pantech.c \
+	pantech/mm-plugin-pantech.h \
+	pantech/mm-sim-pantech.c \
+	pantech/mm-sim-pantech.h \
+	pantech/mm-broadband-modem-pantech.c \
+	pantech/mm-broadband-modem-pantech.h
+libmm_plugin_pantech_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_pantech_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
 # Samsung modem
-
 libmm_plugin_samsung_la_SOURCES = \
-	mm-plugin-samsung.c \
-	mm-plugin-samsung.h \
-	mm-modem-samsung-gsm.c \
-	mm-modem-samsung-gsm.h
+	samsung/mm-plugin-samsung.c \
+	samsung/mm-plugin-samsung.h \
+	samsung/mm-broadband-modem-samsung.c \
+	samsung/mm-broadband-modem-samsung.h
+libmm_plugin_samsung_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS) $(ICERA_COMMON_COMPILER_FLAGS)
+libmm_plugin_samsung_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
+libmm_plugin_samsung_la_LIBADD = $(ICERA_COMMON_LIBADD_FLAGS)
 
-libmm_plugin_samsung_la_CPPFLAGS = \
-	$(MM_CFLAGS) \
-	$(GUDEV_CFLAGS) \
-	-I$(top_srcdir)/src
+# Cinterion (previously Siemens) modem
+libmm_plugin_cinterion_la_SOURCES = \
+	cinterion/mm-plugin-cinterion.c \
+	cinterion/mm-plugin-cinterion.h \
+	cinterion/mm-broadband-modem-cinterion.c \
+	cinterion/mm-broadband-modem-cinterion.h
+libmm_plugin_cinterion_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_cinterion_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
-libmm_plugin_samsung_la_LDFLAGS = \
-	$(GUDEV_LDFLAGS) \
-	-module \
-	-avoid-version
+# Iridium modem
+libmm_plugin_iridium_la_SOURCES = \
+	iridium/mm-plugin-iridium.c \
+	iridium/mm-plugin-iridium.h \
+	iridium/mm-broadband-modem-iridium.c \
+	iridium/mm-broadband-modem-iridium.h \
+	iridium/mm-bearer-iridium.c \
+	iridium/mm-bearer-iridium.h \
+	iridium/mm-sim-iridium.c \
+	iridium/mm-sim-iridium.h
+libmm_plugin_iridium_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_iridium_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
-libmm_plugin_samsung_la_LIBADD = \
-	$(builddir)/libicera-utils.la
+# Novatel LTE modem
+libmm_plugin_novatel_lte_la_SOURCES = \
+	novatel/mm-plugin-novatel-lte.c \
+	novatel/mm-plugin-novatel-lte.h \
+	novatel/mm-broadband-modem-novatel-lte.c \
+	novatel/mm-broadband-modem-novatel-lte.h \
+	novatel/mm-broadband-bearer-novatel-lte.c \
+	novatel/mm-broadband-bearer-novatel-lte.h \
+	novatel/mm-sim-novatel-lte.c \
+	novatel/mm-sim-novatel-lte.h
+libmm_plugin_novatel_lte_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_novatel_lte_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
-udevrulesdir = $(UDEV_BASE_DIR)/rules.d
-udevrules_DATA = \
-	77-mm-ericsson-mbm.rules \
-	77-mm-zte-port-types.rules \
-	77-mm-longcheer-port-types.rules \
-	77-mm-simtech-port-types.rules \
-	77-mm-x22x-port-types.rules \
-	77-mm-nokia-port-types.rules
+# Novatel non-LTE modem
+libmm_plugin_novatel_la_SOURCES = \
+	novatel/mm-plugin-novatel.c \
+	novatel/mm-plugin-novatel.h \
+	novatel/mm-broadband-modem-novatel.c \
+	novatel/mm-broadband-modem-novatel.h
+libmm_plugin_novatel_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_novatel_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
-BUILT_SOURCES = \
-	mm-modem-gsm-hso-glue.h
+# Altair LTE modem
+libmm_plugin_altair_lte_la_SOURCES = \
+	altair/mm-plugin-altair-lte.c \
+	altair/mm-plugin-altair-lte.h \
+	altair/mm-broadband-modem-altair-lte.c \
+	altair/mm-broadband-modem-altair-lte.h \
+	altair/mm-broadband-bearer-altair-lte.c \
+	altair/mm-broadband-bearer-altair-lte.h
+libmm_plugin_altair_lte_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_altair_lte_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
-CLEANFILES = $(BUILT_SOURCES)
+# VIA modem
+libmm_plugin_via_la_SOURCES = \
+	via/mm-plugin-via.c \
+	via/mm-plugin-via.h \
+	via/mm-broadband-modem-via.c \
+	via/mm-broadband-modem-via.h
+libmm_plugin_via_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_via_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
+# Telit modem
+libmm_plugin_telit_la_SOURCES = \
+	telit/mm-plugin-telit.c \
+	telit/mm-plugin-telit.h \
+	telit/mm-broadband-modem-telit.c \
+	telit/mm-broadband-modem-telit.h
+libmm_plugin_telit_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_telit_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
+
+# Additional files to include in the distribution
 EXTRA_DIST = \
-	$(udevrules_DATA) \
-	mm-modem-option-utils.c
-
+	$(udevrules_DATA)

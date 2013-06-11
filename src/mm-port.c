@@ -46,40 +46,6 @@ typedef struct {
 
 /*****************************************************************************/
 
-const char *
-mm_port_subsys_to_name (MMPortSubsys psubsys)
-{
-    switch (psubsys) {
-    case MM_PORT_SUBSYS_TTY:
-        return "tty";
-    case MM_PORT_SUBSYS_NET:
-        return "net";
-    default:
-        break;
-    }
-    return "(unknown)";
-}
-
-const char *
-mm_port_type_to_name (MMPortType ptype)
-{
-    switch (ptype) {
-    case MM_PORT_TYPE_PRIMARY:
-        return "primary";
-    case MM_PORT_TYPE_SECONDARY:
-        return "secondary";
-    case MM_PORT_TYPE_IGNORED:
-        return "ignored";
-    case MM_PORT_TYPE_QCDM:
-        return "QCDM";
-    default:
-        break;
-    }
-    return "(unknown)";
-}
-
-/*****************************************************************************/
-
 static GObject*
 constructor (GType type,
              guint n_construct_params,
@@ -108,7 +74,9 @@ constructor (GType type,
         return NULL;
     }
 
-    if (priv->ptype == MM_PORT_TYPE_UNKNOWN) {
+    /* Can't have a TTY subsystem port that's unknown */
+    if (   priv->subsys != MM_PORT_SUBSYS_NET
+        && priv->ptype == MM_PORT_TYPE_UNKNOWN) {
         g_warning ("MMPort: invalid port type");
         g_object_unref (object);
         return NULL;

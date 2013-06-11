@@ -1,0 +1,759 @@
+<?xml version="1.0"?>
+<!DOCTYPE part PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+]>
+<part id="ref-overview">
+  <title>ModemManager Overview</title>
+
+  <chapter id="ref-overview-introduction">
+    <title>Introduction</title>
+    <para>
+      ModemManager provides a unified high level API for communicating with
+      (mobile broadband) modems. While the basic commands are standardized,
+      the more advanced operations (like signal quality monitoring while
+      connected) varies a lot.
+    </para>
+    <formalpara>
+      <title>Using</title>
+      <para>
+        ModemManager is a system daemon and is not meant to be used directly from
+        the command line. However, a command line client (mmcli) is provided, which
+        may be used to test the different functionality provided during plugin
+        development.
+      </para>
+    </formalpara>
+    <formalpara>
+      <title>Implementation</title>
+      <para>
+        ModemManager is a DBus system bus activated service (meaning it's started
+        automatically when a request arrives). It is written in C. The devices are
+        queried from udev and automatically updated based on hardware events. There are
+        DBus-interface specific GInterfaces, which should be implemented by any device
+        specific implementation. There is a generic MMBroadbandModem implementation that
+        provides a generic implementation of the most common operations in both GSM and
+        CDMA modems.
+      </para>
+    </formalpara>
+    <formalpara>
+      <title>Plugins</title>
+      <para>
+        Plugins are loaded on startup, and must implement the MMPlugin interface. It
+        consists of a couple of methods which tell the daemon whether the plugin
+        supports a port and to create custom modem implementations. It most likely
+        makes sense to derive custom modem implementations from one of the generic
+        classes and just add (or override) operations which are not standard. Writing
+        new plugins is highly encouraged!
+      </para>
+    </formalpara>
+  </chapter>
+
+  <chapter id="ref-overview-modem-detection-and-setup">
+    <title>Modem detection and setup</title>
+
+    <section>
+      <title>Detection mechanisms</title>
+      <para>
+        ModemManager requires <emphasis>udev</emphasis>-powered Linux kernels in order
+        to get notified of possible available Modems. udev will report each of the ports
+        found in the device, and ModemManager will probe each of the ports marked with
+        the <emphasis>ID_MM_CANDIDATE</emphasis> tag in udev. This includes both "tty"
+        and "net" ports.
+      </para>
+      <para>
+        Aditionally, users of RS232-based devices may need to request additional manual
+        scans via DBus, in order to detect modems that may have been connected to
+        RS232 to USB adapters. In this case, udev just knows about the USB adapter being
+        connected, not about the RS232 modem connected to the adapter, if any.
+      </para>
+    </section>
+
+    <section>
+      <title>Probing</title>
+      <para>
+        Whenever a new device is detected by ModemManager, port probing process will
+        get started, so that we can determine which kind of ports we have, and also
+        which plugin we need to use for the specific device. Devices may expose one or
+        more ports, and all of them will follow the same probing logic.
+      </para>
+      <para>
+        The whole probing process, including pre-probing and post-probing filters, is
+        implemented in the core ModemManager daemon. Plugins will just configure their
+        own special needs in the probing process, so that only the steps required by the
+        given plugin are executed. For example, plugins which do not support RS232
+        devices will not need AT-based vendor or product filters.
+      </para>
+
+      <section>
+        <title>Pre-probing filters</title>
+        <para>
+          Pre-probing filters are those which control whether the probing, as
+          requested by the specific plugin, takes place.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <para><emphasis>Allowed vendor IDs</emphasis></para>
+            <para>
+              Plugins can provide a list of udev-reported vendor IDs to be used as
+              pre-probing filters. If the vendor ID reported by the device via udev
+              is found in the list provided by the plugin, port probing will be
+              launched as requested by the given plugin.
+            </para>
+            <para>
+              This filter is specified by the <type>MM_PLUGIN_ALLOWED_VENDOR_IDS</type>
+              property in the <structname>MMPlugin</structname> object provided
+              by the plugin.
+            </para>
+          </listitem>
+          <listitem>
+            <para><emphasis>Product IDs</emphasis></para>
+            <para>
+              Plugins can provide a list of udev-reported pairs of vendor and product
+              IDs to be used as pre-probing filters.
+            </para>
+            <para>
+              If the vendor ID and product ID pair reported by the device via udev is
+              found in the list of 'allowed' pairs provided by the plugin, port probing
+              will be launched as requested by the given plugin. This additional filter
+              should be used when the plugin is expected to work only with a given
+              specific product of a given vendor.
+            </para>
+            <para>
+              If the vendor ID and product ID pair reported by the device via udev is
+              found in the list of 'forbidden' pairs provided by the plugin, port probing
+              will not be launched by this plugin. This additional filter
+              should be used when the plugin supports all devices of a given vendor
+              except for some specific ones.
+            </para>
+            <para>
+              These filters are specified by the <type>MM_PLUGIN_ALLOWED_PRODUCT_IDS</type>
+              and <type>MM_PLUGIN_FORBIDDEN_PRODUCT_IDS</type> properties in the
+              <structname>MMPlugin</structname> object provided by the plugin.
+            </para>
+          </listitem>
+          <listitem>
+            <para><emphasis>Subsystems</emphasis></para>
+            <para>
+              Plugins can specify which subsystems they expect, so that we filter out
+              any port detected with a subsystem not listed by the plugin.
+            </para>
+            <para>
+              This filter is specified by the <type>MM_PLUGIN_ALLOWED_SUBSYSTEMS</type>
+              property in the <structname>MMPlugin</structname> object provided
+              by the plugin.
+            </para>
+          </listitem>
+          <listitem>
+            <para><emphasis>Drivers</emphasis></para>
+            <para>
+              Plugins can specify which drivers they expect, so that we filter out
+              any port detected being managed by a driver not listed by the plugin.
+            </para>
+            <para>
+              Plugins can also specify which drivers they do not expect, so that we
+              filter out any port detected being managed by a driver listed by the plugin.
+            </para>
+            <para>
+              These filters are specified by the <type>MM_PLUGIN_ALLOWED_DRIVERS</type>
+              and <type>MM_PLUGIN_FORBIDDEN_DRIVERS</type> properties in the
+              <structname>MMPlugin</structname> object provided by the plugin.
+            </para>
+          </listitem>
+          <listitem>
+            <para><emphasis>udev tags</emphasis></para>
+            <para>
+              Plugins can provide a list of udev tags, so that we filter out
+              any port detected which doesn't expose any of the given tags.
+            </para>
+            <para>
+              This filter is specified by the <type>MM_PLUGIN_ALLOWED_UDEV_TAGS</type>
+              property in the <structname>MMPlugin</structname> object provided
+              by the plugin.
+            </para>
+          </listitem>
+        </itemizedlist>
+      </section>
+
+      <section>
+        <title>Probing sequence</title>
+        <para>
+          Whenever all pre-probing filters of a given plugin pass, ModemManager will run
+          the probing sequence as requested by the specific plugin. The main purpose of the
+          probing sequence step is to determine the type of port being probed, and also
+          prepare the information required in any expected post-probing filter.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <para><emphasis>Custom initialization</emphasis></para>
+            <para>
+              This property allows plugins to provide an asynchronous method which will get
+              executed as soon as the AT port gets opened. This method may be used for any
+              purpose, like running an early command in the ports as soon as possible, or
+              querying the modem for info about the port layout.
+            </para>
+            <para>
+              This configuration is specified by the <type>MM_PLUGIN_CUSTOM_INIT</type>
+              property in the <structname>MMPlugin</structname> object provided
+              by the plugin.
+            </para>
+          </listitem>
+          <listitem>
+            <para><emphasis>AT allowed</emphasis></para>
+            <para>
+              This boolean property allows plugins to specify that they expect and support
+              AT serial ports.
+            </para>
+            <para>
+              This configuration is specified by the <type>MM_PLUGIN_ALLOWED_AT</type>
+              property in the <structname>MMPlugin</structname> object provided
+              by the plugin.
+            </para>
+          </listitem>
+          <listitem>
+            <para><emphasis>Single AT expected</emphasis></para>
+            <para>
+              This boolean property allows plugins to specify that they only expect and support
+              one AT serial port. Whenever the first AT port is grabbed, any remaining AT probing
+              in ports of the same device will get cancelled.
+            </para>
+            <para>
+              This configuration is specified by the <type>MM_PLUGIN_ALLOWED_SINGLE_AT</type>
+              property in the <structname>MMPlugin</structname> object provided
+              by the plugin.
+            </para>
+          </listitem>
+          <listitem>
+            <para><emphasis>Custom AT probing</emphasis></para>
+            <para>
+              This property allows plugins to specify custom commands to check whether a port
+              is AT or not. By default, the 'AT' command will be used if no custom one specified.
+            </para>
+            <para>
+              This configuration is specified by the <type>MM_PLUGIN_CUSTOM_AT_PROBE</type>
+              property in the <structname>MMPlugin</structname> object provided
+              by the plugin.
+            </para>
+          </listitem>
+          <listitem>
+            <para><emphasis>QCDM allowed</emphasis></para>
+            <para>
+              This boolean property allows plugins to specify that they expect and support
+              QCDM serial ports.
+            </para>
+            <para>
+              This configuration is specified by the <type>MM_PLUGIN_ALLOWED_QCDM</type>
+              property in the <structname>MMPlugin</structname> object provided
+              by the plugin.
+            </para>
+          </listitem>
+          <listitem>
+            <para><emphasis>Check Icera support</emphasis></para>
+            <para>
+              This boolean property allows plugins to specify that they want to have the Icera
+              support checks included in the probing sequence. They can afterwards get the result
+              of the support check to decide whether they want to create a Icera-based modem
+              object or not.
+            </para>
+            <para>
+              This configuration is specified by the <type>MM_PLUGIN_ICERA_PROBE</type>
+              property in the <structname>MMPlugin</structname> object provided
+              by the plugin.
+            </para>
+          </listitem>
+        </itemizedlist>
+      </section>
+
+      <section>
+        <title>Post-probing filters</title>
+        <para>
+          Post-probing filters are required to identify whether a plugin can handle a given
+          modem, in special cases where the information retrieved from udev is either not
+          enough or wrong. This covers, for example, RS232 modems connected through a RS232
+          to USB converter, where udev-reported vendor ID is that of the converter, not the
+          one of the modem.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <para><emphasis>Allowed vendor strings</emphasis></para>
+            <para>
+              Plugins can provide a list of vendor strings to be used as post-probing
+              filters. If the vendor string reported by the device via AT commands
+              is found in the list provided by the plugin, the plugin will report that
+              it can handle this modem.
+            </para>
+            <para>
+              This filter is specified by the <type>MM_PLUGIN_ALLOWED_VENDOR_STRINGS</type>
+              property in the <structname>MMPlugin</structname> object provided
+              by the plugin.
+            </para>
+          </listitem>
+          <listitem>
+            <para><emphasis>Product strings</emphasis></para>
+            <para>
+              Plugins can provide a list of pairs of vendor and product
+              strings to be used as post-probing filters.
+            </para>
+            <para>
+              If the vendor and product string pair reported by the device via AT
+              commands is found in the 'allowed' list provided by the plugin, the
+              plugin will report that it can handle this modem. This additional filter
+              should be used when the plugin is expected to work only with a given
+              specific product of a given vendor.
+            </para>
+            <para>
+              If the vendor and product string pair reported by the device via AT
+              commands is found in the 'forbidden list provided by the plugin, the
+              plugin will report that it cannot handle this modem. This additional filter
+              should be used when the plugin supports all devices of a given vendor, except for some specific ones.
+            </para>
+            <para>
+              These filters are specified by the <type>MM_PLUGIN_ALLOWED_PRODUCT_STRINGS</type>
+              and <type>MM_PLUGIN_FORBIDDEN_PRODUCT_STRINGS</type> properties in the
+              <structname>MMPlugin</structname> object provided by the plugin.
+            </para>
+          </listitem>
+          <listitem>
+            <para><emphasis>Icera support</emphasis></para>
+            <para>
+              Plugins can specify that they only support Icera-based modems, or that they
+              do not support any Icera-based modem. When either of this configurations is
+              enabled, the Icera support checks will be included in the
+              probing sequence, and the result of the check will help to determine whether
+              the plugin supports the modem or not.
+            </para>
+            <para>
+              This filter is specified by the <type>MM_PLUGIN_ALLOWED_ICERA</type> and
+              <type>MM_PLUGIN_FORBIDDEN_ICERA</type> properties in the
+              <structname>MMPlugin</structname> object provided by the plugin.
+            </para>
+          </listitem>
+        </itemizedlist>
+
+        <note>
+          <para>
+            Plugins which require post-probing filters will always be sorted last, and
+            therefore they will be the last ones being checked for pre-probing filters. This
+            is due to the fact that we need to assume that these plugins aren't able to
+            determine port support just with pre-probing filters, as we want to avoid
+            unnecessary probing sequences launched. Also note that the Generic plugin is
+            anyway always the last one in the list.
+          </para>
+        </note>
+      </section>
+
+      <section>
+        <title>Probing setup examples</title>
+        <example>
+          <title>Probing setup for a plugin requiring udev-based vendor/product checks</title>
+          <programlisting>
+G_MODULE_EXPORT MMPlugin *
+mm_plugin_create (void)
+{
+    static const gchar *subsystems[] = { "tty", NULL };
+    static const guint16 vendor_ids[] = { 0xabcd, 0 };
+    static const mm_uint16_pair product_ids[] = {
+        { 0x1234, 0xffff }
+    };
+    static const gchar *vendor_strings[] = { "vendor", NULL };
+
+    return MM_PLUGIN (
+        g_object_new (MM_TYPE_PLUGIN_IRIDIUM,
+                      MM_PLUGIN_NAME, "Example",
+
+                      /* Next items are pre-probing filters */
+                      MM_PLUGIN_ALLOWED_SUBSYSTEMS, subsystems,
+                      MM_PLUGIN_ALLOWED_VENDOR_IDS, vendor_ids,
+                      MM_PLUGIN_ALLOWED_PRODUCT_IDS, product_ids,
+
+                      /* Next items are probing sequence setup */
+                      MM_PLUGIN_ALLOWED_AT, TRUE,
+
+                      /* No post-probing filters */
+                      NULL));
+}
+          </programlisting>
+        </example>
+
+        <example>
+          <title>Probing setup for a plugin requiring AT-probed vendor/product checks</title>
+          <programlisting>
+G_MODULE_EXPORT MMPlugin *
+mm_plugin_create (void)
+{
+    static const gchar *subsystems[] = { "tty", NULL };
+    static const gchar *vendor_strings[] = { "vendor", NULL };
+    static const mm_str_pair product_strings[] = { "another-vendor", "product xyz" };
+
+    return MM_PLUGIN (
+        g_object_new (MM_TYPE_PLUGIN_IRIDIUM,
+                      MM_PLUGIN_NAME, "Example",
+
+                      /* Next items are pre-probing filters */
+                      MM_PLUGIN_ALLOWED_SUBSYSTEMS, subsystems,
+
+                      /* Next items are probing sequence setup */
+                      MM_PLUGIN_ALLOWED_AT, TRUE,
+
+                      /* Next items are post-probing filters */
+                      MM_PLUGIN_VENDOR_STRINGS, vendor_strings,
+                      MM_PLUGIN_PRODUCT_STRINGS, product_strings,
+                      NULL));
+}
+          </programlisting>
+        </example>
+
+        <example>
+          <title>Probing setup for a plugin with custom initialization requirements</title>
+          <programlisting>
+static gboolean
+parse_custom_at (const gchar *response,
+                 const GError *error,
+                 GValue *result,
+                 GError **result_error)
+{
+    if (error) {
+        *result_error = g_error_copy (error);
+        return FALSE;
+    }
+
+    /* Otherwise, done. And also report that it's an AT port. */
+    g_value_init (result, G_TYPE_BOOLEAN);
+    g_value_set_boolean (result, TRUE);
+    return TRUE;
+}
+
+static const MMPortProbeAtCommand custom_at_probe[] = {
+    { "AT+SOMETHING", parse_custom_at },
+    { NULL }
+};
+
+G_MODULE_EXPORT MMPlugin *
+mm_plugin_create (void)
+{
+    static const gchar *subsystems[] = { "tty", NULL };
+    static const guint16 vendor_ids[] = { 0xabcd, 0 };
+
+    return MM_PLUGIN (
+        g_object_new (MM_TYPE_PLUGIN_EXAMPLE,
+                      MM_PLUGIN_NAME, "Example",
+
+                      /* Next items are pre-probing filters */
+                      MM_PLUGIN_ALLOWED_SUBSYSTEMS, subsystems,
+                      MM_PLUGIN_ALLOWED_VENDOR_IDS, vendor_ids,
+
+                      /* Next items are probing sequence setup */
+                      MM_PLUGIN_CUSTOM_AT_PROBE, custom_at_probe,
+                      MM_PLUGIN_ALLOWED_AT,      TRUE,
+
+                      /* No post-probing filters */
+                      NULL));
+}
+          </programlisting>
+        </example>
+      </section>
+    </section>
+
+    <section>
+      <title>Port grabbing and Modem object creation</title>
+      <para>
+        Once a port passes all probing filters of a given plugin, the plugin will grab
+        the port. When the first port of a given device is grabbed, the plugin will create
+        the required Modem object.
+      </para>
+      <para>
+        While preparing to get the Modem object grab the specific port probed, udev-based
+        port type hints can be used to specify AT port flags (e.g. if a port is to be
+        considered primary, secondary or for PPP).
+      </para>
+    </section>
+
+  </chapter>
+
+  <chapter id="ref-overview-modem-state-machine">
+    <title>Modem state machine</title>
+    <para>
+      Once all ports of a given modem have been probed and grabbed by a newly created
+      Modem object, ModemManager will start the global state machine for the modem, as
+      defined in the picture below.
+    </para>
+    <figure id="mm-modemmanager-states">
+      <title>ModemManager states</title>
+      <graphic fileref="ModemManager-states.png" format="PNG"></graphic>
+    </figure>
+    <para>
+      The state machine of a modem can be summarized in 5 main sequences:
+      initialization, enabling, connection, disconnection and disabling.
+    </para>
+
+    <section>
+      <title>Initialization</title>
+      <para>
+        The modem initialization sequence starts only when all ports
+        have been probed and grabbed by a given plugin. This is done so that the proper
+        AT port (that suggested to be Primary) is used as control port.
+      </para>
+      <para>
+        The global initialization sequence is itself splitted into N per-interface
+        initialization steps (being N the number of interfaces implemented by the
+        modem object). The following list provides the steps required in the
+        initialization sequence of a Broadband modem object.
+      </para>
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>Modem interface initialization</emphasis></para>
+          <para>
+            The <link linkend="gdbus-org.freedesktop.ModemManager1.Modem">Modem interface</link>
+            provides common actions and information available in the majority of the modems
+            (including Broadband-specific items which won't be implemented by POTS modems).
+          </para>
+          <para>
+            One of the key things done during the initialization of this interface is the
+            <emphasis>checking of supported capabilities</emphasis>. Broadband modem objects
+            are able to handle 3GPP-only, CDMA-only and mixed 3GPP+CDMA modems, but in order
+            to properly handle the distinctions required in these, ModemManager first needs
+            to know exactly which is the current set of capabilities.
+          </para>
+          <para>
+            The other key step in this sequence involves <emphasis>checking the lock status
+            of the modem and/or SIM </emphasis>. If the modem/SIM is found to be locked, the
+            whole initialization sequence is halted and the modem is left in a locked state
+            until unlocked by the user. Note, therefore, that modems that are locked will not
+            expose additional feature-specific DBus interfaces until they get unlocked.
+          </para>
+          <note>
+            <para>
+              It may be the case that some of the steps in the initialization of the Modem
+              interface require the modem itself to be unlocked. If the modem is found locked
+              during the first initialization attempt, as soon as it gets unlocked the
+              initialization sequence will be re-executed.
+            </para>
+          </note>
+        </listitem>
+        <listitem>
+          <emphasis>3GPP interface initialization</emphasis>
+          <para>
+            The <link linkend="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp">3GPP interface</link>
+            provides common actions and setup for modems which provide 3GPP capabilities. Therefore,
+            this interface initialization sequence will only be run in 3GPP-enabled modems.
+          </para>
+        </listitem>
+        <listitem>
+          <emphasis>CDMA interface initialization</emphasis>
+          <para>
+            The <link linkend="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma">CDMA interface</link>
+            provides common actions and setup for modems which provide CDMA capabilities. Therefore,
+            this interface initialization sequence will only be run in CDMA-enabled modems.
+          </para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Additional feature-specific interface initializations</emphasis></para>
+          <para>
+            Modems with additional features will export feature-specific interfaces, such as
+            the <link linkend="gdbus-org.freedesktop.ModemManager1.Modem.Location">Location</link> or
+            the <link linkend="gdbus-org.freedesktop.ModemManager1.Modem.Location">Messaging</link>
+            ones.
+          </para>
+          <para>
+            These interfaces also have their own initialization sequences, where the first step
+            in the sequence is always the check of whether the given modem supports the given feature.
+            In other words, modems will only end up exporting the interfaces for the features they
+            support.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>Enabling</title>
+      <para>
+        Modem enabling is the user-requested sequence with the sole purpose of bringing
+        the modem to a state where it can get connected.
+      </para>
+      <para>
+        As with the initialization sequence, the global enabling sequence is itself
+        splitted into N per-interface enabling steps (being N the number of interfaces
+        exported by the modem). Those interfaces implemented by the object but not
+        supported by the modem will not be enabled.
+      </para>
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>Modem interface enabling</emphasis></para>
+          <para>
+            The sequence to enable the
+            <link linkend="gdbus-org.freedesktop.ModemManager1.Modem">Modem interface</link>
+            takes care of different important steps, such as <emphasis>powering up the
+            radio interface</emphasis> or <emphasis>configuring</emphasis> the best charset
+            to use.
+          </para>
+        </listitem>
+        <listitem>
+          <para><emphasis>3GPP interface enabling</emphasis></para>
+          <para>
+            Modems with 3GPP capabilities will enable the
+            <link linkend="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp">3GPP interface</link>
+            as part of the global enabling sequence. This sequence involves setting up the
+            <emphasis>automatic registration</emphasis> of the device in the network, as well
+            as configuring 3GPP specific <emphasis>indicators and unsolicited message
+            handlers</emphasis>.
+          </para>
+        </listitem>
+        <listitem>
+          <para><emphasis>CDMA interface enabling</emphasis></para>
+          <para>
+            Modems with CDMA capabilities will enable the
+            <link linkend="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma">CDMA interface</link>
+            as part of the global enabling sequence. This sequence involves setting up the
+            <emphasis>periodic checks of registration</emphasis> in the CDMA network.
+          </para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Additional feature-specific interface enablings</emphasis></para>
+          <para>
+            Each feature-specific interface will have its own enabling sequence, with operations
+            which are directly related to the purpose of the interface. For example, enabling the
+            <link linkend="gdbus-org.freedesktop.ModemManager1.Modem.Location">Location</link>
+            interface will involve setting up the initial location information; and enabling the
+            <link linkend="gdbus-org.freedesktop.ModemManager1.Modem.Location">Messaging</link>
+            interface will involve loading the initial list of SMS available in the SIM or Modem.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>Connection &amp; disconnection</title>
+      <para>
+        Connecting the Modem is done through the <emphasis>Bearer</emphasis> objects. Once such an
+        object is created, the user can request to get the given bearer connected.
+      </para>
+      <para>
+        Broadband Modems will usually create Broadband Bearers. This kind of bearers can run either
+        the CDMA connection sequence (if the modem has CDMA capabilities) or the 3GPP connection
+        sequence (if the modem has 3GPP capabilities). For the special case of mixed 3GPP+CDMA
+        modems, it is assumed that the plugin implementation needs to decide how the connection gets
+        done. By default, anyway, the 3GPP sequence is used in this case.
+      </para>
+      <note>
+        <para>
+          Modems which are both LTE (3GPP) and CDMA can hand over from LTE to CDMA transparently and
+          automatically when no LTE network is available, even keeping the same IP address. When this
+          happens, the modem will get notified about the access technology change, and ModemManager
+          will update that information.
+        </para>
+      </note>
+    </section>
+
+    <section>
+      <title>Disabling</title>
+      <para>
+        Users can disable the modems, which will bring them to a state where they are in low power
+        mode (e.g. RF switched off) and not registered in any network.
+      </para>
+      <para>
+        As with the initialization or enabling sequences, the global disabling sequence is itself
+        splitted into N per-interface disabling steps (being N the number of interfaces
+        exported by the modem). Those interfaces implemented by the object but not
+        supported by the modem will not be disabled.
+      </para>
+      <note>
+        <para>
+          The global disabling sequence will go on disabling the interfaces one by one, but
+          starting with the interface which was last enabled during the enabling sequence, and
+          backwards. This ensures that the
+          <link linkend="gdbus-org.freedesktop.ModemManager1.Modem">Modem interface</link>
+          gets disabled last.
+        </para>
+      </note>
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>Additional feature-specific interface disablings</emphasis></para>
+          <para>
+            Each feature-specific interface will have its own disabling sequence, with operations
+            which are directly related to the purpose of the interface. For example, disabling the
+            <link linkend="gdbus-org.freedesktop.ModemManager1.Modem.Location">Location</link>
+            interface will involve shutting down the location gathering; and disabling the
+            <link linkend="gdbus-org.freedesktop.ModemManager1.Modem.Location">Messaging</link>
+            interface will involve unexporting all SMS objects from DBus.
+          </para>
+        </listitem>
+        <listitem>
+          <para><emphasis>CDMA interface disabling</emphasis></para>
+          <para>
+            Modems with CDMA capabilities will disable the
+            <link linkend="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma">CDMA interface</link>
+            as part of the global disabling sequence. This sequence involves cancelling the
+            <emphasis>periodic checks of registration</emphasis> in the CDMA network.
+          </para>
+        </listitem>
+        <listitem>
+          <para><emphasis>3GPP interface disabling</emphasis></para>
+          <para>
+            Modems with 3GPP capabilities will disable the
+            <link linkend="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp">3GPP interface</link>
+            as part of the global disabling sequence. This sequence involves, among other things,
+            cleaning up 3GPP specific <emphasis>indicators and unsolicited message handlers</emphasis>.
+          </para>
+        </listitem>
+        <listitem>
+          <para><emphasis>Modem interface disabling</emphasis></para>
+          <para>
+            The sequence to disable the
+            <link linkend="gdbus-org.freedesktop.ModemManager1.Modem">Modem interface</link>
+            takes care of different important steps, such as <emphasis>powering down the
+            radio interface</emphasis>.
+          </para>
+        </listitem>
+
+      </itemizedlist>
+    </section>
+  </chapter>
+
+  <chapter id="ref-overview-plugin-specific-modems">
+    <title>Plugin-specific Modems</title>
+    <para>
+      ModemManager plugins exist in order to handle all non-standard vendor-specific behaviour
+      that needs to get supported.
+    </para>
+    <para>
+      Plugins will provide their own Modem object implementations, usually subclassing the
+      generic <structname>MMBroadbandModem</structname> object. As previously explained, this
+      object implements every interface that may be exported by the Modem object in DBus; and
+      then, depending on the per-interface support checks, the interface will end up being
+      really exported or not.
+    </para>
+    <para>
+      Each interface defines every step to be run during the initialization, enabling or
+      disabling sequences. Then, the object implementing the interface may or may not provide
+      the implementation of such step. By default, the generic
+      <structname>MMBroadbandModem</structname> object implements already most of the steps
+      in the interfaces providing common features:
+    </para>
+    <figure id="mm-modemmanager-interface-initialization-sequence">
+      <title>Modem interface initialization sequence</title>
+      <graphic fileref="ModemManager-interface-initialization-sequence.png" format="PNG"></graphic>
+    </figure>
+    <para>
+      Vendor-specific subclasses of <structname>MMBroadbandModem</structname> are then able to
+      either provide their own implementation of a given step (in the image below, a custom
+      implementation for capabilities checking); or even completely disable the step if they
+      know that there is no way to run it (in the image below, revision string loading is
+      removed).
+    </para>
+    <figure id="mm-modemmanager-interface-initialization-sequence-subclassed">
+      <title>Modem interface initialization sequence subclassed</title>
+      <graphic fileref="ModemManager-interface-initialization-sequence-subclassed.png" format="PNG"></graphic>
+    </figure>
+    <para>
+      These subclass-able steps are all implemented as standard GIO asynchronous functions,
+      so subclassing a step involves implementing both the async method which receives the
+      input arguments to the action and the corresponding <literal>_finish()</literal> method
+      which provides the results of the action once the operation is ready.
+    </para>
+    <para>
+      It is worth noting that these steps and the asynchronous methods implementing them
+      don't assume that an AT port will be used to implement the real action. This means
+      that any other kind of port may be really used (e.g. QCDM or QMI) in the implementation,
+      or even that a static reply can be returned (e.g. Iridium modems will always report
+      "Iridium" as current OperatorName).
+    </para>
+  </chapter>
+</part>

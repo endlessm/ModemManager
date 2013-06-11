@@ -1,0 +1,39 @@
+<!-- ##### SECTION Title ##### -->
+MmGdbusModemContactsSkeleton
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### STRUCT MmGdbusModemContactsSkeleton ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_contacts_skeleton_new ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+

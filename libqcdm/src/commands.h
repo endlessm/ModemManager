@@ -66,6 +66,19 @@ enum {
     QCDM_HDR_REV_A = 0x02
 };
 
+enum {
+    QCDM_ERI_ROAMING_ICON_ON = 0,
+    QCDM_ERI_ROAMING_ICON_OFF = 1,
+    QCDM_ERI_ROAMING_ICON_FLASH = 2,
+    /* Values greater than 2 are OEM defined */
+};
+
+enum {
+    /* Valid with QCDM_ERI_ROAMING_ICON_FLASH and greater */
+    QCDM_ERI_ROAMING_ICON_MODE_NORMAL = 0,
+    QCDM_ERI_ROAMING_ICON_MODE_FLASH = 1,
+};
+
 /**********************************************************************/
 
 #define QCDM_CMD_VERSION_INFO_ITEM_COMP_DATE "comp-date"
@@ -89,6 +102,19 @@ size_t      qcdm_cmd_esn_new    (char *buf, size_t len);
 QcdmResult *qcdm_cmd_esn_result (const char *buf,
                                  size_t len,
                                  int *out_error);
+
+/**********************************************************************/
+
+enum {
+    QCDM_CMD_CONTROL_MODE_OFFLINE = 1,
+    QCDM_CMD_CONTROL_MODE_RESET = 2,
+};
+
+size_t      qcdm_cmd_control_new    (char *buf, size_t len, u_int8_t mode);
+
+QcdmResult *qcdm_cmd_control_result (const char *buf,
+                                     size_t len,
+                                     int *out_error);
 
 /**********************************************************************/
 
@@ -145,6 +171,10 @@ QcdmResult *qcdm_cmd_sw_version_result (const char *buf,
                                         int *out_error);
 
 /**********************************************************************/
+
+#define QCDM_CMD_STATUS_SNAPSHOT_ITEM_ESN                "esn"
+
+#define QCDM_CMD_STATUS_SNAPSHOT_ITEM_HOME_MCC           "mcc"
 
 /* One of QCDM_CDMA_BAND_CLASS_* */
 #define QCDM_CMD_STATUS_SNAPSHOT_ITEM_BAND_CLASS         "band-class"
@@ -262,11 +292,17 @@ QcdmResult *qcdm_cmd_nv_set_roam_pref_result (const char *buf,
 enum {
     QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_DIGITAL         = 0x00,
     QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_DIGITAL_ONLY    = 0x01,
+    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_ANALOG          = 0x02,
+    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_ANALOG_ONLY     = 0x03,
     QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_AUTO            = 0x04,
     QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_1X_ONLY         = 0x09,
     QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_HDR_ONLY        = 0x0A,
-    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_1X_HDR_ONLY     = 0x0D,
+    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_GPRS_ONLY       = 0x0D,
+    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_UMTS_ONLY       = 0x0E,
+    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_GSM_UMTS_ONLY   = 0x11,
+    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_1X_HDR_ONLY     = 0x13,
     QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_LTE_ONLY        = 0x1E,
+    QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_GSM_UMTS_LTE_ONLY = 0x1F,
     QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_1X_HDR_LTE_ONLY = 0x24,
 };
 
@@ -289,6 +325,29 @@ size_t      qcdm_cmd_nv_set_mode_pref_new    (char *buf,
 QcdmResult *qcdm_cmd_nv_set_mode_pref_result (const char *buf,
                                               size_t len,
                                               int *out_error);
+
+/**********************************************************************/
+
+enum {
+    QCDM_CMD_NV_HYBRID_PREF_ITEM_REV_HYBRID_OFF = 0x00,
+    QCDM_CMD_NV_HYBRID_PREF_ITEM_REV_HYBRID_ON = 0x01,
+};
+
+#define QCDM_CMD_NV_GET_HYBRID_PREF_ITEM_HYBRID_PREF "hybrid-pref"
+
+size_t      qcdm_cmd_nv_get_hybrid_pref_new    (char *buf, size_t len);
+
+QcdmResult *qcdm_cmd_nv_get_hybrid_pref_result (const char *buf,
+                                                size_t len,
+                                                int *out_error);
+
+size_t      qcdm_cmd_nv_set_hybrid_pref_new    (char *buf,
+                                                size_t len,
+                                                u_int8_t hybrid_pref);
+
+QcdmResult *qcdm_cmd_nv_set_hybrid_pref_result (const char *buf,
+                                                size_t len,
+                                                int *out_error);
 
 /**********************************************************************/
 
@@ -375,6 +434,8 @@ enum {
     QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_WCDMA_ONLY = 0x0E,
     QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_PERSISTENT_MODE = 0x0F,
     QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_NO_CHANGE = 0x10,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_LTE_ONLY = 0x26,
+    QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_GSM_WCDMA_LTE_ONLY = 0x27,
 };
 
 #define QCDM_CMD_CM_SUBSYS_STATE_INFO_ITEM_CALL_STATE             "call-state"
@@ -572,6 +633,32 @@ size_t      qcdm_cmd_nw_subsys_modem_snapshot_cdma_new    (char *buf,
 QcdmResult *qcdm_cmd_nw_subsys_modem_snapshot_cdma_result (const char *buf,
                                                            size_t len,
                                                            int *out_error);
+
+/**********************************************************************/
+
+#define QCDM_CMD_NW_SUBSYS_ERI_ITEM_ROAM           "roam"
+
+#define QCDM_CMD_NW_SUBSYS_ERI_ITEM_INDICATOR_ID   "indicator-id"
+
+/* One of QCDM_ERI_ROAMING_ICON_* */
+#define QCDM_CMD_NW_SUBSYS_ERI_ITEM_ICON_ID        "icon-id"
+
+/* One of QCDM_ERI_ROAMING_ICON_MODE_* */
+#define QCDM_CMD_NW_SUBSYS_ERI_ITEM_ICON_MODE      "icon-mode"
+
+#define QCDM_CMD_NW_SUBSYS_ERI_ITEM_CALL_PROMPT_ID "call-prompt-id"
+
+#define QCDM_CMD_NW_SUBSYS_ERI_ITEM_ALERT_ID       "alert-id"
+
+#define QCDM_CMD_NW_SUBSYS_ERI_ITEM_TEXT           "text"
+
+size_t      qcdm_cmd_nw_subsys_eri_new    (char *buf,
+                                           size_t len,
+                                           u_int8_t chipset);
+
+QcdmResult *qcdm_cmd_nw_subsys_eri_result (const char *buf,
+                                           size_t len,
+                                           int *out_error);
 
 /**********************************************************************/
 

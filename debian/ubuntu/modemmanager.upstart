@@ -11,7 +11,7 @@ stop on stopped network-manager
 respawn
 
 pre-start script
-    [ -x /usr/sbin/modem-manager ] || stop
+    [ -x /usr/sbin/ModemManager ] || stop
 end script
 
-exec /usr/sbin/modem-manager
+exec /usr/sbin/ModemManager

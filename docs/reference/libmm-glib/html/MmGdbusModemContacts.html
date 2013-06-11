@@ -1,0 +1,1426 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MmGdbusModemContacts</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="libmm-glib Reference Manual">
+<link rel="up" href="pt02.html" title="Part II. Low level API">
+<link rel="prev" href="MmGdbusModemFirmwareSkeleton.html" title="MmGdbusModemFirmwareSkeleton">
+<link rel="next" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="MmGdbusModemFirmwareSkeleton.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="pt02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libmm-glib Reference Manual</th>
+<td><a accesskey="n" href="MmGdbusModemContactsProxy.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#MmGdbusModemContacts.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#MmGdbusModemContacts.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#MmGdbusModemContacts.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#MmGdbusModemContacts.prerequisites" class="shortcut">Prerequisites</a>
+                   | 
+                  <a href="#MmGdbusModemContacts.implementations" class="shortcut">Known Implementations</a>
+                   | 
+                  <a href="#MmGdbusModemContacts.signals" class="shortcut">Signals</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="MmGdbusModemContacts"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="MmGdbusModemContacts.top_of_page"></a>MmGdbusModemContacts</span></h2>
+<p>MmGdbusModemContacts — Generated C code for the org.freedesktop.ModemManager1.Modem.Contacts D-Bus interface</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="MmGdbusModemContacts.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">                    <a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContacts-struct" title="MmGdbusModemContacts">MmGdbusModemContacts</a>;
+struct              <a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContactsIface" title="struct MmGdbusModemContactsIface">MmGdbusModemContactsIface</a>;
+
+<span class="returnvalue">void</span>                <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-add" title="mm_gdbus_modem_contacts_call_add ()">mm_gdbus_modem_contacts_call_add</a>    (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> *arg_properties</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-add-finish" title="mm_gdbus_modem_contacts_call_add_finish ()">mm_gdbus_modem_contacts_call_add_finish</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *out_index</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-add-sync" title="mm_gdbus_modem_contacts_call_add_sync ()">mm_gdbus_modem_contacts_call_add_sync</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> *arg_properties</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *out_index</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-delete" title="mm_gdbus_modem_contacts_call_delete ()">mm_gdbus_modem_contacts_call_delete</a> (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> arg_index</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-delete-finish" title="mm_gdbus_modem_contacts_call_delete_finish ()">mm_gdbus_modem_contacts_call_delete_finish</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-delete-sync" title="mm_gdbus_modem_contacts_call_delete_sync ()">mm_gdbus_modem_contacts_call_delete_sync</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> arg_index</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-find" title="mm_gdbus_modem_contacts_call_find ()">mm_gdbus_modem_contacts_call_find</a>   (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *arg_pattern</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-find-finish" title="mm_gdbus_modem_contacts_call_find_finish ()">mm_gdbus_modem_contacts_call_find_finish</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> **out_results</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-find-sync" title="mm_gdbus_modem_contacts_call_find_sync ()">mm_gdbus_modem_contacts_call_find_sync</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *arg_pattern</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> **out_results</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get" title="mm_gdbus_modem_contacts_call_get ()">mm_gdbus_modem_contacts_call_get</a>    (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> arg_index</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get-finish" title="mm_gdbus_modem_contacts_call_get_finish ()">mm_gdbus_modem_contacts_call_get_finish</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> **out_properties</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get-sync" title="mm_gdbus_modem_contacts_call_get_sync ()">mm_gdbus_modem_contacts_call_get_sync</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> arg_index</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> **out_properties</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get-count" title="mm_gdbus_modem_contacts_call_get_count ()">mm_gdbus_modem_contacts_call_get_count</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get-count-finish" title="mm_gdbus_modem_contacts_call_get_count_finish ()">mm_gdbus_modem_contacts_call_get_count_finish</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *out_count</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get-count-sync" title="mm_gdbus_modem_contacts_call_get_count_sync ()">mm_gdbus_modem_contacts_call_get_count_sync</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *out_count</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-list" title="mm_gdbus_modem_contacts_call_list ()">mm_gdbus_modem_contacts_call_list</a>   (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-list-finish" title="mm_gdbus_modem_contacts_call_list_finish ()">mm_gdbus_modem_contacts_call_list_finish</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> **out_results</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-list-sync" title="mm_gdbus_modem_contacts_call_list_sync ()">mm_gdbus_modem_contacts_call_list_sync</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> **out_results</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="MmGdbusModemContacts.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  GInterface
+   +----MmGdbusModemContacts
+</pre>
+</div>
+<div class="refsect1">
+<a name="MmGdbusModemContacts.prerequisites"></a><h2>Prerequisites</h2>
+<p>
+MmGdbusModemContacts requires
+ <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>.</p>
+</div>
+<div class="refsect1">
+<a name="MmGdbusModemContacts.implementations"></a><h2>Known Implementations</h2>
+<p>
+MmGdbusModemContacts is implemented by
+ <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy">MmGdbusModemContactsProxy</a> and  <a class="link" href="MmGdbusModemContactsSkeleton.html" title="MmGdbusModemContactsSkeleton">MmGdbusModemContactsSkeleton</a>.</p>
+</div>
+<div class="refsect1">
+<a name="MmGdbusModemContacts.signals"></a><h2>Signals</h2>
+<pre class="synopsis">
+  "<a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContacts-added" title='The "added" signal'>added</a>"                                          : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
+  "<a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContacts-deleted" title='The "deleted" signal'>deleted</a>"                                        : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
+  "<a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-add" title='The "handle-add" signal'>handle-add</a>"                                     : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
+  "<a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-delete" title='The "handle-delete" signal'>handle-delete</a>"                                  : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
+  "<a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-find" title='The "handle-find" signal'>handle-find</a>"                                    : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
+  "<a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-get" title='The "handle-get" signal'>handle-get</a>"                                     : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
+  "<a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-get-count" title='The "handle-get-count" signal'>handle-get-count</a>"                               : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
+  "<a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-list" title='The "handle-list" signal'>handle-list</a>"                                    : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
+</pre>
+</div>
+<div class="refsect1">
+<a name="MmGdbusModemContacts.description"></a><h2>Description</h2>
+<p>
+This section contains code for working with the org.freedesktop.ModemManager1.Modem.Contacts D-Bus interface in C.
+</p>
+</div>
+<div class="refsect1">
+<a name="MmGdbusModemContacts.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="MmGdbusModemContacts-struct"></a><h3>MmGdbusModemContacts</h3>
+<pre class="programlisting">typedef struct _MmGdbusModemContacts MmGdbusModemContacts;</pre>
+<p>
+Abstract interface type for the D-Bus interface org.freedesktop.ModemManager1.Modem.Contacts.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MmGdbusModemContactsIface"></a><h3>struct MmGdbusModemContactsIface</h3>
+<pre class="programlisting">struct MmGdbusModemContactsIface {
+  GTypeInterface parent_iface;
+
+
+  gboolean (*handle_add) (
+    MmGdbusModemContacts *object,
+    GDBusMethodInvocation *invocation,
+    GVariant *arg_properties);
+
+  gboolean (*handle_delete) (
+    MmGdbusModemContacts *object,
+    GDBusMethodInvocation *invocation,
+    guint arg_index);
+
+  gboolean (*handle_find) (
+    MmGdbusModemContacts *object,
+    GDBusMethodInvocation *invocation,
+    const gchar *arg_pattern);
+
+  gboolean (*handle_get) (
+    MmGdbusModemContacts *object,
+    GDBusMethodInvocation *invocation,
+    guint arg_index);
+
+  gboolean (*handle_get_count) (
+    MmGdbusModemContacts *object,
+    GDBusMethodInvocation *invocation);
+
+  gboolean (*handle_list) (
+    MmGdbusModemContacts *object,
+    GDBusMethodInvocation *invocation);
+
+  void (*added) (
+    MmGdbusModemContacts *object,
+    guint arg_index,
+    GVariant *arg_properties);
+
+  void (*deleted) (
+    MmGdbusModemContacts *object,
+    guint arg_index);
+};
+</pre>
+<p>
+Virtual table for the D-Bus interface org.freedesktop.ModemManager1.Modem.Contacts.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GTypeInterface"><span class="type">GTypeInterface</span></a> <em class="structfield"><code><a name="MmGdbusModemContactsIface.parent-iface"></a>parent_iface</code></em>;</span></p></td>
+<td>The parent interface.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="MmGdbusModemContactsIface.handle-add"></a>handle_add</code></em> ()</span></p></td>
+<td>Handler for the <a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-add" title='The "handle-add" signal'><span class="type">"handle-add"</span></a> signal.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="MmGdbusModemContactsIface.handle-delete"></a>handle_delete</code></em> ()</span></p></td>
+<td>Handler for the <a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-delete" title='The "handle-delete" signal'><span class="type">"handle-delete"</span></a> signal.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="MmGdbusModemContactsIface.handle-find"></a>handle_find</code></em> ()</span></p></td>
+<td>Handler for the <a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-find" title='The "handle-find" signal'><span class="type">"handle-find"</span></a> signal.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="MmGdbusModemContactsIface.handle-get"></a>handle_get</code></em> ()</span></p></td>
+<td>Handler for the <a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-get" title='The "handle-get" signal'><span class="type">"handle-get"</span></a> signal.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="MmGdbusModemContactsIface.handle-get-count"></a>handle_get_count</code></em> ()</span></p></td>
+<td>Handler for the <a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-get-count" title='The "handle-get-count" signal'><span class="type">"handle-get-count"</span></a> signal.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="MmGdbusModemContactsIface.handle-list"></a>handle_list</code></em> ()</span></p></td>
+<td>Handler for the <a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-list" title='The "handle-list" signal'><span class="type">"handle-list"</span></a> signal.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="MmGdbusModemContactsIface.added"></a>added</code></em> ()</span></p></td>
+<td>Handler for the <a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContacts-added" title='The "added" signal'><span class="type">"added"</span></a> signal.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="MmGdbusModemContactsIface.deleted"></a>deleted</code></em> ()</span></p></td>
+<td>Handler for the <a class="link" href="MmGdbusModemContacts.html#MmGdbusModemContacts-deleted" title='The "deleted" signal'><span class="type">"deleted"</span></a> signal.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-add"></a><h3>mm_gdbus_modem_contacts_call_add ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_gdbus_modem_contacts_call_add    (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> *arg_properties</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>
+Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Add"><GTKDOCLINK HREF="Add"><code class="function">Add()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
+When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
+You can then call <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-add-finish" title="mm_gdbus_modem_contacts_call_add_finish ()"><code class="function">mm_gdbus_modem_contacts_call_add_finish()</code></a> to get the result of the operation.
+</p>
+<p>
+See <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-add-sync" title="mm_gdbus_modem_contacts_call_add_sync ()"><code class="function">mm_gdbus_modem_contacts_call_add_sync()</code></a> for the synchronous, blocking version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>arg_properties</code></em> :</span></p></td>
+<td>Argument to pass with the method invocation.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>User data to pass to <em class="parameter"><code>callback</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-add-finish"></a><h3>mm_gdbus_modem_contacts_call_add_finish ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_gdbus_modem_contacts_call_add_finish
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *out_index</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Finishes an operation started with <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-add" title="mm_gdbus_modem_contacts_call_add ()"><code class="function">mm_gdbus_modem_contacts_call_add()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out_index</code></em> :</span></p></td>
+<td>Return location for return parameter or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to ignore. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
+<td>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-add" title="mm_gdbus_modem_contacts_call_add ()"><code class="function">mm_gdbus_modem_contacts_call_add()</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set. <span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-add-sync"></a><h3>mm_gdbus_modem_contacts_call_add_sync ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_gdbus_modem_contacts_call_add_sync
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> *arg_properties</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *out_index</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Add"><GTKDOCLINK HREF="Add"><code class="function">Add()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
+</p>
+<p>
+See <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-add" title="mm_gdbus_modem_contacts_call_add ()"><code class="function">mm_gdbus_modem_contacts_call_add()</code></a> for the asynchronous version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>arg_properties</code></em> :</span></p></td>
+<td>Argument to pass with the method invocation.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out_index</code></em> :</span></p></td>
+<td>Return location for return parameter or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to ignore. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set. <span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-delete"></a><h3>mm_gdbus_modem_contacts_call_delete ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_gdbus_modem_contacts_call_delete (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> arg_index</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>
+Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Delete"><GTKDOCLINK HREF="Delete"><code class="function">Delete()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
+When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
+You can then call <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-delete-finish" title="mm_gdbus_modem_contacts_call_delete_finish ()"><code class="function">mm_gdbus_modem_contacts_call_delete_finish()</code></a> to get the result of the operation.
+</p>
+<p>
+See <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-delete-sync" title="mm_gdbus_modem_contacts_call_delete_sync ()"><code class="function">mm_gdbus_modem_contacts_call_delete_sync()</code></a> for the synchronous, blocking version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>arg_index</code></em> :</span></p></td>
+<td>Argument to pass with the method invocation.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>User data to pass to <em class="parameter"><code>callback</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-delete-finish"></a><h3>mm_gdbus_modem_contacts_call_delete_finish ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_gdbus_modem_contacts_call_delete_finish
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Finishes an operation started with <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-delete" title="mm_gdbus_modem_contacts_call_delete ()"><code class="function">mm_gdbus_modem_contacts_call_delete()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
+<td>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-delete" title="mm_gdbus_modem_contacts_call_delete ()"><code class="function">mm_gdbus_modem_contacts_call_delete()</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set. <span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-delete-sync"></a><h3>mm_gdbus_modem_contacts_call_delete_sync ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_gdbus_modem_contacts_call_delete_sync
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> arg_index</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Delete"><GTKDOCLINK HREF="Delete"><code class="function">Delete()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
+</p>
+<p>
+See <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-delete" title="mm_gdbus_modem_contacts_call_delete ()"><code class="function">mm_gdbus_modem_contacts_call_delete()</code></a> for the asynchronous version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>arg_index</code></em> :</span></p></td>
+<td>Argument to pass with the method invocation.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set. <span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-find"></a><h3>mm_gdbus_modem_contacts_call_find ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_gdbus_modem_contacts_call_find   (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *arg_pattern</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>
+Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Find"><GTKDOCLINK HREF="Find"><code class="function">Find()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
+When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
+You can then call <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-find-finish" title="mm_gdbus_modem_contacts_call_find_finish ()"><code class="function">mm_gdbus_modem_contacts_call_find_finish()</code></a> to get the result of the operation.
+</p>
+<p>
+See <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-find-sync" title="mm_gdbus_modem_contacts_call_find_sync ()"><code class="function">mm_gdbus_modem_contacts_call_find_sync()</code></a> for the synchronous, blocking version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>arg_pattern</code></em> :</span></p></td>
+<td>Argument to pass with the method invocation.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>User data to pass to <em class="parameter"><code>callback</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-find-finish"></a><h3>mm_gdbus_modem_contacts_call_find_finish ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_gdbus_modem_contacts_call_find_finish
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> **out_results</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Finishes an operation started with <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-find" title="mm_gdbus_modem_contacts_call_find ()"><code class="function">mm_gdbus_modem_contacts_call_find()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out_results</code></em> :</span></p></td>
+<td>Return location for return parameter or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to ignore. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
+<td>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-find" title="mm_gdbus_modem_contacts_call_find ()"><code class="function">mm_gdbus_modem_contacts_call_find()</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set. <span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-find-sync"></a><h3>mm_gdbus_modem_contacts_call_find_sync ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_gdbus_modem_contacts_call_find_sync
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *arg_pattern</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> **out_results</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Find"><GTKDOCLINK HREF="Find"><code class="function">Find()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
+</p>
+<p>
+See <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-find" title="mm_gdbus_modem_contacts_call_find ()"><code class="function">mm_gdbus_modem_contacts_call_find()</code></a> for the asynchronous version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>arg_pattern</code></em> :</span></p></td>
+<td>Argument to pass with the method invocation.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out_results</code></em> :</span></p></td>
+<td>Return location for return parameter or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to ignore. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set. <span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-get"></a><h3>mm_gdbus_modem_contacts_call_get ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_gdbus_modem_contacts_call_get    (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> arg_index</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>
+Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Get"><GTKDOCLINK HREF="Get"><code class="function">Get()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
+When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
+You can then call <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get-finish" title="mm_gdbus_modem_contacts_call_get_finish ()"><code class="function">mm_gdbus_modem_contacts_call_get_finish()</code></a> to get the result of the operation.
+</p>
+<p>
+See <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get-sync" title="mm_gdbus_modem_contacts_call_get_sync ()"><code class="function">mm_gdbus_modem_contacts_call_get_sync()</code></a> for the synchronous, blocking version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>arg_index</code></em> :</span></p></td>
+<td>Argument to pass with the method invocation.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>User data to pass to <em class="parameter"><code>callback</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-get-finish"></a><h3>mm_gdbus_modem_contacts_call_get_finish ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_gdbus_modem_contacts_call_get_finish
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> **out_properties</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Finishes an operation started with <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get" title="mm_gdbus_modem_contacts_call_get ()"><code class="function">mm_gdbus_modem_contacts_call_get()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out_properties</code></em> :</span></p></td>
+<td>Return location for return parameter or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to ignore. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
+<td>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get" title="mm_gdbus_modem_contacts_call_get ()"><code class="function">mm_gdbus_modem_contacts_call_get()</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set. <span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-get-sync"></a><h3>mm_gdbus_modem_contacts_call_get_sync ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_gdbus_modem_contacts_call_get_sync
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> arg_index</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> **out_properties</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Get"><GTKDOCLINK HREF="Get"><code class="function">Get()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
+</p>
+<p>
+See <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get" title="mm_gdbus_modem_contacts_call_get ()"><code class="function">mm_gdbus_modem_contacts_call_get()</code></a> for the asynchronous version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>arg_index</code></em> :</span></p></td>
+<td>Argument to pass with the method invocation.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out_properties</code></em> :</span></p></td>
+<td>Return location for return parameter or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to ignore. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set. <span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-get-count"></a><h3>mm_gdbus_modem_contacts_call_get_count ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_gdbus_modem_contacts_call_get_count
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>
+Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.GetCount"><GTKDOCLINK HREF="GetCount"><code class="function">GetCount()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
+When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
+You can then call <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get-count-finish" title="mm_gdbus_modem_contacts_call_get_count_finish ()"><code class="function">mm_gdbus_modem_contacts_call_get_count_finish()</code></a> to get the result of the operation.
+</p>
+<p>
+See <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get-count-sync" title="mm_gdbus_modem_contacts_call_get_count_sync ()"><code class="function">mm_gdbus_modem_contacts_call_get_count_sync()</code></a> for the synchronous, blocking version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>User data to pass to <em class="parameter"><code>callback</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-get-count-finish"></a><h3>mm_gdbus_modem_contacts_call_get_count_finish ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_gdbus_modem_contacts_call_get_count_finish
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *out_count</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Finishes an operation started with <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get-count" title="mm_gdbus_modem_contacts_call_get_count ()"><code class="function">mm_gdbus_modem_contacts_call_get_count()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out_count</code></em> :</span></p></td>
+<td>Return location for return parameter or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to ignore. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
+<td>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get-count" title="mm_gdbus_modem_contacts_call_get_count ()"><code class="function">mm_gdbus_modem_contacts_call_get_count()</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set. <span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-get-count-sync"></a><h3>mm_gdbus_modem_contacts_call_get_count_sync ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_gdbus_modem_contacts_call_get_count_sync
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *out_count</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.GetCount"><GTKDOCLINK HREF="GetCount"><code class="function">GetCount()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
+</p>
+<p>
+See <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get-count" title="mm_gdbus_modem_contacts_call_get_count ()"><code class="function">mm_gdbus_modem_contacts_call_get_count()</code></a> for the asynchronous version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out_count</code></em> :</span></p></td>
+<td>Return location for return parameter or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to ignore. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set. <span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-list"></a><h3>mm_gdbus_modem_contacts_call_list ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_gdbus_modem_contacts_call_list   (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>
+Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.List"><GTKDOCLINK HREF="List"><code class="function">List()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
+When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
+You can then call <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-list-finish" title="mm_gdbus_modem_contacts_call_list_finish ()"><code class="function">mm_gdbus_modem_contacts_call_list_finish()</code></a> to get the result of the operation.
+</p>
+<p>
+See <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-list-sync" title="mm_gdbus_modem_contacts_call_list_sync ()"><code class="function">mm_gdbus_modem_contacts_call_list_sync()</code></a> for the synchronous, blocking version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>User data to pass to <em class="parameter"><code>callback</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-list-finish"></a><h3>mm_gdbus_modem_contacts_call_list_finish ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_gdbus_modem_contacts_call_list_finish
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> **out_results</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Finishes an operation started with <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-list" title="mm_gdbus_modem_contacts_call_list ()"><code class="function">mm_gdbus_modem_contacts_call_list()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out_results</code></em> :</span></p></td>
+<td>Return location for return parameter or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to ignore. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
+<td>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-list" title="mm_gdbus_modem_contacts_call_list ()"><code class="function">mm_gdbus_modem_contacts_call_list()</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set. <span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-contacts-call-list-sync"></a><h3>mm_gdbus_modem_contacts_call_list_sync ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_gdbus_modem_contacts_call_list_sync
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *proxy</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> **out_results</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.List"><GTKDOCLINK HREF="List"><code class="function">List()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
+</p>
+<p>
+See <a class="link" href="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-list" title="mm_gdbus_modem_contacts_call_list ()"><code class="function">mm_gdbus_modem_contacts_call_list()</code></a> for the asynchronous version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>proxy</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContactsProxy.html" title="MmGdbusModemContactsProxy"><span class="type">MmGdbusModemContactsProxy</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out_results</code></em> :</span></p></td>
+<td>Return location for return parameter or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to ignore. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set. <span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="MmGdbusModemContacts.signal-details"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="MmGdbusModemContacts-added"></a><h3>The <code class="literal">"added"</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *object,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 arg_index,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a>             *arg_properties,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>              user_data)           : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
+<p>
+On the client-side, this signal is emitted whenever the D-Bus signal <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Contacts.Added">"Added"</a> is received.
+</p>
+<p>
+On the service-side, this signal can be used with e.g. <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#g-signal-emit-by-name"><code class="function">g_signal_emit_by_name()</code></a> to make the object emit the D-Bus signal.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>arg_index</code></em> :</span></p></td>
+<td>Argument.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>arg_properties</code></em> :</span></p></td>
+<td>Argument.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MmGdbusModemContacts-deleted"></a><h3>The <code class="literal">"deleted"</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *object,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 arg_index,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>              user_data)      : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
+<p>
+On the client-side, this signal is emitted whenever the D-Bus signal <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Contacts.Deleted">"Deleted"</a> is received.
+</p>
+<p>
+On the service-side, this signal can be used with e.g. <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#g-signal-emit-by-name"><code class="function">g_signal_emit_by_name()</code></a> to make the object emit the D-Bus signal.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>arg_index</code></em> :</span></p></td>
+<td>Argument.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MmGdbusModemContacts-handle-add"></a><h3>The <code class="literal">"handle-add"</code> signal</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            user_function                      (<a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a>  *object,
+                                                        <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a> *invocation,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a>              *arg_properties,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)           : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
+<p>
+Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Add"><GTKDOCLINK HREF="Add"><code class="function">Add()</code></a></GTKDOCLINK> D-Bus method.
+</p>
+<p>
+If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em> and eventually call <code class="function">mm_gdbus_modem_contacts_complete_add()</code> or e.g. <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="http://library.gnome.org/devel/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>invocation</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>arg_properties</code></em> :</span></p></td>
+<td>Argument passed by remote caller.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MmGdbusModemContacts-handle-delete"></a><h3>The <code class="literal">"handle-delete"</code> signal</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            user_function                      (<a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a>  *object,
+                                                        <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a> *invocation,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                  arg_index,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)       : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
+<p>
+Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Delete"><GTKDOCLINK HREF="Delete"><code class="function">Delete()</code></a></GTKDOCLINK> D-Bus method.
+</p>
+<p>
+If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em> and eventually call <code class="function">mm_gdbus_modem_contacts_complete_delete()</code> or e.g. <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="http://library.gnome.org/devel/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>invocation</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>arg_index</code></em> :</span></p></td>
+<td>Argument passed by remote caller.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MmGdbusModemContacts-handle-find"></a><h3>The <code class="literal">"handle-find"</code> signal</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            user_function                      (<a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a>  *object,
+                                                        <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a> *invocation,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>                 *arg_pattern,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)        : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
+<p>
+Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Find"><GTKDOCLINK HREF="Find"><code class="function">Find()</code></a></GTKDOCLINK> D-Bus method.
+</p>
+<p>
+If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em> and eventually call <code class="function">mm_gdbus_modem_contacts_complete_find()</code> or e.g. <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="http://library.gnome.org/devel/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>invocation</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>arg_pattern</code></em> :</span></p></td>
+<td>Argument passed by remote caller.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MmGdbusModemContacts-handle-get"></a><h3>The <code class="literal">"handle-get"</code> signal</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            user_function                      (<a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a>  *object,
+                                                        <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a> *invocation,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                  arg_index,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)       : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
+<p>
+Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Get"><GTKDOCLINK HREF="Get"><code class="function">Get()</code></a></GTKDOCLINK> D-Bus method.
+</p>
+<p>
+If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em> and eventually call <code class="function">mm_gdbus_modem_contacts_complete_get()</code> or e.g. <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="http://library.gnome.org/devel/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>invocation</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>arg_index</code></em> :</span></p></td>
+<td>Argument passed by remote caller.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MmGdbusModemContacts-handle-get-count"></a><h3>The <code class="literal">"handle-get-count"</code> signal</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            user_function                      (<a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a>  *object,
+                                                        <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a> *invocation,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)       : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
+<p>
+Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.GetCount"><GTKDOCLINK HREF="GetCount"><code class="function">GetCount()</code></a></GTKDOCLINK> D-Bus method.
+</p>
+<p>
+If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em> and eventually call <code class="function">mm_gdbus_modem_contacts_complete_get_count()</code> or e.g. <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="http://library.gnome.org/devel/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>invocation</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MmGdbusModemContacts-handle-list"></a><h3>The <code class="literal">"handle-list"</code> signal</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            user_function                      (<a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a>  *object,
+                                                        <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a> *invocation,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)       : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
+<p>
+Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.List"><GTKDOCLINK HREF="List"><code class="function">List()</code></a></GTKDOCLINK> D-Bus method.
+</p>
+<p>
+If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em> and eventually call <code class="function">mm_gdbus_modem_contacts_complete_list()</code> or e.g. <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="http://library.gnome.org/devel/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>invocation</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

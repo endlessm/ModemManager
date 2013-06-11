@@ -20,8 +20,10 @@
 #include <string.h>
 #include <ctype.h>
 
+#define _LIBMM_INSIDE_MM
+#include <libmm-glib.h>
+
 #include "mm-charsets.h"
-#include "mm-utils.h"
 
 typedef struct {
     const char *gsm_name;
@@ -160,7 +162,7 @@ mm_modem_charset_hex_to_utf8 (const char *src, MMModemCharset charset)
     iconv_from = charset_iconv_from (charset);
     g_return_val_if_fail (iconv_from != NULL, FALSE);
 
-    unconverted = utils_hexstr2bin (src, &unconverted_len);
+    unconverted = mm_utils_hexstr2bin (src, &unconverted_len);
     if (!unconverted)
         return NULL;
 
@@ -172,13 +174,46 @@ mm_modem_charset_hex_to_utf8 (const char *src, MMModemCharset charset)
                            NULL, NULL, &error);
     if (!converted || error) {
         g_clear_error (&error);
-        g_free (unconverted);
         converted = NULL;
     }
+
+    g_free (unconverted);
 
     return converted;
 }
 
+char *
+mm_modem_charset_utf8_to_hex (const char *src, MMModemCharset charset)
+{
+    gsize converted_len = 0;
+    char *converted;
+    const char *iconv_to;
+    GError *error = NULL;
+    gchar *hex;
+
+    g_return_val_if_fail (src != NULL, NULL);
+    g_return_val_if_fail (charset != MM_MODEM_CHARSET_UNKNOWN, NULL);
+
+    iconv_to = charset_iconv_from (charset);
+    g_return_val_if_fail (iconv_to != NULL, FALSE);
+
+    if (charset == MM_MODEM_CHARSET_UTF8 || charset == MM_MODEM_CHARSET_IRA)
+        return g_strdup (src);
+
+    converted = g_convert (src, strlen (src),
+                           iconv_to, "UTF-8//TRANSLIT",
+                           NULL, &converted_len, &error);
+    if (!converted || error) {
+        g_clear_error (&error);
+        g_free (converted);
+        return NULL;
+    }
+
+    /* Get hex representation of the string */
+    hex = mm_utils_bin2hexstr ((guint8 *)converted, converted_len);
+    g_free (converted);
+    return hex;
+}
 
 /* GSM 03.38 encoding conversion stuff */
 
@@ -574,7 +609,7 @@ mm_charset_get_encoded_len (const char *utf8,
     for (e = &subset_table[0];
          e->cs != charset && e->cs != MM_MODEM_CHARSET_UNKNOWN;
          e++);
-    g_return_val_if_fail (e->cs != MM_MODEM_CHARSET_UNKNOWN, 0);        
+    g_return_val_if_fail (e->cs != MM_MODEM_CHARSET_UNKNOWN, 0);
 
     while (*p) {
         gunichar c;
@@ -589,7 +624,7 @@ mm_charset_get_encoded_len (const char *utf8,
             end = p;
             while (*end++);
         }
-        
+
         if (!e->func (c, p, (end - p), &clen))
             unsupported++;
         len += clen;
@@ -678,8 +713,7 @@ gsm_pack (const guint8 *src,
  * the hex representation of the charset-encoded string, so we need to cope with
  * that case. */
 gchar *
-mm_charset_take_and_convert_to_utf8 (gchar *str,
-                                     MMModemCharset charset)
+mm_charset_take_and_convert_to_utf8 (gchar *str, MMModemCharset charset)
 {
     gchar *utf8 = NULL;
 
@@ -720,6 +754,7 @@ mm_charset_take_and_convert_to_utf8 (gchar *str,
     case MM_MODEM_CHARSET_UCS2: {
         gsize len;
         gboolean possibly_hex = TRUE;
+        gsize bread = 0, bwritten = 0;
 
         /* If the string comes in hex-UCS-2, len needs to be a multiple of 4 */
         len = strlen (str);
@@ -733,19 +768,38 @@ mm_charset_take_and_convert_to_utf8 (gchar *str,
                 possibly_hex = isxdigit (*p++);
         }
 
-        /* If we get UCS-2, we expect the HEX representation of the string */
+        /* If hex, then we expect hex-encoded UCS-2 */
         if (possibly_hex) {
             utf8 = mm_modem_charset_hex_to_utf8 (str, charset);
-            if (!utf8) {
-                /* If we couldn't convert the string as HEX-UCS-2, try to see if
-                 * the string is valid UTF-8 itself. */
-                utf8 = str;
-            } else
+            if (utf8) {
                 g_free (str);
-        } else
-            /* If we already know it's not hex, try to use the string as it is */
-            utf8 = str;
+                break;
+            }
+        }
 
+        /* If not hex, then it might be raw UCS-2 (very unlikely) or ASCII/UTF-8
+         * (much more likely).  Try to convert to UTF-8 and if that fails, use
+         * the partial conversion length to re-convert the part of the string
+         * that is UTF-8, if any.
+         */
+        utf8 = g_convert (str, strlen (str),
+                          "UTF-8//TRANSLIT", "UTF-8//TRANSLIT",
+                          &bread, &bwritten, NULL);
+
+        /* Valid conversion, or we didn't get enough valid UTF-8 */
+        if (utf8 || (bwritten <= 2)) {
+            g_free (str);
+            break;
+        }
+
+        /* Last try; chop off the original string at the conversion failure
+         * location and get what we can.
+         */
+        str[bread] = '\0';
+        utf8 = g_convert (str, strlen (str),
+                          "UTF-8//TRANSLIT", "UTF-8//TRANSLIT",
+                          NULL, NULL, NULL);
+        g_free (str);
         break;
     }
 
@@ -759,11 +813,97 @@ mm_charset_take_and_convert_to_utf8 (gchar *str,
 
     /* Validate UTF-8 always before returning. This result will be exposed in DBus
      * very likely... */
-    if (!g_utf8_validate (utf8, -1, NULL)) {
+    if (utf8 && !g_utf8_validate (utf8, -1, NULL)) {
         /* Better return NULL than an invalid UTF-8 string */
         g_free (utf8);
         utf8 = NULL;
     }
 
     return utf8;
+}
+
+/* We do all our best to convert the given string, which comes in UTF-8, to the
+ * specified charset. It may be that the output string needs to be the hex
+ * representation of the charset-encoded string, so we need to cope with that
+ * case. */
+gchar *
+mm_utf8_take_and_convert_to_charset (gchar *str,
+                                     MMModemCharset charset)
+{
+    gchar *encoded = NULL;
+
+    if (!str)
+        return NULL;
+
+    /* Validate UTF-8 always before converting */
+    if (!g_utf8_validate (str, -1, NULL)) {
+        /* Better return NULL than an invalid encoded string */
+        g_free (str);
+        return NULL;
+    }
+
+    switch (charset) {
+    case MM_MODEM_CHARSET_UNKNOWN:
+        g_warn_if_reached ();
+        encoded = str;
+        break;
+
+    case MM_MODEM_CHARSET_HEX:
+        /* FIXME: What encoding is this? */
+        g_warn_if_reached ();
+        encoded = str;
+        break;
+
+    case MM_MODEM_CHARSET_GSM:
+    case MM_MODEM_CHARSET_8859_1:
+    case MM_MODEM_CHARSET_PCCP437:
+    case MM_MODEM_CHARSET_PCDN: {
+        const gchar *iconv_to;
+        GError *error = NULL;
+
+        iconv_to = charset_iconv_from (charset);
+        encoded = g_convert (str, strlen (str),
+                             iconv_to, "UTF-8",
+                             NULL, NULL, &error);
+        if (!encoded || error) {
+            g_clear_error (&error);
+            encoded = NULL;
+        }
+
+        g_free (str);
+        break;
+    }
+
+    case MM_MODEM_CHARSET_UCS2: {
+        const gchar *iconv_to;
+        gsize encoded_len = 0;
+        GError *error = NULL;
+        gchar *hex;
+
+        iconv_to = charset_iconv_from (charset);
+        encoded = g_convert (str, strlen (str),
+                             iconv_to, "UTF-8",
+                             NULL, &encoded_len, &error);
+        if (!encoded || error) {
+            g_clear_error (&error);
+            encoded = NULL;
+        }
+
+        /* Get hex representation of the string */
+        hex = mm_utils_bin2hexstr ((guint8 *)encoded, encoded_len);
+        g_free (encoded);
+        encoded = hex;
+        g_free (str);
+        break;
+    }
+
+    /* If the given charset is ASCII or UTF8, we really expect the final string
+     * already here. */
+    case MM_MODEM_CHARSET_IRA:
+    case MM_MODEM_CHARSET_UTF8:
+        encoded = str;
+        break;
+    }
+
+    return encoded;
 }

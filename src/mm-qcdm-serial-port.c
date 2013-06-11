@@ -19,8 +19,10 @@
 #include <unistd.h>
 #include <string.h>
 
+#include <ModemManager.h>
+#include <mm-errors-types.h>
+
 #include "mm-qcdm-serial-port.h"
-#include "mm-errors.h"
 #include "libqcdm/src/com.h"
 #include "libqcdm/src/utils.h"
 #include "libqcdm/src/errors.h"
@@ -79,6 +81,7 @@ handle_response (MMSerialPort *port,
 {
     MMQcdmSerialResponseFn response_callback = (MMQcdmSerialResponseFn) callback;
     GByteArray *unescaped = NULL;
+    guint8 *unescaped_buffer;
     GError *dm_error = NULL;
     gsize used = 0;
     gsize start = 0;
@@ -92,36 +95,38 @@ handle_response (MMSerialPort *port,
     /* Get the offset into the buffer of where the QCDM frame starts */
     if (!find_qcdm_start (response, &start)) {
         g_set_error_literal (&dm_error,
-                             MM_MODEM_ERROR, MM_MODEM_ERROR_GENERAL,
+                             MM_CORE_ERROR, MM_CORE_ERROR_FAILED,
                              "Failed to parse QCDM packet.");
         /* Discard the unparsable data */
         used = response->len;
         goto callback;
     }
 
-    /* FIXME: don't munge around with byte array internals */
-    unescaped = g_byte_array_sized_new (1024);
+    unescaped_buffer = g_malloc (1024);
     success = dm_decapsulate_buffer ((const char *) (response->data + start),
                                      response->len - start,
-                                     (char *) unescaped->data,
+                                     (char *) unescaped_buffer,
                                      1024,
                                      &unescaped_len,
                                      &used,
                                      &more);
     if (!success) {
         g_set_error_literal (&dm_error,
-                             MM_MODEM_ERROR, MM_MODEM_ERROR_GENERAL,
+                             MM_CORE_ERROR, MM_CORE_ERROR_FAILED,
                              "Failed to unescape QCDM packet.");
-        g_byte_array_free (unescaped, TRUE);
-        unescaped = NULL;
+        g_free (unescaped_buffer);
+        unescaped_buffer = NULL;
     } else if (more) {
         /* Need more data; we shouldn't have gotten here since the parse
          * function checks for the end-of-frame marker, but whatever.
          */
+        g_free (unescaped_buffer);
         return 0;
     } else {
         /* Successfully decapsulated the DM command */
-        unescaped->len = (guint) unescaped_len;
+        g_assert (unescaped_len <= 1024);
+        unescaped_buffer = g_realloc (unescaped_buffer, unescaped_len);
+        unescaped = g_byte_array_new_take (unescaped_buffer, unescaped_len);
     }
 
 callback:
@@ -131,7 +136,7 @@ callback:
                        callback_data);
 
     if (unescaped)
-        g_byte_array_free (unescaped, TRUE);
+        g_byte_array_unref (unescaped);
     g_clear_error (&dm_error);
 
     return start + used;
@@ -143,6 +148,7 @@ void
 mm_qcdm_serial_port_queue_command (MMQcdmSerialPort *self,
                                    GByteArray *command,
                                    guint32 timeout_seconds,
+                                   GCancellable *cancellable,
                                    MMQcdmSerialResponseFn callback,
                                    gpointer user_data)
 {
@@ -155,6 +161,7 @@ mm_qcdm_serial_port_queue_command (MMQcdmSerialPort *self,
                                   command,
                                   TRUE,
                                   timeout_seconds,
+                                  cancellable,
                                   (MMSerialResponseFn) callback,
                                   user_data);
 }
@@ -163,6 +170,7 @@ void
 mm_qcdm_serial_port_queue_command_cached (MMQcdmSerialPort *self,
                                           GByteArray *command,
                                           guint32 timeout_seconds,
+                                          GCancellable *cancellable,
                                           MMQcdmSerialResponseFn callback,
                                           gpointer user_data)
 {
@@ -175,6 +183,7 @@ mm_qcdm_serial_port_queue_command_cached (MMQcdmSerialPort *self,
                                          command,
                                          TRUE,
                                          timeout_seconds,
+                                         cancellable,
                                          (MMSerialResponseFn) callback,
                                          user_data);
 }
@@ -216,17 +225,18 @@ config_fd (MMSerialPort *port, int fd, GError **error)
 /*****************************************************************************/
 
 MMQcdmSerialPort *
-mm_qcdm_serial_port_new (const char *name, MMPortType ptype)
+mm_qcdm_serial_port_new (const char *name)
 {
     return MM_QCDM_SERIAL_PORT (g_object_new (MM_TYPE_QCDM_SERIAL_PORT,
                                               MM_PORT_DEVICE, name,
                                               MM_PORT_SUBSYS, MM_PORT_SUBSYS_TTY,
-                                              MM_PORT_TYPE, ptype,
+                                              MM_PORT_TYPE, MM_PORT_TYPE_QCDM,
+                                              MM_SERIAL_PORT_SEND_DELAY, (guint64) 0,
                                               NULL));
 }
 
 MMQcdmSerialPort *
-mm_qcdm_serial_port_new_fd (int fd, MMPortType ptype)
+mm_qcdm_serial_port_new_fd (int fd)
 {
     MMQcdmSerialPort *port;
     char *name;
@@ -235,8 +245,9 @@ mm_qcdm_serial_port_new_fd (int fd, MMPortType ptype)
     port = MM_QCDM_SERIAL_PORT (g_object_new (MM_TYPE_QCDM_SERIAL_PORT,
                                               MM_PORT_DEVICE, name,
                                               MM_PORT_SUBSYS, MM_PORT_SUBSYS_TTY,
-                                              MM_PORT_TYPE, ptype,
+                                              MM_PORT_TYPE, MM_PORT_TYPE_QCDM,
                                               MM_SERIAL_PORT_FD, fd,
+                                              MM_SERIAL_PORT_SEND_DELAY, (guint64) 0,
                                               NULL));
     g_free (name);
     return port;

@@ -1,10 +1,134 @@
-modemmanager (0.5.2.0-2.1) unstable; urgency=low
+modemmanager (0.7.991-1) experimental; urgency=low
 
-  * Non-maintainer upload.
-  * Don't limit automake's maximal version in build dependencies
-    (Closes:  #713118)
+  [ Mathieu Trudel-Lapierre ]
+  * New upstream release.
+  * debian/patches/handle_data07_capabilities_probing.patch,
+    debian/patches/git_skip_add_utf8_check_219424a.patch,
+    debian/patches/git_lte_etsi_mode_0af47c7.patch,
+    debian/patches/git_lte_4g_parsing_90489ae.patch,
+    debian/patches/git_lp1015328_segfault_in_clck_parser_318aaa0.patch,
+    debian/patches/git_better_handle_ucs2_convert_e07c216.patch: Dropped,
+    these patches were cherry-picks; included upstream
+  * debian/patches/ericsson_h5321gw_usbids.patch: dropped, included upstream.
+  * debian/control:
+    - clean up build-depends: remove xsltproc, bump
+      libglib2.0-dev to (>= 2.30.2), libgudev-1.0-dev to (>= 147).
+    - Add gtk-doc-tools to Build-Depends.
+    - Add libqmi-glib-dev to Build-Depends.
+    - Add gnome-common to Build-Depends.
+    - Bump debhelper Build-Depends to >= 9.
+    - Make sure libmm-glib0 pre-depends on multiarch-support (lintian).
+    - Make libmm-glib0 Multi-Arch: same.
+    - Make sure all binary packages (except modemmanager-dbg) are priority
+      optional.
+    - Update short descriptions.
+    - Breaks network-manager (<< 0.9.8.2-1) since otherwise NetworkManager
+      will not see ModemManager with its new API.
+  * debian/compat: bump to compat level 9.
+  * debian/rules:
+    - Replace --with-docs with --enable-gtk-doc.
+    - Fix autoreconf to run gnome-autogen.sh.
+    - Drop the override for installdocs; docs/spec.html isn't being built
+      anymore.
+    - Run dh_install with --fail-missing.
+    - Remove test pppd plugin which we shouldn't install.
+    - Drop old cruft for getting git snapshots.
+    - We don't need to exclude the pppd path from makeshlibs, since nothing
+      gets installed there.
+  * debian/patches/lp700316_usb_blacklist.patch: refreshed.
+  * debian/patches/arduino-blacklist.patch: refreshed.
+  * debian/patches/linux-default-usb-id.patch: refreshed.
+  * debian/*.install: make sure the files are properly installed given the new
+    packages, also take into account multiarch paths.
+  * debian/modemmanager.install: install the new mmcli binary.
+  * debian/ubuntu/modemmanager.upstart: fix the name for the ModemManager
+    binary, since it was changed upstream.
+  * debian/patches/dbus_remove_max_replies_per_connection_limit.patch: dropped,
+    included upstream.
 
- -- Balint Reczey <balint@balintreczey.hu>  Mon, 25 Nov 2013 16:22:58 +0100
+  [ Michael Biebl ]
+  * Add symbols file for libmm-glib0.
+
+  [ Marius B. Kotsbak ]
+  * Added binary packages modemmanager-doc and libmm-glib-doc for gtk-docs.
+  * Split out modemmanager-dev package containing header files and .pc file.
+    - add dependency on modemmanager-dev from libmm-glib-dev
+      as stated in "mm-glib.pc"
+    - add proper replaces/breaks for modemmanager-dev because of moved files
+  * Build-depends: added "libglib2.0-doc" for the cross references in the doc
+    to work.
+  * debian/rules: make dh_makeshlibs override multiarch aware.
+  * Update standards version to current 3.9.4.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Tue, 11 Jun 2013 10:35:42 -0400
+
+modemmanager (0.6.0.0.really-0ubuntu3) raring; urgency=low
+
+  * debian/patches/linux-default-usb-id.patch: blacklist the USB-Gadget default
+    USB ID (the module actually allows you to set a custom one). The default ID
+    is re-used by the Nexus 7 with Ubuntu images to expose a tty you can use
+    to login to the system; but if it's not ignored ModemManager will
+    harass it for some time trying to probe it. (LP: #1105352)
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Mon, 28 Jan 2013 11:24:42 -0500
+
+modemmanager (0.6.0.0.really-0ubuntu2) raring; urgency=low
+
+  * debian/patches/handle_data07_capabilities_probing.patch: properly handle
+    probing for the Huawei Data07 modem. (LP: #1071492)
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Tue, 20 Nov 2012 17:26:04 -0500
+
+modemmanager (0.6.0.0.really-0ubuntu1) quantal; urgency=low
+
+  * Upload the right tarball for 0.6.0.0 from upstream, which I somehow
+    mishandled before. Thanks to Marius B. Kotsbak for pointing out the issue.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Mon, 08 Oct 2012 11:03:19 -0400
+
+modemmanager (0.6.0.0-0ubuntu4) quantal; urgency=low
+
+  * debian/patches/git_fall_back_to_csq_cind_8bd6903.patch: fallback to +CSQ if
+    +CIND reports a signal level of 0. (LP: #1060831)
+  * debian/patches/git_move_cind_process_func_1dee45e.patch: moving the CIND
+    processing function down a bit to make the above change cleaner. Cherry-pick
+    from upstream.
+  * debian/patches/ericsson_h5321gw_usbids.patch: Add another known USB ID for
+    the Ericsson H5321gw. (LP: #1057956)
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Thu, 04 Oct 2012 16:38:54 -0400
+
+modemmanager (0.6.0.0-0ubuntu3) quantal; urgency=low
+
+  * debian/patches/git_lte_4g_parsing_90489ae.patch,
+    debian/patches/git_lte_etsi_mode_0af47c7.patch: cherry-pick the patches
+    to properly handle and display LTE/4G technology modes. (LP: #1044744)
+  * debian/patches/git_lp1015328_segfault_in_clck_parser_318aaa0.patch: avoid
+    crashing when parsing +CLCK responses. (LP: #1015328)
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Tue, 25 Sep 2012 16:51:16 -0400
+
+modemmanager (0.6.0.0-0ubuntu2) quantal; urgency=low
+
+  * debian/patches/git_better_handle_ucs2_convert_e07c216.patch,
+    debian/patches/git_skip_add_utf8_check_219424a.patch: fix UCS2 conversion
+    for some Huawei devices which return "garbage" along with the response for
+    the +COPS command. (LP: #1049426)
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Fri, 14 Sep 2012 14:15:15 -0400
+
+modemmanager (0.6.0.0-0ubuntu1) quantal; urgency=low
+
+  * New upstream release. (LP: #1043486)
+  * debian/patches/fix-format-string.patch: dropped, applied upstream.
+  * debian/patches/qdl-blacklist.patch: replaced with installing the rules file
+    directly to the udev rules directory.
+  * debian/77-mm-qdl-device-blacklist.rules, debian/rules: additional rules
+    file from the qdl-blacklist.patch; we now install it directly to the udev
+    rules directory. This fixes daily builds.
+  * debian/rules: build with --with-tests.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Fri, 07 Sep 2012 10:58:06 -0400
 
 modemmanager (0.5.2.0-2) unstable; urgency=low
 
@@ -14,7 +138,37 @@ modemmanager (0.5.2.0-2) unstable; urgency=low
     32. However, since 2007 the default limit has been 8192, so this is actually
     a reduction. (Closes: #678964)
 
- -- Michael Biebl <biebl@debian.org>  Thu, 06 Sep 2012 17:07:18 +0200
+ -- Michael Biebl <biebl@debian.org>  Thu, 06 Sep 2012 17:07:18 +0200 
+
+modemmanager (0.6~git201206221719.8289a64-0ubuntu1) quantal; urgency=low
+
+  * upstream snapshot 2012-06-22 17:19:35 (GMT)
+    + 8289a646fd19b6ddfba48214e94297ff96f731eb
+    - decode: harmonize with git master
+    - decode: update with latest QMI enums
+    - zte: try to handle Icera devices that use PPP
+    - uml290: allow setting more global modes (LP: #824114)
+    - qcdm: fix 1x/HDR mode pref and add GSM/UMTS mode prefs
+    - trivial: whitespace fixes
+    - uml290: add mode switching tool
+    - wmc: namespace stuff properly
+    - qcdm: namespace stuff properly
+    - wmc: add command for setting global mode
+    - cdma: fix QCDM registration state checking
+    - test: ignore ESN errors in info.py
+    - dbus: remove 'max_replies_per_connection' limit from D-Bus configuration
+  * debian/patches/fix-format-string.patch: fix a missing format string in
+    a fprintf call for uml290mode; it makes the build fail otherwise.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Fri, 22 Jun 2012 15:04:53 -0400
+
+modemmanager (0.6~git201203261122.16a0029-0ubuntu1) quantal; urgency=low
+
+  * upstream snapshot 2012-03-26 11:22:47 (GMT)
+    + 16a00296e42aeceaca3d43c00baa01b7d4de3aa2
+  * debian/rules: switch to upstream git branch MM_06.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Fri, 15 Jun 2012 13:45:28 -0400
 
 modemmanager (0.5.2.0-1) unstable; urgency=low
 

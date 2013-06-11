@@ -62,11 +62,29 @@ ATTRS{idVendor}=="0592", ATTRS{idProduct}=="0002", ENV{ID_MM_DEVICE_IGNORE}="1"
 # that isn't blacklisted.
 ATTRS{idVendor}=="0830", ATTRS{idProduct}=="0061", ENV{ID_MM_DEVICE_IGNORE}="1"
 
-# Belkin F5U183 Serial Adapter (unlikely to have a modem behind it)
-ATTRS{idVendor}=="050d", ATTRS{idProduct}=="0103", ENV{ID_MM_DEVICE_IGNORE}="1"
+# GlobalScaleTechnologies SheevaPlug
+ATTRS{idVendor}=="9e88", ATTRS{idProduct}=="9e8f", ENV{ID_MM_DEVICE_IGNORE}="1"
 
-# ATEN Intl UC-232A (Prolific)
-ATTRS{idVendor}=="0557", ATTRS{idProduct}=="2008", ENV{ID_MM_DEVICE_IGNORE}="1"
+# Atmel Corp at91sam SAMBA bootloader
+ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="6124", ENV{ID_MM_DEVICE_IGNORE}="1"
+
+# Dangerous Prototypes Bus Pirate v4
+ATTRS{idVendor}=="04d8", ATTRS{idProduct}=="fb00" ENV{ID_MM_DEVICE_IGNORE}="1"
+
+# All devices from the Swiss Federal Institute of Technology
+ATTRS{idVendor}=="0617", ENV{ID_MM_DEVICE_IGNORE}="1"
+
+# West Mountain Radio devices
+ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="814a", ENV{ID_MM_DEVICE_IGNORE}="1"
+ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="814b", ENV{ID_MM_DEVICE_IGNORE}="1"
+ATTRS{idVendor}=="2405", ATTRS{idProduct}=="0003", ENV{ID_MM_DEVICE_IGNORE}="1"
+
+# Arduinos
+ATTRS{idVendor}=="2341", ENV{ID_MM_DEVICE_IGNORE}="1"
+ATTRS{idVendor}=="1b4f", ATTRS{idProduct}=="9207", ENV{ID_MM_DEVICE_IGNORE}="1"
+ATTRS{idVendor}=="1b4f", ATTRS{idProduct}=="9208", ENV{ID_MM_DEVICE_IGNORE}="1"
+
+# Altair U-Boot device
+ATTRS{idVendor}=="0216", ATTRS{idProduct}=="0051" ENV{ID_MM_DEVICE_IGNORE}="1"
 
 LABEL="mm_usb_device_blacklist_end"
-

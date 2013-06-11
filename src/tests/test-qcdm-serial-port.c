@@ -26,7 +26,9 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-#include "mm-errors.h"
+#include <ModemManager.h>
+#include <mm-errors-types.h>
+
 #include "mm-qcdm-serial-port.h"
 #include "libqcdm/src/commands.h"
 #include "libqcdm/src/utils.h"
@@ -199,7 +201,7 @@ qcdm_request_verinfo (MMQcdmSerialPort *port, VerInfoCb cb, GMainLoop *loop)
         g_byte_array_free (verinfo, TRUE);
     verinfo->len = len;
 
-    mm_qcdm_serial_port_queue_command (port, verinfo, 3, cb, loop);
+    mm_qcdm_serial_port_queue_command (port, verinfo, 3, NULL, cb, loop);
 }
 
 static void
@@ -215,7 +217,7 @@ qcdm_test_child (int fd, VerInfoCb cb)
 
     loop = g_main_loop_new (NULL, FALSE);
 
-    port = mm_qcdm_serial_port_new_fd (fd, MM_PORT_TYPE_PRIMARY);
+    port = mm_qcdm_serial_port_new_fd (fd);
     g_assert (port);
 
     success = mm_serial_port_open (MM_SERIAL_PORT (port), &error);
@@ -275,7 +277,7 @@ qcdm_verinfo_expect_fail_cb (MMQcdmSerialPort *port,
 {
     GMainLoop *loop = user_data;
 
-    g_assert_error (error, MM_MODEM_ERROR, MM_MODEM_ERROR_GENERAL);
+    g_assert_error (error, MM_CORE_ERROR, MM_CORE_ERROR_FAILED);
     g_main_loop_quit (loop);
 }
 
@@ -461,7 +463,7 @@ int main (int argc, char **argv)
     GTestSuite *suite;
     gint result;
     TestData *data = NULL;
-    
+
     g_test_init (&argc, &argv, NULL);
 
     suite = g_test_get_root ();
@@ -475,4 +477,3 @@ int main (int argc, char **argv)
 
     return result;
 }
-

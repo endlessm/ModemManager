@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>org.freedesktop.ModemManager1.Modem.Modem3gpp</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="ModemManager Reference Manual">
+<link rel="up" href="ref-dbus-object-modem.html" title="The /org/freedesktop/ModemManager/Modems objects">
+<link rel="prev" href="gdbus-org.freedesktop.ModemManager1.Modem.Simple.html" title="org.freedesktop.ModemManager1.Modem.Simple">
+<link rel="next" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.html" title="org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="gdbus-org.freedesktop.ModemManager1.Modem.Simple.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ref-dbus-object-modem.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">ModemManager Reference Manual</th>
+<td><a accesskey="n" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.properties" class="shortcut">Properties</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Modem3gpp.top_of_page"></a>org.freedesktop.ModemManager1.Modem.Modem3gpp</span></h2>
+<p>org.freedesktop.ModemManager1.Modem.Modem3gpp — The ModemManager 3GPP interface.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Methods</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.Register" title="The Register() method">Register</a> (IN  s      operator_id);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.Scan" title="The Scan() method">Scan</a>     (OUT aa{sv} results);
+</pre>
+</div>
+<div class="refsect1">
+<a name="idm266930283696"></a><h2>Properties</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.Imei" title='The "Imei" property'>Imei</a>                  readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.RegistrationState" title='The "RegistrationState" property'>RegistrationState</a>     readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorCode" title='The "OperatorCode" property'>OperatorCode</a>          readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorName" title='The "OperatorName" property'>OperatorName</a>          readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.EnabledFacilityLocks" title='The "EnabledFacilityLocks" property'>EnabledFacilityLocks</a>  readable   u
+</pre>
+</div>
+<div class="refsect1">
+<a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Modem3gpp"></a><h2>Description</h2>
+<p>      This interface provides access to specific actions that may be performed
+      in modems with 3GPP capabilities.
+</p>
+</div>
+<div class="refsect1">
+<a name="gdbus-methods-org.freedesktop.ModemManager1.Modem.Modem3gpp"></a><h2>Method Details</h2>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.Register"></a><h3>The Register() method</h3>
+<pre class="programlisting">
+Register (IN  s operator_id);
+</pre>
+<p>        Request registration with a given mobile network.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>operator_id</code></em></code>:</span></p></td>
+<td><p>The operator ID (ie, <code class="literal">"MCCMNC"</code>, like <code class="literal">"310260"</code>) to register. An empty string can be used to register to the home network.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.Scan"></a><h3>The Scan() method</h3>
+<pre class="programlisting">
+Scan (OUT aa{sv} results);
+</pre>
+<p>        Scan for available networks.
+</p>
+<p>        <em class="parameter"><code>results</code></em> is an array of dictionaries with each array element describing
+        a mobile network found in the scan. Each dictionary may include one or
+        more of the following keys:
+        </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">"status"</code></span></p></td>
+<td>
+              A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModem3gppNetworkAvailability" title="enum MMModem3gppNetworkAvailability">MMModem3gppNetworkAvailability</a>
+              value representing network availability status, given as an
+              unsigned integer (signature <code class="literal">"u"</code>). This key will
+              always be present.
+            </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"operator-long"</code></span></p></td>
+<td>
+              Long-format name of operator, given as a string value (signature
+              <code class="literal">"s"</code>). If the name is unknown, this field
+              should not be present.
+            </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"operator-short"</code></span></p></td>
+<td>
+              Short-format name of operator, given as a string value (signature
+              <code class="literal">"s"</code>). If the name is unknown, this field
+              should not be present.
+            </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"operator-code"</code></span></p></td>
+<td>
+              Mobile code of the operator, given as a string value (signature
+              <code class="literal">"s"</code>). Returned in the format
+              <code class="literal">"MCCMNC"</code>, where <code class="literal">MCC</code> is the
+              three-digit ITU E.212 Mobile Country Code and <code class="literal">MNC</code>
+              is the two- or three-digit GSM Mobile Network Code. e.g.
+              <code class="literal">"31026"</code> or <code class="literal">"310260"</code>.
+            </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"access-technology"</code></span></p></td>
+<td>
+              A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology" title="enum MMModemAccessTechnology">MMModemAccessTechnology</a> value
+              representing the generic access technology used by this mobile network,
+              given as an unsigned integer (signature <code class="literal">"u"</code>).
+            </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">OUT aa{sv} <em class="parameter"><code>results</code></em></code>:</span></p></td>
+<td><p>Array of dictionaries wih the found networks.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-properties-org.freedesktop.ModemManager1.Modem.Modem3gpp"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.Imei"></a><h3>The "Imei" property</h3>
+<pre class="programlisting">
+Imei  readable   s
+</pre>
+<p>        The <a class="ulink" href="http://en.wikipedia.org/wiki/Imei" target="_top">IMEI</a> of the device.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.RegistrationState"></a><h3>The "RegistrationState" property</h3>
+<pre class="programlisting">
+RegistrationState  readable   u
+</pre>
+<p>        A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState" title="enum MMModem3gppRegistrationState">MMModem3gppRegistrationState</a>
+        value specifying the mobile registration status as defined in 3GPP TS 27.007
+        section 10.1.19.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorCode"></a><h3>The "OperatorCode" property</h3>
+<pre class="programlisting">
+OperatorCode  readable   s
+</pre>
+<p>        Code of the operator to which the mobile is currently registered.
+</p>
+<p>        Returned in the format <code class="literal">"MCCMNC"</code>, where
+        <code class="literal">MCC</code> is the three-digit ITU E.212 Mobile Country Code
+        and <code class="literal">MNC</code> is the two- or three-digit GSM Mobile Network
+        Code. e.g. e<code class="literal">"31026"</code> or <code class="literal">"310260"</code>.
+</p>
+<p>        If the <code class="literal">MCC</code> and <code class="literal">MNC</code> are not known
+        or the mobile is not registered to a mobile network, this property will
+        be a zero-length (blank) string.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorName"></a><h3>The "OperatorName" property</h3>
+<pre class="programlisting">
+OperatorName  readable   s
+</pre>
+<p>        Name of the operator to which the mobile is currently registered.
+</p>
+<p>        If the operator name is not known or the mobile is not
+        registered to a mobile network, this property will be a zero-length
+        (blank) string.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.EnabledFacilityLocks"></a><h3>The "EnabledFacilityLocks" property</h3>
+<pre class="programlisting">
+EnabledFacilityLocks  readable   u
+</pre>
+<p>        Bitmask of <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModem3gppFacility" title="enum MMModem3gppFacility">MMModem3gppFacility</a> values
+        for which PIN locking is enabled.
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

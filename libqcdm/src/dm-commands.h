@@ -115,7 +115,8 @@ enum {
     DIAG_CMD_EXT_BUILD_ID      = 124,
     DIAG_CMD_EXT_MESSAGE_CONFIG= 125,
     DIAG_CMD_EVENT_GET_MASK    = 129,
-    DIAG_CMD_EVENT_SET_MASK    = 130
+    DIAG_CMD_EVENT_SET_MASK    = 130,
+    DIAG_CMD_SAMSUNG_IND       = 217, /* Unsolicited message seen on Samsung Z810 */
 };
 
 /* Subsystem IDs used with DIAG_CMD_SUBSYS; these often obsolete many of
@@ -131,9 +132,10 @@ enum {
     DIAG_SUBSYS_SMS             = 14, /* Wireless Messaging Service */
     DIAG_SUBSYS_CM              = 15, /* Call manager */
     DIAG_SUBSYS_FS              = 19, /* File System (EFS2) */
-    DIAG_SUBSYS_NW_CONTROL_6500 = 50, /* for Novatel Wireless MSM6500-based devices */
+    DIAG_SUBSYS_NOVATEL_6500    = 50, /* for Novatel Wireless MSM6500-based devices */
+    DIAG_SUBSYS_LTE             = 68,
     DIAG_SUBSYS_ZTE             = 101, /* for ZTE EVDO devices */
-    DIAG_SUBSYS_NW_CONTROL_6800 = 250 /* for Novatel Wireless MSM6800-based devices */
+    DIAG_SUBSYS_NOVATEL_6800    = 250 /* for Novatel Wireless MSM6800-based devices */
 };
 
 /* WCDMA subsystem command codes */
@@ -158,18 +160,18 @@ enum {
     DIAG_SUBSYS_CM_STATE_INFO = 0, /* Gets Call Manager state */
 };
 
-/* NW_CONTROL subsystem command codes (only for Novatel Wireless devices) */
+/* NOVATEL subsystem command codes (only for Novatel Wireless devices) */
 enum {
-    DIAG_SUBSYS_NW_CONTROL_AT_REQUEST     = 3, /* AT commands via diag */
-    DIAG_SUBSYS_NW_CONTROL_AT_RESPONSE    = 4,
-    DIAG_SUBSYS_NW_CONTROL_MODEM_SNAPSHOT = 7,
-    DIAG_SUBSYS_NW_CONTROL_ERI            = 8, /* Extended Roaming Indicator */
-    DIAG_SUBSYS_NW_CONTROL_PRL            = 12,
+    DIAG_SUBSYS_NOVATEL_AT_REQUEST     = 3, /* AT commands via diag */
+    DIAG_SUBSYS_NOVATEL_AT_RESPONSE    = 4,
+    DIAG_SUBSYS_NOVATEL_MODEM_SNAPSHOT = 7,
+    DIAG_SUBSYS_NOVATEL_ERI            = 8, /* Extended Roaming Indicator */
+    DIAG_SUBSYS_NOVATEL_PRL            = 12,
 };
 
 enum {
-    DIAG_SUBSYS_NW_CONTROL_MODEM_SNAPSHOT_TECH_CDMA_EVDO = 7,
-    DIAG_SUBSYS_NW_CONTROL_MODEM_SNAPSHOT_TECH_WCDMA = 20,
+    DIAG_SUBSYS_NOVATEL_MODEM_SNAPSHOT_TECH_CDMA_EVDO = 7,
+    DIAG_SUBSYS_NOVATEL_MODEM_SNAPSHOT_TECH_WCDMA     = 20,
 };
 
 enum {
@@ -245,6 +247,19 @@ struct DMCmdSubsysHeader {
     u_int16_t subsys_cmd;
 } __attribute__ ((packed));
 typedef struct DMCmdSubsysHeader DMCmdSubsysHeader;
+
+typedef enum {
+    DM_CONTROL_MODE_OFFLINE = 1,
+    DM_CONTROL_MODE_RESET = 2,
+} DMControlMode;
+
+/* DIAG_CMD_CONTROL */
+struct DMCmdControl {
+    u_int8_t code;
+    /* DMControlMode */
+    u_int16_t mode;
+} __attribute__ ((packed));
+typedef struct DMCmdControl DMCmdControl;
 
 /* DIAG_CMD_NV_READ / DIAG_CMD_NV_WRITE */
 struct DMCmdNVReadWrite {
@@ -414,7 +429,7 @@ typedef struct DMCmdPilotSetsRsp DMCmdPilotSetsRsp;
 struct DMCmdLog {
     u_int8_t code;
     u_int8_t more;
-    u_int16_t len;
+    u_int16_t len;       /* size of packet after this member */
     u_int16_t _unknown2; /* contains same value as len */
     u_int16_t log_code;
     u_int64_t timestamp;
@@ -445,21 +460,21 @@ struct DMCmdEventReportRsp {
 } __attribute__ ((packed));
 typedef struct DMCmdEventReportRsp DMCmdEventReportRsp;
 
-/* DIAG_SUBSYS_NW_CONTROL_* subsys command */
+/* DIAG_SUBSYS_NOVATEL_* subsys command */
 struct DMCmdSubsysNwSnapshotReq {
     DMCmdSubsysHeader hdr;
-    u_int8_t technology;        /* DIAG_SUBSYS_NW_CONTROL_MODEM_SNAPSHOT_TECH_* */
+    u_int8_t technology;        /* DIAG_SUBSYS_NOVATEL_MODEM_SNAPSHOT_TECH_* */
     u_int32_t snapshot_mask;
 } __attribute__ ((packed));
 typedef struct DMCmdSubsysNwSnapshotReq DMCmdSubsysNwSnapshotReq;
 
-/* DIAG_SUBSYS_NW_CONTROL_MODEM_SNAPSHOT response */
+/* DIAG_SUBSYS_NOVATEL_MODEM_SNAPSHOT response */
 struct DMCmdSubsysNwSnapshotRsp {
     DMCmdSubsysHeader hdr;
     u_int8_t response_code;
     u_int32_t bitfield1;
     u_int32_t bitfield2;
-    u_int8_t data[100];
+    u_int8_t data[100];     /* DMCmdSubsysNwSnapshotCdma */
 } __attribute__ ((packed));
 typedef struct DMCmdSubsysNwSnapshotRsp DMCmdSubsysNwSnapshotRsp;
 
@@ -487,6 +502,27 @@ struct DMCmdSubsysNwSnapshotCdma {
     u_int8_t hdr_rev;
 } __attribute__ ((packed));
 typedef struct DMCmdSubsysNwSnapshotCdma DMCmdSubsysNwSnapshotCdma;
+
+/* DIAG_SUBSYS_NOVATEL_MODEM_SNAPSHOT response */
+struct DMCmdSubsysNwEriRsp {
+    DMCmdSubsysHeader hdr;
+    u_int8_t status;
+    u_int16_t error;
+    u_int8_t roam;
+    u_int8_t eri_header[6];
+    u_int8_t eri_call_prompt[38];
+
+    /* Roaming Indicator */
+    u_int8_t indicator_id;
+    u_int8_t icon_id;
+    u_int8_t icon_mode;
+    u_int8_t call_prompt_id;  /* Call Guard? */
+    u_int8_t alert_id;        /* Ringer? */
+    u_int8_t encoding_type;
+    u_int8_t text_len;
+    u_int8_t text[32];
+} __attribute__ ((packed));
+typedef struct DMCmdSubsysNwEriRsp DMCmdSubsysNwEriRsp;
 
 enum {
     DIAG_CMD_LOG_CONFIG_OP_GET_RANGE = 0x01,
@@ -554,6 +590,20 @@ struct DMCmdSubsysGsmStateInfoRsp {
     u_int8_t cm_sysmode;
 } __attribute__ ((packed));
 typedef struct DMCmdSubsysGsmStateInfoRsp DMCmdSubsysGsmStateInfoRsp;
+
+/* DIAG_CMD_SAMSUNG_IND response */
+struct DMCmdSamsungIndRsp {
+    DMCmdHeader hdr;
+    u_int8_t _unknown1;  /* always zero */
+    u_int8_t _unknown2;  /* 0x0c */
+    u_int8_t  _unknown3[4];  /* always zero */
+    u_int8_t _unknown4;  /* 0x05 */
+    u_int8_t _unknown5;  /* always zero */
+    u_int8_t _unknown6;  /* 0x01 */
+    u_int8_t _unknown7;  /* always zero */
+    u_int8_t signal;  /* 0 - 5 */
+} __attribute__ ((packed));
+typedef struct DMCmdSamsungIndRsp DMCmdSamsungIndRsp;
 
 #endif  /* LIBQCDM_DM_COMMANDS_H */
 

@@ -1,0 +1,20 @@
+From: Ari Sovijarvi <ari@sovijarvi.fi>
+Subject: Add another known USB ID for the Ericsson H5321gw.
+Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/modemmanager/+bug/1057956
+
+---
+ plugins/77-mm-ericsson-mbm.rules |    1 +
+ 1 file changed, 1 insertion(+)
+
+Index: b/plugins/77-mm-ericsson-mbm.rules
+===================================================================
+--- a/plugins/77-mm-ericsson-mbm.rules
++++ b/plugins/77-mm-ericsson-mbm.rules
+@@ -32,6 +32,7 @@ ATTRS{idVendor}=="0bdb", ATTRS{idProduct
+ 
+ # Ericsson H5321gw
+ ATTRS{idVendor}=="0bdb", ATTRS{idProduct}=="1919", ENV{ID_MM_ERICSSON_MBM}="1"
++ATTRS{idVendor}=="0bdb", ATTRS{idProduct}=="1926", ENV{ID_MM_ERICSSON_MBM}="1"
+ 
+ # Ericsson H5321w
+ ATTRS{idVendor}=="0bdb", ATTRS{idProduct}=="191d", ENV{ID_MM_ERICSSON_MBM}="1"

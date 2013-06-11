@@ -36,6 +36,7 @@ enum {
     DIAG_NV_MODE_PREF    = 10,   /* Mode preference: 1x, HDR, auto */
     DIAG_NV_DIR_NUMBER   = 178,  /* Mobile Directory Number (MDN) */
     DIAG_NV_ROAM_PREF    = 442,  /* Roaming preference */
+    DIAG_NV_HYBRID_PREF  = 562,  /* Hybrid 1x + HDR preference */
     DIAG_NV_HDR_REV_PREF = 4964, /* HDR mode preference(?): rev0, revA, eHRPD */
 };
 
@@ -51,8 +52,12 @@ enum {
     DIAG_NV_MODE_PREF_HOME_ONLY       = 0x06,
     DIAG_NV_MODE_PREF_1X_ONLY         = 0x09,
     DIAG_NV_MODE_PREF_HDR_ONLY        = 0x0A,
-    DIAG_NV_MODE_PREF_1X_HDR_ONLY     = 0x0D,
+    DIAG_NV_MODE_PREF_GPRS_ONLY       = 0x0D,
+    DIAG_NV_MODE_PREF_UMTS_ONLY       = 0x0E,
+    DIAG_NV_MODE_PREF_GSM_UMTS_ONLY   = 0x11,
+    DIAG_NV_MODE_PREF_1X_HDR_ONLY     = 0x13,
     DIAG_NV_MODE_PREF_LTE_ONLY        = 0x1E,
+    DIAG_NV_MODE_PREF_GSM_UMTS_LTE_ONLY = 0x1F,
     DIAG_NV_MODE_PREF_1X_HDR_LTE_ONLY = 0x24,
 };
 
@@ -96,6 +101,18 @@ struct DMNVItemHdrRevPref {
     u_int8_t rev_pref;
 } __attribute__ ((packed));
 typedef struct DMNVItemHdrRevPref DMNVItemHdrRevPref;
+
+/* Hybrid pref */
+enum {
+    DIAG_NV_HYBRID_PREF_OFF   = 0x00,
+    DIAG_NV_HYBRID_PREF_ON    = 0x01,
+};
+
+/* DIAG_NV_HYBRID_PREF */
+struct DMNVItemHybridPref {
+    u_int8_t hybrid_pref;
+} __attribute__ ((packed));
+typedef struct DMNVItemHybridPref DMNVItemHybridPref;
 
 #endif  /* LIBQCDM_NV_ITEMS_H */
 

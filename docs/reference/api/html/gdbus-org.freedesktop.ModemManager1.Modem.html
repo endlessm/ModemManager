@@ -1,0 +1,790 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>org.freedesktop.ModemManager1.Modem</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="ModemManager Reference Manual">
+<link rel="up" href="ref-dbus-object-modem.html" title="The /org/freedesktop/ModemManager/Modems objects">
+<link rel="prev" href="ref-dbus-object-modem.html" title="The /org/freedesktop/ModemManager/Modems objects">
+<link rel="next" href="gdbus-org.freedesktop.ModemManager1.Modem.Simple.html" title="org.freedesktop.ModemManager1.Modem.Simple">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="ref-dbus-object-modem.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ref-dbus-object-modem.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">ModemManager Reference Manual</th>
+<td><a accesskey="n" href="gdbus-org.freedesktop.ModemManager1.Modem.Simple.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#gdbus-org.freedesktop.ModemManager1.Modem.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.properties" class="shortcut">Properties</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.signals" class="shortcut">Signals</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="gdbus-org.freedesktop.ModemManager1.Modem"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="gdbus-interface-org-freedesktop-ModemManager1-Modem.top_of_page"></a>org.freedesktop.ModemManager1.Modem</span></h2>
+<p>org.freedesktop.ModemManager1.Modem — The ModemManager Modem interface.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Methods</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-method-org-freedesktop-ModemManager1-Modem.Enable" title="The Enable() method">Enable</a>                 (IN  b     enable);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-method-org-freedesktop-ModemManager1-Modem.ListBearers" title="The ListBearers() method">ListBearers</a>            (OUT ao    bearers);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-method-org-freedesktop-ModemManager1-Modem.CreateBearer" title="The CreateBearer() method">CreateBearer</a>           (IN  a{sv} properties,
+                        OUT o     path);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-method-org-freedesktop-ModemManager1-Modem.DeleteBearer" title="The DeleteBearer() method">DeleteBearer</a>           (IN  o     bearer);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-method-org-freedesktop-ModemManager1-Modem.Reset" title="The Reset() method">Reset</a>                  ();
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-method-org-freedesktop-ModemManager1-Modem.FactoryReset" title="The FactoryReset() method">FactoryReset</a>           (IN  s     code);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-method-org-freedesktop-ModemManager1-Modem.SetPowerState" title="The SetPowerState() method">SetPowerState</a>          (IN  u     state);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-method-org-freedesktop-ModemManager1-Modem.SetCurrentCapabilities" title="The SetCurrentCapabilities() method">SetCurrentCapabilities</a> (IN  u     capabilities);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-method-org-freedesktop-ModemManager1-Modem.SetCurrentModes" title="The SetCurrentModes() method">SetCurrentModes</a>        (IN  (uu)  modes);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-method-org-freedesktop-ModemManager1-Modem.SetCurrentBands" title="The SetCurrentBands() method">SetCurrentBands</a>        (IN  au    bands);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-method-org-freedesktop-ModemManager1-Modem.Command" title="The Command() method">Command</a>                (IN  s     cmd,
+                        IN  u     timeout,
+                        OUT s     response);
+</pre>
+</div>
+<div class="refsect1">
+<a name="idm266931107200"></a><h2>Signals</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-signal-org-freedesktop-ModemManager1-Modem.StateChanged" title='The "StateChanged" signal'>StateChanged</a> (i old,
+              i new,
+              u reason);
+</pre>
+</div>
+<div class="refsect1">
+<a name="idm266931445968"></a><h2>Properties</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Sim" title='The "Sim" property'>Sim</a>                    readable   o
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.SupportedCapabilities" title='The "SupportedCapabilities" property'>SupportedCapabilities</a>  readable   au
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.CurrentCapabilities" title='The "CurrentCapabilities" property'>CurrentCapabilities</a>    readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.MaxBearers" title='The "MaxBearers" property'>MaxBearers</a>             readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.MaxActiveBearers" title='The "MaxActiveBearers" property'>MaxActiveBearers</a>       readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Manufacturer" title='The "Manufacturer" property'>Manufacturer</a>           readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Model" title='The "Model" property'>Model</a>                  readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Revision" title='The "Revision" property'>Revision</a>               readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.DeviceIdentifier" title='The "DeviceIdentifier" property'>DeviceIdentifier</a>       readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Device" title='The "Device" property'>Device</a>                 readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Drivers" title='The "Drivers" property'>Drivers</a>                readable   as
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Plugin" title='The "Plugin" property'>Plugin</a>                 readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.PrimaryPort" title='The "PrimaryPort" property'>PrimaryPort</a>            readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.EquipmentIdentifier" title='The "EquipmentIdentifier" property'>EquipmentIdentifier</a>    readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.UnlockRequired" title='The "UnlockRequired" property'>UnlockRequired</a>         readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.UnlockRetries" title='The "UnlockRetries" property'>UnlockRetries</a>          readable   a{uu}
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.State" title='The "State" property'>State</a>                  readable   i
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.StateFailedReason" title='The "StateFailedReason" property'>StateFailedReason</a>      readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.AccessTechnologies" title='The "AccessTechnologies" property'>AccessTechnologies</a>     readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.SignalQuality" title='The "SignalQuality" property'>SignalQuality</a>          readable   (ub)
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.OwnNumbers" title='The "OwnNumbers" property'>OwnNumbers</a>             readable   as
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.PowerState" title='The "PowerState" property'>PowerState</a>             readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.SupportedModes" title='The "SupportedModes" property'>SupportedModes</a>         readable   a(uu)
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.CurrentModes" title='The "CurrentModes" property'>CurrentModes</a>           readable   (uu)
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.SupportedBands" title='The "SupportedBands" property'>SupportedBands</a>         readable   au
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.CurrentBands" title='The "CurrentBands" property'>CurrentBands</a>           readable   au
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.SupportedIpFamilies" title='The "SupportedIpFamilies" property'>SupportedIpFamilies</a>    readable   u
+</pre>
+</div>
+<div class="refsect1">
+<a name="gdbus-interface-org-freedesktop-ModemManager1-Modem"></a><h2>Description</h2>
+<p>      The Modem interface controls the status and actions in a given modem
+      object.
+</p>
+</div>
+<div class="refsect1">
+<a name="gdbus-methods-org.freedesktop.ModemManager1.Modem"></a><h2>Method Details</h2>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem.Enable"></a><h3>The Enable() method</h3>
+<pre class="programlisting">
+Enable (IN  b enable);
+</pre>
+<p>        Enable or disable the modem.
+</p>
+<p>        When enabled, the modem's radio is powered on and data sessions, voice
+        calls, location services, and Short Message Service may be available.
+</p>
+<p>        When disabled, the modem enters low-power state and no network-related
+        operations are available.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN b <em class="parameter"><code>enable</code></em></code>:</span></p></td>
+<td><p><code class="constant">TRUE</code> to enable the modem and <code class="constant">FALSE</code> to disable it.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem.ListBearers"></a><h3>The ListBearers() method</h3>
+<pre class="programlisting">
+ListBearers (OUT ao bearers);
+</pre>
+<p>        List configured packet data bearers (EPS Bearers, PDP Contexts, or
+        CDMA2000 Packet Data Sessions).
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">OUT ao <em class="parameter"><code>bearers</code></em></code>:</span></p></td>
+<td><p>The list of bearer object paths.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem.CreateBearer"></a><h3>The CreateBearer() method</h3>
+<pre class="programlisting">
+CreateBearer (IN  a{sv} properties,
+              OUT o     path);
+</pre>
+<p>        Create a new packet data bearer using the given characteristics.
+</p>
+<p>        This request may fail if the modem does not support additional bearers,
+        if too many bearers are already defined, or if properties are invalid.
+</p>
+<p>        Allowed properties are:
+        </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">"apn"</code></span></p></td>
+<td><p>Access Point Name, given as a string value (signature <code class="literal">"s"</code>). Required in 3GPP.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"ip-type"</code></span></p></td>
+<td><p>Addressing type, given as a <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily" title="enum MMBearerIpFamily">MMBearerIpFamily</a> value (signature <code class="literal">"u"</code>). Optional in 3GPP and CDMA.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"allowed-auth"</code></span></p></td>
+<td><p>The authentication method to use, given as a <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth" title="enum MMBearerAllowedAuth">MMBearerAllowedAuth</a> value (signature <code class="literal">"u"</code>). Optional in 3GPP.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"user"</code></span></p></td>
+<td><p>User name (if any) required by the network, given as a string value (signature <code class="literal">"s"</code>). Optional in 3GPP.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"password"</code></span></p></td>
+<td><p>Password (if any) required by the network, given as a string value (signature <code class="literal">"s"</code>). Optional in 3GPP.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"allow-roaming"</code></span></p></td>
+<td><p>Flag to tell whether connection is allowed during roaming, given as a boolean value (signature <code class="literal">"b"</code>). Optional in 3GPP.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"rm-protocol"</code></span></p></td>
+<td><p>Protocol of the Rm interface, given as a <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemCdmaRmProtocol" title="enum MMModemCdmaRmProtocol">MMModemCdmaRmProtocol</a> value (signature <code class="literal">"u"</code>). Optional in CDMA.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"number"</code></span></p></td>
+<td><p>Telephone number to dial, given as a string value (signature <code class="literal">"s"</code>). Required in POTS.</p></td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+<p>        Some properties are only applicable to a bearer of certain access
+        technologies, for example the <code class="literal">"apn"</code> property is not
+        applicable to CDMA2000 Packet Data Session bearers.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>properties</code></em></code>:</span></p></td>
+<td><p>List of properties to assign to the bearer after creating it.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">OUT o <em class="parameter"><code>path</code></em></code>:</span></p></td>
+<td><p>On success, the object path of the newly created bearer.</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem.DeleteBearer"></a><h3>The DeleteBearer() method</h3>
+<pre class="programlisting">
+DeleteBearer (IN  o bearer);
+</pre>
+<p>        Delete an existing packet data bearer.
+</p>
+<p>        If the bearer is currently active and providing packet data server, it
+        will be disconnected and that packet data service will terminate.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN o <em class="parameter"><code>bearer</code></em></code>:</span></p></td>
+<td><p>Object path of the bearer to delete.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem.Reset"></a><h3>The Reset() method</h3>
+<pre class="programlisting">
+Reset ();
+</pre>
+<p>        Clear non-persistent configuration and state, and return the device to
+        a newly-powered-on state.
+</p>
+<p>        This command may power-cycle the device.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem.FactoryReset"></a><h3>The FactoryReset() method</h3>
+<pre class="programlisting">
+FactoryReset (IN  s code);
+</pre>
+<p>        Clear the modem's configuration (including persistent configuration and
+        state), and return the device to a factory-default state.
+</p>
+<p>        If not required by the modem, <em class="parameter"><code>code</code></em> may be ignored.
+</p>
+<p>        This command may or may not power-cycle the device.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>code</code></em></code>:</span></p></td>
+<td><p>Carrier-supplied code required to reset the modem.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem.SetPowerState"></a><h3>The SetPowerState() method</h3>
+<pre class="programlisting">
+SetPowerState (IN  u state);
+</pre>
+<p>        Set the power state of the modem. This action can only be run when the
+	modem is in <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-MODEM-STATE-DISABLED:CAPS"><code class="constant">MM_MODEM_STATE_DISABLED</code></a>
+	state.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN u <em class="parameter"><code>state</code></em></code>:</span></p></td>
+<td><p>A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemPowerState" title="enum MMModemPowerState">MMModemPowerState</a> value, to specify the desired power state.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem.SetCurrentCapabilities"></a><h3>The SetCurrentCapabilities() method</h3>
+<pre class="programlisting">
+SetCurrentCapabilities (IN  u capabilities);
+</pre>
+<p>        Set the capabilities of the device. A restart of the modem may be required.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN u <em class="parameter"><code>capabilities</code></em></code>:</span></p></td>
+<td><p>Bitmask of <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemCapability" title="enum MMModemCapability">MMModemCapability</a> values, to specify the capabilities to use.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem.SetCurrentModes"></a><h3>The SetCurrentModes() method</h3>
+<pre class="programlisting">
+SetCurrentModes (IN  (uu) modes);
+</pre>
+<p>        Set the access technologies (e.g. 2G/3G/4G preference) the device is
+        currently allowed to use when connecting to a network.
+</p>
+<p>        The given combination should be supported by the modem, as specified in the
+        <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.SupportedModes" title='The "SupportedModes" property'>"SupportedModes"</a> property.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN (uu) <em class="parameter"><code>modes</code></em></code>:</span></p></td>
+<td><p>A pair of <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemMode" title="enum MMModemMode">MMModemMode</a> values, where the first one is a bitmask of allowed modes, and the second one the preferred mode, if any.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem.SetCurrentBands"></a><h3>The SetCurrentBands() method</h3>
+<pre class="programlisting">
+SetCurrentBands (IN  au bands);
+</pre>
+<p>        Set the radio frequency and technology bands the device is currently
+        allowed to use when connecting to a network.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN au <em class="parameter"><code>bands</code></em></code>:</span></p></td>
+<td><p>List of <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemBand" title="enum MMModemBand">MMModemBand</a> values, to specify the bands to be used.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem.Command"></a><h3>The Command() method</h3>
+<pre class="programlisting">
+Command (IN  s cmd,
+         IN  u timeout,
+         OUT s response);
+</pre>
+<p></p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>cmd</code></em></code>:</span></p></td>
+<td><p></p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">IN u <em class="parameter"><code>timeout</code></em></code>:</span></p></td>
+<td><p></p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">OUT s <em class="parameter"><code>response</code></em></code>:</span></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-signals-org.freedesktop.ModemManager1.Modem"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="gdbus-signal-org-freedesktop-ModemManager1-Modem.StateChanged"></a><h3>The "StateChanged" signal</h3>
+<pre class="programlisting">
+StateChanged (i old,
+              i new,
+              u reason);
+</pre>
+<p>        The modem's state (see <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.State" title='The "State" property'>"State"</a>) changed.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">i <em class="parameter"><code>old</code></em></code>:</span></p></td>
+<td><p>A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemState" title="enum MMModemState">MMModemState</a> value, specifying the new state.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">i <em class="parameter"><code>new</code></em></code>:</span></p></td>
+<td><p>A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemState" title="enum MMModemState">MMModemState</a> value, specifying the new state.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">u <em class="parameter"><code>reason</code></em></code>:</span></p></td>
+<td><p>A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemStateChangeReason" title="enum MMModemStateChangeReason">MMModemStateChangeReason</a> value, specifying the reason for this state change.</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-properties-org.freedesktop.ModemManager1.Modem"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.Sim"></a><h3>The "Sim" property</h3>
+<pre class="programlisting">
+Sim  readable   o
+</pre>
+<p>        The path of the SIM object available in this device, if any.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.SupportedCapabilities"></a><h3>The "SupportedCapabilities" property</h3>
+<pre class="programlisting">
+SupportedCapabilities  readable   au
+</pre>
+<p>        List of <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemCapability" title="enum MMModemCapability">MMModemCapability</a>
+        values, specifying the combinations of generic family of access
+        technologies the modem supports.
+</p>
+<p>        If the modem doesn't allow changing the current capabilities, a single entry with
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-MODEM-CAPABILITY-ANY:CAPS"><code class="constant">MM_MODEM_CAPABILITY_ANY</code></a>
+        will be given.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.CurrentCapabilities"></a><h3>The "CurrentCapabilities" property</h3>
+<pre class="programlisting">
+CurrentCapabilities  readable   u
+</pre>
+<p>        Bitmask of <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemCapability" title="enum MMModemCapability">MMModemCapability</a>
+        values, specifying the  generic family of access technologies the modem
+        currently supports without a firmware reload or reinitialization.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.MaxBearers"></a><h3>The "MaxBearers" property</h3>
+<pre class="programlisting">
+MaxBearers  readable   u
+</pre>
+<p>        The maximum number of defined packet data bearers the modem supports.
+</p>
+<p>        This is not the number of active/connected bearers the modem supports,
+        but simply the number of bearers that may be defined at any given time.
+        For example, POTS and CDMA2000-only devices support only one bearer,
+        while GSM/UMTS devices typically support three or more, and any
+        LTE-capable device (whether LTE-only, GSM/UMTS-capable, and/or
+        CDMA2000-capable) also typically support three or more.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.MaxActiveBearers"></a><h3>The "MaxActiveBearers" property</h3>
+<pre class="programlisting">
+MaxActiveBearers  readable   u
+</pre>
+<p>        The maximum number of active packet data bearers the modem supports.
+</p>
+<p>        POTS and CDMA2000-only devices support one active bearer, while GSM/UMTS
+        and LTE-capable devices (including LTE/CDMA devices) typically support
+        at least two active bearers.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.Manufacturer"></a><h3>The "Manufacturer" property</h3>
+<pre class="programlisting">
+Manufacturer  readable   s
+</pre>
+<p>        The equipment manufacturer, as reported by the modem.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.Model"></a><h3>The "Model" property</h3>
+<pre class="programlisting">
+Model  readable   s
+</pre>
+<p>        The equipment model, as reported by the modem.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.Revision"></a><h3>The "Revision" property</h3>
+<pre class="programlisting">
+Revision  readable   s
+</pre>
+<p>        The revision identification of the software, as reported by the modem.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.DeviceIdentifier"></a><h3>The "DeviceIdentifier" property</h3>
+<pre class="programlisting">
+DeviceIdentifier  readable   s
+</pre>
+<p>        A best-effort device identifier based on various device information like
+        model name, firmware revision, USB/PCI/PCMCIA IDs, and other properties.
+</p>
+<p>        This ID is not guaranteed to be unique and may be shared between
+        identical devices with the same firmware, but is intended to be "unique
+        enough" for use as a casual device identifier for various user
+        experience operations.
+</p>
+<p>        This is not the device's IMEI or ESN since those may not be available
+        before unlocking the device via a PIN.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.Device"></a><h3>The "Device" property</h3>
+<pre class="programlisting">
+Device  readable   s
+</pre>
+<p>        The physical modem device reference (ie, USB, PCI, PCMCIA device), which
+        may be dependent upon the operating system.
+</p>
+<p>        In Linux for example, this points to a sysfs path of the usb_device
+        object.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.Drivers"></a><h3>The "Drivers" property</h3>
+<pre class="programlisting">
+Drivers  readable   as
+</pre>
+<p>        The Operating System device drivers handling communication with the modem
+        hardware.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.Plugin"></a><h3>The "Plugin" property</h3>
+<pre class="programlisting">
+Plugin  readable   s
+</pre>
+<p>        The name of the plugin handling this modem.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.PrimaryPort"></a><h3>The "PrimaryPort" property</h3>
+<pre class="programlisting">
+PrimaryPort  readable   s
+</pre>
+<p>        The name of the primary port using to control the modem.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.EquipmentIdentifier"></a><h3>The "EquipmentIdentifier" property</h3>
+<pre class="programlisting">
+EquipmentIdentifier  readable   s
+</pre>
+<p>        The identity of the device.
+</p>
+<p>        This will be the IMEI number for GSM devices and the hex-format ESN/MEID
+        for CDMA devices.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.UnlockRequired"></a><h3>The "UnlockRequired" property</h3>
+<pre class="programlisting">
+UnlockRequired  readable   u
+</pre>
+<p>        Current lock state of the device, given as a
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemLock" title="enum MMModemLock">MMModemLock</a> value.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.UnlockRetries"></a><h3>The "UnlockRetries" property</h3>
+<pre class="programlisting">
+UnlockRetries  readable   a{uu}
+</pre>
+<p>        A dictionary in which the keys are <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemLock" title="enum MMModemLock">MMModemLock</a>
+        flags, and the values are integers giving the number of PIN tries remaining
+        before the code becomes blocked (requiring a PUK) or permanently blocked. Dictionary
+        entries exist only for the codes for which the modem is able to report retry
+        counts.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.State"></a><h3>The "State" property</h3>
+<pre class="programlisting">
+State  readable   i
+</pre>
+<p>        Overall state of the modem, given as a
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemState" title="enum MMModemState">MMModemState</a> value.
+</p>
+<p>        If the device's state cannot be determined,
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-MODEM-STATE-UNKNOWN:CAPS"><code class="constant">MM_MODEM_STATE_UNKNOWN</code></a>
+        will be reported.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.StateFailedReason"></a><h3>The "StateFailedReason" property</h3>
+<pre class="programlisting">
+StateFailedReason  readable   u
+</pre>
+<p>        Error specifying why the modem is in
+	<a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-MODEM-STATE-FAILED:CAPS"><code class="constant">MM_MODEM_STATE_FAILED</code></a>
+	state, given as a
+	<a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemStateFailedReason" title="enum MMModemStateFailedReason">MMModemStateFailedReason</a> value.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.AccessTechnologies"></a><h3>The "AccessTechnologies" property</h3>
+<pre class="programlisting">
+AccessTechnologies  readable   u
+</pre>
+<p>        Bitmask of <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology" title="enum MMModemAccessTechnology">MMModemAccessTechnology</a> values,
+        specifying the current network access technologies used by the device to communicate
+        with the network.
+</p>
+<p>        If the device's access technology cannot be determined,
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-MODEM-ACCESS-TECHNOLOGY-UNKNOWN:CAPS"><code class="constant">MM_MODEM_ACCESS_TECHNOLOGY_UNKNOWN</code></a>
+        will be reported.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.SignalQuality"></a><h3>The "SignalQuality" property</h3>
+<pre class="programlisting">
+SignalQuality  readable   (ub)
+</pre>
+<p>        Signal quality in percent (0 - 100) of the dominant access technology
+        the device is using to communicate with the network. Always 0 for POTS
+        devices.
+</p>
+<p>        The additional boolean value indicates if the quality value given was
+        recently taken.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.OwnNumbers"></a><h3>The "OwnNumbers" property</h3>
+<pre class="programlisting">
+OwnNumbers  readable   as
+</pre>
+<p>        List of numbers (e.g. MSISDN in 3GPP) being currently handled by this
+        modem.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.PowerState"></a><h3>The "PowerState" property</h3>
+<pre class="programlisting">
+PowerState  readable   u
+</pre>
+<p>	A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemPowerState" title="enum MMModemPowerState">MMModemPowerState</a> value
+	specifying the current power state of the modem.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.SupportedModes"></a><h3>The "SupportedModes" property</h3>
+<pre class="programlisting">
+SupportedModes  readable   a(uu)
+</pre>
+<p>        This property exposes the supported mode combinations, given as an array of unsigned
+        integer pairs, where:
+</p>
+<p>        </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p></p></td>
+<td>
+              The first integer is a bitmask of <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemMode" title="enum MMModemMode">MMModemMode</a> values,
+              specifying the allowed modes.
+            </td>
+</tr>
+<tr>
+<td><p></p></td>
+<td>
+              The second integer is a single <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemMode" title="enum MMModemMode">MMModemMode</a>, which
+              specifies the preferred access technology, among the ones defined in the allowed modes.
+            </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.CurrentModes"></a><h3>The "CurrentModes" property</h3>
+<pre class="programlisting">
+CurrentModes  readable   (uu)
+</pre>
+<p>        A pair of <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemMode" title="enum MMModemMode">MMModemMode</a> values, where the first one
+        is a bitmask specifying the access technologies (eg 2G/3G/4G) the device
+        is currently allowed to use when connecting to a network, and the second one is the
+        preferred mode of those specified as allowed.
+</p>
+<p>        The pair must be one of those specified in
+        <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.SupportedModes" title='The "SupportedModes" property'>"SupportedModes"</a>.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.SupportedBands"></a><h3>The "SupportedBands" property</h3>
+<pre class="programlisting">
+SupportedBands  readable   au
+</pre>
+<p>        List of <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemBand" title="enum MMModemBand">MMModemBand</a> values,
+        specifying the radio frequency and technology bands supported by the
+        device.
+</p>
+<p>        For POTS devices, only the
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-MODEM-BAND-ANY:CAPS"><code class="constant">MM_MODEM_BAND_ANY</code></a>
+        mode will be returned.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.CurrentBands"></a><h3>The "CurrentBands" property</h3>
+<pre class="programlisting">
+CurrentBands  readable   au
+</pre>
+<p>        List of <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemBand" title="enum MMModemBand">MMModemBand</a> values,
+        specifying the radio frequency and technology bands the device is
+        currently using when connecting to a network.
+</p>
+<p>        It must be a subset of <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.SupportedBands" title='The "SupportedBands" property'>"SupportedBands"</a>.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.SupportedIpFamilies"></a><h3>The "SupportedIpFamilies" property</h3>
+<pre class="programlisting">
+SupportedIpFamilies  readable   u
+</pre>
+<p>        Bitmask of <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily" title="enum MMBearerIpFamily">MMBearerIpFamily</a> values,
+        specifying the IP families supported by the device.
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

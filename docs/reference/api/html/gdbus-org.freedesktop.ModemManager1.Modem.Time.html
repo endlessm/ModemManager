@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>org.freedesktop.ModemManager1.Modem.Time</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="ModemManager Reference Manual">
+<link rel="up" href="ref-dbus-object-modem.html" title="The /org/freedesktop/ModemManager/Modems objects">
+<link rel="prev" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html" title="org.freedesktop.ModemManager1.Modem.Location">
+<link rel="next" href="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html" title="org.freedesktop.ModemManager1.Modem.Firmware">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ref-dbus-object-modem.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">ModemManager Reference Manual</th>
+<td><a accesskey="n" href="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#gdbus-org.freedesktop.ModemManager1.Modem.Time.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Time.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Time.properties" class="shortcut">Properties</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Time.signals" class="shortcut">Signals</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="gdbus-org.freedesktop.ModemManager1.Modem.Time"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Time.top_of_page"></a>org.freedesktop.ModemManager1.Modem.Time</span></h2>
+<p>org.freedesktop.ModemManager1.Modem.Time — The ModemManager Time interface.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Methods</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Time.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Time.GetNetworkTime" title="The GetNetworkTime() method">GetNetworkTime</a> (OUT s time);
+</pre>
+</div>
+<div class="refsect1">
+<a name="idm266929702128"></a><h2>Signals</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Time.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Time.NetworkTimeChanged" title='The "NetworkTimeChanged" signal'>NetworkTimeChanged</a> (s time);
+</pre>
+</div>
+<div class="refsect1">
+<a name="idm266932813568"></a><h2>Properties</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Time.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Time.NetworkTimezone" title='The "NetworkTimezone" property'>NetworkTimezone</a>  readable   a{sv}
+</pre>
+</div>
+<div class="refsect1">
+<a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Time"></a><h2>Description</h2>
+<p>      This interface allows clients to receive network time and timezone
+      updates broadcast by mobile networks.
+</p>
+</div>
+<div class="refsect1">
+<a name="gdbus-methods-org.freedesktop.ModemManager1.Modem.Time"></a><h2>Method Details</h2>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Time.GetNetworkTime"></a><h3>The GetNetworkTime() method</h3>
+<pre class="programlisting">
+GetNetworkTime (OUT s time);
+</pre>
+<p>        time, and (if available) UTC offset in ISO 8601 format. If the network
+        time is unknown, the empty string.
+</p>
+<p>        Gets the current network time in local time.
+</p>
+<p>        This method will only work if the modem tracks, or can request, the
+        current network time; it will not attempt to use previously-received
+        network time updates on the host to guess the current network time.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">OUT s <em class="parameter"><code>time</code></em></code>:</span></p></td>
+<td><p>If the network time is known, a string containing local date,</p></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-signals-org.freedesktop.ModemManager1.Modem.Time"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="gdbus-signal-org-freedesktop-ModemManager1-Modem-Time.NetworkTimeChanged"></a><h3>The "NetworkTimeChanged" signal</h3>
+<pre class="programlisting">
+NetworkTimeChanged (s time);
+</pre>
+<p>        Sent when the network time is updated.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">s <em class="parameter"><code>time</code></em></code>:</span></p></td>
+<td><p>A string containing date and time in ISO 8601 format.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-properties-org.freedesktop.ModemManager1.Modem.Time"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Time.NetworkTimezone"></a><h3>The "NetworkTimezone" property</h3>
+<pre class="programlisting">
+NetworkTimezone  readable   a{sv}
+</pre>
+<p>        The timezone data provided by the network. It may include one or more
+        of the following fields:
+</p>
+<p>        </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">"offset"</code></span></p></td>
+<td>
+              Offset of the timezone from UTC, in minutes (including DST, if applicable),
+              given as a signed integer value (signature <code class="literal">"i"</code>).
+            </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"dst-offset"</code></span></p></td>
+<td>
+              Amount of offset that is due to DST (daylight saving time),
+              given as a signed integer value (signature <code class="literal">"i"</code>).
+            </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"leap-seconds"</code></span></p></td>
+<td>
+              Number of leap seconds included in the network time,
+              given as a signed integer value (signature <code class="literal">"i"</code>).
+            </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

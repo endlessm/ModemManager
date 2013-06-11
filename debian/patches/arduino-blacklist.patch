@@ -1,8 +1,12 @@
-Index: modemmanager.fix-910736/src/77-mm-usb-device-blacklist.rules
+---
+ src/77-mm-usb-device-blacklist.rules |    5 +++++
+ 1 file changed, 5 insertions(+)
+
+Index: modemmanager-0.7.990/src/77-mm-usb-device-blacklist.rules
 ===================================================================
---- modemmanager.fix-910736.orig/src/77-mm-usb-device-blacklist.rules	2012-01-02 13:52:27.976866000 +0700
-+++ modemmanager.fix-910736/src/77-mm-usb-device-blacklist.rules	2012-01-02 13:55:27.610373581 +0700
-@@ -77,5 +77,10 @@
+--- modemmanager-0.7.990.orig/src/77-mm-usb-device-blacklist.rules	2013-03-14 23:37:21.866210414 +0100
++++ modemmanager-0.7.990/src/77-mm-usb-device-blacklist.rules	2013-03-14 23:37:21.802210413 +0100
+@@ -88,4 +88,9 @@
  # QinHeng Electronics HL-340
  ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", ENV{ID_MM_DEVICE_IGNORE}="1"
  
@@ -12,4 +16,3 @@ Index: modemmanager.fix-910736/src/77-mm-usb-device-blacklist.rules
 +ATTRS{idVendor}=="2341", ENV{ID_MM_DEVICE_IGNORE}="1"
 +
  LABEL="mm_usb_device_blacklist_end"
- 

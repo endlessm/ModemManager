@@ -1,0 +1,518 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MMBearerProperties</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="libmm-glib Reference Manual">
+<link rel="up" href="ch04.html" title="The Bearer object">
+<link rel="prev" href="MMBearer.html" title="MMBearer">
+<link rel="next" href="MMBearerIpConfig.html" title="MMBearerIpConfig">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="MMBearer.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libmm-glib Reference Manual</th>
+<td><a accesskey="n" href="MMBearerIpConfig.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#MMBearerProperties.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#MMBearerProperties.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#MMBearerProperties.object-hierarchy" class="shortcut">Object Hierarchy</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="MMBearerProperties"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="MMBearerProperties.top_of_page"></a>MMBearerProperties</span></h2>
+<p>MMBearerProperties — Helper object to handle bearer properties.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="MMBearerProperties.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">struct              <a class="link" href="MMBearerProperties.html#MMBearerProperties-struct" title="struct MMBearerProperties">MMBearerProperties</a>;
+
+<a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="returnvalue">MMBearerProperties</span></a> * <a class="link" href="MMBearerProperties.html#mm-bearer-properties-new" title="mm_bearer_properties_new ()">mm_bearer_properties_new</a>           (<em class="parameter"><code><span class="type">void</span></code></em>);
+
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMBearerProperties.html#mm-bearer-properties-get-apn" title="mm_bearer_properties_get_apn ()">mm_bearer_properties_get_apn</a>        (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MMBearerProperties.html#mm-bearer-properties-set-apn" title="mm_bearer_properties_set_apn ()">mm_bearer_properties_set_apn</a>        (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *apn</code></em>);
+<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth"><span class="returnvalue">MMBearerAllowedAuth</span></a> <a class="link" href="MMBearerProperties.html#mm-bearer-properties-get-allowed-auth" title="mm_bearer_properties_get_allowed_auth ()">mm_bearer_properties_get_allowed_auth</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MMBearerProperties.html#mm-bearer-properties-set-allowed-auth" title="mm_bearer_properties_set_allowed_auth ()">mm_bearer_properties_set_allowed_auth</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth"><span class="type">MMBearerAllowedAuth</span></a> allowed_auth</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMBearerProperties.html#mm-bearer-properties-get-user" title="mm_bearer_properties_get_user ()">mm_bearer_properties_get_user</a>       (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MMBearerProperties.html#mm-bearer-properties-set-user" title="mm_bearer_properties_set_user ()">mm_bearer_properties_set_user</a>       (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *user</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMBearerProperties.html#mm-bearer-properties-get-password" title="mm_bearer_properties_get_password ()">mm_bearer_properties_get_password</a>   (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MMBearerProperties.html#mm-bearer-properties-set-password" title="mm_bearer_properties_set_password ()">mm_bearer_properties_set_password</a>   (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *password</code></em>);
+<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="returnvalue">MMBearerIpFamily</span></a>    <a class="link" href="MMBearerProperties.html#mm-bearer-properties-get-ip-type" title="mm_bearer_properties_get_ip_type ()">mm_bearer_properties_get_ip_type</a>    (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MMBearerProperties.html#mm-bearer-properties-set-ip-type" title="mm_bearer_properties_set_ip_type ()">mm_bearer_properties_set_ip_type</a>    (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="type">MMBearerIpFamily</span></a> ip_type</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMBearerProperties.html#mm-bearer-properties-get-allow-roaming" title="mm_bearer_properties_get_allow_roaming ()">mm_bearer_properties_get_allow_roaming</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MMBearerProperties.html#mm-bearer-properties-set-allow-roaming" title="mm_bearer_properties_set_allow_roaming ()">mm_bearer_properties_set_allow_roaming</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> allow_roaming</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMBearerProperties.html#mm-bearer-properties-get-number" title="mm_bearer_properties_get_number ()">mm_bearer_properties_get_number</a>     (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MMBearerProperties.html#mm-bearer-properties-set-number" title="mm_bearer_properties_set_number ()">mm_bearer_properties_set_number</a>     (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *number</code></em>);
+<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRmProtocol"><span class="returnvalue">MMModemCdmaRmProtocol</span></a> <a class="link" href="MMBearerProperties.html#mm-bearer-properties-get-rm-protocol" title="mm_bearer_properties_get_rm_protocol ()">mm_bearer_properties_get_rm_protocol</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MMBearerProperties.html#mm-bearer-properties-set-rm-protocol" title="mm_bearer_properties_set_rm_protocol ()">mm_bearer_properties_set_rm_protocol</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRmProtocol"><span class="type">MMModemCdmaRmProtocol</span></a> protocol</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMBearerProperties.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----MMBearerProperties
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMBearerProperties.description"></a><h2>Description</h2>
+<p>
+The <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> is an object handling the properties requested
+to ModemManager when creating a new bearer.
+</p>
+<p>
+This object is created by the user and passed to ModemManager with either
+<a class="link" href="MMModem.html#mm-modem-create-bearer" title="mm_modem_create_bearer ()"><code class="function">mm_modem_create_bearer()</code></a> or <a class="link" href="MMModem.html#mm-modem-create-bearer-sync" title="mm_modem_create_bearer_sync ()"><code class="function">mm_modem_create_bearer_sync()</code></a>.
+</p>
+</div>
+<div class="refsect1">
+<a name="MMBearerProperties.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="MMBearerProperties-struct"></a><h3>struct MMBearerProperties</h3>
+<pre class="programlisting">struct MMBearerProperties;</pre>
+<p>
+The <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> structure contains private data and should
+only be accessed using the provided API.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-properties-new"></a><h3>mm_bearer_properties_new ()</h3>
+<pre class="programlisting"><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="returnvalue">MMBearerProperties</span></a> * mm_bearer_properties_new           (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+Creates a new empty <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-properties-get-apn"></a><h3>mm_bearer_properties_get_apn ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_bearer_properties_get_apn        (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>);</pre>
+<p>
+Gets the name of the access point to use when connecting.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the access point, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not set. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-properties-set-apn"></a><h3>mm_bearer_properties_set_apn ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_bearer_properties_set_apn        (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *apn</code></em>);</pre>
+<p>
+Sets the name of the access point to use when connecting.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>apn</code></em> :</span></p></td>
+<td>Name of the access point.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-properties-get-allowed-auth"></a><h3>mm_bearer_properties_get_allowed_auth ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth"><span class="returnvalue">MMBearerAllowedAuth</span></a> mm_bearer_properties_get_allowed_auth
+                                                        (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>);</pre>
+<p>
+Gets the authentication methods allowed in the connection.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a bitmask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth"><span class="type">MMBearerAllowedAuth</span></a> values, or <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-BEARER-ALLOWED-AUTH-UNKNOWN:CAPS"><code class="literal">MM_BEARER_ALLOWED_AUTH_UNKNOWN</code></a> to request the modem-default method.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-properties-set-allowed-auth"></a><h3>mm_bearer_properties_set_allowed_auth ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_bearer_properties_set_allowed_auth
+                                                        (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth"><span class="type">MMBearerAllowedAuth</span></a> allowed_auth</code></em>);</pre>
+<p>
+Sets the authentication method to use.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>allowed_auth</code></em> :</span></p></td>
+<td>a bitmask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth"><span class="type">MMBearerAllowedAuth</span></a> values. <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-BEARER-ALLOWED-AUTH-UNKNOWN:CAPS"><code class="literal">MM_BEARER_ALLOWED_AUTH_UNKNOWN</code></a> may be given to request the modem-default method.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-properties-get-user"></a><h3>mm_bearer_properties_get_user ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_bearer_properties_get_user       (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>);</pre>
+<p>
+Gets the username used to authenticate with the access point.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the username, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not set. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-properties-set-user"></a><h3>mm_bearer_properties_set_user ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_bearer_properties_set_user       (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *user</code></em>);</pre>
+<p>
+Sets the username used to authenticate with the access point.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user</code></em> :</span></p></td>
+<td>the username</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-properties-get-password"></a><h3>mm_bearer_properties_get_password ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_bearer_properties_get_password   (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>);</pre>
+<p>
+Gets the password used to authenticate with the access point.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the password, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not set. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-properties-set-password"></a><h3>mm_bearer_properties_set_password ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_bearer_properties_set_password   (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *password</code></em>);</pre>
+<p>
+Sets the password used to authenticate with the access point.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>password</code></em> :</span></p></td>
+<td>the password</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-properties-get-ip-type"></a><h3>mm_bearer_properties_get_ip_type ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="returnvalue">MMBearerIpFamily</span></a>    mm_bearer_properties_get_ip_type    (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>);</pre>
+<p>
+Sets the IP type to use.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="type">MMBearerIpFamily</span></a>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-properties-set-ip-type"></a><h3>mm_bearer_properties_set_ip_type ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_bearer_properties_set_ip_type    (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="type">MMBearerIpFamily</span></a> ip_type</code></em>);</pre>
+<p>
+Sets the IP type to use.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ip_type</code></em> :</span></p></td>
+<td>a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="type">MMBearerIpFamily</span></a>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-properties-get-allow-roaming"></a><h3>mm_bearer_properties_get_allow_roaming ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_bearer_properties_get_allow_roaming
+                                                        (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>);</pre>
+<p>
+Checks whether roaming is allowed in the connection.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if roaming is allowed, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise..</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-properties-set-allow-roaming"></a><h3>mm_bearer_properties_set_allow_roaming ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_bearer_properties_set_allow_roaming
+                                                        (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> allow_roaming</code></em>);</pre>
+<p>
+Sets the flag to indicate whether roaming is allowed or not in the
+connection.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>allow_roaming</code></em> :</span></p></td>
+<td>boolean value.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-properties-get-number"></a><h3>mm_bearer_properties_get_number ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_bearer_properties_get_number     (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>);</pre>
+<p>
+Gets the number to use when performing the connection.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the number, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not set. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-properties-set-number"></a><h3>mm_bearer_properties_set_number ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_bearer_properties_set_number     (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *number</code></em>);</pre>
+<p>
+Sets the number to use when performing the connection.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>number</code></em> :</span></p></td>
+<td>the number.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-properties-get-rm-protocol"></a><h3>mm_bearer_properties_get_rm_protocol ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRmProtocol"><span class="returnvalue">MMModemCdmaRmProtocol</span></a> mm_bearer_properties_get_rm_protocol
+                                                        (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>);</pre>
+<p>
+Gets the RM protocol requested to use in the CDMA connection.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRmProtocol"><span class="type">MMModemCdmaRmProtocol</span></a>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-properties-set-rm-protocol"></a><h3>mm_bearer_properties_set_rm_protocol ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_bearer_properties_set_rm_protocol
+                                                        (<em class="parameter"><code><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRmProtocol"><span class="type">MMModemCdmaRmProtocol</span></a> protocol</code></em>);</pre>
+<p>
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

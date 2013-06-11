@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="ModemManager Reference Manual">
+<link rel="up" href="ref-dbus-object-modem.html" title="The /org/freedesktop/ModemManager/Modems objects">
+<link rel="prev" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html" title="org.freedesktop.ModemManager1.Modem.Modem3gpp">
+<link rel="next" href="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html" title="org.freedesktop.ModemManager1.Modem.ModemCdma">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ref-dbus-object-modem.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">ModemManager Reference Manual</th>
+<td><a accesskey="n" href="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.properties" class="shortcut">Properties</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.top_of_page"></a>org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd</span></h2>
+<p>org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd — The ModemManager 3GPP USSD interface.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Methods</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Initiate" title="The Initiate() method">Initiate</a> (IN  s command,
+          OUT s reply);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Respond" title="The Respond() method">Respond</a>  (IN  s response,
+          OUT s reply);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Cancel" title="The Cancel() method">Cancel</a>   ();
+</pre>
+</div>
+<div class="refsect1">
+<a name="idm266931120224"></a><h2>Properties</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.State" title='The "State" property'>State</a>                readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.NetworkNotification" title='The "NetworkNotification" property'>NetworkNotification</a>  readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.NetworkRequest" title='The "NetworkRequest" property'>NetworkRequest</a>       readable   s
+</pre>
+</div>
+<div class="refsect1">
+<a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd"></a><h2>Description</h2>
+<p>      This interface provides access to actions based on the USSD protocol.
+</p>
+</div>
+<div class="refsect1">
+<a name="gdbus-methods-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd"></a><h2>Method Details</h2>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Initiate"></a><h3>The Initiate() method</h3>
+<pre class="programlisting">
+Initiate (IN  s command,
+          OUT s reply);
+</pre>
+<p>        Sends a USSD command string to the network initiating a USSD session.
+</p>
+<p>        When the request is handled by the network, the method returns the
+        response or an appropriate error. The network may be awaiting further
+        response from the ME after returning from this method and no new command
+        can be initiated until this one is cancelled or ended.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>command</code></em></code>:</span></p></td>
+<td><p>The command to start the USSD session with.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">OUT s <em class="parameter"><code>reply</code></em></code>:</span></p></td>
+<td><p>The network response to the command which started the USSD session.</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Respond"></a><h3>The Respond() method</h3>
+<pre class="programlisting">
+Respond (IN  s response,
+         OUT s reply);
+</pre>
+<p>        Respond to a USSD request that is either initiated by the mobile network,
+        or that is awaiting further input after
+        <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Initiate" title="The Initiate() method">Initiate()</a>
+        was called.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>response</code></em></code>:</span></p></td>
+<td><p>The response to network-initiated USSD command, or a response to a request for further input.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">OUT s <em class="parameter"><code>reply</code></em></code>:</span></p></td>
+<td><p>The network reply to this response to the network-initiated USSD command. The reply may require further responses.</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Cancel"></a><h3>The Cancel() method</h3>
+<pre class="programlisting">
+Cancel ();
+</pre>
+<p>        Cancel an ongoing USSD session, either mobile or network initiated.
+</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-properties-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.State"></a><h3>The "State" property</h3>
+<pre class="programlisting">
+State  readable   u
+</pre>
+<p>        A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModem3gppUssdSessionState" title="enum MMModem3gppUssdSessionState">MMModem3gppUssdSessionState</a> value,
+        indicating the state of any ongoing USSD session.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.NetworkNotification"></a><h3>The "NetworkNotification" property</h3>
+<pre class="programlisting">
+NetworkNotification  readable   s
+</pre>
+<p>        Contains any network-initiated request to which no USSD response is
+        required.
+</p>
+<p>        When no USSD session is active, or when there is no network-
+        initiated request, this property will be a zero-length string.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.NetworkRequest"></a><h3>The "NetworkRequest" property</h3>
+<pre class="programlisting">
+NetworkRequest  readable   s
+</pre>
+<p>        Contains any pending network-initiated request for a response. Client
+        should call
+        <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Respond" title="The Respond() method">Respond()</a>
+        with the appropriate response to this request.
+</p>
+<p>        When no USSD session is active, or when there is no pending
+        network-initiated request, this property will be a zero-length string.
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>
