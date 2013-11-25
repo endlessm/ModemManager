@@ -1,3 +1,11 @@
+modemmanager (0.5.2.0-2.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Don't limit automake's maximal version in build dependencies
+    (Closes:  #713118)
+
+ -- Balint Reczey <balint@balintreczey.hu>  Mon, 25 Nov 2013 16:22:58 +0100
+
 modemmanager (0.5.2.0-2) unstable; urgency=low
 
   * debian/patches/dbus_remove_max_replies_per_connection_limit.patch: Remove
