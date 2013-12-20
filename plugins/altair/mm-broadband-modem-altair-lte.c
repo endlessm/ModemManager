@@ -286,7 +286,9 @@ load_supported_bands_finish (MMIfaceModem *self,
                              GAsyncResult *res,
                              GError **error)
 {
-    /* Never fails */
+    if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
+        return NULL;
+
     return (GArray *) g_array_ref (g_simple_async_result_get_op_res_gpointer (
                                    G_SIMPLE_ASYNC_RESULT (res)));
 }
@@ -365,7 +367,9 @@ load_current_bands_finish (MMIfaceModem *self,
                            GAsyncResult *res,
                            GError **error)
 {
-    /* Never fails */
+    if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
+        return NULL;
+
     return (GArray *) g_array_ref (g_simple_async_result_get_op_res_gpointer (
                                    G_SIMPLE_ASYNC_RESULT (res)));
 }
@@ -909,8 +913,11 @@ setup_ports (MMBroadbandModem *self)
     MM_BROADBAND_MODEM_CLASS (mm_broadband_modem_altair_lte_parent_class)->setup_ports (self);
 
     primary = mm_base_modem_peek_port_primary (MM_BASE_MODEM (self));
+    if (!primary)
+        return;
 
-    g_object_set (mm_base_modem_peek_port_primary (MM_BASE_MODEM (self)),
+    g_object_set (primary,
+                  MM_SERIAL_PORT_SEND_DELAY, (guint64) 0,
                   MM_AT_SERIAL_PORT_SEND_LF, TRUE,
                   MM_AT_SERIAL_PORT_INIT_SEQUENCE, primary_init_sequence,
                   NULL);
@@ -956,11 +963,6 @@ mm_broadband_modem_altair_lte_init (MMBroadbandModemAltairLte *self)
 static void
 iface_modem_init (MMIfaceModem *iface)
 {
-    /* the modem is powered up at startup - no need to waste
-     * on power query and power up commands */
-    iface->load_power_state = NULL;
-    iface->load_power_state_finish = NULL;
-
     iface->modem_power_down = modem_power_down;
     iface->modem_power_down_finish = modem_power_down_finish;
     iface->create_bearer = modem_create_bearer;
@@ -1044,4 +1046,11 @@ mm_broadband_modem_altair_lte_class_init (MMBroadbandModemAltairLteClass *klass)
     g_type_class_add_private (object_class, sizeof (MMBroadbandModemAltairLtePrivate));
 
     broadband_modem_class->setup_ports = setup_ports;
+
+    /* The Altair LTE modem reboots itself upon receiving an ATZ command. We
+     * need to skip the default implementation in MMBroadbandModem to prevent
+     * an ATZ command from being issued as part of the modem initialization
+     * sequence when enabling the modem. */
+    broadband_modem_class->enabling_modem_init = NULL;
+    broadband_modem_class->enabling_modem_init_finish = NULL;
 }

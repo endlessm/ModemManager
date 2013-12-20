@@ -11,7 +11,7 @@
       </sub>
       <sub name="The Modem object" link="ch03.html">
         <sub name="MMObject" link="MMObject.html"/>
-        <sub name="Generic interfaces" link="ch03.html#idm266932738048">
+        <sub name="Generic interfaces" link="ch03.html#idm211869297872">
           <sub name="MMModem" link="MMModem.html"/>
           <sub name="MMModem3gpp" link="MMModem3gpp.html"/>
           <sub name="MMModem3gppUssd" link="MMModem3gppUssd.html"/>
@@ -28,7 +28,7 @@
           <sub name="MMLocation3gpp" link="MMLocation3gpp.html"/>
           <sub name="MMLocationGpsNmea" link="MMLocationGpsNmea.html"/>
           <sub name="MMLocationGpsRaw" link="MMLocationGpsRaw.html"/>
-          <sub name="MMLocationCdmaBs" link="libmm-glib-MMLocationCdmaBs.html"/>
+          <sub name="MMLocationCdmaBs" link="MMLocationCdmaBs.html"/>
         </sub>
         <sub name="Messaging support" link="ch03s04.html">
           <sub name="MMModemMessaging" link="MMModemMessaging.html"/>
@@ -87,9 +87,6 @@
       <sub name="MmGdbusModemFirmware" link="MmGdbusModemFirmware.html"/>
       <sub name="MmGdbusModemFirmwareProxy" link="MmGdbusModemFirmwareProxy.html"/>
       <sub name="MmGdbusModemFirmwareSkeleton" link="MmGdbusModemFirmwareSkeleton.html"/>
-      <sub name="MmGdbusModemContacts" link="MmGdbusModemContacts.html"/>
-      <sub name="MmGdbusModemContactsProxy" link="MmGdbusModemContactsProxy.html"/>
-      <sub name="MmGdbusModemContactsSkeleton" link="MmGdbusModemContactsSkeleton.html"/>
       <sub name="MmGdbusModemSimple" link="MmGdbusModemSimple.html"/>
       <sub name="MmGdbusModemSimpleProxy" link="MmGdbusModemSimpleProxy.html"/>
       <sub name="MmGdbusModemSimpleSkeleton" link="MmGdbusModemSimpleSkeleton.html"/>
@@ -121,6 +118,7 @@
     <keyword type="function" name="mm_modem_access_technology_build_string_from_mask ()" link="libmm-glib-Flags-and-Enumerations.html#mm-modem-access-technology-build-string-from-mask"/>
     <keyword type="function" name="mm_modem_mode_build_string_from_mask ()" link="libmm-glib-Flags-and-Enumerations.html#mm-modem-mode-build-string-from-mask"/>
     <keyword type="function" name="mm_modem_band_get_string ()" link="libmm-glib-Flags-and-Enumerations.html#mm-modem-band-get-string"/>
+    <keyword type="function" name="mm_modem_port_type_get_string ()" link="libmm-glib-Flags-and-Enumerations.html#mm-modem-port-type-get-string"/>
     <keyword type="function" name="mm_modem_3gpp_registration_state_get_string ()" link="libmm-glib-Flags-and-Enumerations.html#mm-modem-3gpp-registration-state-get-string"/>
     <keyword type="function" name="mm_modem_3gpp_facility_build_string_from_mask ()" link="libmm-glib-Flags-and-Enumerations.html#mm-modem-3gpp-facility-build-string-from-mask"/>
     <keyword type="function" name="mm_modem_3gpp_network_availability_get_string ()" link="libmm-glib-Flags-and-Enumerations.html#mm-modem-3gpp-network-availability-get-string"/>
@@ -171,6 +169,7 @@
     <keyword type="function" name="mm_object_get_modem_simple ()" link="MMObject.html#mm-object-get-modem-simple"/>
     <keyword type="struct" name="struct MMModem" link="MMModem.html#MMModem-struct"/>
     <keyword type="struct" name="MMModemModeCombination" link="MMModem.html#MMModemModeCombination"/>
+    <keyword type="struct" name="MMModemPortInfo" link="MMModem.html#MMModemPortInfo"/>
     <keyword type="function" name="mm_modem_get_path ()" link="MMModem.html#mm-modem-get-path"/>
     <keyword type="function" name="mm_modem_dup_path ()" link="MMModem.html#mm-modem-dup-path"/>
     <keyword type="function" name="mm_modem_get_state ()" link="MMModem.html#mm-modem-get-state"/>
@@ -191,6 +190,8 @@
     <keyword type="function" name="mm_modem_dup_plugin ()" link="MMModem.html#mm-modem-dup-plugin"/>
     <keyword type="function" name="mm_modem_get_primary_port ()" link="MMModem.html#mm-modem-get-primary-port"/>
     <keyword type="function" name="mm_modem_dup_primary_port ()" link="MMModem.html#mm-modem-dup-primary-port"/>
+    <keyword type="function" name="mm_modem_peek_ports ()" link="MMModem.html#mm-modem-peek-ports"/>
+    <keyword type="function" name="mm_modem_get_ports ()" link="MMModem.html#mm-modem-get-ports"/>
     <keyword type="function" name="mm_modem_get_device ()" link="MMModem.html#mm-modem-get-device"/>
     <keyword type="function" name="mm_modem_dup_device ()" link="MMModem.html#mm-modem-dup-device"/>
     <keyword type="function" name="mm_modem_get_equipment_identifier ()" link="MMModem.html#mm-modem-get-equipment-identifier"/>
@@ -255,6 +256,7 @@
     <keyword type="function" name="mm_modem_command ()" link="MMModem.html#mm-modem-command"/>
     <keyword type="function" name="mm_modem_command_finish ()" link="MMModem.html#mm-modem-command-finish"/>
     <keyword type="function" name="mm_modem_command_sync ()" link="MMModem.html#mm-modem-command-sync"/>
+    <keyword type="function" name="mm_modem_port_info_array_free ()" link="MMModem.html#mm-modem-port-info-array-free"/>
     <keyword type="struct" name="struct MMModem3gpp" link="MMModem3gpp.html#MMModem3gpp-struct"/>
     <keyword type="struct" name="MMModem3gppNetwork" link="MMModem3gpp.html#MMModem3gppNetwork"/>
     <keyword type="function" name="mm_modem_3gpp_network_get_operator_code ()" link="MMModem3gpp.html#mm-modem-3gpp-network-get-operator-code"/>
@@ -413,9 +415,9 @@
     <keyword type="function" name="mm_location_gps_raw_get_longitude ()" link="MMLocationGpsRaw.html#mm-location-gps-raw-get-longitude"/>
     <keyword type="function" name="mm_location_gps_raw_get_latitude ()" link="MMLocationGpsRaw.html#mm-location-gps-raw-get-latitude"/>
     <keyword type="function" name="mm_location_gps_raw_get_altitude ()" link="MMLocationGpsRaw.html#mm-location-gps-raw-get-altitude"/>
-    <keyword type="struct" name="struct MMLocationCdmaBs" link="libmm-glib-MMLocationCdmaBs.html#MMLocationCdmaBs"/>
-    <keyword type="function" name="mm_location_cdma_bs_get_latitude ()" link="libmm-glib-MMLocationCdmaBs.html#mm-location-cdma-bs-get-latitude"/>
-    <keyword type="function" name="mm_location_cdma_bs_get_longitude ()" link="libmm-glib-MMLocationCdmaBs.html#mm-location-cdma-bs-get-longitude"/>
+    <keyword type="struct" name="struct MMLocationCdmaBs" link="MMLocationCdmaBs.html#MMLocationCdmaBs-struct"/>
+    <keyword type="function" name="mm_location_cdma_bs_get_latitude ()" link="MMLocationCdmaBs.html#mm-location-cdma-bs-get-latitude"/>
+    <keyword type="function" name="mm_location_cdma_bs_get_longitude ()" link="MMLocationCdmaBs.html#mm-location-cdma-bs-get-longitude"/>
     <keyword type="struct" name="struct MMModemMessaging" link="MMModemMessaging.html#MMModemMessaging-struct"/>
     <keyword type="function" name="mm_modem_messaging_get_path ()" link="MMModemMessaging.html#mm-modem-messaging-get-path"/>
     <keyword type="function" name="mm_modem_messaging_dup_path ()" link="MMModemMessaging.html#mm-modem-messaging-dup-path"/>
@@ -627,13 +629,10 @@
     <keyword type="function" name="mm_gdbus_object_get_modem_time ()" link="MmGdbusObject.html#mm-gdbus-object-get-modem-time"/>
     <keyword type="function" name="mm_gdbus_object_peek_modem_firmware ()" link="MmGdbusObject.html#mm-gdbus-object-peek-modem-firmware"/>
     <keyword type="function" name="mm_gdbus_object_get_modem_firmware ()" link="MmGdbusObject.html#mm-gdbus-object-get-modem-firmware"/>
-    <keyword type="function" name="mm_gdbus_object_peek_modem_contacts ()" link="MmGdbusObject.html#mm-gdbus-object-peek-modem-contacts"/>
-    <keyword type="function" name="mm_gdbus_object_get_modem_contacts ()" link="MmGdbusObject.html#mm-gdbus-object-get-modem-contacts"/>
     <keyword type="function" name="mm_gdbus_object_peek_modem_simple ()" link="MmGdbusObject.html#mm-gdbus-object-peek-modem-simple"/>
     <keyword type="function" name="mm_gdbus_object_get_modem_simple ()" link="MmGdbusObject.html#mm-gdbus-object-get-modem-simple"/>
     <keyword type="property" name="The &quot;modem&quot; property" link="MmGdbusObject.html#MmGdbusObject--modem"/>
     <keyword type="property" name="The &quot;modem-cdma&quot; property" link="MmGdbusObject.html#MmGdbusObject--modem-cdma"/>
-    <keyword type="property" name="The &quot;modem-contacts&quot; property" link="MmGdbusObject.html#MmGdbusObject--modem-contacts"/>
     <keyword type="property" name="The &quot;modem-firmware&quot; property" link="MmGdbusObject.html#MmGdbusObject--modem-firmware"/>
     <keyword type="property" name="The &quot;modem-location&quot; property" link="MmGdbusObject.html#MmGdbusObject--modem-location"/>
     <keyword type="property" name="The &quot;modem-messaging&quot; property" link="MmGdbusObject.html#MmGdbusObject--modem-messaging"/>
@@ -649,7 +648,6 @@
     <keyword type="function" name="mm_gdbus_object_skeleton_set_modem3gpp ()" link="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem3gpp"/>
     <keyword type="function" name="mm_gdbus_object_skeleton_set_modem3gpp_ussd ()" link="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem3gpp-ussd"/>
     <keyword type="function" name="mm_gdbus_object_skeleton_set_modem_cdma ()" link="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem-cdma"/>
-    <keyword type="function" name="mm_gdbus_object_skeleton_set_modem_contacts ()" link="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem-contacts"/>
     <keyword type="function" name="mm_gdbus_object_skeleton_set_modem_firmware ()" link="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem-firmware"/>
     <keyword type="function" name="mm_gdbus_object_skeleton_set_modem_location ()" link="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem-location"/>
     <keyword type="function" name="mm_gdbus_object_skeleton_set_modem_messaging ()" link="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem-messaging"/>
@@ -684,6 +682,8 @@
     <keyword type="function" name="mm_gdbus_modem_get_power_state ()" link="MmGdbusModem.html#mm-gdbus-modem-get-power-state"/>
     <keyword type="function" name="mm_gdbus_modem_get_primary_port ()" link="MmGdbusModem.html#mm-gdbus-modem-get-primary-port"/>
     <keyword type="function" name="mm_gdbus_modem_dup_primary_port ()" link="MmGdbusModem.html#mm-gdbus-modem-dup-primary-port"/>
+    <keyword type="function" name="mm_gdbus_modem_get_ports ()" link="MmGdbusModem.html#mm-gdbus-modem-get-ports"/>
+    <keyword type="function" name="mm_gdbus_modem_dup_ports ()" link="MmGdbusModem.html#mm-gdbus-modem-dup-ports"/>
     <keyword type="function" name="mm_gdbus_modem_get_revision ()" link="MmGdbusModem.html#mm-gdbus-modem-get-revision"/>
     <keyword type="function" name="mm_gdbus_modem_dup_revision ()" link="MmGdbusModem.html#mm-gdbus-modem-dup-revision"/>
     <keyword type="function" name="mm_gdbus_modem_get_signal_quality ()" link="MmGdbusModem.html#mm-gdbus-modem-get-signal-quality"/>
@@ -749,6 +749,7 @@
     <keyword type="property" name="The &quot;model&quot; property" link="MmGdbusModem.html#MmGdbusModem--model"/>
     <keyword type="property" name="The &quot;own-numbers&quot; property" link="MmGdbusModem.html#MmGdbusModem--own-numbers"/>
     <keyword type="property" name="The &quot;plugin&quot; property" link="MmGdbusModem.html#MmGdbusModem--plugin"/>
+    <keyword type="property" name="The &quot;ports&quot; property" link="MmGdbusModem.html#MmGdbusModem--ports"/>
     <keyword type="property" name="The &quot;power-state&quot; property" link="MmGdbusModem.html#MmGdbusModem--power-state"/>
     <keyword type="property" name="The &quot;primary-port&quot; property" link="MmGdbusModem.html#MmGdbusModem--primary-port"/>
     <keyword type="property" name="The &quot;revision&quot; property" link="MmGdbusModem.html#MmGdbusModem--revision"/>
@@ -978,43 +979,6 @@
     <keyword type="function" name="mm_gdbus_modem_firmware_proxy_new_sync ()" link="MmGdbusModemFirmwareProxy.html#mm-gdbus-modem-firmware-proxy-new-sync"/>
     <keyword type="struct" name="struct MmGdbusModemFirmwareSkeleton" link="MmGdbusModemFirmwareSkeleton.html#MmGdbusModemFirmwareSkeleton-struct"/>
     <keyword type="function" name="mm_gdbus_modem_firmware_skeleton_new ()" link="MmGdbusModemFirmwareSkeleton.html#mm-gdbus-modem-firmware-skeleton-new"/>
-    <keyword type="struct" name="MmGdbusModemContacts" link="MmGdbusModemContacts.html#MmGdbusModemContacts-struct"/>
-    <keyword type="struct" name="struct MmGdbusModemContactsIface" link="MmGdbusModemContacts.html#MmGdbusModemContactsIface"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_add ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-add"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_add_finish ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-add-finish"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_add_sync ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-add-sync"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_delete ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-delete"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_delete_finish ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-delete-finish"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_delete_sync ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-delete-sync"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_find ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-find"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_find_finish ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-find-finish"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_find_sync ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-find-sync"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_get ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_get_finish ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get-finish"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_get_sync ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get-sync"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_get_count ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get-count"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_get_count_finish ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get-count-finish"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_get_count_sync ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-get-count-sync"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_list ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-list"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_list_finish ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-list-finish"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_call_list_sync ()" link="MmGdbusModemContacts.html#mm-gdbus-modem-contacts-call-list-sync"/>
-    <keyword type="signal" name="The &quot;added&quot; signal" link="MmGdbusModemContacts.html#MmGdbusModemContacts-added"/>
-    <keyword type="signal" name="The &quot;deleted&quot; signal" link="MmGdbusModemContacts.html#MmGdbusModemContacts-deleted"/>
-    <keyword type="signal" name="The &quot;handle-add&quot; signal" link="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-add"/>
-    <keyword type="signal" name="The &quot;handle-delete&quot; signal" link="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-delete"/>
-    <keyword type="signal" name="The &quot;handle-find&quot; signal" link="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-find"/>
-    <keyword type="signal" name="The &quot;handle-get&quot; signal" link="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-get"/>
-    <keyword type="signal" name="The &quot;handle-get-count&quot; signal" link="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-get-count"/>
-    <keyword type="signal" name="The &quot;handle-list&quot; signal" link="MmGdbusModemContacts.html#MmGdbusModemContacts-handle-list"/>
-    <keyword type="struct" name="struct MmGdbusModemContactsProxy" link="MmGdbusModemContactsProxy.html#MmGdbusModemContactsProxy-struct"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_proxy_new ()" link="MmGdbusModemContactsProxy.html#mm-gdbus-modem-contacts-proxy-new"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_proxy_new_finish ()" link="MmGdbusModemContactsProxy.html#mm-gdbus-modem-contacts-proxy-new-finish"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_proxy_new_for_bus ()" link="MmGdbusModemContactsProxy.html#mm-gdbus-modem-contacts-proxy-new-for-bus"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_proxy_new_for_bus_finish ()" link="MmGdbusModemContactsProxy.html#mm-gdbus-modem-contacts-proxy-new-for-bus-finish"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_proxy_new_for_bus_sync ()" link="MmGdbusModemContactsProxy.html#mm-gdbus-modem-contacts-proxy-new-for-bus-sync"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_proxy_new_sync ()" link="MmGdbusModemContactsProxy.html#mm-gdbus-modem-contacts-proxy-new-sync"/>
-    <keyword type="struct" name="struct MmGdbusModemContactsSkeleton" link="MmGdbusModemContactsSkeleton.html#MmGdbusModemContactsSkeleton-struct"/>
-    <keyword type="function" name="mm_gdbus_modem_contacts_skeleton_new ()" link="MmGdbusModemContactsSkeleton.html#mm-gdbus-modem-contacts-skeleton-new"/>
     <keyword type="struct" name="MmGdbusModemSimple" link="MmGdbusModemSimple.html#MmGdbusModemSimple-struct"/>
     <keyword type="struct" name="struct MmGdbusModemSimpleIface" link="MmGdbusModemSimple.html#MmGdbusModemSimpleIface"/>
     <keyword type="function" name="mm_gdbus_modem_simple_call_connect ()" link="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-connect"/>

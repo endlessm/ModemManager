@@ -1,3 +1,19 @@
+modemmanager (1.0.0-1) experimental; urgency=low
+
+  * New upstream release. (Closes: #728214, #728215)
+  * debian/control: add a versioned dependency for libqmi -- we need at least
+    version 1.4.
+  * debian/control: build-depends on libmbim-glib-dev 1.4
+  * debian/rules: run the local autogen.sh rather than gnome-autogen.sh.
+  * debian/rules: drop --with-tests. 
+  * debian/rules: clean up after gtk-doc files left around.
+  * debian/patches/glib_fixes.patch: link against glib explicitly for the
+    huawei modem helper tests.
+  * debian/libmm-glib0.symbols: updated symbols.
+  * debian/watch: update watch file for new location of upstream source.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Fri, 20 Dec 2013 15:35:26 -0500
+
 modemmanager (0.7.991-1) experimental; urgency=low
 
   [ Mathieu Trudel-Lapierre ]

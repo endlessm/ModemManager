@@ -36,12 +36,12 @@
 </div>
 </div></div>
 <div><p class="releaseinfo">
-      For ModemManager version 0.7.991
+      For ModemManager version 1.0.0
 
     </p></div>
-<div><p class="copyright">Copyright © 2008, 2009, 2010, 2011, 2012 The ModemManager Authors</p></div>
+<div><p class="copyright">Copyright © 2008, 2009, 2010, 2011, 2012, 2013 The ModemManager Authors</p></div>
 <div><div class="legalnotice">
-<a name="idm266943528256"></a><p>
+<a name="idm211863716176"></a><p>
         Permission is granted to copy, distribute and/or modify this
         document under the terms of the <em class="citetitle">GNU Free
         Documentation License</em>, Version 1.3 or any later
@@ -70,26 +70,38 @@
 <dt><span class="chapter"><a href="ref-overview-introduction.html">Introduction</a></span></dt>
 <dt><span class="chapter"><a href="ref-overview-modem-detection-and-setup.html">Modem detection and setup</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="ref-overview-modem-detection-and-setup.html#idm266935804880">Detection mechanisms</a></span></dt>
+<dt><span class="section"><a href="ref-overview-modem-detection-and-setup.html#idm211863910672">Detection mechanisms</a></span></dt>
 <dt><span class="section"><a href="ch02s02.html">Probing</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="ch02s02.html#idm266943579776">Pre-probing filters</a></span></dt>
-<dt><span class="section"><a href="ch02s02.html#idm266934295312">Probing sequence</a></span></dt>
-<dt><span class="section"><a href="ch02s02.html#idm266943548864">Post-probing filters</a></span></dt>
-<dt><span class="section"><a href="ch02s02.html#idm266936589872">Probing setup examples</a></span></dt>
+<dt><span class="section"><a href="ch02s02.html#idm211863905456">Pre-probing filters</a></span></dt>
+<dt><span class="section"><a href="ch02s02.html#idm211854553632">Probing sequence</a></span></dt>
+<dt><span class="section"><a href="ch02s02.html#idm211864004288">Post-probing filters</a></span></dt>
+<dt><span class="section"><a href="ch02s02.html#idm211856775152">Probing setup examples</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="ch02s03.html">Port grabbing and Modem object creation</a></span></dt>
 </dl></dd>
 <dt><span class="chapter"><a href="ref-overview-modem-state-machine.html">Modem state machine</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="ref-overview-modem-state-machine.html#idm266936574096">Initialization</a></span></dt>
+<dt><span class="section"><a href="ref-overview-modem-state-machine.html#idm211856759264">Initialization</a></span></dt>
 <dt><span class="section"><a href="ch03s02.html">Enabling</a></span></dt>
 <dt><span class="section"><a href="ch03s03.html">Connection &amp; disconnection</a></span></dt>
 <dt><span class="section"><a href="ch03s04.html">Disabling</a></span></dt>
 </dl></dd>
 <dt><span class="chapter"><a href="ref-overview-plugin-specific-modems.html">Plugin-specific Modems</a></span></dt>
 </dl></dd>
-<dt><span class="part"><a href="ref-dbus.html">II. D-Bus Reference</a></span></dt>
+<dt><span class="part"><a href="ref-common-types.html">II. Common types and definitions</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="ModemManager-Version-checks.html">Version checks</a></span><span class="refpurpose"> — Version information in the API.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="ModemManager-Flags-and-Enumerations.html">Flags and Enumerations</a></span><span class="refpurpose"> — Common enumerations and types in the API.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="ModemManager-Errors.html">Errors</a></span><span class="refpurpose"> — Common errors in the API.</span>
+</dt>
+</dl></dd>
+<dt><span class="part"><a href="ref-dbus.html">III. D-Bus Reference</a></span></dt>
 <dd><dl>
 <dt><span class="chapter"><a href="ref-dbus-bus-name.html">The <code class="literal">org.freedesktop.ModemManager1</code> bus name</a></span></dt>
 <dt><span class="chapter"><a href="ref-dbus-standard-interfaces.html">Standard interfaces</a></span></dt>
@@ -97,15 +109,6 @@
 <dt><span class="section"><a href="ref-dbus-standard-interfaces.html#ref-dbus-standard-interfaces-properties">org.freedesktop.DBus.Properties</a></span></dt>
 <dt><span class="section"><a href="ref-dbus-standard-interfaces-introspectables.html">org.freedesktop.DBus.Introspectable</a></span></dt>
 <dt><span class="section"><a href="ref-dbus-standard-interfaces-objectmanager.html">org.freedesktop.DBus.ObjectManager</a></span></dt>
-</dl></dd>
-<dt><span class="chapter"><a href="ref-dbus-common-types.html">Common types</a></span></dt>
-<dd><dl>
-<dt>
-<span class="refentrytitle"><a href="ModemManager-Flags-and-Enumerations.html">Flags and Enumerations</a></span><span class="refpurpose"> — Common enumerations and types in the API.</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="ModemManager-Errors.html">Errors</a></span><span class="refpurpose"> — Common errors in the API.</span>
-</dt>
 </dl></dd>
 <dt><span class="chapter"><a href="ref-dbus-object-manager.html">The <code class="literal">/org/freedesktop/ModemManager1</code> object</a></span></dt>
 <dd><dl><dt>
@@ -140,9 +143,6 @@
 <dt>
 <span class="refentrytitle"><a href="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html">org.freedesktop.ModemManager1.Modem.Firmware</a></span><span class="refpurpose"> — The ModemManager Firmware interface.</span>
 </dt>
-<dt>
-<span class="refentrytitle"><a href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html">org.freedesktop.ModemManager1.Modem.Contacts</a></span><span class="refpurpose"> — The ModemManager Contacts interface.</span>
-</dt>
 </dl></dd>
 <dt><span class="chapter"><a href="ref-dbus-object-bearer.html">The <code class="literal">/org/freedesktop/ModemManager/Bearers</code> objects</a></span></dt>
 <dd><dl><dt>
@@ -156,6 +156,16 @@
 <dd><dl><dt>
 <span class="refentrytitle"><a href="gdbus-org.freedesktop.ModemManager1.Sms.html">org.freedesktop.ModemManager1.Sms</a></span><span class="refpurpose"> — The ModemManager SMS interface.</span>
 </dt></dl></dd>
+</dl></dd>
+<dt><span class="part"><a href="ref-migrating.html">IV. Migrating from ModemManager 0.6 to ModemManager 1.0</a></span></dt>
+<dd><dl>
+<dt><span class="chapter"><a href="ch12.html"></a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="ch12.html#idm211850989168">Listing available modems</a></span></dt>
+<dt><span class="section"><a href="ch12s02.html">PIN unlocking</a></span></dt>
+<dt><span class="section"><a href="ch12s03.html">Connection and disconnection</a></span></dt>
+<dt><span class="section"><a href="ch12s04.html">Simple connection</a></span></dt>
+</dl></dd>
 </dl></dd>
 <dt><span class="index"><a href="ix01.html">Index</a></span></dt>
 </dl></div>

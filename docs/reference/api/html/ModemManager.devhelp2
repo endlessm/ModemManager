@@ -5,22 +5,27 @@
     <sub name="ModemManager Overview" link="ref-overview.html">
       <sub name="Introduction" link="ref-overview-introduction.html"/>
       <sub name="Modem detection and setup" link="ref-overview-modem-detection-and-setup.html">
-        <sub name="Detection mechanisms" link="ref-overview-modem-detection-and-setup.html#idm266935804880"/>
+        <sub name="Detection mechanisms" link="ref-overview-modem-detection-and-setup.html#idm211863910672"/>
         <sub name="Probing" link="ch02s02.html">
-          <sub name="Pre-probing filters" link="ch02s02.html#idm266943579776"/>
-          <sub name="Probing sequence" link="ch02s02.html#idm266934295312"/>
-          <sub name="Post-probing filters" link="ch02s02.html#idm266943548864"/>
-          <sub name="Probing setup examples" link="ch02s02.html#idm266936589872"/>
+          <sub name="Pre-probing filters" link="ch02s02.html#idm211863905456"/>
+          <sub name="Probing sequence" link="ch02s02.html#idm211854553632"/>
+          <sub name="Post-probing filters" link="ch02s02.html#idm211864004288"/>
+          <sub name="Probing setup examples" link="ch02s02.html#idm211856775152"/>
         </sub>
         <sub name="Port grabbing and Modem object creation" link="ch02s03.html"/>
       </sub>
       <sub name="Modem state machine" link="ref-overview-modem-state-machine.html">
-        <sub name="Initialization" link="ref-overview-modem-state-machine.html#idm266936574096"/>
+        <sub name="Initialization" link="ref-overview-modem-state-machine.html#idm211856759264"/>
         <sub name="Enabling" link="ch03s02.html"/>
         <sub name="Connection &amp; disconnection" link="ch03s03.html"/>
         <sub name="Disabling" link="ch03s04.html"/>
       </sub>
       <sub name="Plugin-specific Modems" link="ref-overview-plugin-specific-modems.html"/>
+    </sub>
+    <sub name="Common types and definitions" link="ref-common-types.html">
+      <sub name="Version checks" link="ModemManager-Version-checks.html"/>
+      <sub name="Flags and Enumerations" link="ModemManager-Flags-and-Enumerations.html"/>
+      <sub name="Errors" link="ModemManager-Errors.html"/>
     </sub>
     <sub name="D-Bus Reference" link="ref-dbus.html">
       <sub name="The org.freedesktop.ModemManager1 bus name" link="ref-dbus-bus-name.html"/>
@@ -28,10 +33,6 @@
         <sub name="org.freedesktop.DBus.Properties" link="ref-dbus-standard-interfaces.html#ref-dbus-standard-interfaces-properties"/>
         <sub name="org.freedesktop.DBus.Introspectable" link="ref-dbus-standard-interfaces-introspectables.html"/>
         <sub name="org.freedesktop.DBus.ObjectManager" link="ref-dbus-standard-interfaces-objectmanager.html"/>
-      </sub>
-      <sub name="Common types" link="ref-dbus-common-types.html">
-        <sub name="Flags and Enumerations" link="ModemManager-Flags-and-Enumerations.html"/>
-        <sub name="Errors" link="ModemManager-Errors.html"/>
       </sub>
       <sub name="The /org/freedesktop/ModemManager1 object" link="ref-dbus-object-manager.html">
         <sub name="org.freedesktop.ModemManager1" link="gdbus-org.freedesktop.ModemManager1.html"/>
@@ -46,7 +47,6 @@
         <sub name="org.freedesktop.ModemManager1.Modem.Location" link="gdbus-org.freedesktop.ModemManager1.Modem.Location.html"/>
         <sub name="org.freedesktop.ModemManager1.Modem.Time" link="gdbus-org.freedesktop.ModemManager1.Modem.Time.html"/>
         <sub name="org.freedesktop.ModemManager1.Modem.Firmware" link="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html"/>
-        <sub name="org.freedesktop.ModemManager1.Modem.Contacts" link="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html"/>
       </sub>
       <sub name="The /org/freedesktop/ModemManager/Bearers objects" link="ref-dbus-object-bearer.html">
         <sub name="org.freedesktop.ModemManager1.Bearer" link="gdbus-org.freedesktop.ModemManager1.Bearer.html"/>
@@ -58,9 +58,21 @@
         <sub name="org.freedesktop.ModemManager1.Sms" link="gdbus-org.freedesktop.ModemManager1.Sms.html"/>
       </sub>
     </sub>
+    <sub name="Migrating from ModemManager 0.6 to ModemManager 1.0" link="ref-migrating.html">
+      <sub name="" link="ch12.html">
+        <sub name="Listing available modems" link="ch12.html#idm211850989168"/>
+        <sub name="PIN unlocking" link="ch12s02.html"/>
+        <sub name="Connection and disconnection" link="ch12s03.html"/>
+        <sub name="Simple connection" link="ch12s04.html"/>
+      </sub>
+    </sub>
     <sub name="Index" link="ix01.html"/>
   </chapters>
   <functions>
+    <keyword type="macro" name="MM_MAJOR_VERSION" link="ModemManager-Version-checks.html#MM-MAJOR-VERSION:CAPS"/>
+    <keyword type="macro" name="MM_MINOR_VERSION" link="ModemManager-Version-checks.html#MM-MINOR-VERSION:CAPS"/>
+    <keyword type="macro" name="MM_MICRO_VERSION" link="ModemManager-Version-checks.html#MM-MICRO-VERSION:CAPS"/>
+    <keyword type="macro" name="MM_CHECK_VERSION()" link="ModemManager-Version-checks.html#MM-CHECK-VERSION:CAPS"/>
     <keyword type="enum" name="enum MMBearerIpFamily" link="ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"/>
     <keyword type="enum" name="enum MMBearerIpMethod" link="ModemManager-Flags-and-Enumerations.html#MMBearerIpMethod"/>
     <keyword type="enum" name="enum MMBearerAllowedAuth" link="ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth"/>
@@ -83,6 +95,7 @@
     <keyword type="enum" name="enum MMModemStateFailedReason" link="ModemManager-Flags-and-Enumerations.html#MMModemStateFailedReason"/>
     <keyword type="enum" name="enum MMModemStateChangeReason" link="ModemManager-Flags-and-Enumerations.html#MMModemStateChangeReason"/>
     <keyword type="enum" name="enum MMModemPowerState" link="ModemManager-Flags-and-Enumerations.html#MMModemPowerState"/>
+    <keyword type="enum" name="enum MMModemPortType" link="ModemManager-Flags-and-Enumerations.html#MMModemPortType"/>
     <keyword type="enum" name="enum MMSmsPduType" link="ModemManager-Flags-and-Enumerations.html#MMSmsPduType"/>
     <keyword type="enum" name="enum MMSmsState" link="ModemManager-Flags-and-Enumerations.html#MMSmsState"/>
     <keyword type="enum" name="enum MMSmsDeliveryState" link="ModemManager-Flags-and-Enumerations.html#MMSmsDeliveryState"/>
@@ -121,6 +134,7 @@
     <keyword type="property" name="The &quot;Drivers&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Drivers"/>
     <keyword type="property" name="The &quot;Plugin&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Plugin"/>
     <keyword type="property" name="The &quot;PrimaryPort&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.PrimaryPort"/>
+    <keyword type="property" name="The &quot;Ports&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Ports"/>
     <keyword type="property" name="The &quot;EquipmentIdentifier&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.EquipmentIdentifier"/>
     <keyword type="property" name="The &quot;UnlockRequired&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.UnlockRequired"/>
     <keyword type="property" name="The &quot;UnlockRetries&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.UnlockRetries"/>
@@ -179,14 +193,6 @@
     <keyword type="property" name="The &quot;NetworkTimezone&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Time.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Time.NetworkTimezone"/>
     <keyword type="method" name="The List() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Firmware.List"/>
     <keyword type="method" name="The Select() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Firmware.Select"/>
-    <keyword type="method" name="The Add() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Add"/>
-    <keyword type="method" name="The Delete() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Delete"/>
-    <keyword type="method" name="The Get() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Get"/>
-    <keyword type="method" name="The List() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.List"/>
-    <keyword type="method" name="The Find() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Find"/>
-    <keyword type="method" name="The GetCount() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.GetCount"/>
-    <keyword type="signal" name="The &quot;Added&quot; signal" link="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Contacts.Added"/>
-    <keyword type="signal" name="The &quot;Deleted&quot; signal" link="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Contacts.Deleted"/>
     <keyword type="method" name="The Connect() method" link="gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-method-org-freedesktop-ModemManager1-Bearer.Connect"/>
     <keyword type="method" name="The Disconnect() method" link="gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-method-org-freedesktop-ModemManager1-Bearer.Disconnect"/>
     <keyword type="property" name="The &quot;Interface&quot; property" link="gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.Interface"/>
@@ -429,6 +435,13 @@
     <keyword type="constant" name="MM_MODEM_POWER_STATE_OFF" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-POWER-STATE-OFF:CAPS"/>
     <keyword type="constant" name="MM_MODEM_POWER_STATE_LOW" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-POWER-STATE-LOW:CAPS"/>
     <keyword type="constant" name="MM_MODEM_POWER_STATE_ON" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-POWER-STATE-ON:CAPS"/>
+    <keyword type="constant" name="MM_MODEM_PORT_TYPE_UNKNOWN" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-PORT-TYPE-UNKNOWN:CAPS"/>
+    <keyword type="constant" name="MM_MODEM_PORT_TYPE_NET" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-PORT-TYPE-NET:CAPS"/>
+    <keyword type="constant" name="MM_MODEM_PORT_TYPE_AT" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-PORT-TYPE-AT:CAPS"/>
+    <keyword type="constant" name="MM_MODEM_PORT_TYPE_QCDM" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-PORT-TYPE-QCDM:CAPS"/>
+    <keyword type="constant" name="MM_MODEM_PORT_TYPE_GPS" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-PORT-TYPE-GPS:CAPS"/>
+    <keyword type="constant" name="MM_MODEM_PORT_TYPE_QMI" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-PORT-TYPE-QMI:CAPS"/>
+    <keyword type="constant" name="MM_MODEM_PORT_TYPE_MBIM" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-PORT-TYPE-MBIM:CAPS"/>
     <keyword type="constant" name="MM_SMS_PDU_TYPE_UNKNOWN" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-UNKNOWN:CAPS"/>
     <keyword type="constant" name="MM_SMS_PDU_TYPE_DELIVER" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-DELIVER:CAPS"/>
     <keyword type="constant" name="MM_SMS_PDU_TYPE_SUBMIT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-SUBMIT:CAPS"/>

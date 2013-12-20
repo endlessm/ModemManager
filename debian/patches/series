@@ -2,3 +2,4 @@
 lp700316_usb_blacklist.patch
 arduino-blacklist.patch
 linux-default-usb-id.patch
+glib_fixes.patch

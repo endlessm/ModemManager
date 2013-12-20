@@ -1,5 +1,5 @@
 <!-- ##### SECTION Title ##### -->
-MmGdbusModemContactsSkeleton
+Version checks
 
 <!-- ##### SECTION Short_Description ##### -->
 
@@ -22,18 +22,34 @@ MmGdbusModemContactsSkeleton
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### STRUCT MmGdbusModemContactsSkeleton ##### -->
+<!-- ##### MACRO MM_MAJOR_VERSION ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### FUNCTION mm_gdbus_modem_contacts_skeleton_new ##### -->
+
+<!-- ##### MACRO MM_MINOR_VERSION ##### -->
 <para>
 
 </para>
 
-@void: 
-@Returns: 
+
+
+<!-- ##### MACRO MM_MICRO_VERSION ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO MM_CHECK_VERSION ##### -->
+<para>
+
+</para>
+
+@major: 
+@minor: 
+@micro: 
 
 

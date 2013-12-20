@@ -154,6 +154,22 @@ const gchar *mm_modem_band_get_string (MMModemBand val);
 gchar *mm_modem_band_build_string_from_mask (MMModemBand mask);
 #endif
 
+GType mm_modem_port_type_get_type (void) G_GNUC_CONST;
+#define MM_TYPE_MODEM_PORT_TYPE (mm_modem_port_type_get_type ())
+
+/* Define type-specific symbols */
+#undef __MM_IS_ENUM__
+#undef __MM_IS_FLAGS__
+#define __MM_IS_ENUM__
+
+#if defined __MM_IS_ENUM__
+const gchar *mm_modem_port_type_get_string (MMModemPortType val);
+#endif
+
+#if defined __MM_IS_FLAGS__
+gchar *mm_modem_port_type_build_string_from_mask (MMModemPortType mask);
+#endif
+
 GType mm_sms_pdu_type_get_type (void) G_GNUC_CONST;
 #define MM_TYPE_SMS_PDU_TYPE (mm_sms_pdu_type_get_type ())
 

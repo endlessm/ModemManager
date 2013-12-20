@@ -55,6 +55,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-mode-build-string-from-mask" title="mm_modem_mode_build_string_from_mask ()">mm_modem_mode_build_string_from_mask</a>
                                                         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> mask</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-band-get-string" title="mm_modem_band_get_string ()">mm_modem_band_get_string</a>            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> val</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-port-type-get-string" title="mm_modem_port_type_get_string ()">mm_modem_port_type_get_string</a>       (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPortType"><span class="type">MMModemPortType</span></a> val</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-3gpp-registration-state-get-string" title="mm_modem_3gpp_registration_state_get_string ()">mm_modem_3gpp_registration_state_get_string</a>
                                                         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState"><span class="type">MMModem3gppRegistrationState</span></a> val</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-3gpp-facility-build-string-from-mask" title="mm_modem_3gpp_facility_build_string_from_mask ()">mm_modem_3gpp_facility_build_string_from_mask</a>
@@ -388,6 +389,31 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <tr>
 <td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
 <td>a MMModemBand.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a string with the nickname, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-port-type-get-string"></a><h3>mm_modem_port_type_get_string ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_port_type_get_string       (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPortType"><span class="type">MMModemPortType</span></a> val</code></em>);</pre>
+<p>
+Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPortType"><span class="type">MMModemPortType</span></a> specified at <em class="parameter"><code>val</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
+<td>a MMModemPortType.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>

@@ -36,6 +36,14 @@ MMModem
 @allowed: 
 @preferred: 
 
+<!-- ##### STRUCT MMModemPortInfo ##### -->
+<para>
+
+</para>
+
+@name: 
+@type: 
+
 <!-- ##### FUNCTION mm_modem_get_path ##### -->
 <para>
 
@@ -217,6 +225,28 @@ MMModem
 </para>
 
 @self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_modem_peek_ports ##### -->
+<para>
+
+</para>
+
+@self: 
+@ports: 
+@n_ports: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_modem_get_ports ##### -->
+<para>
+
+</para>
+
+@self: 
+@ports: 
+@n_ports: 
 @Returns: 
 
 
@@ -909,5 +939,14 @@ MMModem
 @cancellable: 
 @error: 
 @Returns: 
+
+
+<!-- ##### FUNCTION mm_modem_port_info_array_free ##### -->
+<para>
+
+</para>
+
+@array: 
+@array_size: 
 
 

@@ -59,7 +59,7 @@
 </pre>
 </div>
 <div class="refsect1">
-<a name="idm266931107200"></a><h2>Signals</h2>
+<a name="idm211852023552"></a><h2>Signals</h2>
 <pre class="synopsis">
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-signal-org-freedesktop-ModemManager1-Modem.StateChanged" title='The "StateChanged" signal'>StateChanged</a> (i old,
               i new,
@@ -67,7 +67,7 @@
 </pre>
 </div>
 <div class="refsect1">
-<a name="idm266931445968"></a><h2>Properties</h2>
+<a name="idm211850417072"></a><h2>Properties</h2>
 <pre class="synopsis">
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Sim" title='The "Sim" property'>Sim</a>                    readable   o
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.SupportedCapabilities" title='The "SupportedCapabilities" property'>SupportedCapabilities</a>  readable   au
@@ -82,6 +82,7 @@
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Drivers" title='The "Drivers" property'>Drivers</a>                readable   as
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Plugin" title='The "Plugin" property'>Plugin</a>                 readable   s
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.PrimaryPort" title='The "PrimaryPort" property'>PrimaryPort</a>            readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Ports" title='The "Ports" property'>Ports</a>                  readable   a(su)
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.EquipmentIdentifier" title='The "EquipmentIdentifier" property'>EquipmentIdentifier</a>    readable   s
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.UnlockRequired" title='The "UnlockRequired" property'>UnlockRequired</a>         readable   u
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.UnlockRetries" title='The "UnlockRetries" property'>UnlockRetries</a>          readable   a{uu}
@@ -581,6 +582,18 @@ Plugin  readable   s
 PrimaryPort  readable   s
 </pre>
 <p>        The name of the primary port using to control the modem.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem.Ports"></a><h3>The "Ports" property</h3>
+<pre class="programlisting">
+Ports  readable   a(su)
+</pre>
+<p>        The list of ports in the modem, given as an array of string and unsigned
+        integer pairs. The string is the port name or path, and the integer is
+        the port type given as a
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemPortType" title="enum MMModemPortType">MMModemPortType</a> value.
 </p>
 </div>
 <hr>

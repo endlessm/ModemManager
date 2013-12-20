@@ -1,0 +1,20 @@
+From: Mathieu Trudel-Lapierre <mathieu.tl@gmail.com>
+Subject: Link against glib for huawei modem helper tests.
+
+---
+ plugins/Makefile.am |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: b/plugins/Makefile.am
+===================================================================
+--- a/plugins/Makefile.am
++++ b/plugins/Makefile.am
+@@ -127,7 +127,7 @@ test_modem_helpers_huawei_SOURCES = \
+ test_modem_helpers_huawei_CPPFLAGS = \
+ 	-I$(top_srcdir)/plugins/huawei \
+ 	$(PLUGIN_COMMON_COMPILER_FLAGS)
+-test_modem_helpers_huawei_LDFLAGS = $(top_builddir)/libmm-glib/libmm-glib.la
++test_modem_helpers_huawei_LDFLAGS = $(MM_LIBS) $(top_builddir)/libmm-glib/libmm-glib.la
+ 
+ 
+ # MBM
