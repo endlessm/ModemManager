@@ -1,0 +1,20 @@
+## Description: add Bluegiga BLE112B
+## Origin/Author: Aleksander Morgado <aleksander@lanedo.com>
+## Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/modemmanager/+bug/1229748
+## Source: http://cgit.freedesktop.org/ModemManager/ModemManager/commit/?id=0dd93549a175f05cd5290ca8b3a3fd78e59863b5
+---
+# src/77-mm-usb-device-blacklist.rules |    3 +++
+# 1 file changed, 3 insertions(+)
+#
+Index: b/src/77-mm-usb-device-blacklist.rules
+===================================================================
+--- a/src/77-mm-usb-device-blacklist.rules
++++ b/src/77-mm-usb-device-blacklist.rules
+@@ -104,4 +104,7 @@ ATTRS{idVendor}=="2341", ENV{ID_MM_DEVIC
+ # Netchip Technology, Inc. Linux-USB Serial Gadget (CDC ACM mode)
+ ATTRS{idVendor}=="0525", ATTRS{idProduct}=="a4a7", ENV{ID_MM_DEVICE_IGNORE}="1"
+ 
++# Bluegiga Bluetooth Smart device (BLED112B)
++ATTRS{idVendor}=="2458", ATTRS{idProduct}=="0001", ENV{ID_MM_DEVICE_IGNORE}="1"
++
+ LABEL="mm_usb_device_blacklist_end"

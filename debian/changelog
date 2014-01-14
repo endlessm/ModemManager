@@ -1,3 +1,17 @@
+modemmanager (1.0.0-2) experimental; urgency=medium
+
+  * Sync more changes from Ubuntu:
+    - changelog for 0.6.0.0.really-0ubuntu4 (all changes dropped, they are
+      patches included in the current upstream version).
+    - changelog for 0.6.0.0.really-0ubuntu5 (all changes dropped, they are
+      patches included in the current upstream version).
+    - changelog for 0.6.0.0.really-0ubuntu6.
+    - Build-Depend on automake1.11.
+    - changelog for 0.6.0.0.really-0ubuntu7.
+    - lp1229748_bluegiga_blacklist.patch: don't reset BLED112B.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Tue, 14 Jan 2014 10:02:26 -0500
+
 modemmanager (1.0.0-1) experimental; urgency=low
 
   * New upstream release. (Closes: #728214, #728215)
@@ -9,7 +23,9 @@ modemmanager (1.0.0-1) experimental; urgency=low
   * debian/rules: clean up after gtk-doc files left around.
   * debian/patches/glib_fixes.patch: link against glib explicitly for the
     huawei modem helper tests.
-  * debian/libmm-glib0.symbols: updated symbols.
+  * debian/libmm-glib0.symbols: updated symbols: Contacts interface that was
+    in 0.7.990 got dropped; it's not actually implemented, so upstream avoids
+    exposing it.
   * debian/watch: update watch file for new location of upstream source.
 
  -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Fri, 20 Dec 2013 15:35:26 -0500
@@ -77,6 +93,47 @@ modemmanager (0.7.991-1) experimental; urgency=low
   * Update standards version to current 3.9.4.
 
  -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Tue, 11 Jun 2013 10:35:42 -0400
+
+modemmanager (0.6.0.0.really-0ubuntu7) saucy; urgency=low
+
+  * debian/patches/lp1229748_bluegiga_blacklist.patch: don't reset BLED112B.
+    (LP: #1229748)
+
+ -- Alan Bell <alanbell@ubuntu.com>  Tue, 24 Sep 2013 15:39:47 +0100
+
+modemmanager (0.6.0.0.really-0ubuntu6) saucy; urgency=low
+
+  * Build-depend on automake1.11.
+
+ -- Matthias Klose <doko@ubuntu.com>  Tue, 24 Sep 2013 14:57:53 +0200
+
+modemmanager (0.6.0.0.really-0ubuntu5) raring; urgency=low
+
+  * debian/patches/lp1164023_try_csq_if_cind_fails_5d854a3.patch: fallback to
+    trying AT+CSQ if AT+CIND fails. (LP: #1164023)
+  * debian/patches/git_udev_match_both_vid_pid_e322ccf.patch: match both VID
+    and PID when matching devices: If the rules to tag specific USB interface
+    numbers only apply on the PID, we'll end up seeing that if the port has a
+    parent with another PID, and that other PID also has a rule, port will get
+    tagged multiple times.
+  * debian/patches/git_mbm_remove_check_poll_when_conn_1652019.patch: mbm:
+    remove connection attempt check poll explicitly when connected: Completing
+    a MMCallbackInfo is done asynchronously (in an idle), which means that we
+    may get the poll timeout called in between...
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Wed, 10 Apr 2013 21:20:53 -0400
+
+modemmanager (0.6.0.0.really-0ubuntu4) raring; urgency=low
+
+  * debian/patches/git_cdma_double_free_05a4226.patch: cdma: avoid double free
+    of GError (LP: #1083659)
+  * debian/patches/git_ignore_arduino_aa84ce9.patch: properly ignore more
+    arduino devices. (LP: #1153632)
+  * debian/patches/git_ignore_west_mountain_radios_e608b17.patch: ignore West
+    Mountain amateur radio systems. (LP: #1154654)
+  * debian/patches/lp700316_usb_blacklist.patch: refreshed.
+
+ -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Mon, 01 Apr 2013 11:07:37 -0400
 
 modemmanager (0.6.0.0.really-0ubuntu3) raring; urgency=low
 

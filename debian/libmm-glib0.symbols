@@ -313,44 +313,6 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_gdbus_modem_complete_set_current_capabilities@Base 0.7.991
  mm_gdbus_modem_complete_set_current_modes@Base 0.7.991
  mm_gdbus_modem_complete_set_power_state@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_add@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_add_finish@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_add_sync@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_delete@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_delete_finish@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_delete_sync@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_find@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_find_finish@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_find_sync@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_get@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_get_count@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_get_count_finish@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_get_count_sync@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_get_finish@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_get_sync@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_list@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_list_finish@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_call_list_sync@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_complete_add@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_complete_delete@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_complete_find@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_complete_get@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_complete_get_count@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_complete_list@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_emit_added@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_emit_deleted@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_get_type@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_interface_info@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_override_properties@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_proxy_get_type@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_proxy_new@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_proxy_new_finish@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_proxy_new_for_bus@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_proxy_new_for_bus_finish@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_proxy_new_for_bus_sync@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_proxy_new_sync@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_skeleton_get_type@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_modem_contacts_skeleton_new@Base 0.7.991
  mm_gdbus_modem_dup_current_bands@Base 0.7.991
  mm_gdbus_modem_dup_current_modes@Base 0.7.991
  mm_gdbus_modem_dup_device@Base 0.7.991
@@ -567,7 +529,6 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_gdbus_object_get_modem3gpp_ussd@Base 0.7.991
  mm_gdbus_object_get_modem@Base 0.7.991
  mm_gdbus_object_get_modem_cdma@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_object_get_modem_contacts@Base 0.7.991
  mm_gdbus_object_get_modem_firmware@Base 0.7.991
  mm_gdbus_object_get_modem_location@Base 0.7.991
  mm_gdbus_object_get_modem_messaging@Base 0.7.991
@@ -586,7 +547,6 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_gdbus_object_peek_modem3gpp_ussd@Base 0.7.991
  mm_gdbus_object_peek_modem@Base 0.7.991
  mm_gdbus_object_peek_modem_cdma@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_object_peek_modem_contacts@Base 0.7.991
  mm_gdbus_object_peek_modem_firmware@Base 0.7.991
  mm_gdbus_object_peek_modem_location@Base 0.7.991
  mm_gdbus_object_peek_modem_messaging@Base 0.7.991
@@ -600,7 +560,6 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_gdbus_object_skeleton_set_modem3gpp_ussd@Base 0.7.991
  mm_gdbus_object_skeleton_set_modem@Base 0.7.991
  mm_gdbus_object_skeleton_set_modem_cdma@Base 0.7.991
-#MISSING: 1.0.0# mm_gdbus_object_skeleton_set_modem_contacts@Base 0.7.991
  mm_gdbus_object_skeleton_set_modem_firmware@Base 0.7.991
  mm_gdbus_object_skeleton_set_modem_location@Base 0.7.991
  mm_gdbus_object_skeleton_set_modem_messaging@Base 0.7.991
