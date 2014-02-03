@@ -1,12 +1,16 @@
+From: Alexander Sack <asac@ubuntu.com>
+Date: Mon, 3 Feb 2014 09:50:59 +0100
+Subject: arduino-blacklist
+
 ---
- src/77-mm-usb-device-blacklist.rules |    5 +++++
+ src/77-mm-usb-device-blacklist.rules | 5 +++++
  1 file changed, 5 insertions(+)
 
-Index: modemmanager/src/77-mm-usb-device-blacklist.rules
-===================================================================
---- modemmanager.orig/src/77-mm-usb-device-blacklist.rules	2014-03-27 13:19:50.264031206 +0100
-+++ modemmanager/src/77-mm-usb-device-blacklist.rules	2014-03-27 13:19:50.260031577 +0100
-@@ -96,4 +96,9 @@
+diff --git a/src/77-mm-usb-device-blacklist.rules b/src/77-mm-usb-device-blacklist.rules
+index 24187d1..108fef1 100644
+--- a/src/77-mm-usb-device-blacklist.rules
++++ b/src/77-mm-usb-device-blacklist.rules
+@@ -122,4 +122,9 @@ ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ENV{ID_MM_DEVICE_IGNORE}="1"
  # QinHeng Electronics HL-340
  ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", ENV{ID_MM_DEVICE_IGNORE}="1"
  
