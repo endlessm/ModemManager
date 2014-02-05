@@ -11,18 +11,22 @@
  * GNU General Public License for more details:
  *
  * Copyright (C) 2008 - 2009 Novell, Inc.
- * Copyright (C) 2009 Red Hat, Inc.
+ * Copyright (C) 2009 - 2010 Red Hat, Inc.
  */
 
+#include <config.h>
 #include <signal.h>
 #include <syslog.h>
 #include <string.h>
+#include <unistd.h>
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-lowlevel.h>
 #include "mm-manager.h"
 #include "mm-options.h"
 
-#define HAL_DBUS_SERVICE "org.freedesktop.Hal"
+#if !defined(MM_DIST_VERSION)
+# define MM_DIST_VERSION VERSION
+#endif
 
 static GMainLoop *loop = NULL;
 
@@ -33,8 +37,11 @@ mm_signal_handler (int signo)
         mm_options_set_debug (!mm_options_debug ());
 	else if (signo == SIGINT || signo == SIGTERM) {
 		g_message ("Caught signal %d, shutting down...", signo);
-		g_main_loop_quit (loop);
-	}
+        if (loop)
+            g_main_loop_quit (loop);
+        else
+            _exit (0);
+    }
 }
 
 static void
@@ -178,6 +185,8 @@ main (int argc, char *argv[])
     if (!mm_options_debug ())
         logging_setup ();
 
+    g_message ("ModemManager (version " MM_DIST_VERSION ") starting...");
+
     bus = dbus_g_bus_get (DBUS_BUS_SYSTEM, &err);
     if (!bus) {
         g_warning ("Could not get the system bus. Make sure "
@@ -200,6 +209,16 @@ main (int argc, char *argv[])
     g_main_loop_run (loop);
 
     g_signal_handler_disconnect (proxy, id);
+
+    mm_manager_shutdown (manager);
+
+    /* Wait for all modems to be removed */
+    while (mm_manager_num_modems (manager)) {
+        GMainContext *ctx = g_main_loop_get_context (loop);
+
+        g_main_context_iteration (ctx, FALSE);
+        g_usleep (50);
+    }
 
     g_object_unref (manager);
     g_object_unref (proxy);

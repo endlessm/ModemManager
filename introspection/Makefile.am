@@ -13,4 +13,6 @@ EXTRA_DIST = \
 	mm-modem-gsm-network.xml \
 	mm-modem-gsm-sms.xml \
 	mm-modem-simple.xml \
-	mm-serial-error.xml
+	mm-serial-error.xml \
+	mm-modem-location.xml \
+	mm-modem-gsm-ussd.xml

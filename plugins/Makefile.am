@@ -11,7 +11,8 @@ pkglib_LTLIBRARIES = \
 	libmm-plugin-zte.la \
 	libmm-plugin-mbm.la \
 	libmm-plugin-longcheer.la \
-	libmm-plugin-anydata.la
+	libmm-plugin-anydata.la \
+	libmm-plugin-simtech.la
 
 # Generic
 
@@ -169,7 +170,9 @@ libmm_plugin_novatel_la_SOURCES = \
 	mm-plugin-novatel.c \
 	mm-plugin-novatel.h \
 	mm-modem-novatel-gsm.c \
-	mm-modem-novatel-gsm.h
+	mm-modem-novatel-gsm.h \
+	mm-modem-novatel-cdma.c \
+	mm-modem-novatel-cdma.h
 
 libmm_plugin_novatel_la_CPPFLAGS = \
 	$(MM_CFLAGS) \
@@ -221,7 +224,9 @@ libmm_plugin_zte_la_LDFLAGS = \
 
 libmm_plugin_longcheer_la_SOURCES = \
 	mm-plugin-longcheer.c \
-	mm-plugin-longcheer.h
+	mm-plugin-longcheer.h \
+	mm-modem-longcheer-gsm.c \
+	mm-modem-longcheer-gsm.h
 
 libmm_plugin_longcheer_la_CPPFLAGS = \
 	$(MM_CFLAGS) \
@@ -251,12 +256,31 @@ libmm_plugin_anydata_la_LDFLAGS = \
 	-module \
 	-avoid-version
 
+# SimTech
+
+libmm_plugin_simtech_la_SOURCES = \
+	mm-plugin-simtech.c \
+	mm-plugin-simtech.h \
+	mm-modem-simtech-gsm.c \
+	mm-modem-simtech-gsm.h
+
+libmm_plugin_simtech_la_CPPFLAGS = \
+	$(MM_CFLAGS) \
+	$(GUDEV_CFLAGS) \
+	-I$(top_srcdir)/src
+
+libmm_plugin_simtech_la_LDFLAGS = \
+	$(GUDEV_LDFLAGS) \
+	-module \
+	-avoid-version
+
 
 udevrulesdir = $(UDEV_BASE_DIR)/rules.d
 udevrules_DATA = \
 	77-mm-ericsson-mbm.rules \
 	77-mm-zte-port-types.rules \
-	77-mm-longcheer-port-types.rules
+	77-mm-longcheer-port-types.rules \
+	77-mm-simtech-port-types.rules
 
 BUILT_SOURCES = \
 	mm-modem-gsm-hso-glue.h
@@ -264,5 +288,6 @@ BUILT_SOURCES = \
 CLEANFILES = $(BUILT_SOURCES)
 
 EXTRA_DIST = \
-	$(udevrules_DATA)
+	$(udevrules_DATA) \
+	mm-modem-option-utils.c
 

@@ -14,9 +14,11 @@
  * Copyright (C) 2009 - 2010 Red Hat, Inc.
  */
 
+#include <config.h>
 #include <string.h>
 #include <dbus/dbus-glib.h>
 #include "mm-modem.h"
+#include "mm-options.h"
 #include "mm-errors.h"
 #include "mm-callback-info.h"
 #include "mm-marshal.h"
@@ -26,6 +28,7 @@ static void impl_modem_connect (MMModem *modem, const char *number, DBusGMethodI
 static void impl_modem_disconnect (MMModem *modem, DBusGMethodInvocation *context);
 static void impl_modem_get_ip4_config (MMModem *modem, DBusGMethodInvocation *context);
 static void impl_modem_get_info (MMModem *modem, DBusGMethodInvocation *context);
+static void impl_modem_factory_reset (MMModem *modem, const char *code, DBusGMethodInvocation *context);
 
 #include "mm-modem-glue.h"
 
@@ -148,12 +151,15 @@ disable_disconnect_done (MMModem *self,
     }
 
     if (error) {
+        char *device = mm_modem_get_device (self);
+
         /* Don't really care what the error was; log it and proceed to disable */
         g_warning ("%s: (%s): error disconnecting the modem while disabling: (%d) %s",
                    __func__,
-                   mm_modem_get_device (self),
+                   device,
                    error ? error->code : -1,
                    error && error->message ? error->message : "(unknown)");
+        g_free (device);
     }
     finish_disable (self, cb_data->callback, cb_data->user_data);
     g_free (cb_data);
@@ -471,6 +477,106 @@ impl_modem_get_info (MMModem *modem,
 
 /*****************************************************************************/
 
+static void
+factory_reset_auth_cb (MMAuthRequest *req,
+                       GObject *owner,
+                       DBusGMethodInvocation *context,
+                       gpointer user_data)
+{
+    MMModem *self = MM_MODEM (owner);
+    const char *code = user_data;
+    GError *error = NULL;
+
+    /* Return any authorization error, otherwise try to reset the modem */
+    if (!mm_modem_auth_finish (self, req, &error)) {
+        dbus_g_method_return_error (context, error);
+        g_error_free (error);
+    } else
+        mm_modem_factory_reset (self, code, async_call_done, context);
+}
+
+static void
+impl_modem_factory_reset (MMModem *modem,
+                          const char *code,
+                          DBusGMethodInvocation *context)
+{
+    GError *error = NULL;
+
+    /* Make sure the caller is authorized to reset the device */
+    if (!mm_modem_auth_request (MM_MODEM (modem),
+                                MM_AUTHORIZATION_DEVICE_CONTROL,
+                                context,
+                                factory_reset_auth_cb,
+                                g_strdup (code),
+                                g_free,
+                                &error)) {
+        dbus_g_method_return_error (context, error);
+        g_error_free (error);
+    }
+}
+
+void
+mm_modem_factory_reset (MMModem *self,
+                        const char *code,
+                        MMModemFn callback,
+                        gpointer user_data)
+{
+    g_return_if_fail (MM_IS_MODEM (self));
+    g_return_if_fail (callback != NULL);
+    g_return_if_fail (code != NULL);
+
+    if (MM_MODEM_GET_INTERFACE (self)->factory_reset)
+        MM_MODEM_GET_INTERFACE (self)->factory_reset (self, code, callback, user_data);
+    else
+        async_op_not_supported (self, callback, user_data);
+}
+
+/*****************************************************************************/
+
+void
+mm_modem_get_supported_charsets (MMModem *self,
+                                 MMModemUIntFn callback,
+                                 gpointer user_data)
+{
+    MMCallbackInfo *info;
+
+    g_return_if_fail (MM_IS_MODEM (self));
+    g_return_if_fail (callback != NULL);
+
+    if (MM_MODEM_GET_INTERFACE (self)->get_supported_charsets)
+        MM_MODEM_GET_INTERFACE (self)->get_supported_charsets (self, callback, user_data);
+    else {
+        info = mm_callback_info_uint_new (MM_MODEM (self), callback, user_data);
+        info->error = g_error_new_literal (MM_MODEM_ERROR, MM_MODEM_ERROR_OPERATION_NOT_SUPPORTED,
+                                           "Operation not supported");
+        mm_callback_info_schedule (info);
+    }
+}
+
+void
+mm_modem_set_charset (MMModem *self,
+                      MMModemCharset charset,
+                      MMModemFn callback,
+                      gpointer user_data)
+{
+    MMCallbackInfo *info;
+
+    g_return_if_fail (charset != MM_MODEM_CHARSET_UNKNOWN);
+    g_return_if_fail (MM_IS_MODEM (self));
+    g_return_if_fail (callback != NULL);
+
+    if (MM_MODEM_GET_INTERFACE (self)->set_charset)
+        MM_MODEM_GET_INTERFACE (self)->set_charset (self, charset, callback, user_data);
+    else {
+        info = mm_callback_info_new (MM_MODEM (self), callback, user_data);
+        info->error = g_error_new_literal (MM_MODEM_ERROR, MM_MODEM_ERROR_OPERATION_NOT_SUPPORTED,
+                                           "Operation not supported");
+        mm_callback_info_schedule (info);
+    }
+}
+
+/*****************************************************************************/
+
 gboolean
 mm_modem_owns_port (MMModem *self,
                     const char *subsys,
@@ -598,12 +704,72 @@ mm_modem_set_state (MMModem *self,
 
         dbus_path = (const char *) g_object_get_data (G_OBJECT (self), DBUS_PATH_TAG);
         if (dbus_path) {
-            g_message ("Modem %s: state changed (%s -> %s)",
-                       dbus_path,
-                       state_to_string (old_state),
-                       state_to_string (new_state));
+            if (mm_options_debug ()) {
+                GTimeVal tv;
+
+                g_get_current_time (&tv);
+                g_debug ("<%ld.%ld> Modem %s: state changed (%s -> %s)",
+                         tv.tv_sec,
+                         tv.tv_usec,
+                         dbus_path,
+                         state_to_string (old_state),
+                         state_to_string (new_state));
+            } else {
+                g_message ("Modem %s: state changed (%s -> %s)",
+                           dbus_path,
+                           state_to_string (old_state),
+                           state_to_string (new_state));
+            }
         }
     }
+}
+
+/*****************************************************************************/
+
+gboolean
+mm_modem_auth_request (MMModem *self,
+                       const char *authorization,
+                       DBusGMethodInvocation *context,
+                       MMAuthRequestCb callback,
+                       gpointer callback_data,
+                       GDestroyNotify notify,
+                       GError **error)
+{
+    g_return_val_if_fail (self != NULL, FALSE);
+    g_return_val_if_fail (MM_IS_MODEM (self), FALSE);
+    g_return_val_if_fail (authorization != NULL, FALSE);
+    g_return_val_if_fail (context != NULL, FALSE);
+    g_return_val_if_fail (callback != NULL, FALSE);
+
+    g_return_val_if_fail (MM_MODEM_GET_INTERFACE (self)->auth_request, FALSE);
+    return MM_MODEM_GET_INTERFACE (self)->auth_request (self,
+                                                        authorization,
+                                                        context,
+                                                        callback,
+                                                        callback_data,
+                                                        notify,
+                                                        error);
+}
+
+gboolean
+mm_modem_auth_finish (MMModem *self,
+                      MMAuthRequest *req,
+                      GError **error)
+{
+    gboolean success;
+
+    g_return_val_if_fail (self != NULL, FALSE);
+    g_return_val_if_fail (MM_IS_MODEM (self), FALSE);
+    g_return_val_if_fail (req != NULL, FALSE);
+
+    g_return_val_if_fail (MM_MODEM_GET_INTERFACE (self)->auth_finish, FALSE);
+    success = MM_MODEM_GET_INTERFACE (self)->auth_finish (self, req, error);
+
+    /* If the request failed, the implementor *should* return an error */
+    if (!success && error)
+        g_warn_if_fail (*error != NULL);
+
+    return success;
 }
 
 /*****************************************************************************/
@@ -692,6 +858,31 @@ mm_modem_init (gpointer g_iface)
                                "Enabled",
                                "Modem is enabled",
                                FALSE,
+                               G_PARAM_READABLE));
+
+    g_object_interface_install_property
+        (g_iface,
+         g_param_spec_string (MM_MODEM_EQUIPMENT_IDENTIFIER,
+                               "EquipmentIdentifier",
+                               "The equipment identifier of the device",
+                               NULL,
+                               G_PARAM_READABLE));
+
+    g_object_interface_install_property
+        (g_iface,
+         g_param_spec_string (MM_MODEM_UNLOCK_REQUIRED,
+                               "UnlockRequired",
+                               "Whether or not the modem requires an unlock "
+                               "code to become usable, and if so, which unlock code is required",
+                               NULL,
+                               G_PARAM_READABLE));
+
+    g_object_interface_install_property
+        (g_iface,
+         g_param_spec_uint (MM_MODEM_UNLOCK_RETRIES,
+                               "UnlockRetries",
+                               "The remaining number of unlock attempts",
+                               0, G_MAXUINT32, 0,
                                G_PARAM_READABLE));
 
     /* Signals */

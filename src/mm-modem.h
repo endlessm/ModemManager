@@ -18,8 +18,11 @@
 #define MM_MODEM_H
 
 #include <glib-object.h>
+#include <dbus/dbus-glib-lowlevel.h>
 
 #include "mm-port.h"
+#include "mm-auth-provider.h"
+#include "mm-charsets.h"
 
 typedef enum {
     MM_MODEM_STATE_UNKNOWN = 0,
@@ -55,6 +58,9 @@ typedef enum {
 #define MM_MODEM_TYPE          "type"
 #define MM_MODEM_IP_METHOD     "ip-method"
 #define MM_MODEM_ENABLED       "enabled"
+#define MM_MODEM_EQUIPMENT_IDENTIFIER "equipment-identifier"
+#define MM_MODEM_UNLOCK_REQUIRED  "unlock-required"
+#define MM_MODEM_UNLOCK_RETRIES   "unlock-retries"
 #define MM_MODEM_VALID         "valid"      /* not exported */
 #define MM_MODEM_PLUGIN        "plugin"     /* not exported */
 #define MM_MODEM_STATE         "state"      /* not exported */
@@ -78,7 +84,10 @@ typedef enum {
     MM_MODEM_PROP_VALID,       /* Not exported */
     MM_MODEM_PROP_PLUGIN,      /* Not exported */
     MM_MODEM_PROP_STATE,       /* Not exported */
-    MM_MODEM_PROP_ENABLED
+    MM_MODEM_PROP_ENABLED,
+    MM_MODEM_PROP_EQUIPMENT_IDENTIFIER,
+    MM_MODEM_PROP_UNLOCK_REQUIRED,
+    MM_MODEM_PROP_UNLOCK_RETRIES
 } MMModemProp;
 
 typedef struct _MMModem MMModem;
@@ -154,6 +163,36 @@ struct _MMModem {
                       MMModemInfoFn callback,
                       gpointer user_data);
 
+    void (*get_supported_charsets) (MMModem *self,
+                                    MMModemUIntFn callback,
+                                    gpointer user_data);
+
+    void (*set_charset) (MMModem *self,
+                         MMModemCharset charset,
+                         MMModemFn callback,
+                         gpointer user_data);
+
+
+    /* Normally implemented by the modem base class; plugins should
+     * never need to implement this.
+     */
+    gboolean (*auth_request) (MMModem *self,
+                              const char *authorization,
+                              DBusGMethodInvocation *context,
+                              MMAuthRequestCb callback,
+                              gpointer callback_data,
+                              GDestroyNotify notify,
+                              GError **error);
+
+    gboolean (*auth_finish)  (MMModem *self,
+                              MMAuthRequest *req,
+                              GError **error);
+
+    void (*factory_reset) (MMModem *self,
+                           const char *code,
+                           MMModemFn callback,
+                           gpointer user_data);
+
     /* Signals */
     void (*state_changed) (MMModem *self,
                            MMModemState new_state,
@@ -203,6 +242,20 @@ void mm_modem_get_info (MMModem *self,
                         MMModemInfoFn callback,
                         gpointer user_data);
 
+void mm_modem_get_supported_charsets (MMModem *self,
+                                      MMModemUIntFn callback,
+                                      gpointer user_data);
+
+void mm_modem_set_charset (MMModem *self,
+                           MMModemCharset charset,
+                           MMModemFn callback,
+                           gpointer user_data);
+
+void mm_modem_factory_reset (MMModem *self,
+                             const char *code,
+                             MMModemFn callback,
+                             gpointer user_data);
+
 gboolean mm_modem_get_valid (MMModem *self);
 
 char *mm_modem_get_device (MMModem *self);
@@ -214,6 +267,22 @@ void mm_modem_set_state (MMModem *self,
                          MMModemStateReason reason);
 
 GError *mm_modem_check_removed (MMModem *self, const GError *error);
+
+/* Request authorization to perform an action.  Used by D-Bus method
+ * handlers to ensure that the incoming request is authorized to perform
+ * the action it's requesting.
+ */
+gboolean mm_modem_auth_request (MMModem *self,
+                                const char *authorization,
+                                DBusGMethodInvocation *context,
+                                MMAuthRequestCb callback,
+                                gpointer callback_data,
+                                GDestroyNotify notify,
+                                GError **error);
+
+gboolean mm_modem_auth_finish (MMModem *self,
+                               MMAuthRequest *req,
+                               GError **error);
 
 #endif  /* MM_MODEM_H */
 

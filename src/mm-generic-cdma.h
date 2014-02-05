@@ -20,7 +20,7 @@
 #include "mm-modem.h"
 #include "mm-modem-base.h"
 #include "mm-modem-cdma.h"
-#include "mm-serial-port.h"
+#include "mm-at-serial-port.h"
 #include "mm-callback-info.h"
 
 #define MM_TYPE_GENERIC_CDMA            (mm_generic_cdma_get_type ())
@@ -42,7 +42,27 @@ typedef struct {
 typedef struct {
     MMModemBaseClass parent;
 
+    /* Subclasses should implement this function if they can more accurately
+     * determine the registration state and/or roaming status than the base
+     * class can (by using manufacturer custom AT commands or whatever).
+     * The base class passes its detected registration state in the
+     * cur_cdma_state and cur_evdo_state arguments, which the subclass should
+     * override if necessary before passing to the callback.
+     *
+     * Subclasses can use the helper functions 
+     * mm_generic_cdma_query_reg_state_callback_info_new(),
+     * mm_generic_cdma_query_reg_state_set_callback_1x_state(), and
+     * mm_generic_cdma_query_reg_state_set_callback_evdo_state() to create the
+     * MMCallbackInfo object and to set the registration state which is passed
+     * to the callback when the subclass' registration query completes.
+     *
+     * Subclasses should generally not return parsing or other non-critical
+     * errors to the callback since that fails the entire registration check,
+     * rendering the superclass' checks useless.
+     */
     void (*query_registration_state) (MMGenericCdma *self,
+                                      MMModemCdmaRegistrationState cur_cdma_state,
+                                      MMModemCdmaRegistrationState cur_evdo_state,
                                       MMModemCdmaRegistrationStateFn callback,
                                       gpointer user_data);
 
@@ -71,8 +91,6 @@ MMModem *mm_generic_cdma_new (const char *device,
 
 /* Private, for subclasses */
 
-#define MM_GENERIC_CDMA_PREV_STATE_TAG "prev-state"
-
 MMPort * mm_generic_cdma_grab_port (MMGenericCdma *self,
                                     const char *subsys,
                                     const char *name,
@@ -80,7 +98,10 @@ MMPort * mm_generic_cdma_grab_port (MMGenericCdma *self,
                                     gpointer user_data,
                                     GError **error);
 
-MMSerialPort *mm_generic_cdma_get_port (MMGenericCdma *modem, MMPortType ptype);
+MMAtSerialPort *mm_generic_cdma_get_at_port (MMGenericCdma *modem, MMPortType ptype);
+
+MMAtSerialPort *mm_generic_cdma_get_best_at_port (MMGenericCdma *modem,
+                                                  GError **error);
 
 void mm_generic_cdma_update_cdma1x_quality (MMGenericCdma *self, guint32 quality);
 void mm_generic_cdma_update_evdo_quality (MMGenericCdma *self, guint32 quality);
@@ -99,11 +120,17 @@ MMModemCdmaRegistrationState mm_generic_cdma_evdo_get_registration_state_sync (M
 
 /* query_registration_state class function helpers */
 MMCallbackInfo *mm_generic_cdma_query_reg_state_callback_info_new (MMGenericCdma *self,
+                                                                   MMModemCdmaRegistrationState cur_cdma_state,
+                                                                   MMModemCdmaRegistrationState cur_evdo_state,
                                                                    MMModemCdmaRegistrationStateFn callback,
                                                                    gpointer user_data);
 
+MMModemCdmaRegistrationState mm_generic_cdma_query_reg_state_get_callback_1x_state (MMCallbackInfo *info);
+
 void mm_generic_cdma_query_reg_state_set_callback_1x_state (MMCallbackInfo *info,
                                                             MMModemCdmaRegistrationState new_state);
+
+MMModemCdmaRegistrationState mm_generic_cdma_query_reg_state_get_callback_evdo_state (MMCallbackInfo *info);
 
 void mm_generic_cdma_query_reg_state_set_callback_evdo_state (MMCallbackInfo *info,
                                                               MMModemCdmaRegistrationState new_state);

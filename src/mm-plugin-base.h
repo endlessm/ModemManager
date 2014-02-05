@@ -37,6 +37,7 @@
 #define MM_PLUGIN_BASE_PORT_CAP_W           0x0080 /* Wireless commands */
 #define MM_PLUGIN_BASE_PORT_CAP_IS856       0x0100 /* CDMA 3G EVDO rev 0 */
 #define MM_PLUGIN_BASE_PORT_CAP_IS856_A     0x0200 /* CDMA 3G EVDO rev A */
+#define MM_PLUGIN_BASE_PORT_CAP_QCDM        0x0400 /* QCDM-capable port */
 
 #define MM_TYPE_PLUGIN_BASE_SUPPORTS_TASK            (mm_plugin_base_supports_task_get_type ())
 #define MM_PLUGIN_BASE_SUPPORTS_TASK(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MM_TYPE_PLUGIN_BASE_SUPPORTS_TASK, MMPluginBaseSupportsTask))
@@ -59,7 +60,7 @@ MMPlugin *mm_plugin_base_supports_task_get_plugin (MMPluginBaseSupportsTask *tas
 
 GUdevDevice *mm_plugin_base_supports_task_get_port (MMPluginBaseSupportsTask *task);
 
-GUdevDevice *mm_plugin_base_supports_task_get_physdev (MMPluginBaseSupportsTask *task);
+const char *mm_plugin_base_supports_task_get_physdev_path (MMPluginBaseSupportsTask *task);
 
 const char *mm_plugin_base_supports_task_get_driver (MMPluginBaseSupportsTask *task);
 
@@ -107,13 +108,6 @@ struct _MMPluginBaseClass {
     void (*cancel_task)       (MMPluginBase *plugin,
                                MMPluginBaseSupportsTask *task);
 
-    /* Find a the physical device of a port, ie the USB or PCI or whatever
-     * "master" device that owns the port.  The GUdevDevice object returned
-     * will be unref-ed by the caller.
-     */
-    GUdevDevice * (*find_physical_device) (MMPluginBase *plugin,
-                                           GUdevDevice *port);
-
     void (*handle_probe_response) (MMPluginBase *plugin,
                                    MMPluginBaseSupportsTask *task,
                                    const char *command,
@@ -127,9 +121,6 @@ struct _MMPluginBaseClass {
 };
 
 GType mm_plugin_base_get_type (void);
-
-MMModem *mm_plugin_base_find_modem (MMPluginBase *self,
-                                    const char *master_device);
 
 gboolean mm_plugin_base_get_device_ids (MMPluginBase *self,
                                         const char *subsys,
