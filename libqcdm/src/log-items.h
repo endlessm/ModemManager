@@ -28,6 +28,8 @@ enum {
     DM_LOG_ITEM_CDMA_FWD_LINK_VOCODER_PACKET    = 0x1009,
     DM_LOG_ITEM_CDMA_REV_LINK_VOCODER_PACKET    = 0x100A,
     DM_LOG_ITEM_CDMA_MARKOV_STATS               = 0x100E,
+    DM_LOG_ITEM_CDMA_REVERSE_POWER_CONTROL      = 0x102C,
+    DM_LOG_ITEM_CDMA_SERVICE_CONFIG             = 0x102E,
     DM_LOG_ITEM_EVDO_HANDOFF_STATE              = 0x105E,
     DM_LOG_ITEM_EVDO_ACTIVE_PILOT_SET           = 0x105F,
     DM_LOG_ITEM_EVDO_REV_LINK_PACKET_SUMMARY    = 0x1060,
@@ -39,12 +41,16 @@ enum {
     DM_LOG_ITEM_EVDO_FWD_LINK_PACKET_SNAPSHOT   = 0x106A,
     DM_LOG_ITEM_EVDO_ACCESS_ATTEMPT             = 0x106C,
     DM_LOG_ITEM_EVDO_REV_ACTIVITY_BITS_BUFFER   = 0x106D,
-    DM_LOG_ITEM_CDMA_REVERSE_POWER_CONTROL      = 0x102c,
-    DM_LOG_ITEM_CDMA_SERVICE_CONFIG             = 0x102e,
+    DM_LOG_ITEM_EVDO_PILOT_SETS                 = 0x107A,
+    DM_LOG_ITEM_EVDO_STATE_INFO                 = 0x107E,
+    DM_LOG_ITEM_EVDO_SECTOR_INFO                = 0x1080,
+    DM_LOG_ITEM_EVDO_PILOT_SETS_V2              = 0x108B,
 
     /* WCDMA items */
+    DM_LOG_ITEM_WCDMA_TA_FINGER_INFO       = 0x4003,
     DM_LOG_ITEM_WCDMA_AGC_INFO             = 0x4105,
     DM_LOG_ITEM_WCDMA_RRC_STATE            = 0x4125,
+    DM_LOG_ITEM_WCDMA_CELL_ID              = 0x4127,
 
     /* GSM items */
     DM_LOG_ITEM_GSM_BURST_METRICS          = 0x506c,
@@ -85,8 +91,25 @@ struct DMLogItemCdmaReversePowerControl {
 typedef struct DMLogItemCdmaReversePowerControl DMLogItemCdmaReversePowerControl;
 
 
+/* DM_LOG_ITEM_WCDMA_TA_FINGER_INFO */
+struct DMLogItemWcdmaTaFingerInfo {
+    int32_t tx_pos;
+    int16_t coherent_interval_len;
+    u_int8_t non_coherent_interval_len;
+    u_int8_t num_paths;
+    u_int32_t path_enr;
+    int32_t pn_pos_path
+    int16_t pri_cpich_psc;
+    u_int8_t unknown1;
+    u_int8_t sec_cpich_ssc;
+    u_int8_t finger_channel_code_index;
+    u_int8_t finger_index;
+} __attribute__ ((packed));
+typedef struct DMLogItemWcdmaTaFingerInfo DMLogItemWcdmaTaFingerInfo;
+
+
 /* DM_LOG_ITEM_WCDMA_AGC_INFO */
-struct DMLogItemWcdmRrcState {
+struct DMLogItemWcdmaAgcInfo {
     u_int8_t num_samples;
     u_int16_t rx_agc;
     u_int16_t tx_agc;
@@ -96,7 +119,7 @@ struct DMLogItemWcdmRrcState {
     /* Bit 4 means tx_agc is valid */
     u_int8_t agc_info;
 } __attribute__ ((packed));
-typedef struct DMLogItemWcdmRrcState DMLogItemWcdmRrcState;
+typedef struct DMLogItemWcdmaAgcInfo DMLogItemWcdmaAgcInfo;
 
 
 /* DM_LOG_ITEM_WCDMA_RRC_STATE */
@@ -109,10 +132,19 @@ enum {
     DM_LOG_ITEM_WCDMA_RRC_STATE_URA_PCH      = 5,
 };
 
-struct DMLogItemWcdmRrcState {
+struct DMLogItemWcdmaRrcState {
     u_int8_t rrc_state;
 } __attribute__ ((packed));
-typedef struct DMLogItemWcdmRrcState DMLogItemWcdmRrcState;
+typedef struct DMLogItemWcdmaRrcState DMLogItemWcdmaRrcState;
+
+
+/* DM_LOG_ITEM_WCDMA_CELL_ID */
+struct DMLogItemWcdmaCellId {
+    u_int8_t unknown1[8];
+    u_int32_t cellid;
+    u_int8_t unknown2[4];
+} __attribute__ ((packed));
+typedef struct DMLogItemWcdmaCellId DMLogItemWcdmaCellId;
 
 
 /* DM_LOG_ITEM_GSM_BURST_METRICS */

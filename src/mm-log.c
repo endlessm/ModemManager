@@ -24,6 +24,17 @@
 #include <string.h>
 #include <unistd.h>
 
+#include <ModemManager.h>
+#include <mm-errors-types.h>
+
+#if defined WITH_QMI
+#include <libqmi-glib.h>
+#endif
+
+#if defined WITH_MBIM
+#include <libmbim-glib.h>
+#endif
+
 #include "mm-log.h"
 
 enum {
@@ -36,6 +47,7 @@ static gboolean ts_flags = TS_FLAG_NONE;
 static guint32 log_level = LOGL_INFO | LOGL_WARN | LOGL_ERR;
 static GTimeVal rel_start = { 0, 0 };
 static int logfd = -1;
+static gboolean func_loc = FALSE;
 
 typedef struct {
     guint32 num;
@@ -50,6 +62,9 @@ static const LogDesc level_descs[] = {
     { 0, NULL }
 };
 
+static GString *msgbuf = NULL;
+static volatile gsize msgbuf_once = 0;
+
 void
 _mm_log (const char *loc,
          const char *func,
@@ -58,24 +73,35 @@ _mm_log (const char *loc,
          ...)
 {
     va_list args;
-    char *msg;
     GTimeVal tv;
-    char tsbuf[100] = { 0 };
-    char msgbuf[512] = { 0 };
     int syslog_priority = LOG_INFO;
-    const char *prefix = NULL;
     ssize_t ign;
 
     if (!(log_level & level))
         return;
 
-    va_start (args, fmt);
-    msg = g_strdup_vprintf (fmt, args);
-    va_end (args);
+    if (g_once_init_enter (&msgbuf_once)) {
+        msgbuf = g_string_sized_new (512);
+        g_once_init_leave (&msgbuf_once, 1);
+    } else
+        g_string_truncate (msgbuf, 0);
+
+    if ((log_level & LOGL_DEBUG) && (level == LOGL_DEBUG))
+        g_string_append (msgbuf, "<debug> ");
+    else if ((log_level & LOGL_INFO) && (level == LOGL_INFO))
+        g_string_append (msgbuf, "<info>  ");
+    else if ((log_level & LOGL_WARN) && (level == LOGL_WARN)) {
+        g_string_append (msgbuf, "<warn>  ");
+        syslog_priority = LOG_WARNING;
+    } else if ((log_level & LOGL_ERR) && (level == LOGL_ERR)) {
+        g_string_append (msgbuf, "<error> ");
+        syslog_priority = LOG_ERR;
+    } else
+        return;
 
     if (ts_flags == TS_FLAG_WALL) {
         g_get_current_time (&tv);
-        snprintf (&tsbuf[0], sizeof (tsbuf), " [%09ld.%06ld]", tv.tv_sec, tv.tv_usec);
+        g_string_append_printf (msgbuf, "[%09ld.%06ld] ", tv.tv_sec, tv.tv_usec);
     } else if (ts_flags == TS_FLAG_REL) {
         glong secs;
         glong usecs;
@@ -88,39 +114,26 @@ _mm_log (const char *loc,
             usecs += 1000000;
         }
 
-        snprintf (&tsbuf[0], sizeof (tsbuf), " [%06ld.%06ld]", secs, usecs);
+        g_string_append_printf (msgbuf, "[%06ld.%06ld] ", secs, usecs);
     }
 
-    if ((log_level & LOGL_DEBUG) && (level == LOGL_DEBUG))
-        prefix = "<debug>";
-    else if ((log_level & LOGL_INFO) && (level == LOGL_INFO))
-        prefix = "<info> ";
-    else if ((log_level & LOGL_WARN) && (level == LOGL_WARN)) {
-        prefix = "<warn> ";
-        syslog_priority = LOG_WARNING;
-    } else if ((log_level & LOGL_ERR) && (level == LOGL_ERR)) {
-        prefix = "<error>";
-        syslog_priority = LOG_ERR;
-    } else
-        g_warn_if_reached ();
+    if (func_loc && log_level & LOGL_DEBUG)
+        g_string_append_printf (msgbuf, "[%s] %s(): ", loc, func);
 
-    if (prefix) {
-        if (log_level & LOGL_DEBUG)
-            snprintf (msgbuf, sizeof (msgbuf), "%s%s [%s] %s(): %s\n", prefix, tsbuf, loc, func, msg);
-        else
-            snprintf (msgbuf, sizeof (msgbuf), "%s%s %s\n", prefix, tsbuf, msg);
+    va_start (args, fmt);
+    g_string_append_vprintf (msgbuf, fmt, args);
+    va_end (args);
 
-        if (logfd < 0)
-            syslog (syslog_priority, "%s", msgbuf);
-        else {
-            ign = write (logfd, msgbuf, strlen (msgbuf));
-            if (ign) {} /* whatever; really shut up about unused result */
+    g_string_append_c (msgbuf, '\n');
 
-            fsync (logfd);  /* Make sure output is dumped to disk immediately */
-        }
+    if (logfd < 0)
+        syslog (syslog_priority, "%s", msgbuf->str);
+    else {
+        ign = write (logfd, msgbuf->str, msgbuf->len);
+        if (ign) {} /* whatever; really shut up about unused result */
+
+        fsync (logfd);  /* Make sure output is dumped to disk immediately */
     }
-
-    g_free (msg);
 }
 
 static void
@@ -175,8 +188,19 @@ mm_log_set_level (const char *level, GError **error)
             break;
         }
     }
+
     if (!found)
-       g_set_error (error, 0, 0, "Unknown log level '%s'", level);
+        g_set_error (error, MM_CORE_ERROR, MM_CORE_ERROR_INVALID_ARGS,
+                     "Unknown log level '%s'", level);
+
+#if defined WITH_QMI
+    qmi_utils_set_traces_enabled (log_level & LOGL_DEBUG ? TRUE : FALSE);
+#endif
+
+#if defined WITH_MBIM
+    mbim_utils_set_traces_enabled (log_level & LOGL_DEBUG ? TRUE : FALSE);
+#endif
+
     return found;
 }
 
@@ -185,11 +209,14 @@ mm_log_setup (const char *level,
               const char *log_file,
               gboolean show_timestamps,
               gboolean rel_timestamps,
+              gboolean debug_func_loc,
               GError **error)
 {
     /* levels */
     if (level && strlen (level) && !mm_log_set_level (level, error))
         return FALSE;
+
+    func_loc = debug_func_loc;
 
     if (show_timestamps)
         ts_flags = TS_FLAG_WALL;
@@ -206,23 +233,33 @@ mm_log_setup (const char *level,
                       O_CREAT | O_APPEND | O_WRONLY,
                       S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP);
         if (logfd < 0) {
-            g_set_error (error, 0, 0, "Failed to open log file: (%d) %s",
+            g_set_error (error, MM_CORE_ERROR, MM_CORE_ERROR_FAILED,
+                         "Couldn't open log file: (%d) %s",
                          errno, strerror (errno));
             return FALSE;
         }
     }
 
-    g_log_set_handler (G_LOG_DOMAIN, 
+    g_log_set_handler (G_LOG_DOMAIN,
                        G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
                        log_handler,
                        NULL);
 
-    return TRUE;
-}
+#if defined WITH_QMI
+    g_log_set_handler ("Qmi",
+                       G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
+                       log_handler,
+                       NULL);
+#endif
 
-void
-mm_log_usr1 (void)
-{
+#if defined WITH_MBIM
+    g_log_set_handler ("Mbim",
+                       G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
+                       log_handler,
+                       NULL);
+#endif
+
+    return TRUE;
 }
 
 void
@@ -233,4 +270,3 @@ mm_log_shutdown (void)
     else
         close (logfd);
 }
-

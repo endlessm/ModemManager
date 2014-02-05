@@ -1,0 +1,1111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MMSim</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="libmm-glib Reference Manual">
+<link rel="up" href="ch05.html" title="The SIM object">
+<link rel="prev" href="ch05.html" title="The SIM object">
+<link rel="next" href="ch06.html" title="The SMS object">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="ch05.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch05.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libmm-glib Reference Manual</th>
+<td><a accesskey="n" href="ch06.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#MMSim.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#MMSim.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#MMSim.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#MMSim.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="MMSim"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="MMSim.top_of_page"></a>MMSim</span></h2>
+<p>MMSim — The SIM interface</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="MMSim.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">struct              <a class="link" href="MMSim.html#MMSim-struct" title="struct MMSim">MMSim</a>;
+
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSim.html#mm-sim-get-path" title="mm_sim_get_path ()">mm_sim_get_path</a>                     (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMSim.html#mm-sim-dup-path" title="mm_sim_dup_path ()">mm_sim_dup_path</a>                     (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSim.html#mm-sim-get-identifier" title="mm_sim_get_identifier ()">mm_sim_get_identifier</a>               (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMSim.html#mm-sim-dup-identifier" title="mm_sim_dup_identifier ()">mm_sim_dup_identifier</a>               (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSim.html#mm-sim-get-imsi" title="mm_sim_get_imsi ()">mm_sim_get_imsi</a>                     (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMSim.html#mm-sim-dup-imsi" title="mm_sim_dup_imsi ()">mm_sim_dup_imsi</a>                     (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSim.html#mm-sim-get-operator-identifier" title="mm_sim_get_operator_identifier ()">mm_sim_get_operator_identifier</a>      (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMSim.html#mm-sim-dup-operator-identifier" title="mm_sim_dup_operator_identifier ()">mm_sim_dup_operator_identifier</a>      (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSim.html#mm-sim-get-operator-name" title="mm_sim_get_operator_name ()">mm_sim_get_operator_name</a>            (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMSim.html#mm-sim-dup-operator-name" title="mm_sim_dup_operator_name ()">mm_sim_dup_operator_name</a>            (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);
+
+<span class="returnvalue">void</span>                <a class="link" href="MMSim.html#mm-sim-send-pin" title="mm_sim_send_pin ()">mm_sim_send_pin</a>                     (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMSim.html#mm-sim-send-pin-finish" title="mm_sim_send_pin_finish ()">mm_sim_send_pin_finish</a>              (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMSim.html#mm-sim-send-pin-sync" title="mm_sim_send_pin_sync ()">mm_sim_send_pin_sync</a>                (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MMSim.html#mm-sim-send-puk" title="mm_sim_send_puk ()">mm_sim_send_puk</a>                     (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *puk</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMSim.html#mm-sim-send-puk-finish" title="mm_sim_send_puk_finish ()">mm_sim_send_puk_finish</a>              (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMSim.html#mm-sim-send-puk-sync" title="mm_sim_send_puk_sync ()">mm_sim_send_puk_sync</a>                (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *puk</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MMSim.html#mm-sim-enable-pin" title="mm_sim_enable_pin ()">mm_sim_enable_pin</a>                   (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMSim.html#mm-sim-enable-pin-finish" title="mm_sim_enable_pin_finish ()">mm_sim_enable_pin_finish</a>            (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMSim.html#mm-sim-enable-pin-sync" title="mm_sim_enable_pin_sync ()">mm_sim_enable_pin_sync</a>              (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MMSim.html#mm-sim-disable-pin" title="mm_sim_disable_pin ()">mm_sim_disable_pin</a>                  (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMSim.html#mm-sim-disable-pin-finish" title="mm_sim_disable_pin_finish ()">mm_sim_disable_pin_finish</a>           (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMSim.html#mm-sim-disable-pin-sync" title="mm_sim_disable_pin_sync ()">mm_sim_disable_pin_sync</a>             (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MMSim.html#mm-sim-change-pin" title="mm_sim_change_pin ()">mm_sim_change_pin</a>                   (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *old_pin</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *new_pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMSim.html#mm-sim-change-pin-finish" title="mm_sim_change_pin_finish ()">mm_sim_change_pin_finish</a>            (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMSim.html#mm-sim-change-pin-sync" title="mm_sim_change_pin_sync ()">mm_sim_change_pin_sync</a>              (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *old_pin</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *new_pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMSim.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----<a href="http://library.gnome.org/devel/gio/unstable/GDBusProxy.html">GDBusProxy</a>
+         +----<a class="link" href="MmGdbusSimProxy.html" title="MmGdbusSimProxy">MmGdbusSimProxy</a>
+               +----MMSim
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMSim.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
+<p>
+MMSim implements
+ <a href="http://library.gnome.org/devel/gio/unstable/GDBusInterface.html">GDBusInterface</a>,  <a href="http://library.gnome.org/devel/gio/unstable/GInitable.html">GInitable</a>,  <a href="http://library.gnome.org/devel/gio/unstable/GAsyncInitable.html">GAsyncInitable</a> and  <a class="link" href="MmGdbusSim.html" title="MmGdbusSim">MmGdbusSim</a>.</p>
+</div>
+<div class="refsect1">
+<a name="MMSim.description"></a><h2>Description</h2>
+<p>
+The <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> is an object providing access to the methods, signals and
+properties of the SIM interface.
+</p>
+<p>
+When the SIM is exposed and available in the bus, it is ensured that at
+least this interface is also available.
+</p>
+</div>
+<div class="refsect1">
+<a name="MMSim.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="MMSim-struct"></a><h3>struct MMSim</h3>
+<pre class="programlisting">struct MMSim;</pre>
+<p>
+The <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> structure contains private data and should only be accessed
+using the provided API.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-get-path"></a><h3>mm_sim_get_path ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sim_get_path                     (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);</pre>
+<p>
+Gets the DBus path of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The DBus path of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-dup-path"></a><h3>mm_sim_dup_path ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_sim_dup_path                     (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);</pre>
+<p>
+Gets a copy of the DBus path of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The DBus path of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-get-identifier"></a><h3>mm_sim_get_identifier ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sim_get_identifier               (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);</pre>
+<p>
+Gets the unique SIM identifier of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object.
+</p>
+<p>
+</p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>The returned value is only valid until the property changes so
+it is only safe to use this function on the thread where
+<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMSim.html#mm-sim-dup-identifier" title="mm_sim_dup_identifier ()"><code class="function">mm_sim_dup_identifier()</code></a> if on another
+thread.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The unique identifier of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it couldn't be retrieved. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-dup-identifier"></a><h3>mm_sim_dup_identifier ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_sim_dup_identifier               (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);</pre>
+<p>
+Gets a copy of the unique SIM identifier of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The unique identifier of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it couldn't be retrieved. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-get-imsi"></a><h3>mm_sim_get_imsi ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sim_get_imsi                     (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);</pre>
+<p>
+Gets the International Mobile Subscriber Identity (IMSI) of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object.
+</p>
+<p>
+</p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>The returned value is only valid until the property changes so
+it is only safe to use this function on the thread where
+<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMSim.html#mm-sim-dup-imsi" title="mm_sim_dup_imsi ()"><code class="function">mm_sim_dup_imsi()</code></a> if on another
+thread.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The IMSI of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it couldn't be retrieved. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-dup-imsi"></a><h3>mm_sim_dup_imsi ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_sim_dup_imsi                     (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);</pre>
+<p>
+Gets a copy of the International Mobile Subscriber Identity (IMSI) of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The IMSI of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it couldn't be retrieved. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-get-operator-identifier"></a><h3>mm_sim_get_operator_identifier ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sim_get_operator_identifier      (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);</pre>
+<p>
+Gets the Operator Identifier of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object.
+</p>
+<p>
+</p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>The returned value is only valid until the property changes so
+it is only safe to use this function on the thread where
+<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMSim.html#mm-sim-dup-operator-identifier" title="mm_sim_dup_operator_identifier ()"><code class="function">mm_sim_dup_operator_identifier()</code></a> if on another
+thread.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The Operator Identifier of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it couldn't be retrieved. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-dup-operator-identifier"></a><h3>mm_sim_dup_operator_identifier ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_sim_dup_operator_identifier      (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);</pre>
+<p>
+Gets a copy of the Operator Identifier of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The Operator Identifier of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it couldn't be retrieved. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-get-operator-name"></a><h3>mm_sim_get_operator_name ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sim_get_operator_name            (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);</pre>
+<p>
+Gets the Operator Name of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object.
+</p>
+<p>
+</p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>The returned value is only valid until the property changes so
+it is only safe to use this function on the thread where
+<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMSim.html#mm-sim-dup-operator-name" title="mm_sim_dup_operator_name ()"><code class="function">mm_sim_dup_operator_name()</code></a> if on another
+thread.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The Operator Name of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it couldn't be retrieved. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-dup-operator-name"></a><h3>mm_sim_dup_operator_name ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_sim_dup_operator_name            (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>);</pre>
+<p>
+Gets a copy of the Operator Name of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The Operator Name of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> object, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it couldn't be retrieved. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-send-pin"></a><h3>mm_sim_send_pin ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_sim_send_pin                     (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>
+Asynchronously sends the PIN code to the SIM card.
+</p>
+<p>
+When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
+You can then call <a class="link" href="MMSim.html#mm-sim-send-pin-finish" title="mm_sim_send_pin_finish ()"><code class="function">mm_sim_send_pin_finish()</code></a> to get the result of the operation.
+</p>
+<p>
+See <a class="link" href="MMSim.html#mm-sim-send-pin-sync" title="mm_sim_send_pin_sync ()"><code class="function">mm_sim_send_pin_sync()</code></a> for the synchronous, blocking version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pin</code></em> :</span></p></td>
+<td>The PIN code.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>User data to pass to <em class="parameter"><code>callback</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-send-pin-finish"></a><h3>mm_sim_send_pin_finish ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_sim_send_pin_finish              (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Finishes an operation started with <a class="link" href="MMSim.html#mm-sim-send-pin" title="mm_sim_send_pin ()"><code class="function">mm_sim_send_pin()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
+<td>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMSim.html#mm-sim-send-pin" title="mm_sim_send_pin ()"><code class="function">mm_sim_send_pin()</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-send-pin-sync"></a><h3>mm_sim_send_pin_sync ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_sim_send_pin_sync                (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Synchronously sends the PIN to the SIM card.
+</p>
+<p>
+The calling thread is blocked until a reply is received.
+See <a class="link" href="MMSim.html#mm-sim-send-pin" title="mm_sim_send_pin ()"><code class="function">mm_sim_send_pin()</code></a> for the asynchronous version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pin</code></em> :</span></p></td>
+<td>The PIN code.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-send-puk"></a><h3>mm_sim_send_puk ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_sim_send_puk                     (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *puk</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>
+Asynchronously sends the PUK code to the SIM card.
+</p>
+<p>
+When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
+You can then call <a class="link" href="MMSim.html#mm-sim-send-puk-finish" title="mm_sim_send_puk_finish ()"><code class="function">mm_sim_send_puk_finish()</code></a> to get the result of the operation.
+</p>
+<p>
+See <a class="link" href="MMSim.html#mm-sim-send-puk-sync" title="mm_sim_send_puk_sync ()"><code class="function">mm_sim_send_puk_sync()</code></a> for the synchronous, blocking version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>puk</code></em> :</span></p></td>
+<td>The PUK code.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pin</code></em> :</span></p></td>
+<td>The PIN code.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>User data to pass to <em class="parameter"><code>callback</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-send-puk-finish"></a><h3>mm_sim_send_puk_finish ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_sim_send_puk_finish              (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Finishes an operation started with <a class="link" href="MMSim.html#mm-sim-send-puk" title="mm_sim_send_puk ()"><code class="function">mm_sim_send_puk()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
+<td>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMSim.html#mm-sim-send-puk" title="mm_sim_send_puk ()"><code class="function">mm_sim_send_puk()</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-send-puk-sync"></a><h3>mm_sim_send_puk_sync ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_sim_send_puk_sync                (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *puk</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Synchronously sends the PUK to the SIM card.
+</p>
+<p>
+The calling thread is blocked until a reply is received.
+See <a class="link" href="MMSim.html#mm-sim-send-puk" title="mm_sim_send_puk ()"><code class="function">mm_sim_send_puk()</code></a> for the asynchronous version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>puk</code></em> :</span></p></td>
+<td>The PUK code.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pin</code></em> :</span></p></td>
+<td>The PIN code.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-enable-pin"></a><h3>mm_sim_enable_pin ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_sim_enable_pin                   (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>
+Asynchronously enables requesting the PIN code in the SIM card.
+</p>
+<p>
+When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
+You can then call <a class="link" href="MMSim.html#mm-sim-enable-pin-finish" title="mm_sim_enable_pin_finish ()"><code class="function">mm_sim_enable_pin_finish()</code></a> to get the result of the operation.
+</p>
+<p>
+See <a class="link" href="MMSim.html#mm-sim-enable-pin-sync" title="mm_sim_enable_pin_sync ()"><code class="function">mm_sim_enable_pin_sync()</code></a> for the synchronous, blocking version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pin</code></em> :</span></p></td>
+<td>The PIN code.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>User data to pass to <em class="parameter"><code>callback</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-enable-pin-finish"></a><h3>mm_sim_enable_pin_finish ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_sim_enable_pin_finish            (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Finishes an operation started with <a class="link" href="MMSim.html#mm-sim-enable-pin" title="mm_sim_enable_pin ()"><code class="function">mm_sim_enable_pin()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
+<td>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMSim.html#mm-sim-enable-pin" title="mm_sim_enable_pin ()"><code class="function">mm_sim_enable_pin()</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-enable-pin-sync"></a><h3>mm_sim_enable_pin_sync ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_sim_enable_pin_sync              (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Synchronously enables requesting the PIN code in the SIM card.
+</p>
+<p>
+The calling thread is blocked until a reply is received.
+See <a class="link" href="MMSim.html#mm-sim-enable-pin" title="mm_sim_enable_pin ()"><code class="function">mm_sim_enable_pin()</code></a> for the asynchronous version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pin</code></em> :</span></p></td>
+<td>The PIN code.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-disable-pin"></a><h3>mm_sim_disable_pin ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_sim_disable_pin                  (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>
+Asynchronously disables requesting the PIN code in the SIM card.
+</p>
+<p>
+When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
+You can then call <a class="link" href="MMSim.html#mm-sim-disable-pin-finish" title="mm_sim_disable_pin_finish ()"><code class="function">mm_sim_disable_pin_finish()</code></a> to get the result of the operation.
+</p>
+<p>
+See <a class="link" href="MMSim.html#mm-sim-disable-pin-sync" title="mm_sim_disable_pin_sync ()"><code class="function">mm_sim_disable_pin_sync()</code></a> for the synchronous, blocking version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pin</code></em> :</span></p></td>
+<td>The PIN code.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>User data to pass to <em class="parameter"><code>callback</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-disable-pin-finish"></a><h3>mm_sim_disable_pin_finish ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_sim_disable_pin_finish           (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Finishes an operation started with <a class="link" href="MMSim.html#mm-sim-disable-pin" title="mm_sim_disable_pin ()"><code class="function">mm_sim_disable_pin()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
+<td>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMSim.html#mm-sim-disable-pin" title="mm_sim_disable_pin ()"><code class="function">mm_sim_disable_pin()</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-disable-pin-sync"></a><h3>mm_sim_disable_pin_sync ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_sim_disable_pin_sync             (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Synchronously disables requesting the PIN code in the SIM card.
+</p>
+<p>
+The calling thread is blocked until a reply is received.
+See <a class="link" href="MMSim.html#mm-sim-disable-pin" title="mm_sim_disable_pin ()"><code class="function">mm_sim_disable_pin()</code></a> for the asynchronous version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pin</code></em> :</span></p></td>
+<td>The PIN code.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-change-pin"></a><h3>mm_sim_change_pin ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_sim_change_pin                   (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *old_pin</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *new_pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>
+Asynchronously changes the PIN code in the SIM card.
+</p>
+<p>
+When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
+You can then call <a class="link" href="MMSim.html#mm-sim-change-pin-finish" title="mm_sim_change_pin_finish ()"><code class="function">mm_sim_change_pin_finish()</code></a> to get the result of the operation.
+</p>
+<p>
+See <a class="link" href="MMSim.html#mm-sim-change-pin-sync" title="mm_sim_change_pin_sync ()"><code class="function">mm_sim_change_pin_sync()</code></a> for the synchronous, blocking version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>old_pin</code></em> :</span></p></td>
+<td>The current PIN code.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>new_pin</code></em> :</span></p></td>
+<td>The new PIN code to be set.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>User data to pass to <em class="parameter"><code>callback</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-change-pin-finish"></a><h3>mm_sim_change_pin_finish ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_sim_change_pin_finish            (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Finishes an operation started with <a class="link" href="MMSim.html#mm-sim-change-pin" title="mm_sim_change_pin ()"><code class="function">mm_sim_change_pin()</code></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
+<td>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMSim.html#mm-sim-change-pin" title="mm_sim_change_pin ()"><code class="function">mm_sim_change_pin()</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sim-change-pin-sync"></a><h3>mm_sim_change_pin_sync ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_sim_change_pin_sync              (<em class="parameter"><code><a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *old_pin</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *new_pin</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Synchronously changes the PIN code in the SIM card.
+</p>
+<p>
+The calling thread is blocked until a reply is received.
+See <a class="link" href="MMSim.html#mm-sim-change-pin" title="mm_sim_change_pin ()"><code class="function">mm_sim_change_pin()</code></a> for the asynchronous version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>old_pin</code></em> :</span></p></td>
+<td>The current PIN code.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>new_pin</code></em> :</span></p></td>
+<td>The new PIN code to be set.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

@@ -1,0 +1,521 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Probing</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="ModemManager Reference Manual">
+<link rel="up" href="ref-overview-modem-detection-and-setup.html" title="Modem detection and setup">
+<link rel="prev" href="ref-overview-modem-detection-and-setup.html" title="Modem detection and setup">
+<link rel="next" href="ch02s03.html" title="Port grabbing and Modem object creation">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="ref-overview-modem-detection-and-setup.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ref-overview-modem-detection-and-setup.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">ModemManager Reference Manual</th>
+<td><a accesskey="n" href="ch02s03.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="idm266935749600"></a>Probing</h2></div></div></div>
+<p>
+        Whenever a new device is detected by ModemManager, port probing process will
+        get started, so that we can determine which kind of ports we have, and also
+        which plugin we need to use for the specific device. Devices may expose one or
+        more ports, and all of them will follow the same probing logic.
+      </p>
+<p>
+        The whole probing process, including pre-probing and post-probing filters, is
+        implemented in the core ModemManager daemon. Plugins will just configure their
+        own special needs in the probing process, so that only the steps required by the
+        given plugin are executed. For example, plugins which do not support RS232
+        devices will not need AT-based vendor or product filters.
+      </p>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idm266943579776"></a>Pre-probing filters</h3></div></div></div>
+<p>
+          Pre-probing filters are those which control whether the probing, as
+          requested by the specific plugin, takes place.
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+<p><span class="emphasis"><em>Allowed vendor IDs</em></span></p>
+<p>
+              Plugins can provide a list of udev-reported vendor IDs to be used as
+              pre-probing filters. If the vendor ID reported by the device via udev
+              is found in the list provided by the plugin, port probing will be
+              launched as requested by the given plugin.
+            </p>
+<p>
+              This filter is specified by the <span class="type">MM_PLUGIN_ALLOWED_VENDOR_IDS</span>
+              property in the <span class="structname">MMPlugin</span> object provided
+              by the plugin.
+            </p>
+</li>
+<li class="listitem">
+<p><span class="emphasis"><em>Product IDs</em></span></p>
+<p>
+              Plugins can provide a list of udev-reported pairs of vendor and product
+              IDs to be used as pre-probing filters.
+            </p>
+<p>
+              If the vendor ID and product ID pair reported by the device via udev is
+              found in the list of 'allowed' pairs provided by the plugin, port probing
+              will be launched as requested by the given plugin. This additional filter
+              should be used when the plugin is expected to work only with a given
+              specific product of a given vendor.
+            </p>
+<p>
+              If the vendor ID and product ID pair reported by the device via udev is
+              found in the list of 'forbidden' pairs provided by the plugin, port probing
+              will not be launched by this plugin. This additional filter
+              should be used when the plugin supports all devices of a given vendor
+              except for some specific ones.
+            </p>
+<p>
+              These filters are specified by the <span class="type">MM_PLUGIN_ALLOWED_PRODUCT_IDS</span>
+              and <span class="type">MM_PLUGIN_FORBIDDEN_PRODUCT_IDS</span> properties in the
+              <span class="structname">MMPlugin</span> object provided by the plugin.
+            </p>
+</li>
+<li class="listitem">
+<p><span class="emphasis"><em>Subsystems</em></span></p>
+<p>
+              Plugins can specify which subsystems they expect, so that we filter out
+              any port detected with a subsystem not listed by the plugin.
+            </p>
+<p>
+              This filter is specified by the <span class="type">MM_PLUGIN_ALLOWED_SUBSYSTEMS</span>
+              property in the <span class="structname">MMPlugin</span> object provided
+              by the plugin.
+            </p>
+</li>
+<li class="listitem">
+<p><span class="emphasis"><em>Drivers</em></span></p>
+<p>
+              Plugins can specify which drivers they expect, so that we filter out
+              any port detected being managed by a driver not listed by the plugin.
+            </p>
+<p>
+              Plugins can also specify which drivers they do not expect, so that we
+              filter out any port detected being managed by a driver listed by the plugin.
+            </p>
+<p>
+              These filters are specified by the <span class="type">MM_PLUGIN_ALLOWED_DRIVERS</span>
+              and <span class="type">MM_PLUGIN_FORBIDDEN_DRIVERS</span> properties in the
+              <span class="structname">MMPlugin</span> object provided by the plugin.
+            </p>
+</li>
+<li class="listitem">
+<p><span class="emphasis"><em>udev tags</em></span></p>
+<p>
+              Plugins can provide a list of udev tags, so that we filter out
+              any port detected which doesn't expose any of the given tags.
+            </p>
+<p>
+              This filter is specified by the <span class="type">MM_PLUGIN_ALLOWED_UDEV_TAGS</span>
+              property in the <span class="structname">MMPlugin</span> object provided
+              by the plugin.
+            </p>
+</li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idm266934295312"></a>Probing sequence</h3></div></div></div>
+<p>
+          Whenever all pre-probing filters of a given plugin pass, ModemManager will run
+          the probing sequence as requested by the specific plugin. The main purpose of the
+          probing sequence step is to determine the type of port being probed, and also
+          prepare the information required in any expected post-probing filter.
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+<p><span class="emphasis"><em>Custom initialization</em></span></p>
+<p>
+              This property allows plugins to provide an asynchronous method which will get
+              executed as soon as the AT port gets opened. This method may be used for any
+              purpose, like running an early command in the ports as soon as possible, or
+              querying the modem for info about the port layout.
+            </p>
+<p>
+              This configuration is specified by the <span class="type">MM_PLUGIN_CUSTOM_INIT</span>
+              property in the <span class="structname">MMPlugin</span> object provided
+              by the plugin.
+            </p>
+</li>
+<li class="listitem">
+<p><span class="emphasis"><em>AT allowed</em></span></p>
+<p>
+              This boolean property allows plugins to specify that they expect and support
+              AT serial ports.
+            </p>
+<p>
+              This configuration is specified by the <span class="type">MM_PLUGIN_ALLOWED_AT</span>
+              property in the <span class="structname">MMPlugin</span> object provided
+              by the plugin.
+            </p>
+</li>
+<li class="listitem">
+<p><span class="emphasis"><em>Single AT expected</em></span></p>
+<p>
+              This boolean property allows plugins to specify that they only expect and support
+              one AT serial port. Whenever the first AT port is grabbed, any remaining AT probing
+              in ports of the same device will get cancelled.
+            </p>
+<p>
+              This configuration is specified by the <span class="type">MM_PLUGIN_ALLOWED_SINGLE_AT</span>
+              property in the <span class="structname">MMPlugin</span> object provided
+              by the plugin.
+            </p>
+</li>
+<li class="listitem">
+<p><span class="emphasis"><em>Custom AT probing</em></span></p>
+<p>
+              This property allows plugins to specify custom commands to check whether a port
+              is AT or not. By default, the 'AT' command will be used if no custom one specified.
+            </p>
+<p>
+              This configuration is specified by the <span class="type">MM_PLUGIN_CUSTOM_AT_PROBE</span>
+              property in the <span class="structname">MMPlugin</span> object provided
+              by the plugin.
+            </p>
+</li>
+<li class="listitem">
+<p><span class="emphasis"><em>QCDM allowed</em></span></p>
+<p>
+              This boolean property allows plugins to specify that they expect and support
+              QCDM serial ports.
+            </p>
+<p>
+              This configuration is specified by the <span class="type">MM_PLUGIN_ALLOWED_QCDM</span>
+              property in the <span class="structname">MMPlugin</span> object provided
+              by the plugin.
+            </p>
+</li>
+<li class="listitem">
+<p><span class="emphasis"><em>Check Icera support</em></span></p>
+<p>
+              This boolean property allows plugins to specify that they want to have the Icera
+              support checks included in the probing sequence. They can afterwards get the result
+              of the support check to decide whether they want to create a Icera-based modem
+              object or not.
+            </p>
+<p>
+              This configuration is specified by the <span class="type">MM_PLUGIN_ICERA_PROBE</span>
+              property in the <span class="structname">MMPlugin</span> object provided
+              by the plugin.
+            </p>
+</li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idm266943548864"></a>Post-probing filters</h3></div></div></div>
+<p>
+          Post-probing filters are required to identify whether a plugin can handle a given
+          modem, in special cases where the information retrieved from udev is either not
+          enough or wrong. This covers, for example, RS232 modems connected through a RS232
+          to USB converter, where udev-reported vendor ID is that of the converter, not the
+          one of the modem.
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+<p><span class="emphasis"><em>Allowed vendor strings</em></span></p>
+<p>
+              Plugins can provide a list of vendor strings to be used as post-probing
+              filters. If the vendor string reported by the device via AT commands
+              is found in the list provided by the plugin, the plugin will report that
+              it can handle this modem.
+            </p>
+<p>
+              This filter is specified by the <span class="type">MM_PLUGIN_ALLOWED_VENDOR_STRINGS</span>
+              property in the <span class="structname">MMPlugin</span> object provided
+              by the plugin.
+            </p>
+</li>
+<li class="listitem">
+<p><span class="emphasis"><em>Product strings</em></span></p>
+<p>
+              Plugins can provide a list of pairs of vendor and product
+              strings to be used as post-probing filters.
+            </p>
+<p>
+              If the vendor and product string pair reported by the device via AT
+              commands is found in the 'allowed' list provided by the plugin, the
+              plugin will report that it can handle this modem. This additional filter
+              should be used when the plugin is expected to work only with a given
+              specific product of a given vendor.
+            </p>
+<p>
+              If the vendor and product string pair reported by the device via AT
+              commands is found in the 'forbidden list provided by the plugin, the
+              plugin will report that it cannot handle this modem. This additional filter
+              should be used when the plugin supports all devices of a given vendor, except for some specific ones.
+            </p>
+<p>
+              These filters are specified by the <span class="type">MM_PLUGIN_ALLOWED_PRODUCT_STRINGS</span>
+              and <span class="type">MM_PLUGIN_FORBIDDEN_PRODUCT_STRINGS</span> properties in the
+              <span class="structname">MMPlugin</span> object provided by the plugin.
+            </p>
+</li>
+<li class="listitem">
+<p><span class="emphasis"><em>Icera support</em></span></p>
+<p>
+              Plugins can specify that they only support Icera-based modems, or that they
+              do not support any Icera-based modem. When either of this configurations is
+              enabled, the Icera support checks will be included in the
+              probing sequence, and the result of the check will help to determine whether
+              the plugin supports the modem or not.
+            </p>
+<p>
+              This filter is specified by the <span class="type">MM_PLUGIN_ALLOWED_ICERA</span> and
+              <span class="type">MM_PLUGIN_FORBIDDEN_ICERA</span> properties in the
+              <span class="structname">MMPlugin</span> object provided by the plugin.
+            </p>
+</li>
+</ul></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>
+            Plugins which require post-probing filters will always be sorted last, and
+            therefore they will be the last ones being checked for pre-probing filters. This
+            is due to the fact that we need to assume that these plugins aren't able to
+            determine port support just with pre-probing filters, as we want to avoid
+            unnecessary probing sequences launched. Also note that the Generic plugin is
+            anyway always the last one in the list.
+          </p>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idm266936589872"></a>Probing setup examples</h3></div></div></div>
+<div class="example">
+<a name="idm266936589136"></a><p class="title"><b>Example 1. Probing setup for a plugin requiring udev-based vendor/product checks</b></p>
+<div class="example-contents">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="usertype">G_MODULE_EXPORT</span><span class="normal"> MMPlugin </span><span class="symbol">*</span>
+<span class="function">mm_plugin_create</span><span class="normal"> </span><span class="symbol">(</span><span class="type">void</span><span class="symbol">)</span>
+<span class="cbracket">{</span>
+<span class="normal">    </span><span class="keyword">static</span><span class="normal"> </span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">gchar</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">subsystems</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span><span class="normal"> </span><span class="cbracket">{</span><span class="normal"> </span><span class="string">"tty"</span><span class="symbol">,</span><span class="normal"> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> </span><span class="cbracket">}</span><span class="symbol">;</span>
+<span class="normal">    </span><span class="keyword">static</span><span class="normal"> </span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">guint16</span><span class="normal"> vendor_ids</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span><span class="normal"> </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">0xabcd</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="normal"> </span><span class="cbracket">}</span><span class="symbol">;</span>
+<span class="normal">    </span><span class="keyword">static</span><span class="normal"> </span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">mm_uint16_pair</span><span class="normal"> product_ids</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span><span class="normal"> </span><span class="cbracket">{</span>
+<span class="normal">        </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">0x1234</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xffff</span><span class="normal"> </span><span class="cbracket">}</span>
+<span class="normal">    </span><span class="cbracket">}</span><span class="symbol">;</span>
+<span class="normal">    </span><span class="keyword">static</span><span class="normal"> </span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">gchar</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">vendor_strings</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span><span class="normal"> </span><span class="cbracket">{</span><span class="normal"> </span><span class="string">"vendor"</span><span class="symbol">,</span><span class="normal"> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> </span><span class="cbracket">}</span><span class="symbol">;</span>
+
+<span class="normal">    </span><span class="keyword">return</span><span class="normal"> </span><span class="function">MM_PLUGIN</span><span class="normal"> </span><span class="symbol">(</span>
+<span class="normal">        </span><span class="function"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-new">g_object_new</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">MM_TYPE_PLUGIN_IRIDIUM</span><span class="symbol">,</span>
+<span class="normal">                      MM_PLUGIN_NAME</span><span class="symbol">,</span><span class="normal"> </span><span class="string">"Example"</span><span class="symbol">,</span>
+
+<span class="normal">                      </span><span class="comment">/* Next items are pre-probing filters */</span>
+<span class="normal">                      MM_PLUGIN_ALLOWED_SUBSYSTEMS</span><span class="symbol">,</span><span class="normal"> subsystems</span><span class="symbol">,</span>
+<span class="normal">                      MM_PLUGIN_ALLOWED_VENDOR_IDS</span><span class="symbol">,</span><span class="normal"> vendor_ids</span><span class="symbol">,</span>
+<span class="normal">                      MM_PLUGIN_ALLOWED_PRODUCT_IDS</span><span class="symbol">,</span><span class="normal"> product_ids</span><span class="symbol">,</span>
+
+<span class="normal">                      </span><span class="comment">/* Next items are probing sequence setup */</span>
+<span class="normal">                      MM_PLUGIN_ALLOWED_AT</span><span class="symbol">,</span><span class="normal"> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS">TRUE</a></span><span class="symbol">,</span>
+
+<span class="normal">                      </span><span class="comment">/* No post-probing filters */</span>
+<span class="normal">                      <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></span><span class="symbol">));</span>
+<span class="cbracket">}</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+<br class="example-break"><div class="example">
+<a name="idm266936586704"></a><p class="title"><b>Example 2. Probing setup for a plugin requiring AT-probed vendor/product checks</b></p>
+<div class="example-contents">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="usertype">G_MODULE_EXPORT</span><span class="normal"> MMPlugin </span><span class="symbol">*</span>
+<span class="function">mm_plugin_create</span><span class="normal"> </span><span class="symbol">(</span><span class="type">void</span><span class="symbol">)</span>
+<span class="cbracket">{</span>
+<span class="normal">    </span><span class="keyword">static</span><span class="normal"> </span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">gchar</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">subsystems</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span><span class="normal"> </span><span class="cbracket">{</span><span class="normal"> </span><span class="string">"tty"</span><span class="symbol">,</span><span class="normal"> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> </span><span class="cbracket">}</span><span class="symbol">;</span>
+<span class="normal">    </span><span class="keyword">static</span><span class="normal"> </span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">gchar</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">vendor_strings</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span><span class="normal"> </span><span class="cbracket">{</span><span class="normal"> </span><span class="string">"vendor"</span><span class="symbol">,</span><span class="normal"> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> </span><span class="cbracket">}</span><span class="symbol">;</span>
+<span class="normal">    </span><span class="keyword">static</span><span class="normal"> </span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">mm_str_pair</span><span class="normal"> product_strings</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span><span class="normal"> </span><span class="cbracket">{</span><span class="normal"> </span><span class="string">"another-vendor"</span><span class="symbol">,</span><span class="normal"> </span><span class="string">"product xyz"</span><span class="normal"> </span><span class="cbracket">}</span><span class="symbol">;</span>
+
+<span class="normal">    </span><span class="keyword">return</span><span class="normal"> </span><span class="function">MM_PLUGIN</span><span class="normal"> </span><span class="symbol">(</span>
+<span class="normal">        </span><span class="function"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-new">g_object_new</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">MM_TYPE_PLUGIN_IRIDIUM</span><span class="symbol">,</span>
+<span class="normal">                      MM_PLUGIN_NAME</span><span class="symbol">,</span><span class="normal"> </span><span class="string">"Example"</span><span class="symbol">,</span>
+
+<span class="normal">                      </span><span class="comment">/* Next items are pre-probing filters */</span>
+<span class="normal">                      MM_PLUGIN_ALLOWED_SUBSYSTEMS</span><span class="symbol">,</span><span class="normal"> subsystems</span><span class="symbol">,</span>
+
+<span class="normal">                      </span><span class="comment">/* Next items are probing sequence setup */</span>
+<span class="normal">                      MM_PLUGIN_ALLOWED_AT</span><span class="symbol">,</span><span class="normal"> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS">TRUE</a></span><span class="symbol">,</span>
+
+<span class="normal">                      </span><span class="comment">/* Next items are post-probing filters */</span>
+<span class="normal">                      MM_PLUGIN_VENDOR_STRINGS</span><span class="symbol">,</span><span class="normal"> vendor_strings</span><span class="symbol">,</span>
+<span class="normal">                      MM_PLUGIN_PRODUCT_STRINGS</span><span class="symbol">,</span><span class="normal"> product_strings</span><span class="symbol">,</span>
+<span class="normal">                      <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></span><span class="symbol">));</span>
+<span class="cbracket">}</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+<br class="example-break"><div class="example">
+<a name="idm266936584304"></a><p class="title"><b>Example 3. Probing setup for a plugin with custom initialization requirements</b></p>
+<div class="example-contents">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="keyword">static</span><span class="normal"> <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean">gboolean</a></span>
+<span class="function">parse_custom_at</span><span class="normal"> </span><span class="symbol">(</span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">gchar</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">response</span><span class="symbol">,</span>
+<span class="normal">                 </span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">GError</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">error</span><span class="symbol">,</span>
+<span class="normal">                 </span><span class="usertype">GValue</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">result</span><span class="symbol">,</span>
+<span class="normal">                 </span><span class="usertype">GError</span><span class="normal"> </span><span class="symbol">**</span><span class="normal">result_error</span><span class="symbol">)</span>
+<span class="cbracket">{</span>
+<span class="normal">    </span><span class="keyword">if</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">error</span><span class="symbol">)</span><span class="normal"> </span><span class="cbracket">{</span>
+<span class="normal">        </span><span class="symbol">*</span><span class="normal">result_error </span><span class="symbol">=</span><span class="normal"> </span><span class="function"><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#g-error-copy">g_error_copy</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">error</span><span class="symbol">);</span>
+<span class="normal">        </span><span class="keyword">return</span><span class="normal"> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS">FALSE</a></span><span class="symbol">;</span>
+<span class="normal">    </span><span class="cbracket">}</span>
+
+<span class="normal">    </span><span class="comment">/* Otherwise, done. And also report that it's an AT port. */</span>
+<span class="normal">    </span><span class="function"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Generic-values.html#g-value-init">g_value_init</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">result</span><span class="symbol">,</span><span class="normal"> <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#G-TYPE-BOOLEAN:CAPS">G_TYPE_BOOLEAN</a></span><span class="symbol">);</span>
+<span class="normal">    </span><span class="function"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Standard-Parameter-and-Value-Types.html#g-value-set-boolean">g_value_set_boolean</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">result</span><span class="symbol">,</span><span class="normal"> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS">TRUE</a></span><span class="symbol">);</span>
+<span class="normal">    </span><span class="keyword">return</span><span class="normal"> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS">TRUE</a></span><span class="symbol">;</span>
+<span class="cbracket">}</span>
+
+<span class="keyword">static</span><span class="normal"> </span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">MMPortProbeAtCommand</span><span class="normal"> custom_at_probe</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span><span class="normal"> </span><span class="cbracket">{</span>
+<span class="normal">    </span><span class="cbracket">{</span><span class="normal"> </span><span class="string">"AT+SOMETHING"</span><span class="symbol">,</span><span class="normal"> parse_custom_at </span><span class="cbracket">}</span><span class="symbol">,</span>
+<span class="normal">    </span><span class="cbracket">{</span><span class="normal"> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> </span><span class="cbracket">}</span>
+<span class="cbracket">}</span><span class="symbol">;</span>
+
+<span class="usertype">G_MODULE_EXPORT</span><span class="normal"> MMPlugin </span><span class="symbol">*</span>
+<span class="function">mm_plugin_create</span><span class="normal"> </span><span class="symbol">(</span><span class="type">void</span><span class="symbol">)</span>
+<span class="cbracket">{</span>
+<span class="normal">    </span><span class="keyword">static</span><span class="normal"> </span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">gchar</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">subsystems</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span><span class="normal"> </span><span class="cbracket">{</span><span class="normal"> </span><span class="string">"tty"</span><span class="symbol">,</span><span class="normal"> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> </span><span class="cbracket">}</span><span class="symbol">;</span>
+<span class="normal">    </span><span class="keyword">static</span><span class="normal"> </span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">guint16</span><span class="normal"> vendor_ids</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span><span class="normal"> </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">0xabcd</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="normal"> </span><span class="cbracket">}</span><span class="symbol">;</span>
+
+<span class="normal">    </span><span class="keyword">return</span><span class="normal"> </span><span class="function">MM_PLUGIN</span><span class="normal"> </span><span class="symbol">(</span>
+<span class="normal">        </span><span class="function"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-new">g_object_new</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">MM_TYPE_PLUGIN_EXAMPLE</span><span class="symbol">,</span>
+<span class="normal">                      MM_PLUGIN_NAME</span><span class="symbol">,</span><span class="normal"> </span><span class="string">"Example"</span><span class="symbol">,</span>
+
+<span class="normal">                      </span><span class="comment">/* Next items are pre-probing filters */</span>
+<span class="normal">                      MM_PLUGIN_ALLOWED_SUBSYSTEMS</span><span class="symbol">,</span><span class="normal"> subsystems</span><span class="symbol">,</span>
+<span class="normal">                      MM_PLUGIN_ALLOWED_VENDOR_IDS</span><span class="symbol">,</span><span class="normal"> vendor_ids</span><span class="symbol">,</span>
+
+<span class="normal">                      </span><span class="comment">/* Next items are probing sequence setup */</span>
+<span class="normal">                      MM_PLUGIN_CUSTOM_AT_PROBE</span><span class="symbol">,</span><span class="normal"> custom_at_probe</span><span class="symbol">,</span>
+<span class="normal">                      MM_PLUGIN_ALLOWED_AT</span><span class="symbol">,</span><span class="normal">      <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS">TRUE</a></span><span class="symbol">,</span>
+
+<span class="normal">                      </span><span class="comment">/* No post-probing filters */</span>
+<span class="normal">                      <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></span><span class="symbol">));</span>
+<span class="cbracket">}</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+<br class="example-break">
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

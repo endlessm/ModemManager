@@ -1,0 +1,338 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>org.freedesktop.ModemManager1.Modem.Contacts</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="ModemManager Reference Manual">
+<link rel="up" href="ref-dbus-object-modem.html" title="The /org/freedesktop/ModemManager/Modems objects">
+<link rel="prev" href="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html" title="org.freedesktop.ModemManager1.Modem.Firmware">
+<link rel="next" href="ref-dbus-object-bearer.html" title="The /org/freedesktop/ModemManager/Bearers objects">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ref-dbus-object-modem.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">ModemManager Reference Manual</th>
+<td><a accesskey="n" href="ref-dbus-object-bearer.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#gdbus-org.freedesktop.ModemManager1.Modem.Contacts.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Contacts.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Contacts.signals" class="shortcut">Signals</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="gdbus-org.freedesktop.ModemManager1.Modem.Contacts"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Contacts.top_of_page"></a>org.freedesktop.ModemManager1.Modem.Contacts</span></h2>
+<p>org.freedesktop.ModemManager1.Modem.Contacts — The ModemManager Contacts interface.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Methods</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Add" title="The Add() method">Add</a>      (IN  a{sv}  properties,
+          OUT u      index);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Delete" title="The Delete() method">Delete</a>   (IN  u      index);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Get" title="The Get() method">Get</a>      (IN  u      index,
+          OUT a{sv}  properties);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.List" title="The List() method">List</a>     (OUT aa{sv} results);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Find" title="The Find() method">Find</a>     (IN  s      pattern,
+          OUT aa{sv} results);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.GetCount" title="The GetCount() method">GetCount</a> (OUT u      count);
+</pre>
+</div>
+<div class="refsect1">
+<a name="idm266930928400"></a><h2>Signals</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Contacts.Added" title='The "Added" signal'>Added</a>   (u     index,
+         a{sv} properties);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Contacts.Deleted" title='The "Deleted" signal'>Deleted</a> (u     index);
+</pre>
+</div>
+<div class="refsect1">
+<a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Contacts"></a><h2>Description</h2>
+<p>      This interface provides access to contacts stored in various locations,
+      including SIM cards, device storage, and other locations. Operations
+      generally operate on all contacts regardless of their actual storage
+      location.
+</p>
+<p>      Contacts are referred to by index numbers, which are internal to
+      ModemManager and do not represent indexes of SIM cards or the device.
+      Indexes may not be contiguous.
+</p>
+</div>
+<div class="refsect1">
+<a name="gdbus-methods-org.freedesktop.ModemManager1.Modem.Contacts"></a><h2>Method Details</h2>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Add"></a><h3>The Add() method</h3>
+<pre class="programlisting">
+Add (IN  a{sv} properties,
+     OUT u     index);
+</pre>
+<p>        Add a new contact.
+</p>
+<p>        If any of the property in <em class="parameter"><code>properties</code></em> exceeds the modem's size limit,
+        that property will be truncated to fit.
+</p>
+<p>        Known properties are:
+        </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">"name"</code></span></p></td>
+<td>
+              Full name of the contact, given as a string value
+              (signature <code class="literal">"s"</code>).
+            </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"number"</code></span></p></td>
+<td>
+              Telephone number, given as a string value
+              (signature <code class="literal">"s"</code>).
+            </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"email"</code></span></p></td>
+<td>
+              Email address, given as a string value
+              (signature <code class="literal">"s"</code>).
+            </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"group"</code></span></p></td>
+<td>
+              Group this contact belongs to, given as a string value
+              (signature <code class="literal">"s"</code>).
+            </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"name2"</code></span></p></td>
+<td>
+              Additional contact name, given as a string value
+              (signature <code class="literal">"s"</code>).
+            </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"number2"</code></span></p></td>
+<td>
+              Additional contact telephone number, given as a string value
+              (signature <code class="literal">"s"</code>).
+            </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"hidden"</code></span></p></td>
+<td>
+              Boolean flag to specify whether this entry is hidden or not,
+              (signature <code class="literal">"b"</code>).
+            </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"storage"</code></span></p></td>
+<td>
+              Phonebook in which the contact is stored, given as a
+              <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemContactsStorage" title="enum MMModemContactsStorage">MMModemContactsStorage</a>,
+              (signature <code class="literal">"u"</code>).
+            </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+<p>        The <em class="parameter"><code>index</code></em> number is an internal private number to ModemManager and does
+        not correspond to the index of the contact in the modem or SIM itself.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>properties</code></em></code>:</span></p></td>
+<td><p>Dictionary of properties describing the contact.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">OUT u <em class="parameter"><code>index</code></em></code>:</span></p></td>
+<td><p>The index number of the new contact</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Delete"></a><h3>The Delete() method</h3>
+<pre class="programlisting">
+Delete (IN  u index);
+</pre>
+<p>        Delete a contact.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN u <em class="parameter"><code>index</code></em></code>:</span></p></td>
+<td><p>The index of the contact to delete.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Get"></a><h3>The Get() method</h3>
+<pre class="programlisting">
+Get (IN  u     index,
+     OUT a{sv} properties);
+</pre>
+<p>        Retrieve a contact.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN u <em class="parameter"><code>index</code></em></code>:</span></p></td>
+<td><p>The index of the contact.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">OUT a{sv} <em class="parameter"><code>properties</code></em></code>:</span></p></td>
+<td><p>The properties of the contact.</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.List"></a><h3>The List() method</h3>
+<pre class="programlisting">
+List (OUT aa{sv} results);
+</pre>
+<p>        List all contacts.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">OUT aa{sv} <em class="parameter"><code>results</code></em></code>:</span></p></td>
+<td><p>An array of dictionaries, each dictionary representing a contact.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Find"></a><h3>The Find() method</h3>
+<pre class="programlisting">
+Find (IN  s      pattern,
+      OUT aa{sv} results);
+</pre>
+<p>        Find a contact.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>pattern</code></em></code>:</span></p></td>
+<td><p>The pattern to search for.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">OUT aa{sv} <em class="parameter"><code>results</code></em></code>:</span></p></td>
+<td><p>An array of dictionaries, each dictionary representing a contact.</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.GetCount"></a><h3>The GetCount() method</h3>
+<pre class="programlisting">
+GetCount (OUT u count);
+</pre>
+<p>        Get the number of contacts.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">OUT u <em class="parameter"><code>count</code></em></code>:</span></p></td>
+<td><p>The number of contacts.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-signals-org.freedesktop.ModemManager1.Modem.Contacts"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="gdbus-signal-org-freedesktop-ModemManager1-Modem-Contacts.Added"></a><h3>The "Added" signal</h3>
+<pre class="programlisting">
+Added (u     index,
+       a{sv} properties);
+</pre>
+<p>        Emitted when a new contact is added.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">u <em class="parameter"><code>index</code></em></code>:</span></p></td>
+<td><p>The index number of the new contact.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">a{sv} <em class="parameter"><code>properties</code></em></code>:</span></p></td>
+<td><p>The properties of the contact.</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-signal-org-freedesktop-ModemManager1-Modem-Contacts.Deleted"></a><h3>The "Deleted" signal</h3>
+<pre class="programlisting">
+Deleted (u index);
+</pre>
+<p>        Emitted when a new contact has been deleted.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">u <em class="parameter"><code>index</code></em></code>:</span></p></td>
+<td><p>The index number of the now deleted contact.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

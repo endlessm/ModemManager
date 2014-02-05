@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MMBearerIpConfig</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="libmm-glib Reference Manual">
+<link rel="up" href="ch04.html" title="The Bearer object">
+<link rel="prev" href="MMBearerProperties.html" title="MMBearerProperties">
+<link rel="next" href="ch05.html" title="The SIM object">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="MMBearerProperties.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libmm-glib Reference Manual</th>
+<td><a accesskey="n" href="ch05.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#MMBearerIpConfig.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#MMBearerIpConfig.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#MMBearerIpConfig.object-hierarchy" class="shortcut">Object Hierarchy</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="MMBearerIpConfig"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="MMBearerIpConfig.top_of_page"></a>MMBearerIpConfig</span></h2>
+<p>MMBearerIpConfig — Helper object to handle IP configuration.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="MMBearerIpConfig.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">struct              <a class="link" href="MMBearerIpConfig.html#MMBearerIpConfig-struct" title="struct MMBearerIpConfig">MMBearerIpConfig</a>;
+
+<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpMethod"><span class="returnvalue">MMBearerIpMethod</span></a>    <a class="link" href="MMBearerIpConfig.html#mm-bearer-ip-config-get-method" title="mm_bearer_ip_config_get_method ()">mm_bearer_ip_config_get_method</a>      (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMBearerIpConfig.html#mm-bearer-ip-config-get-address" title="mm_bearer_ip_config_get_address ()">mm_bearer_ip_config_get_address</a>     (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMBearerIpConfig.html#mm-bearer-ip-config-get-prefix" title="mm_bearer_ip_config_get_prefix ()">mm_bearer_ip_config_get_prefix</a>      (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **      <a class="link" href="MMBearerIpConfig.html#mm-bearer-ip-config-get-dns" title="mm_bearer_ip_config_get_dns ()">mm_bearer_ip_config_get_dns</a>         (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMBearerIpConfig.html#mm-bearer-ip-config-get-gateway" title="mm_bearer_ip_config_get_gateway ()">mm_bearer_ip_config_get_gateway</a>     (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMBearerIpConfig.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----MMBearerIpConfig
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMBearerIpConfig.description"></a><h2>Description</h2>
+<p>
+The <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> is an object handling the IP configuration required by
+the bearer to finish the connection.
+</p>
+<p>
+This object is retrieved with either <a class="link" href="MMBearer.html#mm-bearer-get-ipv4-config" title="mm_bearer_get_ipv4_config ()"><code class="function">mm_bearer_get_ipv4_config()</code></a>,
+<a class="link" href="MMBearer.html#mm-bearer-peek-ipv4-config" title="mm_bearer_peek_ipv4_config ()"><code class="function">mm_bearer_peek_ipv4_config()</code></a>, <a class="link" href="MMBearer.html#mm-bearer-get-ipv6-config" title="mm_bearer_get_ipv6_config ()"><code class="function">mm_bearer_get_ipv6_config()</code></a> or
+<a class="link" href="MMBearer.html#mm-bearer-peek-ipv6-config" title="mm_bearer_peek_ipv6_config ()"><code class="function">mm_bearer_peek_ipv6_config()</code></a>.
+</p>
+</div>
+<div class="refsect1">
+<a name="MMBearerIpConfig.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="MMBearerIpConfig-struct"></a><h3>struct MMBearerIpConfig</h3>
+<pre class="programlisting">struct MMBearerIpConfig;</pre>
+<p>
+The <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> structure contains private data and should
+only be accessed using the provided API.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-ip-config-get-method"></a><h3>mm_bearer_ip_config_get_method ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpMethod"><span class="returnvalue">MMBearerIpMethod</span></a>    mm_bearer_ip_config_get_method      (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);</pre>
+<p>
+Gets the IP method to be used with this bearer.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpMethod"><span class="type">MMBearerIpMethod</span></a>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-ip-config-get-address"></a><h3>mm_bearer_ip_config_get_address ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_bearer_ip_config_get_address     (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);</pre>
+<p>
+Gets the IP address to be used with this bearer.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a string with the IP address, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if unknown. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-ip-config-get-prefix"></a><h3>mm_bearer_ip_config_get_prefix ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_bearer_ip_config_get_prefix      (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);</pre>
+<p>
+Gets the network prefix to be used with this bearer.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the network prefix.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-ip-config-get-dns"></a><h3>mm_bearer_ip_config_get_dns ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **      mm_bearer_ip_config_get_dns         (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);</pre>
+<p>
+Gets the list of IP addresses of DNS servers to be used with this bearer.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a NULL-terminated array of strings. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-ip-config-get-gateway"></a><h3>mm_bearer_ip_config_get_gateway ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_bearer_ip_config_get_gateway     (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);</pre>
+<p>
+Gets the IP address of the gateway to be used with this bearer.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a string with the IP address, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if unknown. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

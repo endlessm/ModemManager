@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>org.freedesktop.ModemManager1.Modem.Messaging</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="ModemManager Reference Manual">
+<link rel="up" href="ref-dbus-object-modem.html" title="The /org/freedesktop/ModemManager/Modems objects">
+<link rel="prev" href="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html" title="org.freedesktop.ModemManager1.Modem.ModemCdma">
+<link rel="next" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html" title="org.freedesktop.ModemManager1.Modem.Location">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ref-dbus-object-modem.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">ModemManager Reference Manual</th>
+<td><a accesskey="n" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#gdbus-org.freedesktop.ModemManager1.Modem.Messaging.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Messaging.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Messaging.properties" class="shortcut">Properties</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Messaging.signals" class="shortcut">Signals</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="gdbus-org.freedesktop.ModemManager1.Modem.Messaging"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Messaging.top_of_page"></a>org.freedesktop.ModemManager1.Modem.Messaging</span></h2>
+<p>org.freedesktop.ModemManager1.Modem.Messaging — The ModemManager Messaging interface.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Methods</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.List" title="The List() method">List</a>   (OUT ao    result);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.Delete" title="The Delete() method">Delete</a> (IN  o     path);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.Create" title="The Create() method">Create</a> (IN  a{sv} properties,
+        OUT o     path);
+</pre>
+</div>
+<div class="refsect1">
+<a name="idm266933889056"></a><h2>Signals</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Messaging.Added" title='The "Added" signal'>Added</a>   (o path,
+         b received);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Messaging.Deleted" title='The "Deleted" signal'>Deleted</a> (o path);
+</pre>
+</div>
+<div class="refsect1">
+<a name="idm266933017440"></a><h2>Properties</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.SupportedStorages" title='The "SupportedStorages" property'>SupportedStorages</a>  readable   au
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.DefaultStorage" title='The "DefaultStorage" property'>DefaultStorage</a>     readable   u
+</pre>
+</div>
+<div class="refsect1">
+<a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Messaging"></a><h2>Description</h2>
+<p>      The Messaging interface handles sending SMS messages and notification of new
+      incoming messages.
+</p>
+</div>
+<div class="refsect1">
+<a name="gdbus-methods-org.freedesktop.ModemManager1.Modem.Messaging"></a><h2>Method Details</h2>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.List"></a><h3>The List() method</h3>
+<pre class="programlisting">
+List (OUT ao result);
+</pre>
+<p>        Retrieve all SMS messages.
+</p>
+<p>        This method should only be used once and subsequent information
+        retreived either by listening for the
+        <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Messaging.Added" title='The "Added" signal'>"Added"</a> and
+        <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-interface-org-freedesktop-ModemManager1-Modem-Messaging.top_of_page">org.freedesktop.ModemManager1.Modem.Messaging</a>::Completed signals,
+        or by querying the specific SMS object of interest.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">OUT ao <em class="parameter"><code>result</code></em></code>:</span></p></td>
+<td><p>The list of SMS object paths.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.Delete"></a><h3>The Delete() method</h3>
+<pre class="programlisting">
+Delete (IN  o path);
+</pre>
+<p>        Delete an SMS message.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN o <em class="parameter"><code>path</code></em></code>:</span></p></td>
+<td><p>The object path of the SMS to delete.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.Create"></a><h3>The Create() method</h3>
+<pre class="programlisting">
+Create (IN  a{sv} properties,
+        OUT o     path);
+</pre>
+<p>        Creates a new message object.
+</p>
+<p>        The '<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Number" title='The "Number" property'>Number</a>'
+        and
+        either '<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Text" title='The "Text" property'>Text</a>' or
+        '<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Data" title='The "Data" property'>Data</a>'
+        properties are mandatory, others are optional.
+</p>
+<p>        If the SMSC is not specified and one is required, the default SMSC is
+        used.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>properties</code></em></code>:</span></p></td>
+<td><p>Message properties from the <a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html" title="org.freedesktop.ModemManager1.Sms">SMS D-Bus interface</a>.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">OUT o <em class="parameter"><code>path</code></em></code>:</span></p></td>
+<td><p>The object path of the new message object.</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-signals-org.freedesktop.ModemManager1.Modem.Messaging"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="gdbus-signal-org-freedesktop-ModemManager1-Modem-Messaging.Added"></a><h3>The "Added" signal</h3>
+<pre class="programlisting">
+Added (o path,
+       b received);
+</pre>
+<p>        Emitted when any part of a new SMS has been received or added (but not
+        for subsequent parts, if any). For messages received from the network,
+        not all parts may have been received and the message may not be
+        complete.
+</p>
+<p>        Check the
+        '<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.State" title='The "State" property'>State</a>'
+        property to determine if the message is complete. The
+        <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-interface-org-freedesktop-ModemManager1-Modem-Messaging.top_of_page">org.freedesktop.ModemManager1.Modem.Messaging</a>::Completed
+        signal will also be emitted when the message is complete.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">o <em class="parameter"><code>path</code></em></code>:</span></p></td>
+<td><p>Object path of the new SMS.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">b <em class="parameter"><code>received</code></em></code>:</span></p></td>
+<td><p><code class="constant">TRUE</code> if the message was received from the network, as opposed to being added locally.</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-signal-org-freedesktop-ModemManager1-Modem-Messaging.Deleted"></a><h3>The "Deleted" signal</h3>
+<pre class="programlisting">
+Deleted (o path);
+</pre>
+<p>        Emitted when a message has been deleted.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">o <em class="parameter"><code>path</code></em></code>:</span></p></td>
+<td><p>Object path of the now deleted SMS.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-properties-org.freedesktop.ModemManager1.Modem.Messaging"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.SupportedStorages"></a><h3>The "SupportedStorages" property</h3>
+<pre class="programlisting">
+SupportedStorages  readable   au
+</pre>
+<p>        A list of <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsStorage" title="enum MMSmsStorage">MMSmsStorage</a> values,
+        specifying the storages supported by this modem for storing and
+        receiving SMS.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.DefaultStorage"></a><h3>The "DefaultStorage" property</h3>
+<pre class="programlisting">
+DefaultStorage  readable   u
+</pre>
+<p>        A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsStorage" title="enum MMSmsStorage">MMSmsStorage</a> value,
+        specifying the storage to be used when receiving or storing SMS.
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

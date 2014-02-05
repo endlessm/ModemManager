@@ -1,0 +1,407 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MmGdbusObjectSkeleton</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="libmm-glib Reference Manual">
+<link rel="up" href="pt02.html" title="Part II. Low level API">
+<link rel="prev" href="MmGdbusObjectProxy.html" title="MmGdbusObjectProxy">
+<link rel="next" href="MmGdbusModem.html" title="MmGdbusModem">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="MmGdbusObjectProxy.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="pt02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libmm-glib Reference Manual</th>
+<td><a accesskey="n" href="MmGdbusModem.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#MmGdbusObjectSkeleton.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#MmGdbusObjectSkeleton.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#MmGdbusObjectSkeleton.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#MmGdbusObjectSkeleton.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="MmGdbusObjectSkeleton"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="MmGdbusObjectSkeleton.top_of_page"></a>MmGdbusObjectSkeleton</span></h2>
+<p>MmGdbusObjectSkeleton</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="MmGdbusObjectSkeleton.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">struct              <a class="link" href="MmGdbusObjectSkeleton.html#MmGdbusObjectSkeleton-struct" title="struct MmGdbusObjectSkeleton">MmGdbusObjectSkeleton</a>;
+
+<a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="returnvalue">MmGdbusObjectSkeleton</span></a> * <a class="link" href="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-new" title="mm_gdbus_object_skeleton_new ()">mm_gdbus_object_skeleton_new</a>    (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *object_path</code></em>);
+
+<span class="returnvalue">void</span>                <a class="link" href="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem" title="mm_gdbus_object_skeleton_set_modem ()">mm_gdbus_object_skeleton_set_modem</a>  (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModem.html" title="MmGdbusModem"><span class="type">MmGdbusModem</span></a> *interface_</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem3gpp" title="mm_gdbus_object_skeleton_set_modem3gpp ()">mm_gdbus_object_skeleton_set_modem3gpp</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *interface_</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem3gpp-ussd" title="mm_gdbus_object_skeleton_set_modem3gpp_ussd ()">mm_gdbus_object_skeleton_set_modem3gpp_ussd</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModem3gppUssd.html" title="MmGdbusModem3gppUssd"><span class="type">MmGdbusModem3gppUssd</span></a> *interface_</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem-cdma" title="mm_gdbus_object_skeleton_set_modem_cdma ()">mm_gdbus_object_skeleton_set_modem_cdma</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemCdma"><span class="type">MmGdbusModemCdma</span></a> *interface_</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem-contacts" title="mm_gdbus_object_skeleton_set_modem_contacts ()">mm_gdbus_object_skeleton_set_modem_contacts</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *interface_</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem-firmware" title="mm_gdbus_object_skeleton_set_modem_firmware ()">mm_gdbus_object_skeleton_set_modem_firmware</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModemFirmware.html" title="MmGdbusModemFirmware"><span class="type">MmGdbusModemFirmware</span></a> *interface_</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem-location" title="mm_gdbus_object_skeleton_set_modem_location ()">mm_gdbus_object_skeleton_set_modem_location</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModemLocation.html" title="MmGdbusModemLocation"><span class="type">MmGdbusModemLocation</span></a> *interface_</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem-messaging" title="mm_gdbus_object_skeleton_set_modem_messaging ()">mm_gdbus_object_skeleton_set_modem_messaging</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging"><span class="type">MmGdbusModemMessaging</span></a> *interface_</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem-simple" title="mm_gdbus_object_skeleton_set_modem_simple ()">mm_gdbus_object_skeleton_set_modem_simple</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a> *interface_</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem-time" title="mm_gdbus_object_skeleton_set_modem_time ()">mm_gdbus_object_skeleton_set_modem_time</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModemTime.html" title="MmGdbusModemTime"><span class="type">MmGdbusModemTime</span></a> *interface_</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="MmGdbusObjectSkeleton.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----<a href="http://library.gnome.org/devel/gio/unstable/GDBusObjectSkeleton.html">GDBusObjectSkeleton</a>
+         +----MmGdbusObjectSkeleton
+</pre>
+</div>
+<div class="refsect1">
+<a name="MmGdbusObjectSkeleton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
+<p>
+MmGdbusObjectSkeleton implements
+ <a href="http://library.gnome.org/devel/gio/unstable/GDBusObject.html">GDBusObject</a> and  <a class="link" href="MmGdbusObject.html" title="MmGdbusObject">MmGdbusObject</a>.</p>
+</div>
+<div class="refsect1">
+<a name="MmGdbusObjectSkeleton.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1">
+<a name="MmGdbusObjectSkeleton.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="MmGdbusObjectSkeleton-struct"></a><h3>struct MmGdbusObjectSkeleton</h3>
+<pre class="programlisting">struct MmGdbusObjectSkeleton;</pre>
+<p>
+The <a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> structure contains only private data and should only be accessed using the provided API.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-object-skeleton-new"></a><h3>mm_gdbus_object_skeleton_new ()</h3>
+<pre class="programlisting"><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="returnvalue">MmGdbusObjectSkeleton</span></a> * mm_gdbus_object_skeleton_new    (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *object_path</code></em>);</pre>
+<p>
+Creates a new skeleton object.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object_path</code></em> :</span></p></td>
+<td>An object path.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The skeleton object. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-object-skeleton-set-modem"></a><h3>mm_gdbus_object_skeleton_set_modem ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_gdbus_object_skeleton_set_modem  (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModem.html" title="MmGdbusModem"><span class="type">MmGdbusModem</span></a> *interface_</code></em>);</pre>
+<p>
+Sets the <a class="link" href="MmGdbusModem.html" title="MmGdbusModem"><span class="type">MmGdbusModem</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem on <em class="parameter"><code>object</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>interface_</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModem.html" title="MmGdbusModem"><span class="type">MmGdbusModem</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to clear the interface. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-object-skeleton-set-modem3gpp"></a><h3>mm_gdbus_object_skeleton_set_modem3gpp ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_gdbus_object_skeleton_set_modem3gpp
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *interface_</code></em>);</pre>
+<p>
+Sets the <a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Modem3gpp on <em class="parameter"><code>object</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>interface_</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to clear the interface. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-object-skeleton-set-modem3gpp-ussd"></a><h3>mm_gdbus_object_skeleton_set_modem3gpp_ussd ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_gdbus_object_skeleton_set_modem3gpp_ussd
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModem3gppUssd.html" title="MmGdbusModem3gppUssd"><span class="type">MmGdbusModem3gppUssd</span></a> *interface_</code></em>);</pre>
+<p>
+Sets the <a class="link" href="MmGdbusModem3gppUssd.html" title="MmGdbusModem3gppUssd"><span class="type">MmGdbusModem3gppUssd</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd on <em class="parameter"><code>object</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>interface_</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModem3gppUssd.html" title="MmGdbusModem3gppUssd"><span class="type">MmGdbusModem3gppUssd</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to clear the interface. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-object-skeleton-set-modem-cdma"></a><h3>mm_gdbus_object_skeleton_set_modem_cdma ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_gdbus_object_skeleton_set_modem_cdma
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemCdma"><span class="type">MmGdbusModemCdma</span></a> *interface_</code></em>);</pre>
+<p>
+Sets the <a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemCdma"><span class="type">MmGdbusModemCdma</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.ModemCdma on <em class="parameter"><code>object</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>interface_</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemCdma"><span class="type">MmGdbusModemCdma</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to clear the interface. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-object-skeleton-set-modem-contacts"></a><h3>mm_gdbus_object_skeleton_set_modem_contacts ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_gdbus_object_skeleton_set_modem_contacts
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> *interface_</code></em>);</pre>
+<p>
+Sets the <a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Contacts on <em class="parameter"><code>object</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>interface_</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemContacts.html" title="MmGdbusModemContacts"><span class="type">MmGdbusModemContacts</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to clear the interface. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-object-skeleton-set-modem-firmware"></a><h3>mm_gdbus_object_skeleton_set_modem_firmware ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_gdbus_object_skeleton_set_modem_firmware
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModemFirmware.html" title="MmGdbusModemFirmware"><span class="type">MmGdbusModemFirmware</span></a> *interface_</code></em>);</pre>
+<p>
+Sets the <a class="link" href="MmGdbusModemFirmware.html" title="MmGdbusModemFirmware"><span class="type">MmGdbusModemFirmware</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Firmware on <em class="parameter"><code>object</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>interface_</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemFirmware.html" title="MmGdbusModemFirmware"><span class="type">MmGdbusModemFirmware</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to clear the interface. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-object-skeleton-set-modem-location"></a><h3>mm_gdbus_object_skeleton_set_modem_location ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_gdbus_object_skeleton_set_modem_location
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModemLocation.html" title="MmGdbusModemLocation"><span class="type">MmGdbusModemLocation</span></a> *interface_</code></em>);</pre>
+<p>
+Sets the <a class="link" href="MmGdbusModemLocation.html" title="MmGdbusModemLocation"><span class="type">MmGdbusModemLocation</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Location on <em class="parameter"><code>object</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>interface_</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemLocation.html" title="MmGdbusModemLocation"><span class="type">MmGdbusModemLocation</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to clear the interface. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-object-skeleton-set-modem-messaging"></a><h3>mm_gdbus_object_skeleton_set_modem_messaging ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_gdbus_object_skeleton_set_modem_messaging
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging"><span class="type">MmGdbusModemMessaging</span></a> *interface_</code></em>);</pre>
+<p>
+Sets the <a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging"><span class="type">MmGdbusModemMessaging</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Messaging on <em class="parameter"><code>object</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>interface_</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging"><span class="type">MmGdbusModemMessaging</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to clear the interface. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-object-skeleton-set-modem-simple"></a><h3>mm_gdbus_object_skeleton_set_modem_simple ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_gdbus_object_skeleton_set_modem_simple
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a> *interface_</code></em>);</pre>
+<p>
+Sets the <a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Simple on <em class="parameter"><code>object</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>interface_</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to clear the interface. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-object-skeleton-set-modem-time"></a><h3>mm_gdbus_object_skeleton_set_modem_time ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_gdbus_object_skeleton_set_modem_time
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MmGdbusModemTime.html" title="MmGdbusModemTime"><span class="type">MmGdbusModemTime</span></a> *interface_</code></em>);</pre>
+<p>
+Sets the <a class="link" href="MmGdbusModemTime.html" title="MmGdbusModemTime"><span class="type">MmGdbusModemTime</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Time on <em class="parameter"><code>object</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>interface_</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemTime.html" title="MmGdbusModemTime"><span class="type">MmGdbusModemTime</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to clear the interface. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

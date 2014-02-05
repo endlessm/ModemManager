@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>The /org/freedesktop/ModemManager/Modems objects</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="ModemManager Reference Manual">
+<link rel="up" href="ref-dbus.html" title="Part II. D-Bus Reference">
+<link rel="prev" href="gdbus-org.freedesktop.ModemManager1.html" title="org.freedesktop.ModemManager1">
+<link rel="next" href="gdbus-org.freedesktop.ModemManager1.Modem.html" title="org.freedesktop.ModemManager1.Modem">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="gdbus-org.freedesktop.ModemManager1.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ref-dbus.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">ModemManager Reference Manual</th>
+<td><a accesskey="n" href="gdbus-org.freedesktop.ModemManager1.Modem.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="chapter">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="ref-dbus-object-modem"></a>The <code class="literal">/org/freedesktop/ModemManager/Modems</code> objects</h2></div></div></div>
+<div class="toc"><dl class="toc">
+<dt>
+<span class="refentrytitle"><a href="gdbus-org.freedesktop.ModemManager1.Modem.html">org.freedesktop.ModemManager1.Modem</a></span><span class="refpurpose"> — The ModemManager Modem interface.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gdbus-org.freedesktop.ModemManager1.Modem.Simple.html">org.freedesktop.ModemManager1.Modem.Simple</a></span><span class="refpurpose"> — The ModemManager Simple interface.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html">org.freedesktop.ModemManager1.Modem.Modem3gpp</a></span><span class="refpurpose"> — The ModemManager 3GPP interface.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.html">org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd</a></span><span class="refpurpose"> — The ModemManager 3GPP USSD interface.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html">org.freedesktop.ModemManager1.Modem.ModemCdma</a></span><span class="refpurpose"> — The ModemManager CDMA interface.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html">org.freedesktop.ModemManager1.Modem.Messaging</a></span><span class="refpurpose"> — The ModemManager Messaging interface.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html">org.freedesktop.ModemManager1.Modem.Location</a></span><span class="refpurpose"> — The ModemManager Location interface.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gdbus-org.freedesktop.ModemManager1.Modem.Time.html">org.freedesktop.ModemManager1.Modem.Time</a></span><span class="refpurpose"> — The ModemManager Time interface.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html">org.freedesktop.ModemManager1.Modem.Firmware</a></span><span class="refpurpose"> — The ModemManager Firmware interface.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html">org.freedesktop.ModemManager1.Modem.Contacts</a></span><span class="refpurpose"> — The ModemManager Contacts interface.</span>
+</dt>
+</dl></div>
+<p>
+      Modem objects are exported in DBus with the following path base:
+      <code class="literal">/org/freedesktop/ModemManager1/Modems/#</code>, where
+      <code class="literal">#</code> indicates a unique unsigned integer which identifies
+      the object.
+    </p>
+<p>
+      The Modem objects will export a generic
+      <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html" title="org.freedesktop.ModemManager1.Modem">Modem interface</a>
+      which includes common features and actions applicable to most modem types.
+      This interface, among other actions, allows the management (creation,
+      listing, deletion) of
+      <a class="link" href="ref-dbus-object-bearer.html" title="The /org/freedesktop/ModemManager/Bearers objects">Bearer</a> objects which can
+      then be used to request the modem to get in connected state.
+    </p>
+<p>
+      Modem objects will also export the generic
+      <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Simple.html" title="org.freedesktop.ModemManager1.Modem.Simple">Simple interface</a>.
+      This interface provides an easy access to the most simple and common
+      operations that may be performed with the modem, including connection and
+      disconnection. Users of the Simple interface do not need to take care of
+      getting the modem registered, and they also don't need to manage the
+      creation of bearers themselves. All the logic required to get the modem
+      connected or disconnected is handled by the Simple interface.
+    </p>
+<p>
+      Modems with specific 3GPP and/or CDMA capabilities will export modem type
+      specific interfaces, like the
+      <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html" title="org.freedesktop.ModemManager1.Modem.Modem3gpp">3GPP interface</a>
+      or the
+      <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html" title="org.freedesktop.ModemManager1.Modem.ModemCdma">CDMA interface</a>.
+    </p>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

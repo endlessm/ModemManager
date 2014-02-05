@@ -22,12 +22,14 @@ EXTRA_DIST = \
 	mm-test.py \
 	disable.py \
 	enable.py \
+	disconnect.py \
 	info.py \
 	list-modems.py \
 	location.py \
 	sms-send.py \
 	sms-get.py \
 	send-pin.py \
+	modem-autoenable.py \
 	ussd.py \
 	scan.py
 

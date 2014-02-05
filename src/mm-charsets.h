@@ -48,6 +48,11 @@ gboolean mm_modem_charset_byte_array_append (GByteArray *array,
  */
 char *mm_modem_charset_hex_to_utf8 (const char *src, MMModemCharset charset);
 
+/* Take a string in UTF-8 and convert it to the given charset in hex
+ * representation.
+ */
+char *mm_modem_charset_utf8_to_hex (const char *src, MMModemCharset charset);
+
 guint8 *mm_charset_utf8_to_unpacked_gsm (const char *utf8, guint32 *out_len);
 
 guint8 *mm_charset_gsm_unpacked_to_utf8 (const guint8 *gsm, guint32 len);
@@ -67,7 +72,9 @@ guint8 *gsm_pack (const guint8 *src,
                   guint8 start_offset,  /* in bits */
                   guint32 *out_packed_len);
 
-gchar *mm_charset_take_and_convert_to_utf8 (gchar *str,
+gchar *mm_charset_take_and_convert_to_utf8 (gchar *str, MMModemCharset charset);
+
+gchar *mm_utf8_take_and_convert_to_charset (gchar *str,
                                             MMModemCharset charset);
 
 #endif /* MM_CHARSETS_H */

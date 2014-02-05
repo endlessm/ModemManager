@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>org.freedesktop.ModemManager1.Sim</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="ModemManager Reference Manual">
+<link rel="up" href="ref-dbus-object-sim.html" title="The /org/freedesktop/ModemManager/SIMs objects">
+<link rel="prev" href="ref-dbus-object-sim.html" title="The /org/freedesktop/ModemManager/SIMs objects">
+<link rel="next" href="ref-dbus-object-sms.html" title="The /org/freedesktop/ModemManager/SMSs objects">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="ref-dbus-object-sim.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ref-dbus-object-sim.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">ModemManager Reference Manual</th>
+<td><a accesskey="n" href="ref-dbus-object-sms.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#gdbus-org.freedesktop.ModemManager1.Sim.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Sim.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Sim.properties" class="shortcut">Properties</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="gdbus-org.freedesktop.ModemManager1.Sim"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="gdbus-interface-org-freedesktop-ModemManager1-Sim.top_of_page"></a>org.freedesktop.ModemManager1.Sim</span></h2>
+<p>org.freedesktop.ModemManager1.Sim — The ModemManager SIM interface.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Methods</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sim.html#gdbus-method-org-freedesktop-ModemManager1-Sim.SendPin" title="The SendPin() method">SendPin</a>   (IN  s pin);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sim.html#gdbus-method-org-freedesktop-ModemManager1-Sim.SendPuk" title="The SendPuk() method">SendPuk</a>   (IN  s puk,
+           IN  s pin);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sim.html#gdbus-method-org-freedesktop-ModemManager1-Sim.EnablePin" title="The EnablePin() method">EnablePin</a> (IN  s pin,
+           IN  b enabled);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sim.html#gdbus-method-org-freedesktop-ModemManager1-Sim.ChangePin" title="The ChangePin() method">ChangePin</a> (IN  s old_pin,
+           IN  s new_pin);
+</pre>
+</div>
+<div class="refsect1">
+<a name="idm266929225280"></a><h2>Properties</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sim.html#gdbus-property-org-freedesktop-ModemManager1-Sim.SimIdentifier" title='The "SimIdentifier" property'>SimIdentifier</a>       readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sim.html#gdbus-property-org-freedesktop-ModemManager1-Sim.Imsi" title='The "Imsi" property'>Imsi</a>                readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sim.html#gdbus-property-org-freedesktop-ModemManager1-Sim.OperatorIdentifier" title='The "OperatorIdentifier" property'>OperatorIdentifier</a>  readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sim.html#gdbus-property-org-freedesktop-ModemManager1-Sim.OperatorName" title='The "OperatorName" property'>OperatorName</a>        readable   s
+</pre>
+</div>
+<div class="refsect1">
+<a name="gdbus-interface-org-freedesktop-ModemManager1-Sim"></a><h2>Description</h2>
+<p>      The SIM interface handles communication with SIM, USIM, and RUIM (CDMA
+      SIM) cards.
+</p>
+</div>
+<div class="refsect1">
+<a name="gdbus-methods-org.freedesktop.ModemManager1.Sim"></a><h2>Method Details</h2>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Sim.SendPin"></a><h3>The SendPin() method</h3>
+<pre class="programlisting">
+SendPin (IN  s pin);
+</pre>
+<p>        Send the PIN to unlock the SIM card.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>pin</code></em></code>:</span></p></td>
+<td><p>A string containing the PIN code.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Sim.SendPuk"></a><h3>The SendPuk() method</h3>
+<pre class="programlisting">
+SendPuk (IN  s puk,
+         IN  s pin);
+</pre>
+<p>        Send the PUK and a new PIN to unlock the SIM card.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>puk</code></em></code>:</span></p></td>
+<td><p>A string containing the PUK code.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>pin</code></em></code>:</span></p></td>
+<td><p>A string containing the PIN code.</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Sim.EnablePin"></a><h3>The EnablePin() method</h3>
+<pre class="programlisting">
+EnablePin (IN  s pin,
+           IN  b enabled);
+</pre>
+<p>        Enable or disable the PIN checking.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>pin</code></em></code>:</span></p></td>
+<td><p>A string containing the PIN code.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">IN b <em class="parameter"><code>enabled</code></em></code>:</span></p></td>
+<td><p><code class="constant">TRUE</code> to enable PIN checking, <code class="constant">FALSE</code> otherwise.</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Sim.ChangePin"></a><h3>The ChangePin() method</h3>
+<pre class="programlisting">
+ChangePin (IN  s old_pin,
+           IN  s new_pin);
+</pre>
+<p>        Change the PIN code.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>old_pin</code></em></code>:</span></p></td>
+<td><p>A string containing the current PIN code.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>new_pin</code></em></code>:</span></p></td>
+<td><p>A string containing the new PIN code.</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-properties-org.freedesktop.ModemManager1.Sim"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sim.SimIdentifier"></a><h3>The "SimIdentifier" property</h3>
+<pre class="programlisting">
+SimIdentifier  readable   s
+</pre>
+<p>        An obfuscated SIM identifier based on the IMSI or the
+        ICCID.
+</p>
+<p>        This may be available before the PIN has been entered depending
+        on the device itself.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sim.Imsi"></a><h3>The "Imsi" property</h3>
+<pre class="programlisting">
+Imsi  readable   s
+</pre>
+<p>        The IMSI of the SIM card, if any.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sim.OperatorIdentifier"></a><h3>The "OperatorIdentifier" property</h3>
+<pre class="programlisting">
+OperatorIdentifier  readable   s
+</pre>
+<p></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sim.OperatorName"></a><h3>The "OperatorName" property</h3>
+<pre class="programlisting">
+OperatorName  readable   s
+</pre>
+<p>        The name of the network operator, as given by the SIM card, if known.
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

@@ -103,6 +103,43 @@ cdma_band_class_to_qcdm (u_int8_t cdma)
     return QCDM_CDMA_BAND_CLASS_UNKNOWN;
 }
 
+static u_int8_t
+nv_mode_pref_from_qcdm (u_int8_t qcdm)
+{
+    switch (qcdm) {
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_DIGITAL:
+        return DIAG_NV_MODE_PREF_DIGITAL;
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_DIGITAL_ONLY:
+        return DIAG_NV_MODE_PREF_DIGITAL_ONLY;
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_ANALOG:
+        return DIAG_NV_MODE_PREF_ANALOG;
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_ANALOG_ONLY:
+        return DIAG_NV_MODE_PREF_ANALOG_ONLY;
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_AUTO:
+        return DIAG_NV_MODE_PREF_AUTO;
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_1X_ONLY:
+        return DIAG_NV_MODE_PREF_1X_ONLY;
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_HDR_ONLY:
+        return DIAG_NV_MODE_PREF_HDR_ONLY;
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_GPRS_ONLY:
+        return DIAG_NV_MODE_PREF_GPRS_ONLY;
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_UMTS_ONLY:
+        return DIAG_NV_MODE_PREF_UMTS_ONLY;
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_GSM_UMTS_ONLY:
+        return DIAG_NV_MODE_PREF_GSM_UMTS_ONLY;
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_1X_HDR_ONLY:
+        return DIAG_NV_MODE_PREF_1X_HDR_ONLY;
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_LTE_ONLY:
+        return DIAG_NV_MODE_PREF_LTE_ONLY;
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_GSM_UMTS_LTE_ONLY:
+        return DIAG_NV_MODE_PREF_GSM_UMTS_LTE_ONLY;
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_1X_HDR_LTE_ONLY:
+        return DIAG_NV_MODE_PREF_1X_HDR_LTE_ONLY;
+    }
+    return DIAG_NV_MODE_PREF_AUTO;
+};
+
+
 /**********************************************************************/
 
 /*
@@ -366,6 +403,35 @@ qcdm_cmd_esn_result (const char *buf, size_t len, int *out_error)
 /**********************************************************************/
 
 size_t
+qcdm_cmd_control_new (char *buf, size_t len, u_int8_t mode)
+{
+    char cmdbuf[5];
+    DMCmdControl *cmd = (DMCmdControl *) &cmdbuf[0];
+
+    qcdm_return_val_if_fail (buf != NULL, 0);
+    qcdm_return_val_if_fail (len >= sizeof (*cmd) + DIAG_TRAILER_LEN, 0);
+
+    memset (cmd, 0, sizeof (*cmd));
+    cmd->code = DIAG_CMD_CONTROL;
+    cmd->mode = htole16 ((u_int16_t) mode);
+
+    return dm_encapsulate_buffer (cmdbuf, sizeof (*cmd), sizeof (cmdbuf), buf, len);
+}
+
+QcdmResult *
+qcdm_cmd_control_result (const char *buf, size_t len, int *out_error)
+{
+    qcdm_return_val_if_fail (buf != NULL, NULL);
+
+    if (!check_command (buf, len, DIAG_CMD_CONTROL, sizeof (DMCmdControl), out_error))
+        return NULL;
+
+    return qcdm_result_new ();
+}
+
+/**********************************************************************/
+
+size_t
 qcdm_cmd_cdma_status_new (char *buf, size_t len)
 {
     char cmdbuf[3];
@@ -507,11 +573,26 @@ snapshot_state_to_qcdm (u_int8_t cdma_state)
     return cdma_state + 1;
 }
 
+static inline u_int8_t
+digit_fixup (u_int8_t d)
+{
+    /* CDMA MCC/IMSI conversion adds 1 to each digit, and digits equal to
+     * 10 are really zero.
+     */
+    if (d + 1 < 10)
+        return d + 1;
+    return 0;
+}
+
 QcdmResult *
 qcdm_cmd_status_snapshot_result (const char *buf, size_t len, int *out_error)
 {
     QcdmResult *result = NULL;
     DMCmdStatusSnapshotRsp *rsp = (DMCmdStatusSnapshotRsp *) buf;
+    char *tmp;
+    u_int8_t swapped[4];
+    u_int8_t tmcc[3];
+    u_int16_t mcc, hmcc;
 
     qcdm_return_val_if_fail (buf != NULL, NULL);
 
@@ -519,6 +600,27 @@ qcdm_cmd_status_snapshot_result (const char *buf, size_t len, int *out_error)
         return NULL;
 
     result = qcdm_result_new ();
+
+    /* Convert the ESN from binary to a hex string; it's LE so we have to
+     * swap it to get the correct ordering.
+     */
+    swapped[0] = rsp->esn[3];
+    swapped[1] = rsp->esn[2];
+    swapped[2] = rsp->esn[1];
+    swapped[3] = rsp->esn[0];
+
+    tmp = bin2hexstr (&swapped[0], sizeof (swapped));
+    qcdm_result_add_string (result, QCDM_CMD_STATUS_SNAPSHOT_ITEM_ESN, tmp);
+    free (tmp);
+
+    /* Cheap binary -> decimal conversion */
+    hmcc = le16toh (rsp->mcc);
+    tmcc[2] = hmcc / 100;
+    tmcc[1] = (hmcc - (tmcc[2] * 100)) / 10;
+    tmcc[0] = (hmcc - (tmcc[2] * 100) - (tmcc[1] * 10));
+
+    mcc = (100 * digit_fixup (tmcc[2])) + (10 * digit_fixup (tmcc[1])) + digit_fixup (tmcc[0]);
+    qcdm_result_add_u32 (result, QCDM_CMD_STATUS_SNAPSHOT_ITEM_HOME_MCC, mcc);
 
     qcdm_result_add_u8 (result, QCDM_CMD_STATUS_SNAPSHOT_ITEM_BAND_CLASS, cdma_band_class_to_qcdm (rsp->band_class));
     qcdm_result_add_u8 (result, QCDM_CMD_STATUS_SNAPSHOT_ITEM_BASE_STATION_PREV, cdma_prev_to_qcdm (rsp->prev));
@@ -587,7 +689,7 @@ qcdm_cmd_pilot_sets_result (const char *buf, size_t len, int *out_error)
     sets_len = rsp->candidate_count * sizeof (DMCmdPilotSetsSet);
     if (sets_len > 0) {
         qcdm_result_add_u8_array (result,
-                                  PILOT_SETS_CMD_ACTIVE_SET,
+                                  PILOT_SETS_CMD_CANDIDATE_SET,
                                   (const u_int8_t *) &rsp->sets[rsp->active_count],
                                   sets_len);
     }
@@ -595,7 +697,7 @@ qcdm_cmd_pilot_sets_result (const char *buf, size_t len, int *out_error)
     sets_len = rsp->neighbor_count * sizeof (DMCmdPilotSetsSet);
     if (sets_len > 0) {
         qcdm_result_add_u8_array (result,
-                                  PILOT_SETS_CMD_ACTIVE_SET,
+                                  PILOT_SETS_CMD_NEIGHBOR_SET,
                                   (const u_int8_t *) &rsp->sets[rsp->active_count + rsp->candidate_count],
                                   sets_len);
     }
@@ -617,7 +719,7 @@ qcdm_cmd_pilot_sets_result_get_num (QcdmResult *result,
     set_name = set_num_to_str (set_type);
     qcdm_return_val_if_fail (set_name != NULL, FALSE);
 
-    if (!qcdm_result_get_u8_array (result, set_name, &array, &array_len))
+    if (qcdm_result_get_u8_array (result, set_name, &array, &array_len))
         return FALSE;
 
     *out_num = array_len / sizeof (DMCmdPilotSetsSet);
@@ -642,7 +744,7 @@ qcdm_cmd_pilot_sets_result_get_pilot (QcdmResult *result,
     set_name = set_num_to_str (set_type);
     qcdm_return_val_if_fail (set_name != NULL, FALSE);
 
-    if (!qcdm_result_get_u8_array (result, set_name, &array, &array_len))
+    if (qcdm_result_get_u8_array (result, set_name, &array, &array_len))
         return FALSE;
 
     qcdm_return_val_if_fail (num < array_len / sizeof (DMCmdPilotSetsSet), FALSE);
@@ -813,24 +915,6 @@ qcdm_cmd_nv_set_roam_pref_result (const char *buf, size_t len, int *out_error)
 
 /**********************************************************************/
 
-static qcdmbool
-mode_pref_validate (u_int8_t dm)
-{
-    switch (dm) {
-    case DIAG_NV_MODE_PREF_DIGITAL:
-    case DIAG_NV_MODE_PREF_DIGITAL_ONLY:
-    case DIAG_NV_MODE_PREF_AUTO:
-    case DIAG_NV_MODE_PREF_1X_ONLY:
-    case DIAG_NV_MODE_PREF_HDR_ONLY:
-    case DIAG_NV_MODE_PREF_1X_HDR_ONLY:
-    case DIAG_NV_MODE_PREF_LTE_ONLY:
-    case DIAG_NV_MODE_PREF_1X_HDR_LTE_ONLY:
-        return TRUE;
-    default:
-        return FALSE;
-    }
-}
-
 size_t
 qcdm_cmd_nv_get_mode_pref_new (char *buf, size_t len, u_int8_t profile)
 {
@@ -868,9 +952,6 @@ qcdm_cmd_nv_get_mode_pref_result (const char *buf, size_t len, int *out_error)
 
     mode = (DMNVItemModePref *) &rsp->data[0];
 
-    if (!mode_pref_validate (mode->mode_pref))
-        qcdm_warn (0, "Unknown mode preference 0x%X", mode->mode_pref);
-
     result = qcdm_result_new ();
     qcdm_result_add_u8 (result, QCDM_CMD_NV_GET_MODE_PREF_ITEM_PROFILE, mode->profile);
     qcdm_result_add_u8 (result, QCDM_CMD_NV_GET_MODE_PREF_ITEM_MODE_PREF, mode->mode_pref);
@@ -891,18 +972,13 @@ qcdm_cmd_nv_set_mode_pref_new (char *buf,
     qcdm_return_val_if_fail (buf != NULL, 0);
     qcdm_return_val_if_fail (len >= sizeof (*cmd) + DIAG_TRAILER_LEN, 0);
 
-    if (!mode_pref_validate (mode_pref)) {
-        qcdm_err (0, "Invalid mode preference %d", mode_pref);
-        return 0;
-    }
-
     memset (cmd, 0, sizeof (*cmd));
     cmd->code = DIAG_CMD_NV_WRITE;
     cmd->nv_item = htole16 (DIAG_NV_MODE_PREF);
 
     req = (DMNVItemModePref *) &cmd->data[0];
     req->profile = profile;
-    req->mode_pref = mode_pref;
+    req->mode_pref = nv_mode_pref_from_qcdm (mode_pref);
 
     return dm_encapsulate_buffer (cmdbuf, sizeof (*cmd), sizeof (cmdbuf), buf, len);
 }
@@ -916,6 +992,94 @@ qcdm_cmd_nv_set_mode_pref_result (const char *buf, size_t len, int *out_error)
         return NULL;
 
     if (!check_nv_cmd ((DMCmdNVReadWrite *) buf, DIAG_NV_MODE_PREF, out_error))
+        return NULL;
+
+    return qcdm_result_new ();
+}
+
+/**********************************************************************/
+
+size_t
+qcdm_cmd_nv_get_hybrid_pref_new (char *buf, size_t len)
+{
+    char cmdbuf[sizeof (DMCmdNVReadWrite) + 2];
+    DMCmdNVReadWrite *cmd = (DMCmdNVReadWrite *) &cmdbuf[0];
+
+    qcdm_return_val_if_fail (buf != NULL, 0);
+    qcdm_return_val_if_fail (len >= sizeof (*cmd) + DIAG_TRAILER_LEN, 0);
+
+    memset (cmd, 0, sizeof (*cmd));
+    cmd->code = DIAG_CMD_NV_READ;
+    cmd->nv_item = htole16 (DIAG_NV_HYBRID_PREF);
+
+    return dm_encapsulate_buffer (cmdbuf, sizeof (*cmd), sizeof (cmdbuf), buf, len);
+}
+
+QcdmResult *
+qcdm_cmd_nv_get_hybrid_pref_result (const char *buf, size_t len, int *out_error)
+{
+    QcdmResult *result = NULL;
+    DMCmdNVReadWrite *rsp = (DMCmdNVReadWrite *) buf;
+    DMNVItemHybridPref *hybrid;
+
+    qcdm_return_val_if_fail (buf != NULL, NULL);
+
+    if (!check_command (buf, len, DIAG_CMD_NV_READ, sizeof (DMCmdNVReadWrite), out_error))
+        return NULL;
+
+    if (!check_nv_cmd (rsp, DIAG_NV_HYBRID_PREF, out_error))
+        return NULL;
+
+    hybrid = (DMNVItemHybridPref *) &rsp->data[0];
+
+    if (hybrid->hybrid_pref > 1)
+        qcdm_warn (0, "Unknown hybrid preference 0x%X", hybrid->hybrid_pref);
+
+    result = qcdm_result_new ();
+    qcdm_result_add_u8 (result, QCDM_CMD_NV_GET_HYBRID_PREF_ITEM_HYBRID_PREF, hybrid->hybrid_pref);
+
+    return result;
+}
+
+size_t
+qcdm_cmd_nv_set_hybrid_pref_new (char *buf,
+                                 size_t len,
+                                 u_int8_t hybrid_pref)
+{
+    char cmdbuf[sizeof (DMCmdNVReadWrite) + 2];
+    DMCmdNVReadWrite *cmd = (DMCmdNVReadWrite *) &cmdbuf[0];
+    DMNVItemHybridPref *req;
+
+    qcdm_return_val_if_fail (buf != NULL, 0);
+    qcdm_return_val_if_fail (len >= sizeof (*cmd) + DIAG_TRAILER_LEN, 0);
+
+    if (hybrid_pref > QCDM_CMD_NV_HYBRID_PREF_ITEM_REV_HYBRID_ON) {
+        qcdm_err (0, "Invalid hybrid preference %d", hybrid_pref);
+        return 0;
+    }
+
+    memset (cmd, 0, sizeof (*cmd));
+    cmd->code = DIAG_CMD_NV_WRITE;
+    cmd->nv_item = htole16 (DIAG_NV_HYBRID_PREF);
+
+    req = (DMNVItemHybridPref *) &cmd->data[0];
+    if (hybrid_pref == QCDM_CMD_NV_HYBRID_PREF_ITEM_REV_HYBRID_OFF)
+        req->hybrid_pref = DIAG_NV_HYBRID_PREF_OFF;
+    else if (hybrid_pref == QCDM_CMD_NV_HYBRID_PREF_ITEM_REV_HYBRID_ON)
+        req->hybrid_pref = DIAG_NV_HYBRID_PREF_ON;
+
+    return dm_encapsulate_buffer (cmdbuf, sizeof (*cmd), sizeof (cmdbuf), buf, len);
+}
+
+QcdmResult *
+qcdm_cmd_nv_set_hybrid_pref_result (const char *buf, size_t len, int *out_error)
+{
+    qcdm_return_val_if_fail (buf != NULL, NULL);
+
+    if (!check_command (buf, len, DIAG_CMD_NV_WRITE, sizeof (DMCmdNVReadWrite), out_error))
+        return NULL;
+
+    if (!check_nv_cmd ((DMCmdNVReadWrite *) buf, DIAG_NV_HYBRID_PREF, out_error))
         return NULL;
 
     return qcdm_result_new ();
@@ -1321,16 +1485,16 @@ qcdm_cmd_nw_subsys_modem_snapshot_cdma_new (char *buf,
     cmd->hdr.code = DIAG_CMD_SUBSYS;
     switch (chipset) {
     case QCDM_NW_CHIPSET_6500:
-        cmd->hdr.subsys_id = DIAG_SUBSYS_NW_CONTROL_6500;
+        cmd->hdr.subsys_id = DIAG_SUBSYS_NOVATEL_6500;
         break;
     case QCDM_NW_CHIPSET_6800:
-        cmd->hdr.subsys_id = DIAG_SUBSYS_NW_CONTROL_6800;
+        cmd->hdr.subsys_id = DIAG_SUBSYS_NOVATEL_6800;
         break;
     default:
         qcdm_assert_not_reached ();
     }
-    cmd->hdr.subsys_cmd = htole16 (DIAG_SUBSYS_NW_CONTROL_MODEM_SNAPSHOT);
-    cmd->technology = DIAG_SUBSYS_NW_CONTROL_MODEM_SNAPSHOT_TECH_CDMA_EVDO;
+    cmd->hdr.subsys_cmd = htole16 (DIAG_SUBSYS_NOVATEL_MODEM_SNAPSHOT);
+    cmd->technology = DIAG_SUBSYS_NOVATEL_MODEM_SNAPSHOT_TECH_CDMA_EVDO;
     cmd->snapshot_mask = htole32 (0xFFFF);
 
     return dm_encapsulate_buffer (cmdbuf, sizeof (*cmd), sizeof (cmdbuf), buf, len);
@@ -1377,6 +1541,76 @@ qcdm_cmd_nw_subsys_modem_snapshot_cdma_result (const char *buf, size_t len, int 
         break;
     }
     qcdm_result_add_u8 (result, QCDM_CMD_NW_SUBSYS_MODEM_SNAPSHOT_CDMA_ITEM_HDR_REV, num8);
+
+    return result;
+}
+
+/**********************************************************************/
+
+size_t
+qcdm_cmd_nw_subsys_eri_new (char *buf,
+                            size_t len,
+                            u_int8_t chipset)
+{
+    char cmdbuf[sizeof (DMCmdSubsysHeader) + 2];
+    DMCmdSubsysHeader *cmd = (DMCmdSubsysHeader *) &cmdbuf[0];
+
+    qcdm_return_val_if_fail (buf != NULL, 0);
+    qcdm_return_val_if_fail (len >= sizeof (*cmd) + DIAG_TRAILER_LEN, 0);
+
+    /* Validate chipset */
+    if (chipset != QCDM_NW_CHIPSET_6500 && chipset != QCDM_NW_CHIPSET_6800) {
+        qcdm_err (0, "Unknown Novatel chipset 0x%X", chipset);
+        return 0;
+    }
+
+    memset (cmd, 0, sizeof (*cmd));
+    cmd->code = DIAG_CMD_SUBSYS;
+    switch (chipset) {
+    case QCDM_NW_CHIPSET_6500:
+        cmd->subsys_id = DIAG_SUBSYS_NOVATEL_6500;
+        break;
+    case QCDM_NW_CHIPSET_6800:
+        cmd->subsys_id = DIAG_SUBSYS_NOVATEL_6800;
+        break;
+    default:
+        qcdm_assert_not_reached ();
+    }
+    cmd->subsys_cmd = htole16 (DIAG_SUBSYS_NOVATEL_ERI);
+
+    return dm_encapsulate_buffer (cmdbuf, sizeof (*cmd), sizeof (cmdbuf), buf, len);
+}
+
+QcdmResult *
+qcdm_cmd_nw_subsys_eri_result (const char *buf, size_t len, int *out_error)
+{
+    QcdmResult *result = NULL;
+    DMCmdSubsysNwEriRsp *rsp = (DMCmdSubsysNwEriRsp *) buf;
+    char str[50];
+
+    qcdm_return_val_if_fail (buf != NULL, NULL);
+
+    if (!check_command (buf, len, DIAG_CMD_SUBSYS, sizeof (DMCmdSubsysNwEriRsp), out_error))
+        return NULL;
+
+    /* FIXME: check 'status' when we know what it means */
+
+    result = qcdm_result_new ();
+
+    qcdm_result_add_u8 (result, QCDM_CMD_NW_SUBSYS_ERI_ITEM_ROAM, rsp->roam);
+    qcdm_result_add_u8 (result, QCDM_CMD_NW_SUBSYS_ERI_ITEM_INDICATOR_ID, rsp->indicator_id);
+    qcdm_result_add_u8 (result, QCDM_CMD_NW_SUBSYS_ERI_ITEM_ICON_ID, rsp->icon_id);
+    qcdm_result_add_u8 (result, QCDM_CMD_NW_SUBSYS_ERI_ITEM_ICON_MODE, rsp->icon_mode);
+    qcdm_result_add_u8 (result, QCDM_CMD_NW_SUBSYS_ERI_ITEM_CALL_PROMPT_ID, rsp->call_prompt_id);
+    qcdm_result_add_u8 (result, QCDM_CMD_NW_SUBSYS_ERI_ITEM_ALERT_ID, rsp->alert_id);
+
+    qcdm_warn_if_fail (rsp->text_len < sizeof (str));
+    if (rsp->text_len < sizeof (str)) {
+        qcdm_assert (sizeof (str) > sizeof (rsp->text));
+        memcpy (str, rsp->text, sizeof (rsp->text));
+        str[rsp->text_len] = '\0';
+        qcdm_result_add_string (result, QCDM_CMD_NW_SUBSYS_ERI_ITEM_TEXT, str);
+    }
 
     return result;
 }
@@ -1629,7 +1863,7 @@ imxi_bcd_to_string (u_int8_t bytes[8], size_t len, char *buf, size_t buflen)
 
     qcdm_return_val_if_fail (len == 8, FALSE);
     qcdm_return_val_if_fail (buf != NULL, FALSE);
-    qcdm_return_val_if_fail (buflen > len, FALSE);
+    qcdm_return_val_if_fail (buflen > (len * 2), FALSE);
 
     p = buf;
     for (i = 0 ; i < len; i++) {
@@ -1673,7 +1907,7 @@ qcdm_cmd_wcdma_subsys_state_info_result (const char *buf, size_t len, int *out_e
 {
     QcdmResult *result = NULL;
     DMCmdSubsysWcdmaStateInfoRsp *rsp = (DMCmdSubsysWcdmaStateInfoRsp *) buf;
-    char imxi[10];
+    char imxi[18];
 
     qcdm_return_val_if_fail (buf != NULL, NULL);
 
@@ -1719,7 +1953,7 @@ qcdm_cmd_gsm_subsys_state_info_result (const char *buf, size_t len, int *out_err
 {
     QcdmResult *result = NULL;
     DMCmdSubsysGsmStateInfoRsp *rsp = (DMCmdSubsysGsmStateInfoRsp *) buf;
-    char imxi[10];
+    char imxi[18];
     u_int32_t mcc = 0, mnc = 0;
     u_int8_t mnc3;
 

@@ -1,0 +1,484 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MMSimpleStatus</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="libmm-glib Reference Manual">
+<link rel="up" href="ch03s02.html" title="Simple interface support">
+<link rel="prev" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties">
+<link rel="next" href="ch03s03.html" title="Location support">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="MMSimpleConnectProperties.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03s02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libmm-glib Reference Manual</th>
+<td><a accesskey="n" href="ch03s03.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#MMSimpleStatus.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#MMSimpleStatus.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#MMSimpleStatus.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#MMSimpleStatus.properties" class="shortcut">Properties</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="MMSimpleStatus"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="MMSimpleStatus.top_of_page"></a>MMSimpleStatus</span></h2>
+<p>MMSimpleStatus — Helper object to handle overall modem status.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="MMSimpleStatus.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">struct              <a class="link" href="MMSimpleStatus.html#MMSimpleStatus-struct" title="struct MMSimpleStatus">MMSimpleStatus</a>;
+
+<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemState"><span class="returnvalue">MMModemState</span></a>        <a class="link" href="MMSimpleStatus.html#mm-simple-status-get-state" title="mm_simple_status_get_state ()">mm_simple_status_get_state</a>          (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>             <a class="link" href="MMSimpleStatus.html#mm-simple-status-get-signal-quality" title="mm_simple_status_get_signal_quality ()">mm_simple_status_get_signal_quality</a> (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> *recent</code></em>);
+<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"><span class="returnvalue">MMModemAccessTechnology</span></a> <a class="link" href="MMSimpleStatus.html#mm-simple-status-get-access-technologies" title="mm_simple_status_get_access_technologies ()">mm_simple_status_get_access_technologies</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MMSimpleStatus.html#mm-simple-status-get-current-bands" title="mm_simple_status_get_current_bands ()">mm_simple_status_get_current_bands</a>  (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> **bands</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_bands</code></em>);
+<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState"><span class="returnvalue">MMModem3gppRegistrationState</span></a> <a class="link" href="MMSimpleStatus.html#mm-simple-status-get-3gpp-registration-state" title="mm_simple_status_get_3gpp_registration_state ()">mm_simple_status_get_3gpp_registration_state</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSimpleStatus.html#mm-simple-status-get-3gpp-operator-code" title="mm_simple_status_get_3gpp_operator_code ()">mm_simple_status_get_3gpp_operator_code</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSimpleStatus.html#mm-simple-status-get-3gpp-operator-name" title="mm_simple_status_get_3gpp_operator_name ()">mm_simple_status_get_3gpp_operator_name</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);
+<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="returnvalue">MMModemCdmaRegistrationState</span></a> <a class="link" href="MMSimpleStatus.html#mm-simple-status-get-cdma-cdma1x-registration-state" title="mm_simple_status_get_cdma_cdma1x_registration_state ()">mm_simple_status_get_cdma_cdma1x_registration_state</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);
+<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="returnvalue">MMModemCdmaRegistrationState</span></a> <a class="link" href="MMSimpleStatus.html#mm-simple-status-get-cdma-evdo-registration-state" title="mm_simple_status_get_cdma_evdo_registration_state ()">mm_simple_status_get_cdma_evdo_registration_state</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMSimpleStatus.html#mm-simple-status-get-cdma-nid" title="mm_simple_status_get_cdma_nid ()">mm_simple_status_get_cdma_nid</a>       (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMSimpleStatus.html#mm-simple-status-get-cdma-sid" title="mm_simple_status_get_cdma_sid ()">mm_simple_status_get_cdma_sid</a>       (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMSimpleStatus.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----MMSimpleStatus
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMSimpleStatus.properties"></a><h2>Properties</h2>
+<pre class="synopsis">
+  "<a class="link" href="MMSimpleStatus.html#MMSimpleStatus--access-technologies" title='The "access-technologies" property'>access-technologies</a>"      <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"><span class="type">MMModemAccessTechnology</span></a>  : Read / Write
+  "<a class="link" href="MMSimpleStatus.html#MMSimpleStatus--cdma-cdma1x-registration-state" title='The "cdma-cdma1x-registration-state" property'>cdma-cdma1x-registration-state</a>" <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a>  : Read / Write
+  "<a class="link" href="MMSimpleStatus.html#MMSimpleStatus--cdma-evdo-registration-state" title='The "cdma-evdo-registration-state" property'>cdma-evdo-registration-state</a>" <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a>  : Read / Write
+  "<a class="link" href="MMSimpleStatus.html#MMSimpleStatus--cdma-nid" title='The "cdma-nid" property'>cdma-nid</a>"                 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write
+  "<a class="link" href="MMSimpleStatus.html#MMSimpleStatus--cdma-sid" title='The "cdma-sid" property'>cdma-sid</a>"                 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write
+  "<a class="link" href="MMSimpleStatus.html#MMSimpleStatus--current-bands" title='The "current-bands" property'>current-bands</a>"            <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a>*             : Read / Write
+  "<a class="link" href="MMSimpleStatus.html#MMSimpleStatus--m3gpp-operator-code" title='The "m3gpp-operator-code" property'>m3gpp-operator-code</a>"      <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
+  "<a class="link" href="MMSimpleStatus.html#MMSimpleStatus--m3gpp-operator-name" title='The "m3gpp-operator-name" property'>m3gpp-operator-name</a>"      <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
+  "<a class="link" href="MMSimpleStatus.html#MMSimpleStatus--m3gpp-registration-state" title='The "m3gpp-registration-state" property'>m3gpp-registration-state</a>" <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState"><span class="type">MMModem3gppRegistrationState</span></a>  : Read / Write
+  "<a class="link" href="MMSimpleStatus.html#MMSimpleStatus--signal-quality" title='The "signal-quality" property'>signal-quality</a>"           <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a>*             : Read / Write
+  "<a class="link" href="MMSimpleStatus.html#MMSimpleStatus--state" title='The "state" property'>state</a>"                    <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemState"><span class="type">MMModemState</span></a>          : Read / Write
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMSimpleStatus.description"></a><h2>Description</h2>
+<p>
+The <a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> is an object handling the general modem status properties,
+available in the Simple interface.
+</p>
+<p>
+This object is retrieved with either <a class="link" href="MMModemSimple.html#mm-modem-simple-get-status" title="mm_modem_simple_get_status ()"><code class="function">mm_modem_simple_get_status()</code></a> or
+<a class="link" href="MMModemSimple.html#mm-modem-simple-get-status-sync" title="mm_modem_simple_get_status_sync ()"><code class="function">mm_modem_simple_get_status_sync()</code></a>.
+</p>
+</div>
+<div class="refsect1">
+<a name="MMSimpleStatus.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="MMSimpleStatus-struct"></a><h3>struct MMSimpleStatus</h3>
+<pre class="programlisting">struct MMSimpleStatus;</pre>
+<p>
+The <a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> structure contains private data and should
+only be accessed using the provided API.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-status-get-state"></a><h3>mm_simple_status_get_state ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemState"><span class="returnvalue">MMModemState</span></a>        mm_simple_status_get_state          (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
+<p>
+Gets the state of the modem.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemState"><span class="type">MMModemState</span></a>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-status-get-signal-quality"></a><h3>mm_simple_status_get_signal_quality ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="returnvalue">guint32</span></a>             mm_simple_status_get_signal_quality (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> *recent</code></em>);</pre>
+<p>
+Gets the signal quality.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>recent</code></em> :</span></p></td>
+<td>indication of whether the given signal quality is considered recent. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the signal quality.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-status-get-access-technologies"></a><h3>mm_simple_status_get_access_technologies ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"><span class="returnvalue">MMModemAccessTechnology</span></a> mm_simple_status_get_access_technologies
+                                                        (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
+<p>
+Gets the currently used access technologies.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a bitmask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"><span class="type">MMModemAccessTechnology</span></a> values.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-status-get-current-bands"></a><h3>mm_simple_status_get_current_bands ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_simple_status_get_current_bands  (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> **bands</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_bands</code></em>);</pre>
+<p>
+Gets the currently used frequency bands.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>bands</code></em> :</span></p></td>
+<td>location for an array of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> values. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n_bands</code></em> :</span></p></td>
+<td>number of elements in <em class="parameter"><code>bands</code></em>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-status-get-3gpp-registration-state"></a><h3>mm_simple_status_get_3gpp_registration_state ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState"><span class="returnvalue">MMModem3gppRegistrationState</span></a> mm_simple_status_get_3gpp_registration_state
+                                                        (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
+<p>
+Gets the current state of the registration in the 3GPP network.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState"><span class="type">MMModem3gppRegistrationState</span></a>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-status-get-3gpp-operator-code"></a><h3>mm_simple_status_get_3gpp_operator_code ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_simple_status_get_3gpp_operator_code
+                                                        (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
+<p>
+Gets the MCC/MNC of the operator of the 3GPP network where the modem is registered.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the operator code, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-status-get-3gpp-operator-name"></a><h3>mm_simple_status_get_3gpp_operator_name ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_simple_status_get_3gpp_operator_name
+                                                        (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
+<p>
+Gets the name of the operator of the 3GPP network where the modem is registered.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the operator name, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-status-get-cdma-cdma1x-registration-state"></a><h3>mm_simple_status_get_cdma_cdma1x_registration_state ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="returnvalue">MMModemCdmaRegistrationState</span></a> mm_simple_status_get_cdma_cdma1x_registration_state
+                                                        (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
+<p>
+Gets the current state of the registration in the CDMA-1x network.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-status-get-cdma-evdo-registration-state"></a><h3>mm_simple_status_get_cdma_evdo_registration_state ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="returnvalue">MMModemCdmaRegistrationState</span></a> mm_simple_status_get_cdma_evdo_registration_state
+                                                        (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
+<p>
+Gets the current state of the registration in the EV-DO network.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-status-get-cdma-nid"></a><h3>mm_simple_status_get_cdma_nid ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_simple_status_get_cdma_nid       (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
+<p>
+Gets the Network Identification number of the CDMA network.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the NID, or <a class="link" href="MMModemCdma.html#MM-MODEM-CDMA-NID-UNKNOWN:CAPS" title="MM_MODEM_CDMA_NID_UNKNOWN"><code class="literal">MM_MODEM_CDMA_NID_UNKNOWN</code></a> if unknown.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-status-get-cdma-sid"></a><h3>mm_simple_status_get_cdma_sid ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_simple_status_get_cdma_sid       (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
+<p>
+Gets the System Identification number of the CDMA network.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the SID, or <a class="link" href="MMModemCdma.html#MM-MODEM-CDMA-SID-UNKNOWN:CAPS" title="MM_MODEM_CDMA_SID_UNKNOWN"><code class="literal">MM_MODEM_CDMA_SID_UNKNOWN</code></a> if unknown.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="MMSimpleStatus.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="MMSimpleStatus--access-technologies"></a><h3>The <code class="literal">"access-technologies"</code> property</h3>
+<pre class="programlisting">  "access-technologies"      <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"><span class="type">MMModemAccessTechnology</span></a>  : Read / Write</pre>
+<p>Access technologies used by the modem.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMSimpleStatus--cdma-cdma1x-registration-state"></a><h3>The <code class="literal">"cdma-cdma1x-registration-state"</code> property</h3>
+<pre class="programlisting">  "cdma-cdma1x-registration-state" <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a>  : Read / Write</pre>
+<p>Registration state in the CDMA1x network.</p>
+<p>Default value: MM_MODEM_CDMA_REGISTRATION_STATE_UNKNOWN</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMSimpleStatus--cdma-evdo-registration-state"></a><h3>The <code class="literal">"cdma-evdo-registration-state"</code> property</h3>
+<pre class="programlisting">  "cdma-evdo-registration-state" <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a>  : Read / Write</pre>
+<p>Registration state in the EV-DO network.</p>
+<p>Default value: MM_MODEM_CDMA_REGISTRATION_STATE_UNKNOWN</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMSimpleStatus--cdma-nid"></a><h3>The <code class="literal">"cdma-nid"</code> property</h3>
+<pre class="programlisting">  "cdma-nid"                 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write</pre>
+<p>Network Identifier of the serving CDMA1x network.</p>
+<p>Allowed values: &lt;= 99999</p>
+<p>Default value: 99999</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMSimpleStatus--cdma-sid"></a><h3>The <code class="literal">"cdma-sid"</code> property</h3>
+<pre class="programlisting">  "cdma-sid"                 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write</pre>
+<p>System Identifier of the serving CDMA1x network.</p>
+<p>Allowed values: &lt;= 99999</p>
+<p>Default value: 99999</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMSimpleStatus--current-bands"></a><h3>The <code class="literal">"current-bands"</code> property</h3>
+<pre class="programlisting">  "current-bands"            <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a>*             : Read / Write</pre>
+<p>Frequency bands used by the modem.</p>
+<p>Allowed values: GVariant&lt;au&gt;</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMSimpleStatus--m3gpp-operator-code"></a><h3>The <code class="literal">"m3gpp-operator-code"</code> property</h3>
+<pre class="programlisting">  "m3gpp-operator-code"      <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write</pre>
+<p>Code of the current operator in the 3GPP network.</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMSimpleStatus--m3gpp-operator-name"></a><h3>The <code class="literal">"m3gpp-operator-name"</code> property</h3>
+<pre class="programlisting">  "m3gpp-operator-name"      <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write</pre>
+<p>Name of the current operator in the 3GPP network.</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMSimpleStatus--m3gpp-registration-state"></a><h3>The <code class="literal">"m3gpp-registration-state"</code> property</h3>
+<pre class="programlisting">  "m3gpp-registration-state" <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState"><span class="type">MMModem3gppRegistrationState</span></a>  : Read / Write</pre>
+<p>Registration state in the 3GPP network.</p>
+<p>Default value: MM_MODEM_3GPP_REGISTRATION_STATE_UNKNOWN</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMSimpleStatus--signal-quality"></a><h3>The <code class="literal">"signal-quality"</code> property</h3>
+<pre class="programlisting">  "signal-quality"           <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a>*             : Read / Write</pre>
+<p>Signal quality reported by the modem.</p>
+<p>Allowed values: GVariant&lt;(ub)&gt;</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMSimpleStatus--state"></a><h3>The <code class="literal">"state"</code> property</h3>
+<pre class="programlisting">  "state"                    <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemState"><span class="type">MMModemState</span></a>          : Read / Write</pre>
+<p>State of the modem.</p>
+<p>Default value: MM_MODEM_STATE_UNKNOWN</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

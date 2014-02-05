@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Modem state machine</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="ModemManager Reference Manual">
+<link rel="up" href="ref-overview.html" title="Part I. ModemManager Overview">
+<link rel="prev" href="ch02s03.html" title="Port grabbing and Modem object creation">
+<link rel="next" href="ch03s02.html" title="Enabling">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="ch02s03.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ref-overview.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">ModemManager Reference Manual</th>
+<td><a accesskey="n" href="ch03s02.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="chapter">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="ref-overview-modem-state-machine"></a>Modem state machine</h2></div></div></div>
+<div class="toc"><dl class="toc">
+<dt><span class="section"><a href="ref-overview-modem-state-machine.html#idm266936574096">Initialization</a></span></dt>
+<dt><span class="section"><a href="ch03s02.html">Enabling</a></span></dt>
+<dt><span class="section"><a href="ch03s03.html">Connection &amp; disconnection</a></span></dt>
+<dt><span class="section"><a href="ch03s04.html">Disabling</a></span></dt>
+</dl></div>
+<p>
+      Once all ports of a given modem have been probed and grabbed by a newly created
+      Modem object, ModemManager will start the global state machine for the modem, as
+      defined in the picture below.
+    </p>
+<div class="figure">
+<a name="mm-modemmanager-states"></a><p class="title"><b>Figure 1. ModemManager states</b></p>
+<div class="figure-contents"><div><img src="ModemManager-states.png" alt="ModemManager states"></div></div>
+</div>
+<br class="figure-break"><p>
+      The state machine of a modem can be summarized in 5 main sequences:
+      initialization, enabling, connection, disconnection and disabling.
+    </p>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="idm266936574096"></a>Initialization</h2></div></div></div>
+<p>
+        The modem initialization sequence starts only when all ports
+        have been probed and grabbed by a given plugin. This is done so that the proper
+        AT port (that suggested to be Primary) is used as control port.
+      </p>
+<p>
+        The global initialization sequence is itself splitted into N per-interface
+        initialization steps (being N the number of interfaces implemented by the
+        modem object). The following list provides the steps required in the
+        initialization sequence of a Broadband modem object.
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+<p><span class="emphasis"><em>Modem interface initialization</em></span></p>
+<p>
+            The <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.html" title="org.freedesktop.ModemManager1.Modem">Modem interface</a>
+            provides common actions and information available in the majority of the modems
+            (including Broadband-specific items which won't be implemented by POTS modems).
+          </p>
+<p>
+            One of the key things done during the initialization of this interface is the
+            <span class="emphasis"><em>checking of supported capabilities</em></span>. Broadband modem objects
+            are able to handle 3GPP-only, CDMA-only and mixed 3GPP+CDMA modems, but in order
+            to properly handle the distinctions required in these, ModemManager first needs
+            to know exactly which is the current set of capabilities.
+          </p>
+<p>
+            The other key step in this sequence involves <span class="emphasis"><em>checking the lock status
+            of the modem and/or SIM </em></span>. If the modem/SIM is found to be locked, the
+            whole initialization sequence is halted and the modem is left in a locked state
+            until unlocked by the user. Note, therefore, that modems that are locked will not
+            expose additional feature-specific DBus interfaces until they get unlocked.
+          </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>
+              It may be the case that some of the steps in the initialization of the Modem
+              interface require the modem itself to be unlocked. If the modem is found locked
+              during the first initialization attempt, as soon as it gets unlocked the
+              initialization sequence will be re-executed.
+            </p>
+</div>
+</li>
+<li class="listitem">
+<span class="emphasis"><em>3GPP interface initialization</em></span><p>
+            The <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html" title="org.freedesktop.ModemManager1.Modem.Modem3gpp">3GPP interface</a>
+            provides common actions and setup for modems which provide 3GPP capabilities. Therefore,
+            this interface initialization sequence will only be run in 3GPP-enabled modems.
+          </p>
+</li>
+<li class="listitem">
+<span class="emphasis"><em>CDMA interface initialization</em></span><p>
+            The <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html" title="org.freedesktop.ModemManager1.Modem.ModemCdma">CDMA interface</a>
+            provides common actions and setup for modems which provide CDMA capabilities. Therefore,
+            this interface initialization sequence will only be run in CDMA-enabled modems.
+          </p>
+</li>
+<li class="listitem">
+<p><span class="emphasis"><em>Additional feature-specific interface initializations</em></span></p>
+<p>
+            Modems with additional features will export feature-specific interfaces, such as
+            the <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html" title="org.freedesktop.ModemManager1.Modem.Location">Location</a> or
+            the <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html" title="org.freedesktop.ModemManager1.Modem.Location">Messaging</a>
+            ones.
+          </p>
+<p>
+            These interfaces also have their own initialization sequences, where the first step
+            in the sequence is always the check of whether the given modem supports the given feature.
+            In other words, modems will only end up exporting the interfaces for the features they
+            support.
+          </p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

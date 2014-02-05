@@ -625,11 +625,23 @@ test_com_read_mode_pref (void *f, void *data)
     case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_HDR_ONLY:
         msg = "HDR only";
         break;
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_GPRS_ONLY:
+        msg = "GPRS only";
+        break;
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_UMTS_ONLY:
+        msg = "UMTS only";
+        break;
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_GSM_UMTS_ONLY:
+        msg = "GSM and UMTS only";
+        break;
     case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_1X_HDR_ONLY:
         msg = "CDMA 1x and HDR only";
         break;
     case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_LTE_ONLY:
         msg = "LTE only";
+        break;
+    case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_GSM_UMTS_LTE_ONLY:
+        msg = "GSM/UMTS/LTE only";
         break;
     case QCDM_CMD_NV_MODE_PREF_ITEM_MODE_PREF_1X_HDR_LTE_ONLY:
         msg = "CDMA 1x, HDR, and LTE only";
@@ -639,6 +651,48 @@ test_com_read_mode_pref (void *f, void *data)
         break;
     }
     g_message ("%s: Mode preference: 0x%02X (%s)", __func__, pref, msg);
+
+    qcdm_result_unref (result);
+}
+
+void
+test_com_read_hybrid_pref (void *f, void *data)
+{
+    TestComData *d = data;
+    gboolean success;
+    int err = QCDM_SUCCESS;
+    char buf[512];
+    guint8 pref;
+    gint len;
+    QcdmResult *result;
+    gsize reply_len;
+
+    len = qcdm_cmd_nv_get_hybrid_pref_new (buf, sizeof (buf));
+    g_assert (len > 0);
+
+    /* Send the command */
+    success = send_command (d, buf, len);
+    g_assert (success);
+
+    /* Get a response */
+    reply_len = wait_reply (d, buf, sizeof (buf));
+
+    /* Parse the response into a result structure */
+    result = qcdm_cmd_nv_get_hybrid_pref_result (buf, reply_len, &err);
+    if (!result) {
+        if (   err == -QCDM_ERROR_NVCMD_FAILED
+            || err == -QCDM_ERROR_RESPONSE_BAD_PARAMETER
+            || err == -QCDM_ERROR_NV_ERROR_INACTIVE
+            || err == -QCDM_ERROR_NV_ERROR_BAD_PARAMETER)
+            return;
+        g_assert_cmpint (err, ==, QCDM_SUCCESS);
+    }
+
+    g_print ("\n");
+
+    err = qcdm_result_get_u8 (result, QCDM_CMD_NV_GET_HYBRID_PREF_ITEM_HYBRID_PREF, &pref);
+    g_assert_cmpint (err, ==, QCDM_SUCCESS);
+    g_message ("%s: Hybrid preference: 0x%02X", __func__, pref);
 
     qcdm_result_unref (result);
 }
@@ -878,6 +932,7 @@ test_com_status_snapshot (void *f, void *data)
     QcdmResult *result;
     gsize reply_len;
     guint8 n8;
+    guint32 n32;
 
     len = qcdm_cmd_status_snapshot_new (buf, sizeof (buf));
     g_assert (len == 4);
@@ -899,6 +954,10 @@ test_com_status_snapshot (void *f, void *data)
     g_assert (result);
 
     g_print ("\n");
+
+    n32 = 0;
+    qcdm_result_get_u32 (result, QCDM_CMD_STATUS_SNAPSHOT_ITEM_HOME_MCC, &n32);
+    g_message ("%s: Home MCC: %d", __func__, n32);
 
     n8 = 0;
     qcdm_result_get_u8 (result, QCDM_CMD_STATUS_SNAPSHOT_ITEM_BAND_CLASS, &n8);
@@ -1053,17 +1112,41 @@ test_com_cm_subsys_state_info (void *f, void *data)
     n32 = 0;
     qcdm_result_get_u32 (result, QCDM_CMD_CM_SUBSYS_STATE_INFO_ITEM_MODE_PREF, &n32);
     switch (n32) {
+    case QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_AMPS_ONLY:
+        detail = "AMPS only";
+        break;
     case QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_DIGITAL_ONLY:
         detail = "digital only";
         break;
     case QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_AUTO:
         detail = "automatic";
         break;
+    case QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_EMERGENCY:
+        detail = "emergency";
+        break;
     case QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_1X_ONLY:
         detail = "1X only";
         break;
     case QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_HDR_ONLY:
         detail = "HDR only";
+        break;
+    case QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_1X_AMPS_ONLY:
+        detail = "1x/AMPS only";
+        break;
+    case QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_GPS_ONLY:
+        detail = "GPS only";
+        break;
+    case QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_GSM_ONLY:
+        detail = "GSM only";
+        break;
+    case QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_WCDMA_ONLY:
+        detail = "WCDMA only";
+        break;
+    case QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_LTE_ONLY:
+        detail = "LTE only";
+        break;
+    case QCDM_CMD_CM_SUBSYS_STATE_INFO_MODE_PREF_GSM_WCDMA_LTE_ONLY:
+        detail = "GSM/WCDMA/LTE only";
         break;
     default:
         detail = "unknown";
@@ -1593,8 +1676,10 @@ test_com_nw_subsys_modem_snapshot_cdma (void *f, void *data)
     result = qcdm_cmd_nw_subsys_modem_snapshot_cdma_result (buf, reply_len, &err);
     if (!result) {
         /* Obviously not all devices implement this command */
-        g_assert_cmpint (err, ==, -QCDM_ERROR_RESPONSE_BAD_COMMAND);
-        return;
+        if (   err == -QCDM_ERROR_RESPONSE_BAD_COMMAND
+            || err == -QCDM_ERROR_RESPONSE_BAD_LENGTH)
+            return;
+        g_assert_cmpint (err, ==, QCDM_SUCCESS);
     }
     g_assert (result);
 
@@ -1612,6 +1697,66 @@ test_com_nw_subsys_modem_snapshot_cdma (void *f, void *data)
 
     qcdm_result_get_u8 (result, QCDM_CMD_NW_SUBSYS_MODEM_SNAPSHOT_CDMA_ITEM_HDR_REV, &num8);
     g_message ("%s: HDR Revision: %s", __func__, hdr_rev_to_string (num8));
+
+    qcdm_result_unref (result);
+}
+
+void
+test_com_nw_subsys_eri (void *f, void *data)
+{
+    TestComData *d = data;
+    gboolean success;
+    int err = QCDM_SUCCESS;
+    char buf[200];
+    gint len;
+    QcdmResult *result;
+    gsize reply_len;
+    guint8 num8 = 0;
+    const char *str = NULL;
+
+    len = qcdm_cmd_nw_subsys_eri_new (buf, sizeof (buf), QCDM_NW_CHIPSET_6800);
+    g_assert_cmpint (len, ==, 7);
+
+    /* Send the command */
+    success = send_command (d, buf, len);
+    g_assert (success);
+
+    /* Get a response */
+    reply_len = wait_reply (d, buf, sizeof (buf));
+
+    g_print ("\n");
+
+    /* Parse the response into a result structure */
+    result = qcdm_cmd_nw_subsys_eri_result (buf, reply_len, &err);
+    if (!result) {
+        /* Obviously not all devices implement this command */
+        if (   err == -QCDM_ERROR_RESPONSE_BAD_COMMAND
+            || err == -QCDM_ERROR_RESPONSE_BAD_LENGTH)
+            return;
+        g_assert_cmpint (err, ==, QCDM_SUCCESS);
+    }
+    g_assert (result);
+
+    qcdm_result_get_u8 (result, QCDM_CMD_NW_SUBSYS_ERI_ITEM_ROAM, &num8);
+    g_message ("%s: Roam: %d", __func__, num8);
+
+    qcdm_result_get_u8 (result, QCDM_CMD_NW_SUBSYS_ERI_ITEM_INDICATOR_ID, &num8);
+    g_message ("%s: Indicator ID: %d", __func__, num8);
+
+    qcdm_result_get_u8 (result, QCDM_CMD_NW_SUBSYS_ERI_ITEM_ICON_ID, &num8);
+    g_message ("%s: Icon ID: %d", __func__, num8);
+
+    qcdm_result_get_u8 (result, QCDM_CMD_NW_SUBSYS_ERI_ITEM_ICON_MODE, &num8);
+    g_message ("%s: Icon Mode: %d", __func__, num8);
+
+    qcdm_result_get_u8 (result, QCDM_CMD_NW_SUBSYS_ERI_ITEM_CALL_PROMPT_ID, &num8);
+    g_message ("%s: Call Prompt ID: %d", __func__, num8);
+
+    qcdm_result_get_u8 (result, QCDM_CMD_NW_SUBSYS_ERI_ITEM_ALERT_ID, &num8);
+    g_message ("%s: Alert ID: %d", __func__, num8);
+
+    qcdm_result_get_string (result, QCDM_CMD_NW_SUBSYS_ERI_ITEM_TEXT, &str);
+    g_message ("%s: Banner: '%s'", __func__, str);
 
     qcdm_result_unref (result);
 }

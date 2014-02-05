@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MMNetworkTimezone</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="libmm-glib Reference Manual">
+<link rel="up" href="ch03s05.html" title="Time support">
+<link rel="prev" href="MMModemTime.html" title="MMModemTime">
+<link rel="next" href="ch03s06.html" title="Firmware support">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="MMModemTime.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03s05.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libmm-glib Reference Manual</th>
+<td><a accesskey="n" href="ch03s06.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#MMNetworkTimezone.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#MMNetworkTimezone.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#MMNetworkTimezone.object-hierarchy" class="shortcut">Object Hierarchy</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="MMNetworkTimezone"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="MMNetworkTimezone.top_of_page"></a>MMNetworkTimezone</span></h2>
+<p>MMNetworkTimezone — Helper object to handle network timezone information.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="MMNetworkTimezone.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">struct              <a class="link" href="MMNetworkTimezone.html#MMNetworkTimezone-struct" title="struct MMNetworkTimezone">MMNetworkTimezone</a>;
+#define             <a class="link" href="MMNetworkTimezone.html#MM-NETWORK-TIMEZONE-OFFSET-UNKNOWN:CAPS" title="MM_NETWORK_TIMEZONE_OFFSET_UNKNOWN">MM_NETWORK_TIMEZONE_OFFSET_UNKNOWN</a>
+#define             <a class="link" href="MMNetworkTimezone.html#MM-NETWORK-TIMEZONE-LEAP-SECONDS-UNKNOWN:CAPS" title="MM_NETWORK_TIMEZONE_LEAP_SECONDS_UNKNOWN">MM_NETWORK_TIMEZONE_LEAP_SECONDS_UNKNOWN</a>
+
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="MMNetworkTimezone.html#mm-network-timezone-get-offset" title="mm_network_timezone_get_offset ()">mm_network_timezone_get_offset</a>      (<em class="parameter"><code><a class="link" href="MMNetworkTimezone.html" title="MMNetworkTimezone"><span class="type">MMNetworkTimezone</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="MMNetworkTimezone.html#mm-network-timezone-get-dst-offset" title="mm_network_timezone_get_dst_offset ()">mm_network_timezone_get_dst_offset</a>  (<em class="parameter"><code><a class="link" href="MMNetworkTimezone.html" title="MMNetworkTimezone"><span class="type">MMNetworkTimezone</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              <a class="link" href="MMNetworkTimezone.html#mm-network-timezone-get-leap-seconds" title="mm_network_timezone_get_leap_seconds ()">mm_network_timezone_get_leap_seconds</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMNetworkTimezone.html" title="MMNetworkTimezone"><span class="type">MMNetworkTimezone</span></a> *self</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMNetworkTimezone.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----MMNetworkTimezone
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMNetworkTimezone.description"></a><h2>Description</h2>
+<p>
+The <a class="link" href="MMNetworkTimezone.html" title="MMNetworkTimezone"><span class="type">MMNetworkTimezone</span></a> is an object handling the timezone information
+reported by the network.
+</p>
+<p>
+This object is retrieved with either <a class="link" href="MMModemTime.html#mm-modem-time-peek-network-timezone" title="mm_modem_time_peek_network_timezone ()"><code class="function">mm_modem_time_peek_network_timezone()</code></a>
+or <a class="link" href="MMModemTime.html#mm-modem-time-get-network-timezone" title="mm_modem_time_get_network_timezone ()"><code class="function">mm_modem_time_get_network_timezone()</code></a>.
+</p>
+</div>
+<div class="refsect1">
+<a name="MMNetworkTimezone.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="MMNetworkTimezone-struct"></a><h3>struct MMNetworkTimezone</h3>
+<pre class="programlisting">struct MMNetworkTimezone;</pre>
+<p>
+The <a class="link" href="MMNetworkTimezone.html" title="MMNetworkTimezone"><span class="type">MMNetworkTimezone</span></a> structure contains private data and should
+only be accessed using the provided API.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MM-NETWORK-TIMEZONE-OFFSET-UNKNOWN:CAPS"></a><h3>MM_NETWORK_TIMEZONE_OFFSET_UNKNOWN</h3>
+<pre class="programlisting">#define MM_NETWORK_TIMEZONE_OFFSET_UNKNOWN       G_MAXINT32
+</pre>
+<p>
+Identifier for an unknown timezone offset.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MM-NETWORK-TIMEZONE-LEAP-SECONDS-UNKNOWN:CAPS"></a><h3>MM_NETWORK_TIMEZONE_LEAP_SECONDS_UNKNOWN</h3>
+<pre class="programlisting">#define MM_NETWORK_TIMEZONE_LEAP_SECONDS_UNKNOWN G_MAXINT32
+</pre>
+<p>
+Identifier for an unknown leap seconds value.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-network-timezone-get-offset"></a><h3>mm_network_timezone_get_offset ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              mm_network_timezone_get_offset      (<em class="parameter"><code><a class="link" href="MMNetworkTimezone.html" title="MMNetworkTimezone"><span class="type">MMNetworkTimezone</span></a> *self</code></em>);</pre>
+<p>
+Gets the timezone offset (in minutes) reported by the network.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMNetworkTimezone.html" title="MMNetworkTimezone"><span class="type">MMNetworkTimezone</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the offset, or <a class="link" href="MMNetworkTimezone.html#MM-NETWORK-TIMEZONE-OFFSET-UNKNOWN:CAPS" title="MM_NETWORK_TIMEZONE_OFFSET_UNKNOWN"><code class="literal">MM_NETWORK_TIMEZONE_OFFSET_UNKNOWN</code></a> if unknown.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-network-timezone-get-dst-offset"></a><h3>mm_network_timezone_get_dst_offset ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              mm_network_timezone_get_dst_offset  (<em class="parameter"><code><a class="link" href="MMNetworkTimezone.html" title="MMNetworkTimezone"><span class="type">MMNetworkTimezone</span></a> *self</code></em>);</pre>
+<p>
+Gets the timezone offset due to daylight saving time (in minutes) reported by
+the network.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMNetworkTimezone.html" title="MMNetworkTimezone"><span class="type">MMNetworkTimezone</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the offset, or <a class="link" href="MMNetworkTimezone.html#MM-NETWORK-TIMEZONE-OFFSET-UNKNOWN:CAPS" title="MM_NETWORK_TIMEZONE_OFFSET_UNKNOWN"><code class="literal">MM_NETWORK_TIMEZONE_OFFSET_UNKNOWN</code></a> if unknown.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-network-timezone-get-leap-seconds"></a><h3>mm_network_timezone_get_leap_seconds ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"><span class="returnvalue">gint32</span></a>              mm_network_timezone_get_leap_seconds
+                                                        (<em class="parameter"><code><a class="link" href="MMNetworkTimezone.html" title="MMNetworkTimezone"><span class="type">MMNetworkTimezone</span></a> *self</code></em>);</pre>
+<p>
+Gets the number of leap seconds (TAI-UTC), as reported by the network.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMNetworkTimezone.html" title="MMNetworkTimezone"><span class="type">MMNetworkTimezone</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the number of leap seconds, or <a class="link" href="MMNetworkTimezone.html#MM-NETWORK-TIMEZONE-LEAP-SECONDS-UNKNOWN:CAPS" title="MM_NETWORK_TIMEZONE_LEAP_SECONDS_UNKNOWN"><code class="literal">MM_NETWORK_TIMEZONE_LEAP_SECONDS_UNKNOWN</code></a> if unknown.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

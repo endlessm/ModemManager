@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MMLocationGpsRaw</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="libmm-glib Reference Manual">
+<link rel="up" href="ch03s03.html" title="Location support">
+<link rel="prev" href="MMLocationGpsNmea.html" title="MMLocationGpsNmea">
+<link rel="next" href="libmm-glib-MMLocationCdmaBs.html" title="MMLocationCdmaBs">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="MMLocationGpsNmea.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03s03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libmm-glib Reference Manual</th>
+<td><a accesskey="n" href="libmm-glib-MMLocationCdmaBs.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#MMLocationGpsRaw.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#MMLocationGpsRaw.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#MMLocationGpsRaw.object-hierarchy" class="shortcut">Object Hierarchy</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="MMLocationGpsRaw"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="MMLocationGpsRaw.top_of_page"></a>MMLocationGpsRaw</span></h2>
+<p>MMLocationGpsRaw — Helper object to handle generic GPS location information.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="MMLocationGpsRaw.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">struct              <a class="link" href="MMLocationGpsRaw.html#MMLocationGpsRaw-struct" title="struct MMLocationGpsRaw">MMLocationGpsRaw</a>;
+
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMLocationGpsRaw.html#mm-location-gps-raw-get-utc-time" title="mm_location_gps_raw_get_utc_time ()">mm_location_gps_raw_get_utc_time</a>    (<em class="parameter"><code><a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="MMLocationGpsRaw.html#mm-location-gps-raw-get-longitude" title="mm_location_gps_raw_get_longitude ()">mm_location_gps_raw_get_longitude</a>   (<em class="parameter"><code><a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="MMLocationGpsRaw.html#mm-location-gps-raw-get-latitude" title="mm_location_gps_raw_get_latitude ()">mm_location_gps_raw_get_latitude</a>    (<em class="parameter"><code><a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="MMLocationGpsRaw.html#mm-location-gps-raw-get-altitude" title="mm_location_gps_raw_get_altitude ()">mm_location_gps_raw_get_altitude</a>    (<em class="parameter"><code><a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a> *self</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMLocationGpsRaw.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----MMLocationGpsRaw
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMLocationGpsRaw.description"></a><h2>Description</h2>
+<p>
+The <a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a> is an object handling the location information of the
+modem when this is reported by GPS.
+</p>
+<p>
+This object is retrieved with either <a class="link" href="MMModemLocation.html#mm-modem-location-get-gps-raw" title="mm_modem_location_get_gps_raw ()"><code class="function">mm_modem_location_get_gps_raw()</code></a>,
+<a class="link" href="MMModemLocation.html#mm-modem-location-get-gps-raw-sync" title="mm_modem_location_get_gps_raw_sync ()"><code class="function">mm_modem_location_get_gps_raw_sync()</code></a>, <a class="link" href="MMModemLocation.html#mm-modem-location-get-full" title="mm_modem_location_get_full ()"><code class="function">mm_modem_location_get_full()</code></a> or
+<a class="link" href="MMModemLocation.html#mm-modem-location-get-full-sync" title="mm_modem_location_get_full_sync ()"><code class="function">mm_modem_location_get_full_sync()</code></a>.
+</p>
+</div>
+<div class="refsect1">
+<a name="MMLocationGpsRaw.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="MMLocationGpsRaw-struct"></a><h3>struct MMLocationGpsRaw</h3>
+<pre class="programlisting">struct MMLocationGpsRaw;</pre>
+<p>
+The <a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a> structure contains private data and should
+only be accessed using the provided API.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-location-gps-raw-get-utc-time"></a><h3>mm_location_gps_raw_get_utc_time ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_location_gps_raw_get_utc_time    (<em class="parameter"><code><a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a> *self</code></em>);</pre>
+<p>
+Gets the UTC time of the location being reported.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a string with the UTC time, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if unknown. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-location-gps-raw-get-longitude"></a><h3>mm_location_gps_raw_get_longitude ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             mm_location_gps_raw_get_longitude   (<em class="parameter"><code><a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a> *self</code></em>);</pre>
+<p>
+Gets the longitude, in the [-180,180] range.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the longitude, or <a class="link" href="MMModemLocation.html#MM-LOCATION-LONGITUDE-UNKNOWN:CAPS" title="MM_LOCATION_LONGITUDE_UNKNOWN"><code class="literal">MM_LOCATION_LONGITUDE_UNKNOWN</code></a> if unknown.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-location-gps-raw-get-latitude"></a><h3>mm_location_gps_raw_get_latitude ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             mm_location_gps_raw_get_latitude    (<em class="parameter"><code><a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a> *self</code></em>);</pre>
+<p>
+Gets the latitude, in the [-90,90] range.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the latitude, or <a class="link" href="MMModemLocation.html#MM-LOCATION-LATITUDE-UNKNOWN:CAPS" title="MM_LOCATION_LATITUDE_UNKNOWN"><code class="literal">MM_LOCATION_LATITUDE_UNKNOWN</code></a> if unknown.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-location-gps-raw-get-altitude"></a><h3>mm_location_gps_raw_get_altitude ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             mm_location_gps_raw_get_altitude    (<em class="parameter"><code><a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a> *self</code></em>);</pre>
+<p>
+Gets the altitude, in the [-90,90] range.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the altitude, or <a class="link" href="MMModemLocation.html#MM-LOCATION-ALTITUDE-UNKNOWN:CAPS" title="MM_LOCATION_ALTITUDE_UNKNOWN"><code class="literal">MM_LOCATION_ALTITUDE_UNKNOWN</code></a> if unknown.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>org.freedesktop.ModemManager1.Modem.Location</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="ModemManager Reference Manual">
+<link rel="up" href="ref-dbus-object-modem.html" title="The /org/freedesktop/ModemManager/Modems objects">
+<link rel="prev" href="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html" title="org.freedesktop.ModemManager1.Modem.Messaging">
+<link rel="next" href="gdbus-org.freedesktop.ModemManager1.Modem.Time.html" title="org.freedesktop.ModemManager1.Modem.Time">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ref-dbus-object-modem.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">ModemManager Reference Manual</th>
+<td><a accesskey="n" href="gdbus-org.freedesktop.ModemManager1.Modem.Time.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#gdbus-org.freedesktop.ModemManager1.Modem.Location.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Location.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Location.properties" class="shortcut">Properties</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="gdbus-org.freedesktop.ModemManager1.Modem.Location"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Location.top_of_page"></a>org.freedesktop.ModemManager1.Modem.Location</span></h2>
+<p>org.freedesktop.ModemManager1.Modem.Location — The ModemManager Location interface.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Methods</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Location.Setup" title="The Setup() method">Setup</a>       (IN  u     sources,
+             IN  b     signal_location);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Location.GetLocation" title="The GetLocation() method">GetLocation</a> (OUT a{uv} Location);
+</pre>
+</div>
+<div class="refsect1">
+<a name="idm266931584784"></a><h2>Properties</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Location.Capabilities" title='The "Capabilities" property'>Capabilities</a>     readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Location.Enabled" title='The "Enabled" property'>Enabled</a>          readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Location.SignalsLocation" title='The "SignalsLocation" property'>SignalsLocation</a>  readable   b
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Location.Location" title='The "Location" property'>Location</a>         readable   a{uv}
+</pre>
+</div>
+<div class="refsect1">
+<a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Location"></a><h2>Description</h2>
+<p>      The Location interface allows devices to provide location information to
+      client applications. Not all devices can provide this information, or even
+      if they do, they may not be able to provide it while a data session is
+      active.
+</p>
+</div>
+<div class="refsect1">
+<a name="gdbus-methods-org.freedesktop.ModemManager1.Modem.Location"></a><h2>Method Details</h2>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Location.Setup"></a><h3>The Setup() method</h3>
+<pre class="programlisting">
+Setup (IN  u sources,
+       IN  b signal_location);
+</pre>
+<p>        Configure the location sources to use when gathering location
+        information. Also enable or disable location information gathering.
+        This method may require the client to authenticate itself.
+</p>
+<p>        When signals are emitted, any client application (including malicious
+        ones!) can listen for location updates unless D-Bus permissions restrict
+        these signals from certain users. If further security is desired, the
+        <em class="parameter"><code>signal_location</code></em> argument can be set to <code class="constant">FALSE</code> to disable location
+        updates via D-Bus signals and require applications to call
+        authenticated APIs (like
+        <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Location.GetLocation" title="The GetLocation() method">GetLocation()</a>
+        ) to get
+        location information.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN u <em class="parameter"><code>sources</code></em></code>:</span></p></td>
+<td><p>Bitmask of <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemLocationSource" title="enum MMModemLocationSource">MMModemLocationSource</a> flags, specifying which sources should get enabled or disabled. <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-MODEM-LOCATION-SOURCE-NONE:CAPS">MM_MODEM_LOCATION_SOURCE_NONE</a> will disable all location gathering.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">IN b <em class="parameter"><code>signal_location</code></em></code>:</span></p></td>
+<td><p>Flag to control whether the device emits signals with the new location information. This argument is ignored when disabling location information gathering.</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Location.GetLocation"></a><h3>The GetLocation() method</h3>
+<pre class="programlisting">
+GetLocation (OUT a{uv} Location);
+</pre>
+<p>        Return current location information, if any. If the modem supports
+        multiple location types it may return more than one. See the
+        <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Location.Location" title='The "Location" property'>"Location"</a> property
+        for more information on the dictionary returned at <em class="parameter"><code>location</code></em>.
+</p>
+<p>        This method may require the client to authenticate itself.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">OUT a{uv} <em class="parameter"><code>Location</code></em></code>:</span></p></td>
+<td><p></p></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-properties-org.freedesktop.ModemManager1.Modem.Location"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Location.Capabilities"></a><h3>The "Capabilities" property</h3>
+<pre class="programlisting">
+Capabilities  readable   u
+</pre>
+<p>        Bitmask of <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemLocationSource" title="enum MMModemLocationSource">MMModemLocationSource</a>
+        values, specifying the supported location sources.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Location.Enabled"></a><h3>The "Enabled" property</h3>
+<pre class="programlisting">
+Enabled  readable   u
+</pre>
+<p>        Bitmask specifying which of the supported
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemLocationSource" title="enum MMModemLocationSource">MMModemLocationSource</a>
+        location sources is currently enabled in the device.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Location.SignalsLocation"></a><h3>The "SignalsLocation" property</h3>
+<pre class="programlisting">
+SignalsLocation  readable   b
+</pre>
+<p>        <code class="constant">TRUE</code> if location updates will be emitted via D-Bus signals, <code class="constant">FALSE</code> if
+        location updates will not be emitted.
+</p>
+<p>        See the
+        <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Location.Setup" title="The Setup() method">Setup()</a>
+        method for more information.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Location.Location"></a><h3>The "Location" property</h3>
+<pre class="programlisting">
+Location  readable   a{uv}
+</pre>
+<p>        Dictionary of available location information when location information
+        gathering is enabled. If the modem supports multiple location types it
+        may return more than one here.
+</p>
+<p>        Note that if the device was told not to emit updated location
+        information when location information gathering was initially enabled,
+        this property may not return any location information for security reasons.
+</p>
+<p>        This dictionary is composed of a
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemLocationSource" title="enum MMModemLocationSource">MMModemLocationSource</a>
+        key, with an associated data which contains type-specific location
+        information:
+</p>
+<p>        </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-MODEM-LOCATION-SOURCE-3GPP-LAC-CI:CAPS">MM_MODEM_LOCATION_SOURCE_3GPP_LAC_CI</a></span></p></td>
+<td>
+<p>
+              Devices supporting this
+              capability return a string in the format <code class="literal">"MCC,MNC,LAC,CI"</code> (without the
+              quotes of course) where the following applies:
+            </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">MCC</code></span></p></td>
+<td>
+                  This is the three-digit ITU E.212 Mobile Country Code of the
+                  network provider to which the mobile is currently registered.
+                  e.g. <code class="literal">"310"</code>.
+                </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">MNC</code></span></p></td>
+<td>
+                  This is the two- or three-digit GSM Mobile Network Code of the
+                  network provider to which the mobile is currently registered.
+                  e.g. <code class="literal">"26"</code> or <code class="literal">"260"</code>.
+                </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">LAC</code></span></p></td>
+<td>
+                  This is the two-byte Location Area Code of the base station with
+                  which the mobile is registered, in upper-case hexadecimal format
+                  without leading zeros, as specified in 3GPP TS 27.007 section
+                  10.1.19. e.g. <code class="literal">"84CD"</code>.
+                </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">CI</code></span></p></td>
+<td>
+                  This is the two- or four-byte Cell Identifier with which the mobile
+                  is registered, in upper-case hexadecimal format without leading
+                  zeros, as specified in 3GPP TS 27.007.
+                  e.g. <code class="literal">"2BAF"</code> or <code class="literal">"D30156"</code>.
+                </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+              The entire string may only be composed of the ASCII digits <code class="literal">[0-9]</code>,
+              the alphabetical characters <code class="literal">[A-F]</code>, and the comma (<code class="literal">,</code>) character.
+              No other characters are allowed.  For example: <code class="literal">"310,260,8BE3,2BAF"</code> or
+              <code class="literal">"250,40,CE00,1CEAD8F0"</code>.
+            </p>
+<p>
+              If any of these four items (<code class="literal">MCC</code>, <code class="literal">MNC</code>,
+              <code class="literal">LAC</code>, <code class="literal">CI</code>) is unknown or the
+              mobile is not registered with a network, then the
+              <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-MODEM-LOCATION-SOURCE-3GPP-LAC-CI:CAPS">MM_MODEM_LOCATION_SOURCE_3GPP_LAC_CI</a>
+              location
+              information item should not be provided as a returned value from the
+              <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Location.GetLocation" title="The GetLocation() method">GetLocation()</a>
+              method or in the <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Location.Location" title='The "Location" property'>"Location"</a> property.
+            </p>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-MODEM-LOCATION-SOURCE-GPS-RAW:CAPS">MM_MODEM_LOCATION_SOURCE_GPS_RAW</a></span></p></td>
+<td>
+<p>
+              Devices supporting this
+              capability return a D-Bus dictionary (signature <code class="literal">"a{sv}"</code>) mapping well-known
+              keys to values with defined formats.
+            </p>
+<p>
+              The allowed key/value pairs and their formats are:
+            </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">"utc-time"</code></span></p></td>
+<td>
+                  (Required) UTC time in ISO 8601 format, given as a string value (signature <code class="literal">"s"</code>). e.g. <code class="literal">203015</code>.
+                </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"latitude"</code></span></p></td>
+<td>
+                  (Required) Latitude in Decimal Degrees (positive numbers mean N quadrasphere, negative mean S quadrasphere), given as a double value (signature <code class="literal">"d"</code>). e.g. <code class="literal">38.889722</code>, meaning 38d 53' 22" N.
+                </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"longitude"</code></span></p></td>
+<td>
+                  (Required) Longitude in Decimal Degrees (positive numbers mean E quadrasphere, negative mean W quadrasphere), given as a double value (signature <code class="literal">"d"</code>). e.g. <code class="literal">-77.008889</code>, meaning 77d 0' 32" W.
+                </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"altitude"</code></span></p></td>
+<td>
+                  (Optional) Altitude above sea level in meters, given as a double value (signature <code class="literal">"d"</code>). e.g. <code class="literal">33.5</code>.
+                </td>
+</tr>
+</tbody>
+</table></div>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-MODEM-LOCATION-SOURCE-GPS-NMEA:CAPS">MM_MODEM_LOCATION_SOURCE_GPS_NMEA</a></span></p></td>
+<td>
+<p>
+              Devices supporting this capability return
+              a string containing one or more NMEA sentences (D-Bus signature <code class="literal">'s'</code>).
+              The manager will cache the most recent NMEA sentence of each type for
+              a period of time not less than 30 seconds.  When reporting multiple
+              NMEA sentences, sentences shall be separated by an ASCII Carriage
+              Return and Line Feed (<code class="literal">&lt;CR&gt;&lt;LF&gt;</code>) sequence.
+            </p>
+<p>
+              For example, if the device sends a <code class="literal">$GPRMC</code> sentence immediately
+              followed by a <code class="literal">$GPGGA</code> sentence, the reported location string would be
+              (where of course the <code class="literal">&lt;CR&gt;&lt;LF&gt;</code> is replaced with the actual
+              ASCII <code class="literal">CR</code> (0x0D) and <code class="literal">LF</code> (0x0A) control characters):
+              </p>
+<p><code class="literal">
+                $GPRMC,134523.92,V,,,,,,,030136,,,N*73&lt;CR&gt;&lt;LF&gt;$GPGGA,,,,,,0,00,0.5,,M,0.0001999,M,0.0000099,0000*45
+              </code></p>
+<p>
+              If the device sends a new <code class="literal">$GPRMC</code> three seconds later, the new <code class="literal">$GPRMC</code>
+              replaces the previously received <code class="literal">$GPRMC</code> sentence, and the updated
+              string would be:
+              </p>
+<p><code class="literal">
+                $GPRMC,134526.92,V,,,,,,,030136,,,N*76&lt;CR&gt;&lt;LF&gt;$GPGGA,,,,,,0,00,0.5,,M,0.0001999,M,0.0000099,0000*45
+              </code></p>
+<p>
+              If the device then sends a <code class="literal">$GPGSA</code> sentence about 5 seconds later, the
+              <code class="literal">$GPGSA</code> sentence is added to the string (since no <code class="literal">$GPGSA</code> sentence was
+              obviously received in this session), the updated string would be:
+              </p>
+<p><code class="literal">
+                $GPRMC,134526.92,V,,,,,,,030136,,,N*76&lt;CR&gt;&lt;LF&gt;$GPGGA,,,,,,0,00,0.5,,M,0.0001999,M,0.0000099,0000*45&lt;CR&gt;&lt;LF&gt;$GPGSA,A,1,,,,,,,,,,,,,1.1,0.5,1.0*34
+              </code></p>
+<p>
+              The manager may discard any cached sentences older than 30 seconds.
+            </p>
+<p>
+              This allows clients to read the latest positioning data as soon as
+              possible after they start, even if the device is not providing
+              frequent location data updates.
+            </p>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-MODEM-LOCATION-SOURCE-CDMA-BS:CAPS">MM_MODEM_LOCATION_SOURCE_CDMA_BS</a></span></p></td>
+<td>
+<p>
+              Devices supporting this
+              capability return a D-Bus dictionary (signature <code class="literal">"a{sv}"</code>) mapping well-known
+              keys to values with defined formats.
+            </p>
+<p>
+              The allowed key/value pairs and their formats are:
+            </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">"latitude"</code></span></p></td>
+<td>
+                  (Required) Latitude in Decimal Degrees (positive numbers mean N quadrasphere, negative mean S quadrasphere), given as a double value (signature <code class="literal">"d"</code>). e.g. <code class="literal">38.889722</code>, meaning 38d 53' 22" N.
+                </td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"longitude"</code></span></p></td>
+<td>
+                  (Required) Longitude in Decimal Degrees (positive numbers mean E quadrasphere, negative mean W quadrasphere), given as a double value (signature <code class="literal">"d"</code>). e.g. <code class="literal">-77.008889</code>, meaning 77d 0' 32" W.
+                </td>
+</tr>
+</tbody>
+</table></div>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

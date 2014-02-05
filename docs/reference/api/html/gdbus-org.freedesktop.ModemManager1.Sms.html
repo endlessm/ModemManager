@@ -1,0 +1,297 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>org.freedesktop.ModemManager1.Sms</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="ModemManager Reference Manual">
+<link rel="up" href="ref-dbus-object-sms.html" title="The /org/freedesktop/ModemManager/SMSs objects">
+<link rel="prev" href="ref-dbus-object-sms.html" title="The /org/freedesktop/ModemManager/SMSs objects">
+<link rel="next" href="ix01.html" title="Index">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="ref-dbus-object-sms.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ref-dbus-object-sms.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">ModemManager Reference Manual</th>
+<td><a accesskey="n" href="ix01.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#gdbus-org.freedesktop.ModemManager1.Sms.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Sms.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Sms.properties" class="shortcut">Properties</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="gdbus-org.freedesktop.ModemManager1.Sms"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="gdbus-interface-org-freedesktop-ModemManager1-Sms.top_of_page"></a>org.freedesktop.ModemManager1.Sms</span></h2>
+<p>org.freedesktop.ModemManager1.Sms — The ModemManager SMS interface.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Methods</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-method-org-freedesktop-ModemManager1-Sms.Send" title="The Send() method">Send</a>  ();
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-method-org-freedesktop-ModemManager1-Sms.Store" title="The Store() method">Store</a> (IN  u storage);
+</pre>
+</div>
+<div class="refsect1">
+<a name="idm266929424032"></a><h2>Properties</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.State" title='The "State" property'>State</a>                  readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.PduType" title='The "PduType" property'>PduType</a>                readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Number" title='The "Number" property'>Number</a>                 readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Text" title='The "Text" property'>Text</a>                   readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Data" title='The "Data" property'>Data</a>                   readable   ay
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.SMSC" title='The "SMSC" property'>SMSC</a>                   readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Validity" title='The "Validity" property'>Validity</a>               readable   (uv)
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Class" title='The "Class" property'>Class</a>                  readable   i
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.DeliveryReportRequest" title='The "DeliveryReportRequest" property'>DeliveryReportRequest</a>  readable   b
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.MessageReference" title='The "MessageReference" property'>MessageReference</a>       readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Timestamp" title='The "Timestamp" property'>Timestamp</a>              readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.DischargeTimestamp" title='The "DischargeTimestamp" property'>DischargeTimestamp</a>     readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.DeliveryState" title='The "DeliveryState" property'>DeliveryState</a>          readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Storage" title='The "Storage" property'>Storage</a>                readable   u
+</pre>
+</div>
+<div class="refsect1">
+<a name="gdbus-interface-org-freedesktop-ModemManager1-Sms"></a><h2>Description</h2>
+<p>      The SMS interface Defines operations and properties of a single SMS message.
+</p>
+</div>
+<div class="refsect1">
+<a name="gdbus-methods-org.freedesktop.ModemManager1.Sms"></a><h2>Method Details</h2>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Sms.Send"></a><h3>The Send() method</h3>
+<pre class="programlisting">
+Send ();
+</pre>
+<p>        If the message has not yet been sent, queue it for delivery.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Sms.Store"></a><h3>The Store() method</h3>
+<pre class="programlisting">
+Store (IN  u storage);
+</pre>
+<p>        Store the message in the device if not already done.
+</p>
+<p>        This method requires a <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsStorage" title="enum MMSmsStorage">MMSmsStorage</a>
+        value, describing the storage where this message is to be kept; or
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-SMS-STORAGE-UNKNOWN:CAPS"><code class="constant">MM_SMS_STORAGE_UNKNOWN</code></a>
+        if the default storage should be used.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN u <em class="parameter"><code>storage</code></em></code>:</span></p></td>
+<td><p></p></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-properties-org.freedesktop.ModemManager1.Sms"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sms.State"></a><h3>The "State" property</h3>
+<pre class="programlisting">
+State  readable   u
+</pre>
+<p>        A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsState" title="enum MMSmsState">MMSmsState</a> value,
+        describing the state of the message.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sms.PduType"></a><h3>The "PduType" property</h3>
+<pre class="programlisting">
+PduType  readable   u
+</pre>
+<p>        A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsPduType" title="enum MMSmsPduType">MMSmsPduType</a> value,
+        describing the type of PDUs used in the SMS message.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sms.Number"></a><h3>The "Number" property</h3>
+<pre class="programlisting">
+Number  readable   s
+</pre>
+<p>        Number to which the message is addressed.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sms.Text"></a><h3>The "Text" property</h3>
+<pre class="programlisting">
+Text  readable   s
+</pre>
+<p>        Message text, in UTF-8.
+</p>
+<p>        When sending, if the text is larger than the limit of the technology or
+        modem, the message will be broken into multiple parts or messages.
+</p>
+<p>        Note that Text and Data are never given at the same time.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sms.Data"></a><h3>The "Data" property</h3>
+<pre class="programlisting">
+Data  readable   ay
+</pre>
+<p>        Message data.
+</p>
+<p>        When sending, if the data is larger than the limit of the technology or
+        modem, the message will be broken into multiple parts or messages.
+</p>
+<p>        Note that Text and Data are never given at the same time.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sms.SMSC"></a><h3>The "SMSC" property</h3>
+<pre class="programlisting">
+SMSC  readable   s
+</pre>
+<p>        Indicates the SMS service center number.
+</p>
+<p>        Always empty for 3GPP2/CDMA.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sms.Validity"></a><h3>The "Validity" property</h3>
+<pre class="programlisting">
+Validity  readable   (uv)
+</pre>
+<p>        Indicates when the SMS expires in the SMSC.
+</p>
+<p>        This value is composed of a
+	<a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsValidityType" title="enum MMSmsValidityType">MMSmsValidityType</a>
+	key, with an associated data which contains type-specific validity
+	information:
+</p>
+<p>	</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-SMS-VALIDITY-TYPE-RELATIVE:CAPS">MM_SMS_VALIDITY_TYPE_RELATIVE</a></span></p></td>
+<td><p>
+	      The value is the length of the validity period in minutes, given
+	      as an unsigned integer (D-Bus signature <code class="literal">'u'</code>).
+            </p></td>
+</tr></tbody>
+</table></div>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sms.Class"></a><h3>The "Class" property</h3>
+<pre class="programlisting">
+Class  readable   i
+</pre>
+<p>        3GPP message class (-1..3).  -1 means class is not available or
+        is not used for this message, otherwise the 3GPP SMS message class.
+</p>
+<p>        Always -1 for 3GPP2/CDMA.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sms.DeliveryReportRequest"></a><h3>The "DeliveryReportRequest" property</h3>
+<pre class="programlisting">
+DeliveryReportRequest  readable   b
+</pre>
+<p>        #TRUE if delivery report request is required, #FALSE otherwise.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sms.MessageReference"></a><h3>The "MessageReference" property</h3>
+<pre class="programlisting">
+MessageReference  readable   u
+</pre>
+<p>        Message Reference of the last PDU sent/received within this SMS.
+</p>
+<p>        If the PDU type is
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-STATUS-REPORT:CAPS"><code class="constant">MM_SMS_PDU_TYPE_STATUS_REPORT</code></a>,
+        this field identifies the Message Reference of the PDU associated to the status report.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sms.Timestamp"></a><h3>The "Timestamp" property</h3>
+<pre class="programlisting">
+Timestamp  readable   s
+</pre>
+<p>        Time when the first PDU of the SMS message arrived the SMSC, in
+        <a class="ulink" href="http://en.wikipedia.org/wiki/ISO_8601" target="_top">ISO8601</a>
+        format.
+        This field is only applicable if the PDU type is
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-DELIVER:CAPS"><code class="constant">MM_SMS_PDU_TYPE_DELIVER</code></a>.
+        or
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-STATUS-REPORT:CAPS"><code class="constant">MM_SMS_PDU_TYPE_STATUS_REPORT</code></a>.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sms.DischargeTimestamp"></a><h3>The "DischargeTimestamp" property</h3>
+<pre class="programlisting">
+DischargeTimestamp  readable   s
+</pre>
+<p>        Time when the first PDU of the SMS message left the SMSC, in
+        <a class="ulink" href="http://en.wikipedia.org/wiki/ISO_8601" target="_top">ISO8601</a>
+        format.
+</p>
+<p>        This field is only applicable if the PDU type is
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-STATUS-REPORT:CAPS"><code class="constant">MM_SMS_PDU_TYPE_STATUS_REPORT</code></a>.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sms.DeliveryState"></a><h3>The "DeliveryState" property</h3>
+<pre class="programlisting">
+DeliveryState  readable   u
+</pre>
+<p>        A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsDeliveryState" title="enum MMSmsDeliveryState">MMSmsDeliveryState</a> value,
+        describing the state of the delivery reported in the Status Report message.
+</p>
+<p>        This field is only applicable if the PDU type is
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-STATUS-REPORT:CAPS"><code class="constant">MM_SMS_PDU_TYPE_STATUS_REPORT</code></a>.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sms.Storage"></a><h3>The "Storage" property</h3>
+<pre class="programlisting">
+Storage  readable   u
+</pre>
+<p>        A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsStorage" title="enum MMSmsStorage">MMSmsStorage</a> value,
+        describing the storage where this message is kept.
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

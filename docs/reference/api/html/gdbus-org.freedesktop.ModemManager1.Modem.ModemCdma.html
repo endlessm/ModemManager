@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>org.freedesktop.ModemManager1.Modem.ModemCdma</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="ModemManager Reference Manual">
+<link rel="up" href="ref-dbus-object-modem.html" title="The /org/freedesktop/ModemManager/Modems objects">
+<link rel="prev" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.html" title="org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd">
+<link rel="next" href="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html" title="org.freedesktop.ModemManager1.Modem.Messaging">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ref-dbus-object-modem.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">ModemManager Reference Manual</th>
+<td><a accesskey="n" href="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.properties" class="shortcut">Properties</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.signals" class="shortcut">Signals</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-ModemCdma.top_of_page"></a>org.freedesktop.ModemManager1.Modem.ModemCdma</span></h2>
+<p>org.freedesktop.ModemManager1.Modem.ModemCdma — The ModemManager CDMA interface.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Methods</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-method-org-freedesktop-ModemManager1-Modem-ModemCdma.Activate" title="The Activate() method">Activate</a>       (IN  s     carrier_code);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-method-org-freedesktop-ModemManager1-Modem-ModemCdma.ActivateManual" title="The ActivateManual() method">ActivateManual</a> (IN  a{sv} properties);
+</pre>
+</div>
+<div class="refsect1">
+<a name="idm266930845344"></a><h2>Signals</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-ModemCdma.ActivationStateChanged" title='The "ActivationStateChanged" signal'>ActivationStateChanged</a> (u     activation_state,
+                        u     activation_error,
+                        a{sv} status_changes);
+</pre>
+</div>
+<div class="refsect1">
+<a name="idm266929185104"></a><h2>Properties</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.ActivationState" title='The "ActivationState" property'>ActivationState</a>          readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.Meid" title='The "Meid" property'>Meid</a>                     readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.Esn" title='The "Esn" property'>Esn</a>                      readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.Sid" title='The "Sid" property'>Sid</a>                      readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.Nid" title='The "Nid" property'>Nid</a>                      readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.Cdma1xRegistrationState" title='The "Cdma1xRegistrationState" property'>Cdma1xRegistrationState</a>  readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.EvdoRegistrationState" title='The "EvdoRegistrationState" property'>EvdoRegistrationState</a>    readable   u
+</pre>
+</div>
+<div class="refsect1">
+<a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-ModemCdma"></a><h2>Description</h2>
+<p>      This interface provides access to specific actions that may be performed
+      in modems with CDMA capabilities.
+</p>
+</div>
+<div class="refsect1">
+<a name="gdbus-methods-org.freedesktop.ModemManager1.Modem.ModemCdma"></a><h2>Method Details</h2>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-ModemCdma.Activate"></a><h3>The Activate() method</h3>
+<pre class="programlisting">
+Activate (IN  s carrier_code);
+</pre>
+<p>        Provisions the modem for use with a given carrier using the modem's
+        <a class="ulink" href="http://en.wikipedia.org/wiki/Over-the-air_programming" target="_top">Over-The-Air (OTA)</a>
+        activation functionality, if any.
+</p>
+<p>        Some modems will reboot after this call is made.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>carrier_code</code></em></code>:</span></p></td>
+<td><p>Name of carrier, or carrier-specific code.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-ModemCdma.ActivateManual"></a><h3>The ActivateManual() method</h3>
+<pre class="programlisting">
+ActivateManual (IN  a{sv} properties);
+</pre>
+<p>        Sets the modem provisioning data directly, without contacting the
+        carrier over the air.
+</p>
+<p>        Some modems will reboot after this call is made.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>properties</code></em></code>:</span></p></td>
+<td><p>A dictionary of properties to set on the modem, including <code class="literal">"mdn"</code> and <code class="literal">"min"</code>.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-signals-org.freedesktop.ModemManager1.Modem.ModemCdma"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="gdbus-signal-org-freedesktop-ModemManager1-Modem-ModemCdma.ActivationStateChanged"></a><h3>The "ActivationStateChanged" signal</h3>
+<pre class="programlisting">
+ActivationStateChanged (u     activation_state,
+                        u     activation_error,
+                        a{sv} status_changes);
+</pre>
+<p>        The device activation state changed.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">u <em class="parameter"><code>activation_state</code></em></code>:</span></p></td>
+<td><p>Current activation state, given as a <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemCdmaActivationState" title="enum MMModemCdmaActivationState">MMModemCdmaActivationState</a>.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">u <em class="parameter"><code>activation_error</code></em></code>:</span></p></td>
+<td><p>Carrier-specific error code, given as a <a class="link" href="ModemManager-Errors.html#MMCdmaActivationError" title="enum MMCdmaActivationError">MMCdmaActivationError</a>.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">a{sv} <em class="parameter"><code>status_changes</code></em></code>:</span></p></td>
+<td><p>Properties that have changed as a result of this activation state chage, including <code class="literal">"mdn"</code> and <code class="literal">"min"</code>. The dictionary may be empty if the changed properties are unknown.</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-properties-org.freedesktop.ModemManager1.Modem.ModemCdma"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.ActivationState"></a><h3>The "ActivationState" property</h3>
+<pre class="programlisting">
+ActivationState  readable   u
+</pre>
+<p>        A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemCdmaActivationState" title="enum MMModemCdmaActivationState">MMModemCdmaActivationState</a>
+        value specifying the state of the activation in the 3GPP2 network.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.Meid"></a><h3>The "Meid" property</h3>
+<pre class="programlisting">
+Meid  readable   s
+</pre>
+<p>        The modem's <a class="ulink" href="http://en.wikipedia.org/wiki/MEID" target="_top">Mobile Equipment Identifier</a>.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.Esn"></a><h3>The "Esn" property</h3>
+<pre class="programlisting">
+Esn  readable   s
+</pre>
+<p>        The modem's
+        <a class="ulink" href="http://en.wikipedia.org/wiki/Electronic_serial_number" target="_top">Electronic Serial Number</a>
+        (superceded by MEID but still used by older devices).
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.Sid"></a><h3>The "Sid" property</h3>
+<pre class="programlisting">
+Sid  readable   u
+</pre>
+<p>        The
+        <a class="ulink" href="http://en.wikipedia.org/wiki/System_Identification_Number" target="_top">System Identifier</a>
+        of the serving CDMA 1x network, if known, and
+        if the modem is registered with a CDMA 1x network.
+</p>
+<p>        See <a class="ulink" href="http://ifast.org" target="_top">ifast.org</a> or the mobile
+        broadband provider database for mappings of SIDs to network providers.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.Nid"></a><h3>The "Nid" property</h3>
+<pre class="programlisting">
+Nid  readable   u
+</pre>
+<p>        The
+        <a class="ulink" href="http://en.wikipedia.org/wiki/Network_Identification_Number" target="_top">Network Identifier</a>
+        of the serving CDMA 1x network, if known, and
+        if the modem is registered with a CDMA 1x network.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.Cdma1xRegistrationState"></a><h3>The "Cdma1xRegistrationState" property</h3>
+<pre class="programlisting">
+Cdma1xRegistrationState  readable   u
+</pre>
+<p>        A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState" title="enum MMModemCdmaRegistrationState">MMModemCdmaRegistrationState</a>
+        value specifying the CDMA 1x registration state.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.EvdoRegistrationState"></a><h3>The "EvdoRegistrationState" property</h3>
+<pre class="programlisting">
+EvdoRegistrationState  readable   u
+</pre>
+<p>        A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState" title="enum MMModemCdmaRegistrationState">MMModemCdmaRegistrationState</a>
+        value specifying the EVDO registration state.
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

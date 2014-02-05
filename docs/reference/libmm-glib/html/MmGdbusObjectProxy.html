@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MmGdbusObjectProxy</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="libmm-glib Reference Manual">
+<link rel="up" href="pt02.html" title="Part II. Low level API">
+<link rel="prev" href="MmGdbusObject.html" title="MmGdbusObject">
+<link rel="next" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="MmGdbusObject.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="pt02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libmm-glib Reference Manual</th>
+<td><a accesskey="n" href="MmGdbusObjectSkeleton.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#MmGdbusObjectProxy.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#MmGdbusObjectProxy.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#MmGdbusObjectProxy.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#MmGdbusObjectProxy.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="MmGdbusObjectProxy"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="MmGdbusObjectProxy.top_of_page"></a>MmGdbusObjectProxy</span></h2>
+<p>MmGdbusObjectProxy</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="MmGdbusObjectProxy.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">struct              <a class="link" href="MmGdbusObjectProxy.html#MmGdbusObjectProxy-struct" title="struct MmGdbusObjectProxy">MmGdbusObjectProxy</a>;
+
+<a class="link" href="MmGdbusObjectProxy.html" title="MmGdbusObjectProxy"><span class="returnvalue">MmGdbusObjectProxy</span></a> * <a class="link" href="MmGdbusObjectProxy.html#mm-gdbus-object-proxy-new" title="mm_gdbus_object_proxy_new ()">mm_gdbus_object_proxy_new</a>          (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GDBusConnection.html"><span class="type">GDBusConnection</span></a> *connection</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *object_path</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="MmGdbusObjectProxy.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----<a href="http://library.gnome.org/devel/gio/unstable/GDBusObjectProxy.html">GDBusObjectProxy</a>
+         +----MmGdbusObjectProxy
+               +----<a class="link" href="MMObject.html" title="MMObject">MMObject</a>
+</pre>
+</div>
+<div class="refsect1">
+<a name="MmGdbusObjectProxy.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
+<p>
+MmGdbusObjectProxy implements
+ <a href="http://library.gnome.org/devel/gio/unstable/GDBusObject.html">GDBusObject</a> and  <a class="link" href="MmGdbusObject.html" title="MmGdbusObject">MmGdbusObject</a>.</p>
+</div>
+<div class="refsect1">
+<a name="MmGdbusObjectProxy.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1">
+<a name="MmGdbusObjectProxy.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="MmGdbusObjectProxy-struct"></a><h3>struct MmGdbusObjectProxy</h3>
+<pre class="programlisting">struct MmGdbusObjectProxy;</pre>
+<p>
+The <a class="link" href="MmGdbusObjectProxy.html" title="MmGdbusObjectProxy"><span class="type">MmGdbusObjectProxy</span></a> structure contains only private data and should only be accessed using the provided API.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-object-proxy-new"></a><h3>mm_gdbus_object_proxy_new ()</h3>
+<pre class="programlisting"><a class="link" href="MmGdbusObjectProxy.html" title="MmGdbusObjectProxy"><span class="returnvalue">MmGdbusObjectProxy</span></a> * mm_gdbus_object_proxy_new          (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GDBusConnection.html"><span class="type">GDBusConnection</span></a> *connection</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *object_path</code></em>);</pre>
+<p>
+Creates a new proxy object.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>connection</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GDBusConnection.html"><span class="type">GDBusConnection</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object_path</code></em> :</span></p></td>
+<td>An object path.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The proxy object. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>
