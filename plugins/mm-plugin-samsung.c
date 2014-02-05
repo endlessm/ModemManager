@@ -11,7 +11,8 @@
  * GNU General Public License for more details:
  *
  * Copyright (C) 2008 - 2009 Novell, Inc.
- * Copyright (C) 2009 Red Hat, Inc.
+ * Copyright (C) 2009 - 2011 Red Hat, Inc.
+ * Copyright (c) 2011 Samsung Electronics, Inc.,
  */
 
 #include <string.h>
@@ -19,11 +20,10 @@
 #define G_UDEV_API_IS_SUBJECT_TO_CHANGE
 #include <gudev/gudev.h>
 
-#include "mm-plugin-gobi.h"
-#include "mm-modem-gobi-gsm.h"
-#include "mm-generic-cdma.h"
+#include "mm-plugin-samsung.h"
+#include "mm-modem-samsung-gsm.h"
 
-G_DEFINE_TYPE (MMPluginGobi, mm_plugin_gobi, MM_TYPE_PLUGIN_BASE)
+G_DEFINE_TYPE (MMPluginSamsung, mm_plugin_samsung, MM_TYPE_PLUGIN_BASE)
 
 int mm_plugin_major_version = MM_PLUGIN_MAJOR_VERSION;
 int mm_plugin_minor_version = MM_PLUGIN_MINOR_VERSION;
@@ -31,8 +31,8 @@ int mm_plugin_minor_version = MM_PLUGIN_MINOR_VERSION;
 G_MODULE_EXPORT MMPlugin *
 mm_plugin_create (void)
 {
-    return MM_PLUGIN (g_object_new (MM_TYPE_PLUGIN_GOBI,
-                                    MM_PLUGIN_BASE_NAME, "Gobi",
+    return MM_PLUGIN (g_object_new (MM_TYPE_PLUGIN_SAMSUNG,
+                                    MM_PLUGIN_BASE_NAME, "Samsung",
                                     NULL));
 }
 
@@ -47,8 +47,6 @@ static guint32
 get_level_for_capabilities (guint32 capabilities)
 {
     if (capabilities & MM_PLUGIN_BASE_PORT_CAP_GSM)
-        return 10;
-    if (capabilities & CAP_CDMA)
         return 10;
     return 0;
 }
@@ -68,29 +66,31 @@ supports_port (MMPluginBase *base,
                MMPluginBaseSupportsTask *task)
 {
     GUdevDevice *port;
-    guint32 cached = 0, level;
-    const char *driver;
+    const char *subsys, *name;
+    guint16 vendor = 0, product = 0;
 
-    /* Can't do anything with non-serial ports */
     port = mm_plugin_base_supports_task_get_port (task);
-    if (strcmp (g_udev_device_get_subsystem (port), "tty"))
+
+    subsys = g_udev_device_get_subsystem (port);
+    g_assert (subsys);
+    name = g_udev_device_get_name (port);
+    g_assert (name);
+
+    if (!mm_plugin_base_get_device_ids (base, subsys, name, &vendor, &product))
         return MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
 
-    driver = mm_plugin_base_supports_task_get_driver (task);
-    if (!driver || strcmp (driver, "qcserial"))
+    /* Vendor ID check */
+    if (vendor != 0x04e8 && vendor != 0x1983)
         return MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
 
-    if (mm_plugin_base_get_cached_port_capabilities (base, port, &cached)) {
-        level = get_level_for_capabilities (cached);
-        if (level) {
-            mm_plugin_base_supports_task_complete (task, level);
-            return MM_PLUGIN_SUPPORTS_PORT_IN_PROGRESS;
-        }
-        return MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
+    /* The ethernet ports are obviously supported and don't need probing */
+    if (!strcmp (subsys, "net")) {
+        mm_plugin_base_supports_task_complete (task, 10);
+        return MM_PLUGIN_SUPPORTS_PORT_IN_PROGRESS;
     }
 
     /* Otherwise kick off a probe */
-    if (mm_plugin_base_probe_port (base, task, 100000, NULL))
+    if (mm_plugin_base_probe_port (base, task, 0, NULL))
         return MM_PLUGIN_SUPPORTS_PORT_IN_PROGRESS;
 
     return MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
@@ -104,9 +104,8 @@ grab_port (MMPluginBase *base,
 {
     GUdevDevice *port = NULL;
     MMModem *modem = NULL;
-    const char *name, *subsys, *sysfs_path;
     guint32 caps;
-    guint16 vendor = 0, product = 0;
+    const char *name, *subsys, *sysfs_path;
 
     port = mm_plugin_base_supports_task_get_port (task);
     g_assert (port);
@@ -114,29 +113,17 @@ grab_port (MMPluginBase *base,
     subsys = g_udev_device_get_subsystem (port);
     name = g_udev_device_get_name (port);
 
-    if (!mm_plugin_base_get_device_ids (base, subsys, name, &vendor, &product)) {
-        g_set_error (error, 0, 0, "Could not get modem product ID.");
+    caps = mm_plugin_base_supports_task_get_probed_capabilities (task);
+    if (caps & CAP_CDMA) {
+        g_set_error (error, 0, 0, "Only GSM modems are currently supported by this plugin.");
         return NULL;
     }
 
-    caps = mm_plugin_base_supports_task_get_probed_capabilities (task);
     sysfs_path = mm_plugin_base_supports_task_get_physdev_path (task);
     if (!existing) {
-        if (caps & MM_PLUGIN_BASE_PORT_CAP_GSM) {
-            modem = mm_modem_gobi_gsm_new (sysfs_path,
-                                           mm_plugin_base_supports_task_get_driver (task),
-                                           mm_plugin_get_name (MM_PLUGIN (base)),
-                                           vendor,
-                                           product);
-        } else if (caps & CAP_CDMA) {
-            modem = mm_generic_cdma_new (sysfs_path,
-                                         mm_plugin_base_supports_task_get_driver (task),
-                                         mm_plugin_get_name (MM_PLUGIN (base)),
-                                         !!(caps & MM_PLUGIN_BASE_PORT_CAP_IS856),
-                                         !!(caps & MM_PLUGIN_BASE_PORT_CAP_IS856_A),
-                                         vendor,
-                                         product);
-        }
+        modem = mm_modem_samsung_gsm_new (sysfs_path,
+                                          mm_plugin_base_supports_task_get_driver (task),
+                                          mm_plugin_get_name (MM_PLUGIN (base)));
 
         if (modem) {
             if (!mm_modem_grab_port (modem, subsys, name, MM_PORT_TYPE_UNKNOWN, NULL, error)) {
@@ -144,7 +131,7 @@ grab_port (MMPluginBase *base,
                 return NULL;
             }
         }
-    } else if (get_level_for_capabilities (caps)) {
+    } else {
         modem = existing;
         if (!mm_modem_grab_port (modem, subsys, name, MM_PORT_TYPE_UNKNOWN, NULL, error))
             return NULL;
@@ -153,16 +140,14 @@ grab_port (MMPluginBase *base,
     return modem;
 }
 
-/*****************************************************************************/
-
 static void
-mm_plugin_gobi_init (MMPluginGobi *self)
+mm_plugin_samsung_init (MMPluginSamsung *self)
 {
     g_signal_connect (self, "probe-result", G_CALLBACK (probe_result), NULL);
 }
 
 static void
-mm_plugin_gobi_class_init (MMPluginGobiClass *klass)
+mm_plugin_samsung_class_init (MMPluginSamsungClass *klass)
 {
     MMPluginBaseClass *pb_class = MM_PLUGIN_BASE_CLASS (klass);
 

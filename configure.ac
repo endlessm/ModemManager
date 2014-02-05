@@ -1,7 +1,7 @@
-AC_PREREQ(2.52)
+AC_PREREQ([2.60])
 
-AC_INIT(ModemManager, 0.4, dcbw@redhat.com, ModemManager)
-AM_INIT_AUTOMAKE([1.9 subdir-objects tar-ustar no-dist-gzip dist-bzip2])
+AC_INIT([ModemManager],[0.4],[dcbw@redhat.com],[ModemManager])
+AM_INIT_AUTOMAKE([1.9 subdir-objects tar-ustar no-dist-gzip dist-bzip2 -Wno-portability])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AM_MAINTAINER_MODE
 
@@ -9,14 +9,17 @@ AC_CONFIG_MACRO_DIR([m4])
 
 AC_CONFIG_HEADERS(config.h)
 
+dnl Define system extensions for various things like strcasestr()
+AC_USE_SYSTEM_EXTENSIONS
+
 dnl Required programs
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_INSTALL
-AC_PROG_LIBTOOL
 
-dnl Define _GNU_SOURCE for various things like strcasestr()
-AC_GNU_SOURCE
+dnl Initialize libtool
+LT_PREREQ([2.2])
+LT_INIT
 
 dnl
 dnl translation support
@@ -25,7 +28,6 @@ GETTEXT_PACKAGE=ModemManager
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Gettext package])
 IT_PROG_INTLTOOL([0.35.0])
-AM_GLIB_GNU_GETTEXT
 
 PKG_CHECK_MODULES(MM, dbus-glib-1 >= 0.86 glib-2.0 >= 2.18 gmodule-2.0 gobject-2.0)
 
@@ -68,6 +70,8 @@ case $with_polkit in
 	# Check for polkit_authority_get_sync()
 	AC_CHECK_LIB([polkit-gobject-1], [polkit_authority_get_sync], ac_have_pk_auth_get_sync="1", ac_have_pk_auth_get_sync="0")
 	AC_DEFINE_UNQUOTED(HAVE_POLKIT_AUTHORITY_GET_SYNC, $ac_have_pk_auth_get_sync, [Define if you have a polkit with polkit_authority_get_sync()])
+
+	AM_GLIB_GNU_GETTEXT
         ;;
     *)
         with_polkit=no
@@ -159,7 +163,5 @@ echo
 echo Building PPP-enabled tests: ${have_pppd_headers}
 echo
 echo Building with PolicyKit support: ${with_polkit}
-echo
-echo Building with Location API support: ${with_location_api}
 echo
 
