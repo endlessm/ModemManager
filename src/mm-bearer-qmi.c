@@ -344,6 +344,9 @@ get_current_settings_ready (QmiClientWds *client,
             success = qmi_message_wds_get_current_settings_output_get_secondary_ipv4_dns_address (output, &addr, &error);
             print_address4 (success, " DNS #2", addr, error);
             g_clear_error (&error);
+        } else {
+            /* no IPv4 configuration */
+            g_clear_error (&error);
         }
 
         /* If the message has an IPv6 address, print IPv6 settings */
@@ -367,6 +370,9 @@ get_current_settings_ready (QmiClientWds *client,
             /* IPv6 DNS #2 */
             success = qmi_message_wds_get_current_settings_output_get_ipv6_secondary_dns_address (output, &array, &error);
             print_address6 (success, " DNS #2", array, 0, error);
+            g_clear_error (&error);
+        } else {
+            /* no IPv6 configuration */
             g_clear_error (&error);
         }
 
@@ -1186,13 +1192,15 @@ disconnect (MMBearer *_self,
 /*****************************************************************************/
 
 static void
-report_disconnection (MMBearer *self)
+report_connection_status (MMBearer *self,
+                          MMBearerConnectionStatus status)
 {
-    /* Cleanup all connection related data */
-    reset_bearer_connection (MM_BEARER_QMI (self), TRUE, TRUE);
+    if (status == MM_BEARER_CONNECTION_STATUS_DISCONNECTED)
+        /* Cleanup all connection related data */
+        reset_bearer_connection (MM_BEARER_QMI (self), TRUE, TRUE);
 
-    /* Chain up parent's report_disconection() */
-    MM_BEARER_CLASS (mm_bearer_qmi_parent_class)->report_disconnection (self);
+    /* Chain up parent's report_connection_status() */
+    MM_BEARER_CLASS (mm_bearer_qmi_parent_class)->report_connection_status (self, status);
 }
 
 /*****************************************************************************/
@@ -1253,5 +1261,5 @@ mm_bearer_qmi_class_init (MMBearerQmiClass *klass)
     bearer_class->connect_finish = connect_finish;
     bearer_class->disconnect = disconnect;
     bearer_class->disconnect_finish = disconnect_finish;
-    bearer_class->report_disconnection = report_disconnection;
+    bearer_class->report_connection_status = report_connection_status;
 }

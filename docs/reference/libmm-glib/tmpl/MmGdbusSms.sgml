@@ -87,6 +87,11 @@ MmGdbusSms
 
 </para>
 
+<!-- ##### ARG MmGdbusSms:service-category ##### -->
+<para>
+
+</para>
+
 <!-- ##### ARG MmGdbusSms:smsc ##### -->
 <para>
 
@@ -98,6 +103,11 @@ MmGdbusSms
 </para>
 
 <!-- ##### ARG MmGdbusSms:storage ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG MmGdbusSms:teleservice-id ##### -->
 <para>
 
 </para>
@@ -133,9 +143,11 @@ MmGdbusSms
 @get_message_reference: 
 @get_number: 
 @get_pdu_type: 
+@get_service_category: 
 @get_smsc: 
 @get_state: 
 @get_storage: 
+@get_teleservice_id: 
 @get_text: 
 @get_timestamp: 
 @get_validity: 
@@ -267,6 +279,24 @@ MmGdbusSms
 
 
 <!-- ##### FUNCTION mm_gdbus_sms_get_class ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_sms_get_teleservice_id ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_sms_get_service_category ##### -->
 <para>
 
 </para>

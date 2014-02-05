@@ -8,7 +8,7 @@
 <link rel="up" href="pt02.html" title="Part II. Low level API">
 <link rel="prev" href="MmGdbusModemSkeleton.html" title="MmGdbusModemSkeleton">
 <link rel="next" href="MmGdbusModem3gppProxy.html" title="MmGdbusModem3gppProxy">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -63,6 +63,8 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MmGdbusModem3gpp.html#mm-gdbus-modem3gpp-dup-operator-name" title="mm_gdbus_modem3gpp_dup_operator_name ()">mm_gdbus_modem3gpp_dup_operator_name</a>
                                                         (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MmGdbusModem3gpp.html#mm-gdbus-modem3gpp-get-enabled-facility-locks" title="mm_gdbus_modem3gpp_get_enabled_facility_locks ()">mm_gdbus_modem3gpp_get_enabled_facility_locks</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MmGdbusModem3gpp.html#mm-gdbus-modem3gpp-get-subscription-state" title="mm_gdbus_modem3gpp_get_subscription_state ()">mm_gdbus_modem3gpp_get_subscription_state</a>
                                                         (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);
 
 <span class="returnvalue">void</span>                <a class="link" href="MmGdbusModem3gpp.html#mm-gdbus-modem3gpp-call-register" title="mm_gdbus_modem3gpp_call_register ()">mm_gdbus_modem3gpp_call_register</a>    (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *proxy</code></em>,
@@ -120,6 +122,7 @@ MmGdbusModem3gpp is implemented by
   "<a class="link" href="MmGdbusModem3gpp.html#MmGdbusModem3gpp--operator-code" title='The "operator-code" property'>operator-code</a>"            <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
   "<a class="link" href="MmGdbusModem3gpp.html#MmGdbusModem3gpp--operator-name" title='The "operator-name" property'>operator-name</a>"            <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
   "<a class="link" href="MmGdbusModem3gpp.html#MmGdbusModem3gpp--registration-state" title='The "registration-state" property'>registration-state</a>"       <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write
+  "<a class="link" href="MmGdbusModem3gpp.html#MmGdbusModem3gpp--subscription-state" title='The "subscription-state" property'>subscription-state</a>"       <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write
 </pre>
 </div>
 <div class="refsect1">
@@ -169,6 +172,8 @@ Abstract interface type for the D-Bus interface org.freedesktop.ModemManager1.Mo
   const gchar * (*get_operator_name) (MmGdbusModem3gpp *object);
 
   guint  (*get_registration_state) (MmGdbusModem3gpp *object);
+
+  guint  (*get_subscription_state) (MmGdbusModem3gpp *object);
 };
 </pre>
 <p>
@@ -212,6 +217,10 @@ Virtual table for the D-Bus interface org.freedesktop.ModemManager1.Modem.Modem3
 <td><p><span class="term"><em class="structfield"><code><a name="MmGdbusModem3gppIface.get-registration-state"></a>get_registration_state</code></em> ()</span></p></td>
 <td>Getter for the <a class="link" href="MmGdbusModem3gpp.html#MmGdbusModem3gpp--registration-state" title='The "registration-state" property'><span class="type">"registration-state"</span></a> property.</td>
 </tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="MmGdbusModem3gppIface.get-subscription-state"></a>get_subscription_state</code></em> ()</span></p></td>
+<td>Getter for the <a class="link" href="MmGdbusModem3gpp.html#MmGdbusModem3gpp--subscription-state" title='The "subscription-state" property'><span class="type">"subscription-state"</span></a> property.</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -221,7 +230,7 @@ Virtual table for the D-Bus interface org.freedesktop.ModemManager1.Modem.Modem3
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_gdbus_modem3gpp_get_registration_state
                                                         (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.RegistrationState">"RegistrationState"</a> D-Bus property.
+Gets the value of the "RegistrationState" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -248,7 +257,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-modem3gpp-get-imei"></a><h3>mm_gdbus_modem3gpp_get_imei ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_gdbus_modem3gpp_get_imei         (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.Imei">"Imei"</a> D-Bus property.
+Gets the value of the "Imei" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -282,7 +291,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-modem3gpp-dup-imei"></a><h3>mm_gdbus_modem3gpp_dup_imei ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_gdbus_modem3gpp_dup_imei         (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);</pre>
 <p>
-Gets a copy of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.Imei">"Imei"</a> D-Bus property.
+Gets a copy of the "Imei" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -311,7 +320,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_gdbus_modem3gpp_get_operator_code
                                                         (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorCode">"OperatorCode"</a> D-Bus property.
+Gets the value of the "OperatorCode" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -346,7 +355,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_gdbus_modem3gpp_dup_operator_code
                                                         (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);</pre>
 <p>
-Gets a copy of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorCode">"OperatorCode"</a> D-Bus property.
+Gets a copy of the "OperatorCode" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -375,7 +384,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_gdbus_modem3gpp_get_operator_name
                                                         (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorName">"OperatorName"</a> D-Bus property.
+Gets the value of the "OperatorName" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -410,7 +419,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_gdbus_modem3gpp_dup_operator_name
                                                         (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);</pre>
 <p>
-Gets a copy of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorName">"OperatorName"</a> D-Bus property.
+Gets a copy of the "OperatorName" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -439,7 +448,35 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_gdbus_modem3gpp_get_enabled_facility_locks
                                                         (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.EnabledFacilityLocks">"EnabledFacilityLocks"</a> D-Bus property.
+Gets the value of the "EnabledFacilityLocks" D-Bus property.
+</p>
+<p>
+Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The property value.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem3gpp-get-subscription-state"></a><h3>mm_gdbus_modem3gpp_get_subscription_state ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_gdbus_modem3gpp_get_subscription_state
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);</pre>
+<p>
+Gets the value of the "SubscriptionState" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -470,7 +507,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
-Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.Register"><GTKDOCLINK HREF="Register"><code class="function">Register()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
+Asynchronously invokes the <GTKDOCLINK HREF="Register"><code class="function">Register()</code></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
 When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
 You can then call <a class="link" href="MmGdbusModem3gpp.html#mm-gdbus-modem3gpp-call-register-finish" title="mm_gdbus_modem3gpp_call_register_finish ()"><code class="function">mm_gdbus_modem3gpp_call_register_finish()</code></a> to get the result of the operation.
 </p>
@@ -553,7 +590,7 @@ Finishes an operation started with <a class="link" href="MmGdbusModem3gpp.html#m
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
-Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.Register"><GTKDOCLINK HREF="Register"><code class="function">Register()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
+Synchronously invokes the <GTKDOCLINK HREF="Register"><code class="function">Register()</code></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
 </p>
 <p>
 See <a class="link" href="MmGdbusModem3gpp.html#mm-gdbus-modem3gpp-call-register" title="mm_gdbus_modem3gpp_call_register ()"><code class="function">mm_gdbus_modem3gpp_call_register()</code></a> for the asynchronous version of this method.
@@ -598,7 +635,7 @@ See <a class="link" href="MmGdbusModem3gpp.html#mm-gdbus-modem3gpp-call-register
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
-Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.Scan"><GTKDOCLINK HREF="Scan"><code class="function">Scan()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
+Asynchronously invokes the <GTKDOCLINK HREF="Scan"><code class="function">Scan()</code></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
 When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
 You can then call <a class="link" href="MmGdbusModem3gpp.html#mm-gdbus-modem3gpp-call-scan-finish" title="mm_gdbus_modem3gpp_call_scan_finish ()"><code class="function">mm_gdbus_modem3gpp_call_scan_finish()</code></a> to get the result of the operation.
 </p>
@@ -681,7 +718,7 @@ Finishes an operation started with <a class="link" href="MmGdbusModem3gpp.html#m
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
-Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.Scan"><GTKDOCLINK HREF="Scan"><code class="function">Scan()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
+Synchronously invokes the <GTKDOCLINK HREF="Scan"><code class="function">Scan()</code></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
 </p>
 <p>
 See <a class="link" href="MmGdbusModem3gpp.html#mm-gdbus-modem3gpp-call-scan" title="mm_gdbus_modem3gpp_call_scan ()"><code class="function">mm_gdbus_modem3gpp_call_scan()</code></a> for the asynchronous version of this method.
@@ -726,7 +763,7 @@ See <a class="link" href="MmGdbusModem3gpp.html#mm-gdbus-modem3gpp-call-scan" ti
 <a name="MmGdbusModem3gpp--enabled-facility-locks"></a><h3>The <code class="literal">"enabled-facility-locks"</code> property</h3>
 <pre class="programlisting">  "enabled-facility-locks"   <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.EnabledFacilityLocks">"EnabledFacilityLocks"</a>.
+Represents the D-Bus property "EnabledFacilityLocks".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -738,7 +775,7 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 <a name="MmGdbusModem3gpp--imei"></a><h3>The <code class="literal">"imei"</code> property</h3>
 <pre class="programlisting">  "imei"                     <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.Imei">"Imei"</a>.
+Represents the D-Bus property "Imei".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -750,7 +787,7 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 <a name="MmGdbusModem3gpp--operator-code"></a><h3>The <code class="literal">"operator-code"</code> property</h3>
 <pre class="programlisting">  "operator-code"            <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorCode">"OperatorCode"</a>.
+Represents the D-Bus property "OperatorCode".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -762,7 +799,7 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 <a name="MmGdbusModem3gpp--operator-name"></a><h3>The <code class="literal">"operator-name"</code> property</h3>
 <pre class="programlisting">  "operator-name"            <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorName">"OperatorName"</a>.
+Represents the D-Bus property "OperatorName".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -774,7 +811,19 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 <a name="MmGdbusModem3gpp--registration-state"></a><h3>The <code class="literal">"registration-state"</code> property</h3>
 <pre class="programlisting">  "registration-state"       <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.RegistrationState">"RegistrationState"</a>.
+Represents the D-Bus property "RegistrationState".
+</p>
+<p>
+Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
+</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MmGdbusModem3gpp--subscription-state"></a><h3>The <code class="literal">"subscription-state"</code> property</h3>
+<pre class="programlisting">  "subscription-state"       <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write</pre>
+<p>
+Represents the D-Bus property "SubscriptionState".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -791,7 +840,7 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>                 *arg_operator_id,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)            : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
-Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.Register"><GTKDOCLINK HREF="Register"><code class="function">Register()</code></a></GTKDOCLINK> D-Bus method.
+Signal emitted when a remote caller is invoking the <GTKDOCLINK HREF="Register"><code class="function">Register()</code></GTKDOCLINK> D-Bus method.
 </p>
 <p>
 If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em> and eventually call <code class="function">mm_gdbus_modem3gpp_complete_register()</code> or e.g. <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="http://library.gnome.org/devel/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.
@@ -833,7 +882,7 @@ If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstabl
                                                         <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a> *invocation,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)       : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
-Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.Scan"><GTKDOCLINK HREF="Scan"><code class="function">Scan()</code></a></GTKDOCLINK> D-Bus method.
+Signal emitted when a remote caller is invoking the <GTKDOCLINK HREF="Scan"><code class="function">Scan()</code></GTKDOCLINK> D-Bus method.
 </p>
 <p>
 If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em> and eventually call <code class="function">mm_gdbus_modem3gpp_complete_scan()</code> or e.g. <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="http://library.gnome.org/devel/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.
@@ -868,6 +917,6 @@ If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstabl
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

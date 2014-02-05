@@ -8,7 +8,7 @@
 <link rel="up" href="ref-common-types.html" title="Part II. Common types and definitions">
 <link rel="prev" href="ModemManager-Version-checks.html" title="Version checks">
 <link rel="next" href="ModemManager-Errors.html" title="Errors">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -43,6 +43,7 @@ enum                <a class="link" href="ModemManager-Flags-and-Enumerations.ht
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMFirmwareImageType" title="enum MMFirmwareImageType">MMFirmwareImageType</a>;
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModem3gppFacility" title="enum MMModem3gppFacility">MMModem3gppFacility</a>;
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModem3gppNetworkAvailability" title="enum MMModem3gppNetworkAvailability">MMModem3gppNetworkAvailability</a>;
+enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModem3gppSubscriptionState" title="enum MMModem3gppSubscriptionState">MMModem3gppSubscriptionState</a>;
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState" title="enum MMModem3gppRegistrationState">MMModem3gppRegistrationState</a>;
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModem3gppUssdSessionState" title="enum MMModem3gppUssdSessionState">MMModem3gppUssdSessionState</a>;
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology" title="enum MMModemAccessTechnology">MMModemAccessTechnology</a>;
@@ -60,11 +61,17 @@ enum                <a class="link" href="ModemManager-Flags-and-Enumerations.ht
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemStateChangeReason" title="enum MMModemStateChangeReason">MMModemStateChangeReason</a>;
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemPowerState" title="enum MMModemPowerState">MMModemPowerState</a>;
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemPortType" title="enum MMModemPortType">MMModemPortType</a>;
+enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMOmaFeature" title="enum MMOmaFeature">MMOmaFeature</a>;
+enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMOmaSessionState" title="enum MMOmaSessionState">MMOmaSessionState</a>;
+enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMOmaSessionStateFailedReason" title="enum MMOmaSessionStateFailedReason">MMOmaSessionStateFailedReason</a>;
+enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMOmaSessionType" title="enum MMOmaSessionType">MMOmaSessionType</a>;
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsPduType" title="enum MMSmsPduType">MMSmsPduType</a>;
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsState" title="enum MMSmsState">MMSmsState</a>;
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsDeliveryState" title="enum MMSmsDeliveryState">MMSmsDeliveryState</a>;
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsStorage" title="enum MMSmsStorage">MMSmsStorage</a>;
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsValidityType" title="enum MMSmsValidityType">MMSmsValidityType</a>;
+enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsCdmaTeleserviceId" title="enum MMSmsCdmaTeleserviceId">MMSmsCdmaTeleserviceId</a>;
+enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsCdmaServiceCategory" title="enum MMSmsCdmaServiceCategory">MMSmsCdmaServiceCategory</a>;
 </pre>
 </div>
 <div class="refsect1">
@@ -380,6 +387,50 @@ Network availability status as defined in 3GPP TS 27.007 section 7.3
 <tr>
 <td><p><a name="MM-MODEM-3GPP-NETWORK-AVAILABILITY-FORBIDDEN:CAPS"></a><span class="term"><code class="literal">MM_MODEM_3GPP_NETWORK_AVAILABILITY_FORBIDDEN</code></span></p></td>
 <td>Network is forbidden.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMModem3gppSubscriptionState"></a><h3>enum MMModem3gppSubscriptionState</h3>
+<pre class="programlisting">typedef enum {
+ /*&lt; underscore_name=mm_modem_3gpp_subscription_state &gt;*/
+    MM_MODEM_3GPP_SUBSCRIPTION_STATE_UNKNOWN       = 0,
+    MM_MODEM_3GPP_SUBSCRIPTION_STATE_UNPROVISIONED = 1,
+    MM_MODEM_3GPP_SUBSCRIPTION_STATE_PROVISIONED   = 2,
+    MM_MODEM_3GPP_SUBSCRIPTION_STATE_OUT_OF_DATA   = 3,
+} MMModem3gppSubscriptionState;
+</pre>
+<p>
+Describes the current subscription status of the SIM.  This value is only available after the
+modem attempts to register with the network.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><a name="MM-MODEM-3GPP-SUBSCRIPTION-STATE-UNKNOWN:CAPS"></a><span class="term"><code class="literal">MM_MODEM_3GPP_SUBSCRIPTION_STATE_UNKNOWN</code></span></p></td>
+<td>The subscription state is unknown.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-MODEM-3GPP-SUBSCRIPTION-STATE-UNPROVISIONED:CAPS"></a><span class="term"><code class="literal">MM_MODEM_3GPP_SUBSCRIPTION_STATE_UNPROVISIONED</code></span></p></td>
+<td>The account is unprovisioned.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-MODEM-3GPP-SUBSCRIPTION-STATE-PROVISIONED:CAPS"></a><span class="term"><code class="literal">MM_MODEM_3GPP_SUBSCRIPTION_STATE_PROVISIONED</code></span></p></td>
+<td>The account is provisioned and has data available.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-MODEM-3GPP-SUBSCRIPTION-STATE-OUT-OF-DATA:CAPS"></a><span class="term"><code class="literal">MM_MODEM_3GPP_SUBSCRIPTION_STATE_OUT_OF_DATA</code></span></p></td>
+<td>The account is provisioned but there is no data left.
 </td>
 </tr>
 </tbody>
@@ -1821,13 +1872,275 @@ Type of modem port.
 </div>
 <hr>
 <div class="refsect2">
+<a name="MMOmaFeature"></a><h3>enum MMOmaFeature</h3>
+<pre class="programlisting">typedef enum {
+ /*&lt; underscore_name=mm_oma_feature &gt;*/
+    MM_OMA_FEATURE_NONE                  = 0,
+    MM_OMA_FEATURE_DEVICE_PROVISIONING   = 1 &lt;&lt; 0,
+    MM_OMA_FEATURE_PRL_UPDATE            = 1 &lt;&lt; 1,
+    MM_OMA_FEATURE_HANDS_FREE_ACTIVATION = 1 &lt;&lt; 2,
+} MMOmaFeature;
+</pre>
+<p>
+Features that can be enabled or disabled in the OMA device management support.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><a name="MM-OMA-FEATURE-NONE:CAPS"></a><span class="term"><code class="literal">MM_OMA_FEATURE_NONE</code></span></p></td>
+<td>None.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-FEATURE-DEVICE-PROVISIONING:CAPS"></a><span class="term"><code class="literal">MM_OMA_FEATURE_DEVICE_PROVISIONING</code></span></p></td>
+<td>Device provisioning service.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-FEATURE-PRL-UPDATE:CAPS"></a><span class="term"><code class="literal">MM_OMA_FEATURE_PRL_UPDATE</code></span></p></td>
+<td>PRL update service.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-FEATURE-HANDS-FREE-ACTIVATION:CAPS"></a><span class="term"><code class="literal">MM_OMA_FEATURE_HANDS_FREE_ACTIVATION</code></span></p></td>
+<td>Hands free activation service.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMOmaSessionState"></a><h3>enum MMOmaSessionState</h3>
+<pre class="programlisting">typedef enum {
+ /*&lt; underscore_name=mm_oma_session_state &gt;*/
+    MM_OMA_SESSION_STATE_FAILED                 = -1,
+    MM_OMA_SESSION_STATE_UNKNOWN                = 0,
+    MM_OMA_SESSION_STATE_STARTED                = 1,
+    MM_OMA_SESSION_STATE_RETRYING               = 2,
+    MM_OMA_SESSION_STATE_CONNECTING             = 3,
+    MM_OMA_SESSION_STATE_CONNECTED              = 4,
+    MM_OMA_SESSION_STATE_AUTHENTICATED          = 5,
+    MM_OMA_SESSION_STATE_MDN_DOWNLOADED         = 10,
+    MM_OMA_SESSION_STATE_MSID_DOWNLOADED        = 11,
+    MM_OMA_SESSION_STATE_PRL_DOWNLOADED         = 12,
+    MM_OMA_SESSION_STATE_MIP_PROFILE_DOWNLOADED = 13,
+    MM_OMA_SESSION_STATE_COMPLETED              = 20,
+} MMOmaSessionState;
+</pre>
+<p>
+State of the OMA device management session.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-FAILED:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_FAILED</code></span></p></td>
+<td>Failed.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-UNKNOWN:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_UNKNOWN</code></span></p></td>
+<td>Unknown.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-STARTED:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_STARTED</code></span></p></td>
+<td>Started.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-RETRYING:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_RETRYING</code></span></p></td>
+<td>Retrying.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-CONNECTING:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_CONNECTING</code></span></p></td>
+<td>Connecting.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-CONNECTED:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_CONNECTED</code></span></p></td>
+<td>Connected.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-AUTHENTICATED:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_AUTHENTICATED</code></span></p></td>
+<td>Authenticated.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-MDN-DOWNLOADED:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_MDN_DOWNLOADED</code></span></p></td>
+<td>MDN downloaded.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-MSID-DOWNLOADED:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_MSID_DOWNLOADED</code></span></p></td>
+<td>MSID downloaded.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-PRL-DOWNLOADED:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_PRL_DOWNLOADED</code></span></p></td>
+<td>PRL downloaded.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-MIP-PROFILE-DOWNLOADED:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_MIP_PROFILE_DOWNLOADED</code></span></p></td>
+<td>MIP profile downloaded.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-COMPLETED:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_COMPLETED</code></span></p></td>
+<td>Session completed.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMOmaSessionStateFailedReason"></a><h3>enum MMOmaSessionStateFailedReason</h3>
+<pre class="programlisting">typedef enum {
+ /*&lt; underscore_name=mm_oma_session_state_failed_reason &gt;*/
+    MM_OMA_SESSION_STATE_FAILED_REASON_UNKNOWN               = 0,
+    MM_OMA_SESSION_STATE_FAILED_REASON_NETWORK_UNAVAILABLE   = 1,
+    MM_OMA_SESSION_STATE_FAILED_REASON_SERVER_UNAVAILABLE    = 2,
+    MM_OMA_SESSION_STATE_FAILED_REASON_AUTHENTICATION_FAILED = 3,
+    MM_OMA_SESSION_STATE_FAILED_REASON_MAX_RETRY_EXCEEDED    = 4,
+    MM_OMA_SESSION_STATE_FAILED_REASON_SESSION_CANCELLED     = 5
+} MMOmaSessionStateFailedReason;
+</pre>
+<p>
+Reason of failure in the OMA device management session.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-FAILED-REASON-UNKNOWN:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_FAILED_REASON_UNKNOWN</code></span></p></td>
+<td>No reason or unknown.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-FAILED-REASON-NETWORK-UNAVAILABLE:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_FAILED_REASON_NETWORK_UNAVAILABLE</code></span></p></td>
+<td>Network unavailable.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-FAILED-REASON-SERVER-UNAVAILABLE:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_FAILED_REASON_SERVER_UNAVAILABLE</code></span></p></td>
+<td>Server unavailable.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-FAILED-REASON-AUTHENTICATION-FAILED:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_FAILED_REASON_AUTHENTICATION_FAILED</code></span></p></td>
+<td>Authentication failed.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-FAILED-REASON-MAX-RETRY-EXCEEDED:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_FAILED_REASON_MAX_RETRY_EXCEEDED</code></span></p></td>
+<td>Maximum retries exceeded.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-STATE-FAILED-REASON-SESSION-CANCELLED:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_STATE_FAILED_REASON_SESSION_CANCELLED</code></span></p></td>
+<td>Session cancelled.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMOmaSessionType"></a><h3>enum MMOmaSessionType</h3>
+<pre class="programlisting">typedef enum {
+ /*&lt; underscore_name=mm_oma_session_type &gt;*/
+    MM_OMA_SESSION_TYPE_UNKNOWN                                = 0,
+    MM_OMA_SESSION_TYPE_CLIENT_INITIATED_DEVICE_CONFIGURE      = 10,
+    MM_OMA_SESSION_TYPE_CLIENT_INITIATED_PRL_UPDATE            = 11,
+    MM_OMA_SESSION_TYPE_CLIENT_INITIATED_HANDS_FREE_ACTIVATION = 12,
+    MM_OMA_SESSION_TYPE_NETWORK_INITIATED_DEVICE_CONFIGURE     = 20,
+    MM_OMA_SESSION_TYPE_NETWORK_INITIATED_PRL_UPDATE           = 21,
+    MM_OMA_SESSION_TYPE_DEVICE_INITIATED_PRL_UPDATE            = 30,
+    MM_OMA_SESSION_TYPE_DEVICE_INITIATED_HANDS_FREE_ACTIVATION = 31,
+} MMOmaSessionType;
+</pre>
+<p>
+Type of OMA device management session.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><a name="MM-OMA-SESSION-TYPE-UNKNOWN:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_TYPE_UNKNOWN</code></span></p></td>
+<td>Unknown session type.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-TYPE-CLIENT-INITIATED-DEVICE-CONFIGURE:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_TYPE_CLIENT_INITIATED_DEVICE_CONFIGURE</code></span></p></td>
+<td>Client-initiated device configure.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-TYPE-CLIENT-INITIATED-PRL-UPDATE:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_TYPE_CLIENT_INITIATED_PRL_UPDATE</code></span></p></td>
+<td>Client-initiated PRL update.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-TYPE-CLIENT-INITIATED-HANDS-FREE-ACTIVATION:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_TYPE_CLIENT_INITIATED_HANDS_FREE_ACTIVATION</code></span></p></td>
+<td>Client-initiated hands free activation.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-TYPE-NETWORK-INITIATED-DEVICE-CONFIGURE:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_TYPE_NETWORK_INITIATED_DEVICE_CONFIGURE</code></span></p></td>
+<td>Network-initiated device configure.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-TYPE-NETWORK-INITIATED-PRL-UPDATE:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_TYPE_NETWORK_INITIATED_PRL_UPDATE</code></span></p></td>
+<td>Network-initiated PRL update.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-TYPE-DEVICE-INITIATED-PRL-UPDATE:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_TYPE_DEVICE_INITIATED_PRL_UPDATE</code></span></p></td>
+<td>Device-initiated PRL update.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-OMA-SESSION-TYPE-DEVICE-INITIATED-HANDS-FREE-ACTIVATION:CAPS"></a><span class="term"><code class="literal">MM_OMA_SESSION_TYPE_DEVICE_INITIATED_HANDS_FREE_ACTIVATION</code></span></p></td>
+<td>Device-initiated hands free activation.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="MMSmsPduType"></a><h3>enum MMSmsPduType</h3>
 <pre class="programlisting">typedef enum {
  /*&lt; underscore_name=mm_sms_pdu_type &gt;*/
-    MM_SMS_PDU_TYPE_UNKNOWN       = 0,
+    MM_SMS_PDU_TYPE_UNKNOWN = 0,
     MM_SMS_PDU_TYPE_DELIVER       = 1,
     MM_SMS_PDU_TYPE_SUBMIT        = 2,
-    MM_SMS_PDU_TYPE_STATUS_REPORT = 3
+    MM_SMS_PDU_TYPE_STATUS_REPORT = 3,
+    MM_SMS_PDU_TYPE_CDMA_DELIVER                  = 32,
+    MM_SMS_PDU_TYPE_CDMA_SUBMIT                   = 33,
+    MM_SMS_PDU_TYPE_CDMA_CANCELLATION             = 34,
+    MM_SMS_PDU_TYPE_CDMA_DELIVERY_ACKNOWLEDGEMENT = 35,
+    MM_SMS_PDU_TYPE_CDMA_USER_ACKNOWLEDGEMENT     = 36,
+    MM_SMS_PDU_TYPE_CDMA_READ_ACKNOWLEDGEMENT     = 37,
 } MMSmsPduType;
 </pre>
 <p>
@@ -1846,17 +2159,47 @@ Type of PDUs used in the SMS.
 </tr>
 <tr>
 <td><p><a name="MM-SMS-PDU-TYPE-DELIVER:CAPS"></a><span class="term"><code class="literal">MM_SMS_PDU_TYPE_DELIVER</code></span></p></td>
-<td>SMS has been received from the SMSC.
+<td>3GPP Mobile-Terminated (MT) message.
 </td>
 </tr>
 <tr>
 <td><p><a name="MM-SMS-PDU-TYPE-SUBMIT:CAPS"></a><span class="term"><code class="literal">MM_SMS_PDU_TYPE_SUBMIT</code></span></p></td>
-<td>SMS is sent, or to be sent to the SMSC.
+<td>3GPP Mobile-Originated (MO) message.
 </td>
 </tr>
 <tr>
 <td><p><a name="MM-SMS-PDU-TYPE-STATUS-REPORT:CAPS"></a><span class="term"><code class="literal">MM_SMS_PDU_TYPE_STATUS_REPORT</code></span></p></td>
-<td>SMS is a status report received from the SMSC.
+<td>3GPP status report (MT).
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-PDU-TYPE-CDMA-DELIVER:CAPS"></a><span class="term"><code class="literal">MM_SMS_PDU_TYPE_CDMA_DELIVER</code></span></p></td>
+<td>3GPP2 Mobile-Terminated (MT) message.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-PDU-TYPE-CDMA-SUBMIT:CAPS"></a><span class="term"><code class="literal">MM_SMS_PDU_TYPE_CDMA_SUBMIT</code></span></p></td>
+<td>3GPP2 Mobile-Originated (MO) message.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-PDU-TYPE-CDMA-CANCELLATION:CAPS"></a><span class="term"><code class="literal">MM_SMS_PDU_TYPE_CDMA_CANCELLATION</code></span></p></td>
+<td>3GPP2 Cancellation (MO) message.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-PDU-TYPE-CDMA-DELIVERY-ACKNOWLEDGEMENT:CAPS"></a><span class="term"><code class="literal">MM_SMS_PDU_TYPE_CDMA_DELIVERY_ACKNOWLEDGEMENT</code></span></p></td>
+<td>3GPP2 Delivery Acknowledgement (MT) message.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-PDU-TYPE-CDMA-USER-ACKNOWLEDGEMENT:CAPS"></a><span class="term"><code class="literal">MM_SMS_PDU_TYPE_CDMA_USER_ACKNOWLEDGEMENT</code></span></p></td>
+<td>3GPP2 User Acknowledgement (MT or MO) message.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-PDU-TYPE-CDMA-READ-ACKNOWLEDGEMENT:CAPS"></a><span class="term"><code class="literal">MM_SMS_PDU_TYPE_CDMA_READ_ACKNOWLEDGEMENT</code></span></p></td>
+<td>3GPP2 Read Acknowledgement (MT or MO) message.
 </td>
 </tr>
 </tbody>
@@ -1922,6 +2265,8 @@ State of a given SMS.
 <a name="MMSmsDeliveryState"></a><h3>enum MMSmsDeliveryState</h3>
 <pre class="programlisting">typedef enum {
  /*&lt; underscore_name=mm_sms_delivery_state &gt;*/
+    /* --------------- 3GPP specific errors ---------------------- */
+
     /* Completed deliveries */
     MM_SMS_DELIVERY_STATE_COMPLETED_RECEIVED              = 0x00,
     MM_SMS_DELIVERY_STATE_COMPLETED_FORWARDED_UNCONFIRMED = 0x01,
@@ -1956,11 +2301,80 @@ State of a given SMS.
     MM_SMS_DELIVERY_STATE_TEMPORARY_FATAL_ERROR_IN_SME               = 0x65,
 
     /* Unknown, out of any possible valid value [0x00-0xFF] */
-    MM_SMS_DELIVERY_STATE_UNKNOWN = 0x100
+    MM_SMS_DELIVERY_STATE_UNKNOWN = 0x100,
+
+    /* --------------- 3GPP2 specific errors ---------------------- */
+
+    /* Network problems */
+    MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_ADDRESS_VACANT              = 0x200,
+    MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_ADDRESS_TRANSLATION_FAILURE = 0x201,
+    MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_NETWORK_RESOURCE_OUTAGE     = 0x202,
+    MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_NETWORK_FAILURE             = 0x203,
+    MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_INVALID_TELESERVICE_ID      = 0x204,
+    MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_OTHER                       = 0x205,
+    /* Terminal problems */
+    MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_NO_PAGE_RESPONSE                      = 0x220,
+    MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_DESTINATION_BUSY                      = 0x221,
+    MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_NO_ACKNOWLEDGMENT                     = 0x222,
+    MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_DESTINATION_RESOURCE_SHORTAGE         = 0x223,
+    MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_SMS_DELIVERY_POSTPONED                = 0x224,
+    MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_DESTINATION_OUT_OF_SERVICE            = 0x225,
+    MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_DESTINATION_NO_LONGER_AT_THIS_ADDRESS = 0x226,
+    MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_OTHER                                 = 0x227,
+    /* Radio problems */
+    MM_SMS_DELIVERY_STATE_RADIO_INTERFACE_PROBLEM_RESOURCE_SHORTAGE = 0x240,
+    MM_SMS_DELIVERY_STATE_RADIO_INTERFACE_PROBLEM_INCOMPATIBILITY   = 0x241,
+    MM_SMS_DELIVERY_STATE_RADIO_INTERFACE_PROBLEM_OTHER             = 0x242,
+    /* General problems */
+    MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_ENCODING                            = 0x260,
+    MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_SMS_ORIGINATION_DENIED              = 0x261,
+    MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_SMS_TERMINATION_DENIED              = 0x262,
+    MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_SUPPLEMENTARY_SERVICE_NOT_SUPPORTED = 0x263,
+    MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_SMS_NOT_SUPPORTED                   = 0x264,
+    MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_MISSING_EXPECTED_PARAMETER          = 0x266,
+    MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_MISSING_MANDATORY_PARAMETER         = 0x267,
+    MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_UNRECOGNIZED_PARAMETER_VALUE        = 0x268,
+    MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_UNEXPECTED_PARAMETER_VALUE          = 0x269,
+    MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_USER_DATA_SIZE_ERROR                = 0x26A,
+    MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_OTHER                               = 0x26B,
+
+    /* Temporary network problems */
+    MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_ADDRESS_VACANT              = 0x300,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_ADDRESS_TRANSLATION_FAILURE = 0x301,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_NETWORK_RESOURCE_OUTAGE     = 0x302,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_NETWORK_FAILURE             = 0x303,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_INVALID_TELESERVICE_ID      = 0x304,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_OTHER                       = 0x305,
+    /* Temporary terminal problems */
+    MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_NO_PAGE_RESPONSE                      = 0x320,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_DESTINATION_BUSY                      = 0x321,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_NO_ACKNOWLEDGMENT                     = 0x322,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_DESTINATION_RESOURCE_SHORTAGE         = 0x323,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_SMS_DELIVERY_POSTPONED                = 0x324,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_DESTINATION_OUT_OF_SERVICE            = 0x325,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_DESTINATION_NO_LONGER_AT_THIS_ADDRESS = 0x326,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_OTHER                                 = 0x327,
+    /* Temporary radio problems */
+    MM_SMS_DELIVERY_STATE_TEMPORARY_RADIO_INTERFACE_PROBLEM_RESOURCE_SHORTAGE = 0x340,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_RADIO_INTERFACE_PROBLEM_INCOMPATIBILITY   = 0x341,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_RADIO_INTERFACE_PROBLEM_OTHER             = 0x342,
+    /* Temporary general problems */
+    MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_ENCODING                            = 0x360,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_SMS_ORIGINATION_DENIED              = 0x361,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_SMS_TERMINATION_DENIED              = 0x362,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_SUPPLEMENTARY_SERVICE_NOT_SUPPORTED = 0x363,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_SMS_NOT_SUPPORTED                   = 0x364,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_MISSING_EXPECTED_PARAMETER          = 0x366,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_MISSING_MANDATORY_PARAMETER         = 0x367,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_UNRECOGNIZED_PARAMETER_VALUE        = 0x368,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_UNEXPECTED_PARAMETER_VALUE          = 0x369,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_USER_DATA_SIZE_ERROR                = 0x36A,
+    MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_OTHER                               = 0x36B,
 } MMSmsDeliveryState;
 </pre>
 <p>
-Enumeration of known SMS delivery states as defined in 3GPP TS 03.40.
+Enumeration of known SMS delivery states as defined in 3GPP TS 03.40 and
+3GPP2 N.S0005-O, section 6.5.2.125.
 </p>
 <p>
 States out of the known ranges may also be valid (either reserved or SC-specific).
@@ -2101,6 +2515,286 @@ States out of the known ranges may also be valid (either reserved or SC-specific
 <td>Unknown state.
 </td>
 </tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-NETWORK-PROBLEM-ADDRESS-VACANT:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_ADDRESS_VACANT</code></span></p></td>
+<td>Permanent error in network, address vacant.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-NETWORK-PROBLEM-ADDRESS-TRANSLATION-FAILURE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_ADDRESS_TRANSLATION_FAILURE</code></span></p></td>
+<td>Permanent error in network, address translation failure.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-NETWORK-PROBLEM-NETWORK-RESOURCE-OUTAGE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_NETWORK_RESOURCE_OUTAGE</code></span></p></td>
+<td>Permanent error in network, network resource outage.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-NETWORK-PROBLEM-NETWORK-FAILURE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_NETWORK_FAILURE</code></span></p></td>
+<td>Permanent error in network, network failure.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-NETWORK-PROBLEM-INVALID-TELESERVICE-ID:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_INVALID_TELESERVICE_ID</code></span></p></td>
+<td>Permanent error in network, invalid teleservice id.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-NETWORK-PROBLEM-OTHER:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_OTHER</code></span></p></td>
+<td>Permanent error, other network problem.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TERMINAL-PROBLEM-NO-PAGE-RESPONSE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_NO_PAGE_RESPONSE</code></span></p></td>
+<td>Permanent error in terminal, no page response.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TERMINAL-PROBLEM-DESTINATION-BUSY:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_DESTINATION_BUSY</code></span></p></td>
+<td>Permanent error in terminal, destination busy.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TERMINAL-PROBLEM-NO-ACKNOWLEDGMENT:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_NO_ACKNOWLEDGMENT</code></span></p></td>
+<td>Permanent error in terminal, no acknowledgement.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TERMINAL-PROBLEM-DESTINATION-RESOURCE-SHORTAGE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_DESTINATION_RESOURCE_SHORTAGE</code></span></p></td>
+<td>Permanent error in terminal, destination resource shortage.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TERMINAL-PROBLEM-SMS-DELIVERY-POSTPONED:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_SMS_DELIVERY_POSTPONED</code></span></p></td>
+<td>Permanent error in terminal, SMS delivery postponed.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TERMINAL-PROBLEM-DESTINATION-OUT-OF-SERVICE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_DESTINATION_OUT_OF_SERVICE</code></span></p></td>
+<td>Permanent error in terminal, destination out of service.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TERMINAL-PROBLEM-DESTINATION-NO-LONGER-AT-THIS-ADDRESS:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_DESTINATION_NO_LONGER_AT_THIS_ADDRESS</code></span></p></td>
+<td>Permanent error in terminal, destination no longer at this address.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TERMINAL-PROBLEM-OTHER:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_OTHER</code></span></p></td>
+<td>Permanent error, other terminal problem.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-RADIO-INTERFACE-PROBLEM-RESOURCE-SHORTAGE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_RADIO_INTERFACE_PROBLEM_RESOURCE_SHORTAGE</code></span></p></td>
+<td>Permanent error in radio interface, resource shortage.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-RADIO-INTERFACE-PROBLEM-INCOMPATIBILITY:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_RADIO_INTERFACE_PROBLEM_INCOMPATIBILITY</code></span></p></td>
+<td>Permanent error in radio interface, problem incompatibility.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-RADIO-INTERFACE-PROBLEM-OTHER:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_RADIO_INTERFACE_PROBLEM_OTHER</code></span></p></td>
+<td>Permanent error, other radio interface problem.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-ENCODING:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_ENCODING</code></span></p></td>
+<td>Permanent error, encoding.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-SMS-ORIGINATION-DENIED:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_SMS_ORIGINATION_DENIED</code></span></p></td>
+<td>Permanent error, SMS origination denied.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-SMS-TERMINATION-DENIED:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_SMS_TERMINATION_DENIED</code></span></p></td>
+<td>Permanent error, SMS termination denied.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-SUPPLEMENTARY-SERVICE-NOT-SUPPORTED:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_SUPPLEMENTARY_SERVICE_NOT_SUPPORTED</code></span></p></td>
+<td>Permanent error, supplementary service not supported.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-SMS-NOT-SUPPORTED:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_SMS_NOT_SUPPORTED</code></span></p></td>
+<td>Permanent error, SMS not supported.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-MISSING-EXPECTED-PARAMETER:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_MISSING_EXPECTED_PARAMETER</code></span></p></td>
+<td>Permanent error, missing expected parameter.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-MISSING-MANDATORY-PARAMETER:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_MISSING_MANDATORY_PARAMETER</code></span></p></td>
+<td>Permanent error, missing mandatory parameter.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-UNRECOGNIZED-PARAMETER-VALUE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_UNRECOGNIZED_PARAMETER_VALUE</code></span></p></td>
+<td>Permanent error, unrecognized parameter value.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-UNEXPECTED-PARAMETER-VALUE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_UNEXPECTED_PARAMETER_VALUE</code></span></p></td>
+<td>Permanent error, unexpected parameter value.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-USER-DATA-SIZE-ERROR:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_USER_DATA_SIZE_ERROR</code></span></p></td>
+<td>Permanent error, user data size error.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-OTHER:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_OTHER</code></span></p></td>
+<td>Permanent error, other general problem.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-NETWORK-PROBLEM-ADDRESS-VACANT:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_ADDRESS_VACANT</code></span></p></td>
+<td>Temporary error in network, address vacant.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-NETWORK-PROBLEM-ADDRESS-TRANSLATION-FAILURE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_ADDRESS_TRANSLATION_FAILURE</code></span></p></td>
+<td>Temporary error in network, address translation failure.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-NETWORK-PROBLEM-NETWORK-RESOURCE-OUTAGE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_NETWORK_RESOURCE_OUTAGE</code></span></p></td>
+<td>Temporary error in network, network resource outage.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-NETWORK-PROBLEM-NETWORK-FAILURE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_NETWORK_FAILURE</code></span></p></td>
+<td>Temporary error in network, network failure.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-NETWORK-PROBLEM-INVALID-TELESERVICE-ID:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_INVALID_TELESERVICE_ID</code></span></p></td>
+<td>Temporary error in network, invalid teleservice id.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-NETWORK-PROBLEM-OTHER:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_OTHER</code></span></p></td>
+<td>Temporary error, other network problem.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-TERMINAL-PROBLEM-NO-PAGE-RESPONSE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_NO_PAGE_RESPONSE</code></span></p></td>
+<td>Temporary error in terminal, no page response.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-TERMINAL-PROBLEM-DESTINATION-BUSY:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_DESTINATION_BUSY</code></span></p></td>
+<td>Temporary error in terminal, destination busy.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-TERMINAL-PROBLEM-NO-ACKNOWLEDGMENT:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_NO_ACKNOWLEDGMENT</code></span></p></td>
+<td>Temporary error in terminal, no acknowledgement.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-TERMINAL-PROBLEM-DESTINATION-RESOURCE-SHORTAGE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_DESTINATION_RESOURCE_SHORTAGE</code></span></p></td>
+<td>Temporary error in terminal, destination resource shortage.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-TERMINAL-PROBLEM-SMS-DELIVERY-POSTPONED:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_SMS_DELIVERY_POSTPONED</code></span></p></td>
+<td>Temporary error in terminal, SMS delivery postponed.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-TERMINAL-PROBLEM-DESTINATION-OUT-OF-SERVICE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_DESTINATION_OUT_OF_SERVICE</code></span></p></td>
+<td>Temporary error in terminal, destination out of service.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-TERMINAL-PROBLEM-DESTINATION-NO-LONGER-AT-THIS-ADDRESS:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_DESTINATION_NO_LONGER_AT_THIS_ADDRESS</code></span></p></td>
+<td>Temporary error in terminal, destination no longer at this address.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-TERMINAL-PROBLEM-OTHER:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_OTHER</code></span></p></td>
+<td>Temporary error, other terminal problem.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-RADIO-INTERFACE-PROBLEM-RESOURCE-SHORTAGE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_RADIO_INTERFACE_PROBLEM_RESOURCE_SHORTAGE</code></span></p></td>
+<td>Temporary error in radio interface, resource shortage.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-RADIO-INTERFACE-PROBLEM-INCOMPATIBILITY:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_RADIO_INTERFACE_PROBLEM_INCOMPATIBILITY</code></span></p></td>
+<td>Temporary error in radio interface, problem incompatibility.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-RADIO-INTERFACE-PROBLEM-OTHER:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_RADIO_INTERFACE_PROBLEM_OTHER</code></span></p></td>
+<td>Temporary error, other radio interface problem.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-ENCODING:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_ENCODING</code></span></p></td>
+<td>Temporary error, encoding.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-SMS-ORIGINATION-DENIED:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_SMS_ORIGINATION_DENIED</code></span></p></td>
+<td>Temporary error, SMS origination denied.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-SMS-TERMINATION-DENIED:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_SMS_TERMINATION_DENIED</code></span></p></td>
+<td>Temporary error, SMS termination denied.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-SUPPLEMENTARY-SERVICE-NOT-SUPPORTED:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_SUPPLEMENTARY_SERVICE_NOT_SUPPORTED</code></span></p></td>
+<td>Temporary error, supplementary service not supported.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-SMS-NOT-SUPPORTED:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_SMS_NOT_SUPPORTED</code></span></p></td>
+<td>Temporary error, SMS not supported.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-MISSING-EXPECTED-PARAMETER:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_MISSING_EXPECTED_PARAMETER</code></span></p></td>
+<td>Temporary error, missing expected parameter.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-MISSING-MANDATORY-PARAMETER:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_MISSING_MANDATORY_PARAMETER</code></span></p></td>
+<td>Temporary error, missing mandatory parameter.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-UNRECOGNIZED-PARAMETER-VALUE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_UNRECOGNIZED_PARAMETER_VALUE</code></span></p></td>
+<td>Temporary error, unrecognized parameter value.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-UNEXPECTED-PARAMETER-VALUE:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_UNEXPECTED_PARAMETER_VALUE</code></span></p></td>
+<td>Temporary error, unexpected parameter value.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-USER-DATA-SIZE-ERROR:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_USER_DATA_SIZE_ERROR</code></span></p></td>
+<td>Temporary error, user data size error.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-OTHER:CAPS"></a><span class="term"><code class="literal">MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_OTHER</code></span></p></td>
+<td>Temporary error, other general problem.
+</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -2208,10 +2902,325 @@ Type of SMS validity value.
 </tbody>
 </table></div>
 </div>
+<hr>
+<div class="refsect2">
+<a name="MMSmsCdmaTeleserviceId"></a><h3>enum MMSmsCdmaTeleserviceId</h3>
+<pre class="programlisting">typedef enum {
+ /*&lt; underscore_name=mm_sms_cdma_teleservice_id &gt;*/
+    MM_SMS_CDMA_TELESERVICE_ID_UNKNOWN = 0x0000,
+    MM_SMS_CDMA_TELESERVICE_ID_CMT91   = 0x1000,
+    MM_SMS_CDMA_TELESERVICE_ID_WPT     = 0x1001,
+    MM_SMS_CDMA_TELESERVICE_ID_WMT     = 0x1002,
+    MM_SMS_CDMA_TELESERVICE_ID_VMN     = 0x1003,
+    MM_SMS_CDMA_TELESERVICE_ID_WAP     = 0x1004,
+    MM_SMS_CDMA_TELESERVICE_ID_WEMT    = 0x1005,
+    MM_SMS_CDMA_TELESERVICE_ID_SCPT    = 0x1006,
+    MM_SMS_CDMA_TELESERVICE_ID_CATPT   = 0x1007,
+} MMSmsCdmaTeleserviceId;
+</pre>
+<p>
+Teleservice IDs supported for CDMA SMS, as defined in 3GPP2 X.S0004-550-E
+(section 2.256) and 3GPP2 C.S0015-B (section 3.4.3.1).
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><a name="MM-SMS-CDMA-TELESERVICE-ID-UNKNOWN:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_TELESERVICE_ID_UNKNOWN</code></span></p></td>
+<td>Unknown.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-TELESERVICE-ID-CMT91:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_TELESERVICE_ID_CMT91</code></span></p></td>
+<td>IS-91 Extended Protocol Enhanced Services.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-TELESERVICE-ID-WPT:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_TELESERVICE_ID_WPT</code></span></p></td>
+<td>Wireless Paging Teleservice.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-TELESERVICE-ID-WMT:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_TELESERVICE_ID_WMT</code></span></p></td>
+<td>Wireless Messaging Teleservice.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-TELESERVICE-ID-VMN:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_TELESERVICE_ID_VMN</code></span></p></td>
+<td>Voice Mail Notification.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-TELESERVICE-ID-WAP:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_TELESERVICE_ID_WAP</code></span></p></td>
+<td>Wireless Application Protocol.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-TELESERVICE-ID-WEMT:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_TELESERVICE_ID_WEMT</code></span></p></td>
+<td>Wireless Enhanced Messaging Teleservice.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-TELESERVICE-ID-SCPT:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_TELESERVICE_ID_SCPT</code></span></p></td>
+<td>Service Category Programming Teleservice.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-TELESERVICE-ID-CATPT:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_TELESERVICE_ID_CATPT</code></span></p></td>
+<td>Card Application Toolkit Protocol Teleservice.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMSmsCdmaServiceCategory"></a><h3>enum MMSmsCdmaServiceCategory</h3>
+<pre class="programlisting">typedef enum {
+ /*&lt; underscore_name=mm_sms_cdma_service_category &gt;*/
+    MM_SMS_CDMA_SERVICE_CATEGORY_UNKNOWN                          = 0x0000,
+    MM_SMS_CDMA_SERVICE_CATEGORY_EMERGENCY_BROADCAST              = 0x0001,
+    MM_SMS_CDMA_SERVICE_CATEGORY_ADMINISTRATIVE                   = 0x0002,
+    MM_SMS_CDMA_SERVICE_CATEGORY_MAINTENANCE                      = 0x0003,
+    MM_SMS_CDMA_SERVICE_CATEGORY_GENERAL_NEWS_LOCAL               = 0x0004,
+    MM_SMS_CDMA_SERVICE_CATEGORY_GENERAL_NEWS_REGIONAL            = 0x0005,
+    MM_SMS_CDMA_SERVICE_CATEGORY_GENERAL_NEWS_NATIONAL            = 0x0006,
+    MM_SMS_CDMA_SERVICE_CATEGORY_GENERAL_NEWS_INTERNATIONAL       = 0x0007,
+    MM_SMS_CDMA_SERVICE_CATEGORY_BUSINESS_NEWS_LOCAL              = 0x0008,
+    MM_SMS_CDMA_SERVICE_CATEGORY_BUSINESS_NEWS_REGIONAL           = 0x0009,
+    MM_SMS_CDMA_SERVICE_CATEGORY_BUSINESS_NEWS_NATIONAL           = 0x000A,
+    MM_SMS_CDMA_SERVICE_CATEGORY_BUSINESS_NEWS_INTERNATIONAL      = 0x000B,
+    MM_SMS_CDMA_SERVICE_CATEGORY_SPORTS_NEWS_LOCAL                = 0x000C,
+    MM_SMS_CDMA_SERVICE_CATEGORY_SPORTS_NEWS_REGIONAL             = 0x000D,
+    MM_SMS_CDMA_SERVICE_CATEGORY_SPORTS_NEWS_NATIONAL             = 0x000E,
+    MM_SMS_CDMA_SERVICE_CATEGORY_SPORTS_NEWS_INTERNATIONAL        = 0x000F,
+    MM_SMS_CDMA_SERVICE_CATEGORY_ENTERTAINMENT_NEWS_LOCAL         = 0x0010,
+    MM_SMS_CDMA_SERVICE_CATEGORY_ENTERTAINMENT_NEWS_REGIONAL      = 0x0011,
+    MM_SMS_CDMA_SERVICE_CATEGORY_ENTERTAINMENT_NEWS_NATIONAL      = 0x0012,
+    MM_SMS_CDMA_SERVICE_CATEGORY_ENTERTAINMENT_NEWS_INTERNATIONAL = 0x0013,
+    MM_SMS_CDMA_SERVICE_CATEGORY_LOCAL_WEATHER                    = 0x0014,
+    MM_SMS_CDMA_SERVICE_CATEGORY_TRAFFIC_REPORT                   = 0x0015,
+    MM_SMS_CDMA_SERVICE_CATEGORY_FLIGHT_SCHEDULES                 = 0x0016,
+    MM_SMS_CDMA_SERVICE_CATEGORY_RESTAURANTS                      = 0x0017,
+    MM_SMS_CDMA_SERVICE_CATEGORY_LODGINGS                         = 0x0018,
+    MM_SMS_CDMA_SERVICE_CATEGORY_RETAIL_DIRECTORY                 = 0x0019,
+    MM_SMS_CDMA_SERVICE_CATEGORY_ADVERTISEMENTS                   = 0x001A,
+    MM_SMS_CDMA_SERVICE_CATEGORY_STOCK_QUOTES                     = 0x001B,
+    MM_SMS_CDMA_SERVICE_CATEGORY_EMPLOYMENT                       = 0x001C,
+    MM_SMS_CDMA_SERVICE_CATEGORY_HOSPITALS                        = 0x001D,
+    MM_SMS_CDMA_SERVICE_CATEGORY_TECHNOLOGY_NEWS                  = 0x001E,
+    MM_SMS_CDMA_SERVICE_CATEGORY_MULTICATEGORY                    = 0x001F,
+    MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_PRESIDENTIAL_ALERT          = 0x1000,
+    MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_EXTREME_THREAT              = 0x1001,
+    MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_SEVERE_THREAT               = 0x1002,
+    MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_CHILD_ABDUCTION_EMERGENCY   = 0x1003,
+    MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_TEST                        = 0x1004,
+} MMSmsCdmaServiceCategory;
+</pre>
+<p>
+Service category for CDMA SMS, as defined in 3GPP2 C.R1001-D (section 9.3).
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-UNKNOWN:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_UNKNOWN</code></span></p></td>
+<td>Unknown.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-EMERGENCY-BROADCAST:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_EMERGENCY_BROADCAST</code></span></p></td>
+<td>Emergency broadcast.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-ADMINISTRATIVE:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_ADMINISTRATIVE</code></span></p></td>
+<td>Administrative.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-MAINTENANCE:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_MAINTENANCE</code></span></p></td>
+<td>Maintenance.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-GENERAL-NEWS-LOCAL:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_GENERAL_NEWS_LOCAL</code></span></p></td>
+<td>General news (local).
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-GENERAL-NEWS-REGIONAL:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_GENERAL_NEWS_REGIONAL</code></span></p></td>
+<td>General news (regional).
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-GENERAL-NEWS-NATIONAL:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_GENERAL_NEWS_NATIONAL</code></span></p></td>
+<td>General news (national).
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-GENERAL-NEWS-INTERNATIONAL:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_GENERAL_NEWS_INTERNATIONAL</code></span></p></td>
+<td>General news (international).
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-BUSINESS-NEWS-LOCAL:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_BUSINESS_NEWS_LOCAL</code></span></p></td>
+<td>Business/Financial news (local).
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-BUSINESS-NEWS-REGIONAL:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_BUSINESS_NEWS_REGIONAL</code></span></p></td>
+<td>Business/Financial news (regional).
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-BUSINESS-NEWS-NATIONAL:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_BUSINESS_NEWS_NATIONAL</code></span></p></td>
+<td>Business/Financial news (national).
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-BUSINESS-NEWS-INTERNATIONAL:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_BUSINESS_NEWS_INTERNATIONAL</code></span></p></td>
+<td>Business/Financial news (international).
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-SPORTS-NEWS-LOCAL:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_SPORTS_NEWS_LOCAL</code></span></p></td>
+<td>Sports news (local).
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-SPORTS-NEWS-REGIONAL:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_SPORTS_NEWS_REGIONAL</code></span></p></td>
+<td>Sports news (regional).
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-SPORTS-NEWS-NATIONAL:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_SPORTS_NEWS_NATIONAL</code></span></p></td>
+<td>Sports news (national).
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-SPORTS-NEWS-INTERNATIONAL:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_SPORTS_NEWS_INTERNATIONAL</code></span></p></td>
+<td>Sports news (international).
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-ENTERTAINMENT-NEWS-LOCAL:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_ENTERTAINMENT_NEWS_LOCAL</code></span></p></td>
+<td>Entertainment news (local).
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-ENTERTAINMENT-NEWS-REGIONAL:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_ENTERTAINMENT_NEWS_REGIONAL</code></span></p></td>
+<td>Entertainment news (regional).
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-ENTERTAINMENT-NEWS-NATIONAL:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_ENTERTAINMENT_NEWS_NATIONAL</code></span></p></td>
+<td>Entertainment news (national).
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-ENTERTAINMENT-NEWS-INTERNATIONAL:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_ENTERTAINMENT_NEWS_INTERNATIONAL</code></span></p></td>
+<td>Entertainment news (international).
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-LOCAL-WEATHER:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_LOCAL_WEATHER</code></span></p></td>
+<td>Local weather.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-TRAFFIC-REPORT:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_TRAFFIC_REPORT</code></span></p></td>
+<td>Area traffic report.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-FLIGHT-SCHEDULES:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_FLIGHT_SCHEDULES</code></span></p></td>
+<td>Local airport flight schedules.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-RESTAURANTS:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_RESTAURANTS</code></span></p></td>
+<td>Restaurants.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-LODGINGS:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_LODGINGS</code></span></p></td>
+<td>Lodgings.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-RETAIL-DIRECTORY:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_RETAIL_DIRECTORY</code></span></p></td>
+<td>Retail directory.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-ADVERTISEMENTS:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_ADVERTISEMENTS</code></span></p></td>
+<td>Advertisements.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-STOCK-QUOTES:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_STOCK_QUOTES</code></span></p></td>
+<td>Stock quotes.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-EMPLOYMENT:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_EMPLOYMENT</code></span></p></td>
+<td>Employment.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-HOSPITALS:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_HOSPITALS</code></span></p></td>
+<td>Medical / Health / Hospitals.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-TECHNOLOGY-NEWS:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_TECHNOLOGY_NEWS</code></span></p></td>
+<td>Technology news.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-MULTICATEGORY:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_MULTICATEGORY</code></span></p></td>
+<td>Multi-category.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-CMAS-PRESIDENTIAL-ALERT:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_PRESIDENTIAL_ALERT</code></span></p></td>
+<td>Presidential alert.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-CMAS-EXTREME-THREAT:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_EXTREME_THREAT</code></span></p></td>
+<td>Extreme threat.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-CMAS-SEVERE-THREAT:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_SEVERE_THREAT</code></span></p></td>
+<td>Severe threat.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-CMAS-CHILD-ABDUCTION-EMERGENCY:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_CHILD_ABDUCTION_EMERGENCY</code></span></p></td>
+<td>Child abduction emergency.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-SMS-CDMA-SERVICE-CATEGORY-CMAS-TEST:CAPS"></a><span class="term"><code class="literal">MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_TEST</code></span></p></td>
+<td>CMAS test.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

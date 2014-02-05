@@ -349,6 +349,24 @@ MMModem
 @Returns: 
 
 
+<!-- ##### FUNCTION mm_modem_get_bearer_paths ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_modem_dup_bearer_paths ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
 <!-- ##### FUNCTION mm_modem_get_own_numbers ##### -->
 <para>
 

@@ -82,6 +82,15 @@ MmGdbusObjectSkeleton
 @interface_: 
 
 
+<!-- ##### FUNCTION mm_gdbus_object_skeleton_set_modem_oma ##### -->
+<para>
+
+</para>
+
+@object: 
+@interface_: 
+
+
 <!-- ##### FUNCTION mm_gdbus_object_skeleton_set_modem_location ##### -->
 <para>
 
@@ -110,6 +119,15 @@ MmGdbusObjectSkeleton
 
 
 <!-- ##### FUNCTION mm_gdbus_object_skeleton_set_modem_time ##### -->
+<para>
+
+</para>
+
+@object: 
+@interface_: 
+
+
+<!-- ##### FUNCTION mm_gdbus_object_skeleton_set_modem_signal ##### -->
 <para>
 
 </para>

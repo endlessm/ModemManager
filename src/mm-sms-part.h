@@ -29,24 +29,19 @@ typedef enum {
 
 typedef struct _MMSmsPart MMSmsPart;
 
-#define SMS_MAX_PDU_LEN 344
 #define SMS_PART_INVALID_INDEX G_MAXUINT
+
+#define MM_SMS_PART_IS_3GPP(part)                                       \
+    (mm_sms_part_get_pdu_type (part) >= MM_SMS_PDU_TYPE_DELIVER &&      \
+     mm_sms_part_get_pdu_type (part) <= MM_SMS_PDU_TYPE_STATUS_REPORT)
+
+#define MM_SMS_PART_IS_CDMA(part)                                       \
+    (mm_sms_part_get_pdu_type (part) >= MM_SMS_PDU_TYPE_CDMA_DELIVER && \
+     mm_sms_part_get_pdu_type (part) <= MM_SMS_PDU_TYPE_CDMA_READ_ACKNOWLEDGEMENT)
 
 MMSmsPart *mm_sms_part_new  (guint index,
                              MMSmsPduType type);
-MMSmsPart *mm_sms_part_new_from_pdu  (guint index,
-                                      const gchar *hexpdu,
-                                      GError **error);
-MMSmsPart *mm_sms_part_new_from_binary_pdu  (guint index,
-                                             const guint8 *pdu,
-                                             gsize pdu_len,
-                                             GError **error);
 void       mm_sms_part_free (MMSmsPart *part);
-
-guint8    *mm_sms_part_get_submit_pdu (MMSmsPart *part,
-                                       guint *out_pdulen,
-                                       guint *out_msgstart,
-                                       GError **error);
 
 guint             mm_sms_part_get_index              (MMSmsPart *part);
 void              mm_sms_part_set_index              (MMSmsPart *part,
@@ -129,16 +124,12 @@ void              mm_sms_part_set_concat_sequence    (MMSmsPart *part,
 
 gboolean          mm_sms_part_should_concat          (MMSmsPart *part);
 
-/* For testcases only */
-guint mm_sms_part_encode_address (const gchar *address,
-                                  guint8 *buf,
-                                  gsize buflen,
-                                  gboolean is_smsc);
-
-gchar **mm_sms_part_util_split_text (const gchar *text,
-                                     MMSmsEncoding *encoding);
-
-GByteArray **mm_sms_part_util_split_data (const guint8 *data,
-                                          gsize data_len);
+/* CDMA specific */
+MMSmsCdmaTeleserviceId   mm_sms_part_get_cdma_teleservice_id   (MMSmsPart *part);
+void                     mm_sms_part_set_cdma_teleservice_id   (MMSmsPart *part,
+                                                                MMSmsCdmaTeleserviceId cdma_teleservice_id);
+MMSmsCdmaServiceCategory mm_sms_part_get_cdma_service_category (MMSmsPart *part);
+void                     mm_sms_part_set_cdma_service_category (MMSmsPart *part,
+                                                                MMSmsCdmaServiceCategory cdma_service_category);
 
 #endif /* MM_SMS_PART_H */

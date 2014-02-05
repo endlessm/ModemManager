@@ -5,17 +5,17 @@
 <title>MMUnlockRetries</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
-<link rel="up" href="ch03.html#idm211869297872" title="Generic interfaces">
-<link rel="prev" href="MMModemCdma.html" title="MMModemCdma">
+<link rel="up" href="ch03.html#id-1.2.4.3" title="Generic interfaces">
+<link rel="prev" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties">
 <link rel="next" href="ch03s02.html" title="Simple interface support">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="MMModemCdma.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="ch03.html#idm211869297872"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="MMCdmaManualActivationProperties.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html#id-1.2.4.3"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">libmm-glib Reference Manual</th>
 <td><a accesskey="n" href="ch03s02.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
@@ -43,8 +43,8 @@
 #define             <a class="link" href="MMUnlockRetries.html#MM-UNLOCK-RETRIES-UNKNOWN:CAPS" title="MM_UNLOCK_RETRIES_UNKNOWN">MM_UNLOCK_RETRIES_UNKNOWN</a>
 
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMUnlockRetries.html#mm-unlock-retries-get" title="mm_unlock_retries_get ()">mm_unlock_retries_get</a>               (<em class="parameter"><code><a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a> lock</code></em>);
-<span class="returnvalue">void</span>                (<a class="link" href="MMUnlockRetries.html#MMUnlockRetriesForeachCb" title="MMUnlockRetriesForeachCb ()">*MMUnlockRetriesForeachCb</a>)         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a> lock</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemLock</span> lock</code></em>);
+<span class="returnvalue">void</span>                (<a class="link" href="MMUnlockRetries.html#MMUnlockRetriesForeachCb" title="MMUnlockRetriesForeachCb ()">*MMUnlockRetriesForeachCb</a>)         (<em class="parameter"><code><span class="type">MMModemLock</span> lock</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> count</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="MMUnlockRetries.html#mm-unlock-retries-foreach" title="mm_unlock_retries_foreach ()">mm_unlock_retries_foreach</a>           (<em class="parameter"><code><a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> *self</code></em>,
@@ -63,7 +63,7 @@
 <a name="MMUnlockRetries.description"></a><h2>Description</h2>
 <p>
 The <a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> is an object exposing the unlock retry counts for
-different <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a> values.
+different <span class="type">MMModemLock</span> values.
 </p>
 <p>
 This object is retrieved from the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> object with either
@@ -93,7 +93,7 @@ Identifier for reporting unknown unlock retries.
 <div class="refsect2">
 <a name="mm-unlock-retries-get"></a><h3>mm_unlock_retries_get ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_unlock_retries_get               (<em class="parameter"><code><a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a> lock</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">MMModemLock</span> lock</code></em>);</pre>
 <p>
 Gets the unlock retries for the given <em class="parameter"><code>lock</code></em>.
 </p>
@@ -109,7 +109,7 @@ Gets the unlock retries for the given <em class="parameter"><code>lock</code></e
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>lock</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a>.</td>
+<td>a <span class="type">MMModemLock</span>.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -121,7 +121,7 @@ Gets the unlock retries for the given <em class="parameter"><code>lock</code></e
 <hr>
 <div class="refsect2">
 <a name="MMUnlockRetriesForeachCb"></a><h3>MMUnlockRetriesForeachCb ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                (*MMUnlockRetriesForeachCb)         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a> lock</code></em>,
+<pre class="programlisting"><span class="returnvalue">void</span>                (*MMUnlockRetriesForeachCb)         (<em class="parameter"><code><span class="type">MMModemLock</span> lock</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> count</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
@@ -135,7 +135,7 @@ Specifies the type of function passed to <a class="link" href="MMUnlockRetries.h
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>lock</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a>.</td>
+<td>a <span class="type">MMModemLock</span>.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
@@ -169,11 +169,13 @@ Executes <em class="parameter"><code>callback</code></em> for each lock informat
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
-<td>callback to call for each available lock.</td>
+<td>callback to call for each available lock. <span class="annotation">[<acronym title="The callback is valid only during the call to the method."><span class="acronym">scope call</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
-<td>data to pass to <em class="parameter"><code>callback</code></em>.</td>
+<td>data to pass to <em class="parameter"><code>callback</code></em>. <span class="annotation">[<acronym title="This parameter is a 'user_data', for callbacks; many bindings can pass NULL here."><span class="acronym">closure</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -182,6 +184,6 @@ Executes <em class="parameter"><code>callback</code></em> for each lock informat
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

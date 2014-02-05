@@ -72,6 +72,11 @@ MmGdbusModem3gpp
 
 </para>
 
+<!-- ##### ARG MmGdbusModem3gpp:subscription-state ##### -->
+<para>
+
+</para>
+
 <!-- ##### STRUCT MmGdbusModem3gppIface ##### -->
 <para>
 
@@ -85,6 +90,7 @@ MmGdbusModem3gpp
 @get_operator_code: 
 @get_operator_name: 
 @get_registration_state: 
+@get_subscription_state: 
 
 <!-- ##### FUNCTION mm_gdbus_modem3gpp_get_registration_state ##### -->
 <para>
@@ -150,6 +156,15 @@ MmGdbusModem3gpp
 
 
 <!-- ##### FUNCTION mm_gdbus_modem3gpp_get_enabled_facility_locks ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem3gpp_get_subscription_state ##### -->
 <para>
 
 </para>

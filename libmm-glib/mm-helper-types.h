@@ -37,10 +37,11 @@
  *
  * #MMModemModeCombination is a simple struct holding a pair of #MMModemMode values.
  */
-typedef struct _MMModemModeCombination {
+typedef struct _MMModemModeCombination MMModemModeCombination;
+struct _MMModemModeCombination {
     MMModemMode allowed;
     MMModemMode preferred;
-} MMModemModeCombination;
+};
 
 /**
  * MMModemPortInfo:
@@ -49,12 +50,27 @@ typedef struct _MMModemModeCombination {
  *
  * Information of a given port.
  */
-typedef struct _MMModemPortInfo {
+typedef struct _MMModemPortInfo MMModemPortInfo;
+struct _MMModemPortInfo {
     gchar *name;
     MMModemPortType type;
-} MMModemPortInfo;
+};
 
 void mm_modem_port_info_array_free (MMModemPortInfo *array,
                                     guint array_size);
+
+/**
+ * MMOmaPendingNetworkInitiatedSession:
+ * @session_type: A #MMOmaSessionType.
+ * @session_id: Unique ID of the network-initiated OMA session.
+ *
+ * #MMOmaPendingNetworkInitiatedSession is a simple struct specifying the
+ * information available for a pending network-initiated OMA session.
+ */
+typedef struct _MMOmaPendingNetworkInitiatedSession MMOmaPendingNetworkInitiatedSession;
+struct _MMOmaPendingNetworkInitiatedSession {
+    MMOmaSessionType session_type;
+    guint session_id;
+};
 
 #endif /* _MM_HELPER_TYPES_H_ */

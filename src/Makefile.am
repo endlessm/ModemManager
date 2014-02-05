@@ -30,7 +30,11 @@ libmodem_helpers_la_SOURCES = \
 	mm-charsets.c \
 	mm-charsets.h \
 	mm-sms-part.h \
-	mm-sms-part.c
+	mm-sms-part.c \
+	mm-sms-part-3gpp.h \
+	mm-sms-part-3gpp.c \
+	mm-sms-part-cdma.h \
+	mm-sms-part-cdma.c
 
 # Additional QMI support in libmodem-helpers
 if WITH_QMI
@@ -125,15 +129,6 @@ mm-daemon-enums-types.c: Makefile.am $(top_srcdir)/build-aux/mm-enums-template.c
 		--template $(top_srcdir)/build-aux/mm-enums-template.c \
 		$(DAEMON_ENUMS) > $@
 
-# Marshallers
-
-mm-marshal.h: mm-marshal.list
-	$(AM_V_GEN) $(GLIB_GENMARSHAL) $< --prefix=mm_marshal --header > $@
-
-mm-marshal.c: mm-marshal.list mm-marshal.h
-	$(AM_V_GEN) echo "#include \"mm-marshal.h\"" > $@ && \
-		$(GLIB_GENMARSHAL) $< --prefix=mm_marshal --body >> $@
-
 sbin_PROGRAMS = ModemManager
 
 ModemManager_CPPFLAGS = \
@@ -156,8 +151,6 @@ ModemManager_LDADD = \
 	$(top_builddir)/libqcdm/src/libqcdm.la
 
 nodist_ModemManager_SOURCES = \
-	mm-marshal.h \
-	mm-marshal.c \
 	mm-daemon-enums-types.h \
 	mm-daemon-enums-types.c
 
@@ -191,8 +184,6 @@ ModemManager_SOURCES = \
 	mm-base-modem-at.c \
 	mm-base-modem.h \
 	mm-base-modem.c \
-	mm-sms-part.h \
-	mm-sms-part.c \
 	mm-sms.h \
 	mm-sms.c \
 	mm-sms-list.h \
@@ -215,6 +206,10 @@ ModemManager_SOURCES = \
 	mm-iface-modem-time.c \
 	mm-iface-modem-firmware.h \
 	mm-iface-modem-firmware.c \
+	mm-iface-modem-signal.h \
+	mm-iface-modem-signal.c \
+	mm-iface-modem-oma.h \
+	mm-iface-modem-oma.c \
 	mm-broadband-modem.h \
 	mm-broadband-modem.c \
 	mm-serial-parsers.c \
@@ -228,8 +223,6 @@ ModemManager_SOURCES = \
 
 # Additional dependency rules
 mm-bearer.c: mm-daemon-enums-types.h
-mm-sms-list.c: mm-marshal.h
-mm-sim.c: mm-marshal.h
 
 # Additional Polkit support
 if WITH_POLKIT
@@ -271,12 +264,9 @@ ModemManager_LDADD += $(MBIM_LIBS)
 endif
 
 EXTRA_DIST = \
-	$(udevrules_DATA) \
-	mm-marshal.list
+	$(udevrules_DATA)
 
 CLEANFILES = \
-	mm-marshal.h \
-	mm-marshal.c \
 	mm-daemon-enums-types.h \
 	mm-daemon-enums-types.c \
 	mm-serial-enums-types.h \

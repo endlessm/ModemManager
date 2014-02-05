@@ -25,7 +25,6 @@
 #include <libmm-glib.h>
 
 #include "mm-iface-modem-messaging.h"
-#include "mm-marshal.h"
 #include "mm-sms-list.h"
 #include "mm-sms.h"
 #include "mm-log.h"
@@ -226,6 +225,9 @@ mm_sms_list_add_sms (MMSmsList *self,
                      MMSms *sms)
 {
     self->priv->list = g_list_prepend (self->priv->list, g_object_ref (sms));
+    g_signal_emit (self, signals[SIGNAL_ADDED], 0,
+                   mm_sms_get_path (sms),
+                   FALSE);
 }
 
 /*****************************************************************************/
@@ -481,7 +483,7 @@ mm_sms_list_class_init (MMSmsListClass *klass)
                       G_SIGNAL_RUN_FIRST,
                       G_STRUCT_OFFSET (MMSmsListClass, sms_added),
                       NULL, NULL,
-                      mm_marshal_VOID__STRING_BOOLEAN,
+                      g_cclosure_marshal_generic,
                       G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_BOOLEAN);
 
     signals[SIGNAL_DELETED] =
@@ -490,6 +492,6 @@ mm_sms_list_class_init (MMSmsListClass *klass)
                       G_SIGNAL_RUN_FIRST,
                       G_STRUCT_OFFSET (MMSmsListClass, sms_deleted),
                       NULL, NULL,
-                      mm_marshal_VOID__STRING,
+                      g_cclosure_marshal_generic,
                       G_TYPE_NONE, 1, G_TYPE_STRING);
 }

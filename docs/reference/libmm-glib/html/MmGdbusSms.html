@@ -8,7 +8,7 @@
 <link rel="up" href="pt02.html" title="Part II. Low level API">
 <link rel="prev" href="MmGdbusSimSkeleton.html" title="MmGdbusSimSkeleton">
 <link rel="next" href="MmGdbusSmsProxy.html" title="MmGdbusSmsProxy">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -65,6 +65,8 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *          <a class="link" href="MmGdbusSms.html#mm-gdbus-sms-get-validity" title="mm_gdbus_sms_get_validity ()">mm_gdbus_sms_get_validity</a>           (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *          <a class="link" href="MmGdbusSms.html#mm-gdbus-sms-dup-validity" title="mm_gdbus_sms_dup_validity ()">mm_gdbus_sms_dup_validity</a>           (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                <a class="link" href="MmGdbusSms.html#mm-gdbus-sms-get-class" title="mm_gdbus_sms_get_class ()">mm_gdbus_sms_get_class</a>              (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MmGdbusSms.html#mm-gdbus-sms-get-teleservice-id" title="mm_gdbus_sms_get_teleservice_id ()">mm_gdbus_sms_get_teleservice_id</a>     (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MmGdbusSms.html#mm-gdbus-sms-get-service-category" title="mm_gdbus_sms_get_service_category ()">mm_gdbus_sms_get_service_category</a>   (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MmGdbusSms.html#mm-gdbus-sms-get-timestamp" title="mm_gdbus_sms_get_timestamp ()">mm_gdbus_sms_get_timestamp</a>          (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MmGdbusSms.html#mm-gdbus-sms-dup-timestamp" title="mm_gdbus_sms_dup_timestamp ()">mm_gdbus_sms_dup_timestamp</a>          (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MmGdbusSms.html#mm-gdbus-sms-get-discharge-timestamp" title="mm_gdbus_sms_get_discharge_timestamp ()">mm_gdbus_sms_get_discharge_timestamp</a>
@@ -129,9 +131,11 @@ MmGdbusSms is implemented by
   "<a class="link" href="MmGdbusSms.html#MmGdbusSms--message-reference" title='The "message-reference" property'>message-reference</a>"        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write
   "<a class="link" href="MmGdbusSms.html#MmGdbusSms--number" title='The "number" property'>number</a>"                   <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
   "<a class="link" href="MmGdbusSms.html#MmGdbusSms--pdu-type" title='The "pdu-type" property'>pdu-type</a>"                 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write
+  "<a class="link" href="MmGdbusSms.html#MmGdbusSms--service-category" title='The "service-category" property'>service-category</a>"         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write
   "<a class="link" href="MmGdbusSms.html#MmGdbusSms--smsc" title='The "smsc" property'>smsc</a>"                     <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
   "<a class="link" href="MmGdbusSms.html#MmGdbusSms--state" title='The "state" property'>state</a>"                    <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write
   "<a class="link" href="MmGdbusSms.html#MmGdbusSms--storage" title='The "storage" property'>storage</a>"                  <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write
+  "<a class="link" href="MmGdbusSms.html#MmGdbusSms--teleservice-id" title='The "teleservice-id" property'>teleservice-id</a>"           <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write
   "<a class="link" href="MmGdbusSms.html#MmGdbusSms--text" title='The "text" property'>text</a>"                     <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
   "<a class="link" href="MmGdbusSms.html#MmGdbusSms--timestamp" title='The "timestamp" property'>timestamp</a>"                <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
   "<a class="link" href="MmGdbusSms.html#MmGdbusSms--validity" title='The "validity" property'>validity</a>"                 <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a>*             : Read / Write
@@ -191,11 +195,15 @@ Abstract interface type for the D-Bus interface org.freedesktop.ModemManager1.Sm
 
   guint  (*get_pdu_type) (MmGdbusSms *object);
 
+  guint  (*get_service_category) (MmGdbusSms *object);
+
   const gchar * (*get_smsc) (MmGdbusSms *object);
 
   guint  (*get_state) (MmGdbusSms *object);
 
   guint  (*get_storage) (MmGdbusSms *object);
+
+  guint  (*get_teleservice_id) (MmGdbusSms *object);
 
   const gchar * (*get_text) (MmGdbusSms *object);
 
@@ -258,6 +266,10 @@ Virtual table for the D-Bus interface org.freedesktop.ModemManager1.Sms.
 <td>Getter for the <a class="link" href="MmGdbusSms.html#MmGdbusSms--pdu-type" title='The "pdu-type" property'><span class="type">"pdu-type"</span></a> property.</td>
 </tr>
 <tr>
+<td><p><span class="term"><em class="structfield"><code><a name="MmGdbusSmsIface.get-service-category"></a>get_service_category</code></em> ()</span></p></td>
+<td>Getter for the <a class="link" href="MmGdbusSms.html#MmGdbusSms--service-category" title='The "service-category" property'><span class="type">"service-category"</span></a> property.</td>
+</tr>
+<tr>
 <td><p><span class="term"><em class="structfield"><code><a name="MmGdbusSmsIface.get-smsc"></a>get_smsc</code></em> ()</span></p></td>
 <td>Getter for the <a class="link" href="MmGdbusSms.html#MmGdbusSms--smsc" title='The "smsc" property'><span class="type">"smsc"</span></a> property.</td>
 </tr>
@@ -268,6 +280,10 @@ Virtual table for the D-Bus interface org.freedesktop.ModemManager1.Sms.
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="MmGdbusSmsIface.get-storage"></a>get_storage</code></em> ()</span></p></td>
 <td>Getter for the <a class="link" href="MmGdbusSms.html#MmGdbusSms--storage" title='The "storage" property'><span class="type">"storage"</span></a> property.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="MmGdbusSmsIface.get-teleservice-id"></a>get_teleservice_id</code></em> ()</span></p></td>
+<td>Getter for the <a class="link" href="MmGdbusSms.html#MmGdbusSms--teleservice-id" title='The "teleservice-id" property'><span class="type">"teleservice-id"</span></a> property.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="MmGdbusSmsIface.get-text"></a>get_text</code></em> ()</span></p></td>
@@ -289,7 +305,7 @@ Virtual table for the D-Bus interface org.freedesktop.ModemManager1.Sms.
 <a name="mm-gdbus-sms-get-state"></a><h3>mm_gdbus_sms_get_state ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_gdbus_sms_get_state              (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.State">"State"</a> D-Bus property.
+Gets the value of the "State" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -316,7 +332,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-sms-get-pdu-type"></a><h3>mm_gdbus_sms_get_pdu_type ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_gdbus_sms_get_pdu_type           (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.PduType">"PduType"</a> D-Bus property.
+Gets the value of the "PduType" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -343,7 +359,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-sms-get-message-reference"></a><h3>mm_gdbus_sms_get_message_reference ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_gdbus_sms_get_message_reference  (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.MessageReference">"MessageReference"</a> D-Bus property.
+Gets the value of the "MessageReference" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -370,7 +386,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-sms-get-storage"></a><h3>mm_gdbus_sms_get_storage ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_gdbus_sms_get_storage            (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Storage">"Storage"</a> D-Bus property.
+Gets the value of the "Storage" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -397,7 +413,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-sms-get-text"></a><h3>mm_gdbus_sms_get_text ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_gdbus_sms_get_text               (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Text">"Text"</a> D-Bus property.
+Gets the value of the "Text" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -431,7 +447,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-sms-dup-text"></a><h3>mm_gdbus_sms_dup_text ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_gdbus_sms_dup_text               (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets a copy of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Text">"Text"</a> D-Bus property.
+Gets a copy of the "Text" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -459,7 +475,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-sms-get-data"></a><h3>mm_gdbus_sms_get_data ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *          mm_gdbus_sms_get_data               (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Data">"Data"</a> D-Bus property.
+Gets the value of the "Data" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -493,7 +509,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-sms-dup-data"></a><h3>mm_gdbus_sms_dup_data ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *          mm_gdbus_sms_dup_data               (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets a copy of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Data">"Data"</a> D-Bus property.
+Gets a copy of the "Data" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -521,7 +537,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-sms-get-number"></a><h3>mm_gdbus_sms_get_number ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_gdbus_sms_get_number             (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Number">"Number"</a> D-Bus property.
+Gets the value of the "Number" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -555,7 +571,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-sms-dup-number"></a><h3>mm_gdbus_sms_dup_number ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_gdbus_sms_dup_number             (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets a copy of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Number">"Number"</a> D-Bus property.
+Gets a copy of the "Number" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -583,7 +599,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-sms-get-smsc"></a><h3>mm_gdbus_sms_get_smsc ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_gdbus_sms_get_smsc               (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.SMSC">"SMSC"</a> D-Bus property.
+Gets the value of the "SMSC" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -617,7 +633,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-sms-dup-smsc"></a><h3>mm_gdbus_sms_dup_smsc ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_gdbus_sms_dup_smsc               (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets a copy of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.SMSC">"SMSC"</a> D-Bus property.
+Gets a copy of the "SMSC" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -645,7 +661,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-sms-get-validity"></a><h3>mm_gdbus_sms_get_validity ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *          mm_gdbus_sms_get_validity           (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Validity">"Validity"</a> D-Bus property.
+Gets the value of the "Validity" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -679,7 +695,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-sms-dup-validity"></a><h3>mm_gdbus_sms_dup_validity ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *          mm_gdbus_sms_dup_validity           (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets a copy of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Validity">"Validity"</a> D-Bus property.
+Gets a copy of the "Validity" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -707,7 +723,61 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-sms-get-class"></a><h3>mm_gdbus_sms_get_class ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                mm_gdbus_sms_get_class              (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Class">"Class"</a> D-Bus property.
+Gets the value of the "Class" D-Bus property.
+</p>
+<p>
+Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The property value.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-sms-get-teleservice-id"></a><h3>mm_gdbus_sms_get_teleservice_id ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_gdbus_sms_get_teleservice_id     (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
+<p>
+Gets the value of the "TeleserviceId" D-Bus property.
+</p>
+<p>
+Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The property value.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-sms-get-service-category"></a><h3>mm_gdbus_sms_get_service_category ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_gdbus_sms_get_service_category   (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
+<p>
+Gets the value of the "ServiceCategory" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -734,7 +804,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-sms-get-timestamp"></a><h3>mm_gdbus_sms_get_timestamp ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_gdbus_sms_get_timestamp          (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Timestamp">"Timestamp"</a> D-Bus property.
+Gets the value of the "Timestamp" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -768,7 +838,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-sms-dup-timestamp"></a><h3>mm_gdbus_sms_dup_timestamp ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_gdbus_sms_dup_timestamp          (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets a copy of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Timestamp">"Timestamp"</a> D-Bus property.
+Gets a copy of the "Timestamp" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -797,7 +867,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_gdbus_sms_get_discharge_timestamp
                                                         (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.DischargeTimestamp">"DischargeTimestamp"</a> D-Bus property.
+Gets the value of the "DischargeTimestamp" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -832,7 +902,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_gdbus_sms_dup_discharge_timestamp
                                                         (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets a copy of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.DischargeTimestamp">"DischargeTimestamp"</a> D-Bus property.
+Gets a copy of the "DischargeTimestamp" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -861,7 +931,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_gdbus_sms_get_delivery_report_request
                                                         (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.DeliveryReportRequest">"DeliveryReportRequest"</a> D-Bus property.
+Gets the value of the "DeliveryReportRequest" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -888,7 +958,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <a name="mm-gdbus-sms-get-delivery-state"></a><h3>mm_gdbus_sms_get_delivery_state ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_gdbus_sms_get_delivery_state     (<em class="parameter"><code><a class="link" href="MmGdbusSms.html" title="MmGdbusSms"><span class="type">MmGdbusSms</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.DeliveryState">"DeliveryState"</a> D-Bus property.
+Gets the value of the "DeliveryState" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -918,7 +988,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
-Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-method-org-freedesktop-ModemManager1-Sms.Send"><GTKDOCLINK HREF="Send"><code class="function">Send()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
+Asynchronously invokes the <GTKDOCLINK HREF="Send"><code class="function">Send()</code></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
 When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
 You can then call <a class="link" href="MmGdbusSms.html#mm-gdbus-sms-call-send-finish" title="mm_gdbus_sms_call_send_finish ()"><code class="function">mm_gdbus_sms_call_send_finish()</code></a> to get the result of the operation.
 </p>
@@ -994,7 +1064,7 @@ Finishes an operation started with <a class="link" href="MmGdbusSms.html#mm-gdbu
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
-Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-method-org-freedesktop-ModemManager1-Sms.Send"><GTKDOCLINK HREF="Send"><code class="function">Send()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
+Synchronously invokes the <GTKDOCLINK HREF="Send"><code class="function">Send()</code></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
 </p>
 <p>
 See <a class="link" href="MmGdbusSms.html#mm-gdbus-sms-call-send" title="mm_gdbus_sms_call_send ()"><code class="function">mm_gdbus_sms_call_send()</code></a> for the asynchronous version of this method.
@@ -1036,7 +1106,7 @@ See <a class="link" href="MmGdbusSms.html#mm-gdbus-sms-call-send" title="mm_gdbu
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
-Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-method-org-freedesktop-ModemManager1-Sms.Store"><GTKDOCLINK HREF="Store"><code class="function">Store()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
+Asynchronously invokes the <GTKDOCLINK HREF="Store"><code class="function">Store()</code></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
 When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
 You can then call <a class="link" href="MmGdbusSms.html#mm-gdbus-sms-call-store-finish" title="mm_gdbus_sms_call_store_finish ()"><code class="function">mm_gdbus_sms_call_store_finish()</code></a> to get the result of the operation.
 </p>
@@ -1117,7 +1187,7 @@ Finishes an operation started with <a class="link" href="MmGdbusSms.html#mm-gdbu
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
-Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-method-org-freedesktop-ModemManager1-Sms.Store"><GTKDOCLINK HREF="Store"><code class="function">Store()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
+Synchronously invokes the <GTKDOCLINK HREF="Store"><code class="function">Store()</code></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
 </p>
 <p>
 See <a class="link" href="MmGdbusSms.html#mm-gdbus-sms-call-store" title="mm_gdbus_sms_call_store ()"><code class="function">mm_gdbus_sms_call_store()</code></a> for the asynchronous version of this method.
@@ -1161,7 +1231,7 @@ See <a class="link" href="MmGdbusSms.html#mm-gdbus-sms-call-store" title="mm_gdb
 <a name="MmGdbusSms--class"></a><h3>The <code class="literal">"class"</code> property</h3>
 <pre class="programlisting">  "class"                    <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Class">"Class"</a>.
+Represents the D-Bus property "Class".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -1173,7 +1243,7 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 <a name="MmGdbusSms--data"></a><h3>The <code class="literal">"data"</code> property</h3>
 <pre class="programlisting">  "data"                     <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a>*             : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Data">"Data"</a>.
+Represents the D-Bus property "Data".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -1186,7 +1256,7 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 <a name="MmGdbusSms--delivery-report-request"></a><h3>The <code class="literal">"delivery-report-request"</code> property</h3>
 <pre class="programlisting">  "delivery-report-request"  <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.DeliveryReportRequest">"DeliveryReportRequest"</a>.
+Represents the D-Bus property "DeliveryReportRequest".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -1198,7 +1268,7 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 <a name="MmGdbusSms--delivery-state"></a><h3>The <code class="literal">"delivery-state"</code> property</h3>
 <pre class="programlisting">  "delivery-state"           <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.DeliveryState">"DeliveryState"</a>.
+Represents the D-Bus property "DeliveryState".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -1210,7 +1280,7 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 <a name="MmGdbusSms--discharge-timestamp"></a><h3>The <code class="literal">"discharge-timestamp"</code> property</h3>
 <pre class="programlisting">  "discharge-timestamp"      <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.DischargeTimestamp">"DischargeTimestamp"</a>.
+Represents the D-Bus property "DischargeTimestamp".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -1222,7 +1292,7 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 <a name="MmGdbusSms--message-reference"></a><h3>The <code class="literal">"message-reference"</code> property</h3>
 <pre class="programlisting">  "message-reference"        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.MessageReference">"MessageReference"</a>.
+Represents the D-Bus property "MessageReference".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -1234,7 +1304,7 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 <a name="MmGdbusSms--number"></a><h3>The <code class="literal">"number"</code> property</h3>
 <pre class="programlisting">  "number"                   <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Number">"Number"</a>.
+Represents the D-Bus property "Number".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -1246,7 +1316,19 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 <a name="MmGdbusSms--pdu-type"></a><h3>The <code class="literal">"pdu-type"</code> property</h3>
 <pre class="programlisting">  "pdu-type"                 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.PduType">"PduType"</a>.
+Represents the D-Bus property "PduType".
+</p>
+<p>
+Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
+</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MmGdbusSms--service-category"></a><h3>The <code class="literal">"service-category"</code> property</h3>
+<pre class="programlisting">  "service-category"         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write</pre>
+<p>
+Represents the D-Bus property "ServiceCategory".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -1258,7 +1340,7 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 <a name="MmGdbusSms--smsc"></a><h3>The <code class="literal">"smsc"</code> property</h3>
 <pre class="programlisting">  "smsc"                     <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.SMSC">"SMSC"</a>.
+Represents the D-Bus property "SMSC".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -1270,7 +1352,7 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 <a name="MmGdbusSms--state"></a><h3>The <code class="literal">"state"</code> property</h3>
 <pre class="programlisting">  "state"                    <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.State">"State"</a>.
+Represents the D-Bus property "State".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -1282,7 +1364,19 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 <a name="MmGdbusSms--storage"></a><h3>The <code class="literal">"storage"</code> property</h3>
 <pre class="programlisting">  "storage"                  <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Storage">"Storage"</a>.
+Represents the D-Bus property "Storage".
+</p>
+<p>
+Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
+</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MmGdbusSms--teleservice-id"></a><h3>The <code class="literal">"teleservice-id"</code> property</h3>
+<pre class="programlisting">  "teleservice-id"           <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write</pre>
+<p>
+Represents the D-Bus property "TeleserviceId".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -1294,7 +1388,7 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 <a name="MmGdbusSms--text"></a><h3>The <code class="literal">"text"</code> property</h3>
 <pre class="programlisting">  "text"                     <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Text">"Text"</a>.
+Represents the D-Bus property "Text".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -1306,7 +1400,7 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 <a name="MmGdbusSms--timestamp"></a><h3>The <code class="literal">"timestamp"</code> property</h3>
 <pre class="programlisting">  "timestamp"                <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Timestamp">"Timestamp"</a>.
+Represents the D-Bus property "Timestamp".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -1318,7 +1412,7 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 <a name="MmGdbusSms--validity"></a><h3>The <code class="literal">"validity"</code> property</h3>
 <pre class="programlisting">  "validity"                 <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a>*             : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Validity">"Validity"</a>.
+Represents the D-Bus property "Validity".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -1335,7 +1429,7 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
                                                         <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a> *invocation,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)       : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
-Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-method-org-freedesktop-ModemManager1-Sms.Send"><GTKDOCLINK HREF="Send"><code class="function">Send()</code></a></GTKDOCLINK> D-Bus method.
+Signal emitted when a remote caller is invoking the <GTKDOCLINK HREF="Send"><code class="function">Send()</code></GTKDOCLINK> D-Bus method.
 </p>
 <p>
 If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em> and eventually call <code class="function">mm_gdbus_sms_complete_send()</code> or e.g. <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="http://library.gnome.org/devel/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.
@@ -1374,7 +1468,7 @@ If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstabl
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                  arg_storage,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)        : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
-Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-method-org-freedesktop-ModemManager1-Sms.Store"><GTKDOCLINK HREF="Store"><code class="function">Store()</code></a></GTKDOCLINK> D-Bus method.
+Signal emitted when a remote caller is invoking the <GTKDOCLINK HREF="Store"><code class="function">Store()</code></GTKDOCLINK> D-Bus method.
 </p>
 <p>
 If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em> and eventually call <code class="function">mm_gdbus_sms_complete_store()</code> or e.g. <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="http://library.gnome.org/devel/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.
@@ -1413,6 +1507,6 @@ If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstabl
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

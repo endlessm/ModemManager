@@ -29,6 +29,7 @@
 
 #include "mm-base-modem-at.h"
 #include "mm-broadband-bearer-altair-lte.h"
+#include "mm-iface-modem-3gpp.h"
 #include "mm-log.h"
 #include "mm-modem-helpers.h"
 
@@ -64,7 +65,7 @@ detailed_connect_context_new (MMBroadbandBearer *self,
     ctx->self = g_object_ref (self);
     ctx->modem = MM_BASE_MODEM (g_object_ref (modem));
     ctx->primary = g_object_ref (primary);
-    ctx->data = data;
+    ctx->data = g_object_ref (data);
     /* NOTE:
      * We don't currently support cancelling AT commands, so we'll just check
      * whether the operation is to be cancelled at each step. */
@@ -82,8 +83,7 @@ detailed_connect_context_complete_and_free (DetailedConnectContext *ctx)
     g_simple_async_result_complete_in_idle (ctx->result);
     g_object_unref (ctx->result);
     g_object_unref (ctx->cancellable);
-    if (ctx->data)
-        g_object_unref (ctx->data);
+    g_object_unref (ctx->data);
     g_object_unref (ctx->primary);
     g_object_unref (ctx->modem);
     g_object_unref (ctx->self);
@@ -110,9 +110,7 @@ connect_3gpp_connect_ready (MMBaseModem *modem,
     GError *error = NULL;
     MMBearerIpConfig *config;
 
-    result = mm_base_modem_at_command_finish (MM_BASE_MODEM (modem),
-                                              res,
-                                              &error);
+    result = mm_base_modem_at_command_full_finish (modem, res, &error);
     if (!result) {
         mm_warn ("connect failed: %s", error->message);
         g_simple_async_result_take_error (ctx->result, error);
@@ -147,9 +145,7 @@ connect_3gpp_apnsettings_ready (MMBaseModem *modem,
     const gchar *result;
     GError *error = NULL;
 
-    result = mm_base_modem_at_command_finish (MM_BASE_MODEM (modem),
-                                              res,
-                                              &error);
+    result = mm_base_modem_at_command_full_finish (modem, res, &error);
     if (!result) {
         mm_warn ("setting APN failed: %s", error->message);
         g_simple_async_result_take_error (ctx->result, error);
@@ -158,17 +154,19 @@ connect_3gpp_apnsettings_ready (MMBaseModem *modem,
     }
 
     mm_dbg ("APN set - connecting bearer");
-    mm_base_modem_at_command (
-        ctx->modem,
-        "%DPDNACT=1",
-        10, /* timeout */
-        FALSE, /* allow_cached */
-        (GAsyncReadyCallback)connect_3gpp_connect_ready, /* callback */
-        ctx); /* user_data */
+    mm_base_modem_at_command_full (ctx->modem,
+                                   ctx->primary,
+                                   "%DPDNACT=1",
+                                   20, /* timeout */
+                                   FALSE, /* allow_cached */
+                                   FALSE, /* is_raw */
+                                   ctx->cancellable,
+                                   (GAsyncReadyCallback)connect_3gpp_connect_ready,
+                                   ctx); /* user_data */
 }
 
 static void
-connect_3gpp (MMBroadbandBearer *bearer,
+connect_3gpp (MMBroadbandBearer *self,
               MMBroadbandModem *modem,
               MMAtSerialPort *primary,
               MMAtSerialPort *secondary,
@@ -179,39 +177,57 @@ connect_3gpp (MMBroadbandBearer *bearer,
     DetailedConnectContext *ctx;
     gchar *command, *apn;
     MMBearerProperties *config;
+    MMModem3gppRegistrationState registration_state;
+    MMPort *data;
 
-    ctx = detailed_connect_context_new (
-        bearer,
-        modem,
-        primary,
-        /* Get a 'net' data port */
-        mm_base_modem_get_best_data_port (MM_BASE_MODEM (modem),
-                                          MM_PORT_TYPE_NET),
-        cancellable,
-        callback,
-        user_data);
-
-    if (!ctx->data) {
-        g_simple_async_result_set_error (
-            ctx->result,
-            MM_CORE_ERROR,
-            MM_CORE_ERROR_CONNECTED,
-            "Couldn't connect: no available net port available");
-        detailed_connect_context_complete_and_free (ctx);
+    /* There is a known firmware bug that can leave the modem unusable if a
+     * connect attempt is made when out of coverage. So, fail without trying.
+     */
+    g_object_get (modem,
+                  MM_IFACE_MODEM_3GPP_REGISTRATION_STATE, &registration_state,
+                  NULL);
+    if (registration_state == MM_MODEM_3GPP_REGISTRATION_STATE_UNKNOWN) {
+        g_simple_async_report_error_in_idle (G_OBJECT (self),
+                                             callback,
+                                             user_data,
+                                             MM_MOBILE_EQUIPMENT_ERROR,
+                                             MM_MOBILE_EQUIPMENT_ERROR_NO_NETWORK,
+                                             "Out of coverage, can't connect.");
         return;
     }
 
-    config = mm_bearer_peek_config (MM_BEARER (bearer));
+    data = mm_base_modem_peek_best_data_port (MM_BASE_MODEM (modem), MM_PORT_TYPE_NET);
+    if (!data) {
+        g_simple_async_report_error_in_idle (G_OBJECT (self),
+                                             callback,
+                                             user_data,
+                                             MM_CORE_ERROR,
+                                             MM_CORE_ERROR_CONNECTED,
+                                             "Couldn't connect: no available net port available");
+        return;
+    }
+
+    ctx = detailed_connect_context_new (self,
+                                        modem,
+                                        primary,
+                                        data,
+                                        cancellable,
+                                        callback,
+                                        user_data);
+
+    config = mm_bearer_peek_config (MM_BEARER (self));
     apn = mm_at_serial_port_quote_string (mm_bearer_properties_get_apn (config));
     command = g_strdup_printf ("%%APNN=%s",apn);
     g_free (apn);
-    mm_base_modem_at_command (
-        ctx->modem,
-        command,
-        6, /* timeout */
-        FALSE, /* allow_cached */
-        (GAsyncReadyCallback)connect_3gpp_apnsettings_ready,
-        ctx); /* user_data */
+    mm_base_modem_at_command_full (ctx->modem,
+                                   ctx->primary,
+                                   command,
+                                   10, /* timeout */
+                                   FALSE, /* allow_cached */
+                                   FALSE, /* is_raw */
+                                   ctx->cancellable,
+                                   (GAsyncReadyCallback)connect_3gpp_apnsettings_ready,
+                                   ctx); /* user_data */
     g_free (command);
 }
 
@@ -222,7 +238,6 @@ typedef struct {
     MMBroadbandBearer *self;
     MMBaseModem *modem;
     MMAtSerialPort *primary;
-    MMAtSerialPort *secondary;
     MMPort *data;
     GSimpleAsyncResult *result;
 } DetailedDisconnectContext;
@@ -231,7 +246,6 @@ static DetailedDisconnectContext *
 detailed_disconnect_context_new (MMBroadbandBearer *self,
                                  MMBroadbandModem *modem,
                                  MMAtSerialPort *primary,
-                                 MMAtSerialPort *secondary,
                                  MMPort *data,
                                  GAsyncReadyCallback callback,
                                  gpointer user_data)
@@ -242,7 +256,6 @@ detailed_disconnect_context_new (MMBroadbandBearer *self,
     ctx->self = g_object_ref (self);
     ctx->modem = MM_BASE_MODEM (g_object_ref (modem));
     ctx->primary = g_object_ref (primary);
-    ctx->secondary = (secondary ? g_object_ref (secondary) : NULL);
     ctx->data = g_object_ref (data);
     ctx->result = g_simple_async_result_new (G_OBJECT (self),
                                              callback,
@@ -265,8 +278,6 @@ detailed_disconnect_context_complete_and_free (DetailedDisconnectContext *ctx)
     g_simple_async_result_complete_in_idle (ctx->result);
     g_object_unref (ctx->result);
     g_object_unref (ctx->data);
-    if (ctx->secondary)
-        g_object_unref (ctx->secondary);
     g_object_unref (ctx->primary);
     g_object_unref (ctx->modem);
     g_object_unref (ctx->self);
@@ -282,9 +293,7 @@ disconnect_3gpp_check_status (MMBaseModem *modem,
     const gchar *result;
     GError *error = NULL;
 
-    result = mm_base_modem_at_command_finish (MM_BASE_MODEM (modem),
-                                              res,
-                                              &error);
+    result = mm_base_modem_at_command_full_finish (modem, res, &error);
     if (!result) {
         mm_warn ("Disconnect failed: %s", error->message);
         g_simple_async_result_take_error (ctx->result, error);
@@ -306,17 +315,35 @@ disconnect_3gpp (MMBroadbandBearer *self,
                  gpointer user_data)
 {
     DetailedDisconnectContext *ctx;
+    MMModem3gppRegistrationState registration_state;
 
-    ctx = detailed_disconnect_context_new (self, modem, primary, secondary,
-                                           data, callback, user_data);
+    /* There is a known firmware bug that can leave the modem unusable if a
+     * disconnect attempt is made when out of coverage. So, fail without trying.
+     */
+    g_object_get (modem,
+                  MM_IFACE_MODEM_3GPP_REGISTRATION_STATE, &registration_state,
+                  NULL);
+    if (registration_state == MM_MODEM_3GPP_REGISTRATION_STATE_UNKNOWN) {
+        g_simple_async_report_error_in_idle (G_OBJECT (self),
+                                             callback,
+                                             user_data,
+                                             MM_MOBILE_EQUIPMENT_ERROR,
+                                             MM_MOBILE_EQUIPMENT_ERROR_NO_NETWORK,
+                                             "Out of coverage, can't disconnect.");
+        return;
+    }
 
-    mm_base_modem_at_command (
-        ctx->modem,
-        "%DPDNACT=0",
-        10, /* timeout */
-        FALSE, /* allow_cached */
-        (GAsyncReadyCallback)disconnect_3gpp_check_status,
-        ctx); /* user_data */
+    ctx = detailed_disconnect_context_new (self, modem, primary, data, callback, user_data);
+
+    mm_base_modem_at_command_full (ctx->modem,
+                                   ctx->primary,
+                                   "%DPDNACT=0",
+                                   20, /* timeout */
+                                   FALSE, /* allow_cached */
+                                   FALSE, /* is_raw */
+                                   NULL, /* cancellable */
+                                   (GAsyncReadyCallback)disconnect_3gpp_check_status,
+                                   ctx); /* user_data */
 }
 
 /*****************************************************************************/

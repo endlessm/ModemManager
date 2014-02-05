@@ -5,17 +5,17 @@
     <sub name="ModemManager Overview" link="ref-overview.html">
       <sub name="Introduction" link="ref-overview-introduction.html"/>
       <sub name="Modem detection and setup" link="ref-overview-modem-detection-and-setup.html">
-        <sub name="Detection mechanisms" link="ref-overview-modem-detection-and-setup.html#idm211863910672"/>
+        <sub name="Detection mechanisms" link="ref-overview-modem-detection-and-setup.html#id-1.2.3.2"/>
         <sub name="Probing" link="ch02s02.html">
-          <sub name="Pre-probing filters" link="ch02s02.html#idm211863905456"/>
-          <sub name="Probing sequence" link="ch02s02.html#idm211854553632"/>
-          <sub name="Post-probing filters" link="ch02s02.html#idm211864004288"/>
-          <sub name="Probing setup examples" link="ch02s02.html#idm211856775152"/>
+          <sub name="Pre-probing filters" link="ch02s02.html#id-1.2.3.3.4"/>
+          <sub name="Probing sequence" link="ch02s02.html#id-1.2.3.3.5"/>
+          <sub name="Post-probing filters" link="ch02s02.html#id-1.2.3.3.6"/>
+          <sub name="Probing setup examples" link="ch02s02.html#id-1.2.3.3.7"/>
         </sub>
         <sub name="Port grabbing and Modem object creation" link="ch02s03.html"/>
       </sub>
       <sub name="Modem state machine" link="ref-overview-modem-state-machine.html">
-        <sub name="Initialization" link="ref-overview-modem-state-machine.html#idm211856759264"/>
+        <sub name="Initialization" link="ref-overview-modem-state-machine.html#id-1.2.4.5"/>
         <sub name="Enabling" link="ch03s02.html"/>
         <sub name="Connection &amp; disconnection" link="ch03s03.html"/>
         <sub name="Disabling" link="ch03s04.html"/>
@@ -47,6 +47,8 @@
         <sub name="org.freedesktop.ModemManager1.Modem.Location" link="gdbus-org.freedesktop.ModemManager1.Modem.Location.html"/>
         <sub name="org.freedesktop.ModemManager1.Modem.Time" link="gdbus-org.freedesktop.ModemManager1.Modem.Time.html"/>
         <sub name="org.freedesktop.ModemManager1.Modem.Firmware" link="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html"/>
+        <sub name="org.freedesktop.ModemManager1.Modem.Signal" link="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html"/>
+        <sub name="org.freedesktop.ModemManager1.Modem.Oma" link="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html"/>
       </sub>
       <sub name="The /org/freedesktop/ModemManager/Bearers objects" link="ref-dbus-object-bearer.html">
         <sub name="org.freedesktop.ModemManager1.Bearer" link="gdbus-org.freedesktop.ModemManager1.Bearer.html"/>
@@ -60,7 +62,7 @@
     </sub>
     <sub name="Migrating from ModemManager 0.6 to ModemManager 1.0" link="ref-migrating.html">
       <sub name="" link="ch12.html">
-        <sub name="Listing available modems" link="ch12.html#idm211850989168"/>
+        <sub name="Listing available modems" link="ch12.html#id-1.5.3.1"/>
         <sub name="PIN unlocking" link="ch12s02.html"/>
         <sub name="Connection and disconnection" link="ch12s03.html"/>
         <sub name="Simple connection" link="ch12s04.html"/>
@@ -79,6 +81,7 @@
     <keyword type="enum" name="enum MMFirmwareImageType" link="ModemManager-Flags-and-Enumerations.html#MMFirmwareImageType"/>
     <keyword type="enum" name="enum MMModem3gppFacility" link="ModemManager-Flags-and-Enumerations.html#MMModem3gppFacility"/>
     <keyword type="enum" name="enum MMModem3gppNetworkAvailability" link="ModemManager-Flags-and-Enumerations.html#MMModem3gppNetworkAvailability"/>
+    <keyword type="enum" name="enum MMModem3gppSubscriptionState" link="ModemManager-Flags-and-Enumerations.html#MMModem3gppSubscriptionState"/>
     <keyword type="enum" name="enum MMModem3gppRegistrationState" link="ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState"/>
     <keyword type="enum" name="enum MMModem3gppUssdSessionState" link="ModemManager-Flags-and-Enumerations.html#MMModem3gppUssdSessionState"/>
     <keyword type="enum" name="enum MMModemAccessTechnology" link="ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"/>
@@ -96,11 +99,17 @@
     <keyword type="enum" name="enum MMModemStateChangeReason" link="ModemManager-Flags-and-Enumerations.html#MMModemStateChangeReason"/>
     <keyword type="enum" name="enum MMModemPowerState" link="ModemManager-Flags-and-Enumerations.html#MMModemPowerState"/>
     <keyword type="enum" name="enum MMModemPortType" link="ModemManager-Flags-and-Enumerations.html#MMModemPortType"/>
+    <keyword type="enum" name="enum MMOmaFeature" link="ModemManager-Flags-and-Enumerations.html#MMOmaFeature"/>
+    <keyword type="enum" name="enum MMOmaSessionState" link="ModemManager-Flags-and-Enumerations.html#MMOmaSessionState"/>
+    <keyword type="enum" name="enum MMOmaSessionStateFailedReason" link="ModemManager-Flags-and-Enumerations.html#MMOmaSessionStateFailedReason"/>
+    <keyword type="enum" name="enum MMOmaSessionType" link="ModemManager-Flags-and-Enumerations.html#MMOmaSessionType"/>
     <keyword type="enum" name="enum MMSmsPduType" link="ModemManager-Flags-and-Enumerations.html#MMSmsPduType"/>
     <keyword type="enum" name="enum MMSmsState" link="ModemManager-Flags-and-Enumerations.html#MMSmsState"/>
     <keyword type="enum" name="enum MMSmsDeliveryState" link="ModemManager-Flags-and-Enumerations.html#MMSmsDeliveryState"/>
     <keyword type="enum" name="enum MMSmsStorage" link="ModemManager-Flags-and-Enumerations.html#MMSmsStorage"/>
     <keyword type="enum" name="enum MMSmsValidityType" link="ModemManager-Flags-and-Enumerations.html#MMSmsValidityType"/>
+    <keyword type="enum" name="enum MMSmsCdmaTeleserviceId" link="ModemManager-Flags-and-Enumerations.html#MMSmsCdmaTeleserviceId"/>
+    <keyword type="enum" name="enum MMSmsCdmaServiceCategory" link="ModemManager-Flags-and-Enumerations.html#MMSmsCdmaServiceCategory"/>
     <keyword type="enum" name="enum MMConnectionError" link="ModemManager-Errors.html#MMConnectionError"/>
     <keyword type="enum" name="enum MMCoreError" link="ModemManager-Errors.html#MMCoreError"/>
     <keyword type="enum" name="enum MMMessageError" link="ModemManager-Errors.html#MMMessageError"/>
@@ -122,6 +131,7 @@
     <keyword type="method" name="The Command() method" link="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-method-org-freedesktop-ModemManager1-Modem.Command"/>
     <keyword type="signal" name="The &quot;StateChanged&quot; signal" link="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-signal-org-freedesktop-ModemManager1-Modem.StateChanged"/>
     <keyword type="property" name="The &quot;Sim&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Sim"/>
+    <keyword type="property" name="The &quot;Bearers&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Bearers"/>
     <keyword type="property" name="The &quot;SupportedCapabilities&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.SupportedCapabilities"/>
     <keyword type="property" name="The &quot;CurrentCapabilities&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.CurrentCapabilities"/>
     <keyword type="property" name="The &quot;MaxBearers&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.MaxBearers"/>
@@ -159,6 +169,7 @@
     <keyword type="property" name="The &quot;OperatorCode&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorCode"/>
     <keyword type="property" name="The &quot;OperatorName&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorName"/>
     <keyword type="property" name="The &quot;EnabledFacilityLocks&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.EnabledFacilityLocks"/>
+    <keyword type="property" name="The &quot;SubscriptionState&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.SubscriptionState"/>
     <keyword type="method" name="The Initiate() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Initiate"/>
     <keyword type="method" name="The Respond() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Respond"/>
     <keyword type="method" name="The Cancel() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Cancel"/>
@@ -180,6 +191,7 @@
     <keyword type="method" name="The Create() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.Create"/>
     <keyword type="signal" name="The &quot;Added&quot; signal" link="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Messaging.Added"/>
     <keyword type="signal" name="The &quot;Deleted&quot; signal" link="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Messaging.Deleted"/>
+    <keyword type="property" name="The &quot;Messages&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.Messages"/>
     <keyword type="property" name="The &quot;SupportedStorages&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.SupportedStorages"/>
     <keyword type="property" name="The &quot;DefaultStorage&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.DefaultStorage"/>
     <keyword type="method" name="The Setup() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Location.Setup"/>
@@ -193,6 +205,22 @@
     <keyword type="property" name="The &quot;NetworkTimezone&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Time.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Time.NetworkTimezone"/>
     <keyword type="method" name="The List() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Firmware.List"/>
     <keyword type="method" name="The Select() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Firmware.Select"/>
+    <keyword type="method" name="The Setup() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Signal.Setup"/>
+    <keyword type="property" name="The &quot;Rate&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Rate"/>
+    <keyword type="property" name="The &quot;Cdma&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Cdma"/>
+    <keyword type="property" name="The &quot;Evdo&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Evdo"/>
+    <keyword type="property" name="The &quot;Gsm&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Gsm"/>
+    <keyword type="property" name="The &quot;Umts&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Umts"/>
+    <keyword type="property" name="The &quot;Lte&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Lte"/>
+    <keyword type="method" name="The Setup() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Oma.Setup"/>
+    <keyword type="method" name="The StartClientInitiatedSession() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Oma.StartClientInitiatedSession"/>
+    <keyword type="method" name="The AcceptNetworkInitiatedSession() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Oma.AcceptNetworkInitiatedSession"/>
+    <keyword type="method" name="The CancelSession() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Oma.CancelSession"/>
+    <keyword type="signal" name="The &quot;SessionStateChanged&quot; signal" link="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Oma.SessionStateChanged"/>
+    <keyword type="property" name="The &quot;Features&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Oma.Features"/>
+    <keyword type="property" name="The &quot;PendingNetworkInitiatedSessions&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Oma.PendingNetworkInitiatedSessions"/>
+    <keyword type="property" name="The &quot;SessionType&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Oma.SessionType"/>
+    <keyword type="property" name="The &quot;SessionState&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Oma.SessionState"/>
     <keyword type="method" name="The Connect() method" link="gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-method-org-freedesktop-ModemManager1-Bearer.Connect"/>
     <keyword type="method" name="The Disconnect() method" link="gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-method-org-freedesktop-ModemManager1-Bearer.Disconnect"/>
     <keyword type="property" name="The &quot;Interface&quot; property" link="gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.Interface"/>
@@ -220,6 +248,8 @@
     <keyword type="property" name="The &quot;SMSC&quot; property" link="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.SMSC"/>
     <keyword type="property" name="The &quot;Validity&quot; property" link="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Validity"/>
     <keyword type="property" name="The &quot;Class&quot; property" link="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Class"/>
+    <keyword type="property" name="The &quot;TeleserviceId&quot; property" link="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.TeleserviceId"/>
+    <keyword type="property" name="The &quot;ServiceCategory&quot; property" link="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.ServiceCategory"/>
     <keyword type="property" name="The &quot;DeliveryReportRequest&quot; property" link="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.DeliveryReportRequest"/>
     <keyword type="property" name="The &quot;MessageReference&quot; property" link="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.MessageReference"/>
     <keyword type="property" name="The &quot;Timestamp&quot; property" link="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Timestamp"/>
@@ -258,6 +288,10 @@
     <keyword type="constant" name="MM_MODEM_3GPP_NETWORK_AVAILABILITY_AVAILABLE" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-3GPP-NETWORK-AVAILABILITY-AVAILABLE:CAPS"/>
     <keyword type="constant" name="MM_MODEM_3GPP_NETWORK_AVAILABILITY_CURRENT" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-3GPP-NETWORK-AVAILABILITY-CURRENT:CAPS"/>
     <keyword type="constant" name="MM_MODEM_3GPP_NETWORK_AVAILABILITY_FORBIDDEN" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-3GPP-NETWORK-AVAILABILITY-FORBIDDEN:CAPS"/>
+    <keyword type="constant" name="MM_MODEM_3GPP_SUBSCRIPTION_STATE_UNKNOWN" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-3GPP-SUBSCRIPTION-STATE-UNKNOWN:CAPS"/>
+    <keyword type="constant" name="MM_MODEM_3GPP_SUBSCRIPTION_STATE_UNPROVISIONED" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-3GPP-SUBSCRIPTION-STATE-UNPROVISIONED:CAPS"/>
+    <keyword type="constant" name="MM_MODEM_3GPP_SUBSCRIPTION_STATE_PROVISIONED" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-3GPP-SUBSCRIPTION-STATE-PROVISIONED:CAPS"/>
+    <keyword type="constant" name="MM_MODEM_3GPP_SUBSCRIPTION_STATE_OUT_OF_DATA" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-3GPP-SUBSCRIPTION-STATE-OUT-OF-DATA:CAPS"/>
     <keyword type="constant" name="MM_MODEM_3GPP_REGISTRATION_STATE_IDLE" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-3GPP-REGISTRATION-STATE-IDLE:CAPS"/>
     <keyword type="constant" name="MM_MODEM_3GPP_REGISTRATION_STATE_HOME" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-3GPP-REGISTRATION-STATE-HOME:CAPS"/>
     <keyword type="constant" name="MM_MODEM_3GPP_REGISTRATION_STATE_SEARCHING" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-3GPP-REGISTRATION-STATE-SEARCHING:CAPS"/>
@@ -442,10 +476,46 @@
     <keyword type="constant" name="MM_MODEM_PORT_TYPE_GPS" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-PORT-TYPE-GPS:CAPS"/>
     <keyword type="constant" name="MM_MODEM_PORT_TYPE_QMI" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-PORT-TYPE-QMI:CAPS"/>
     <keyword type="constant" name="MM_MODEM_PORT_TYPE_MBIM" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-PORT-TYPE-MBIM:CAPS"/>
+    <keyword type="constant" name="MM_OMA_FEATURE_NONE" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-FEATURE-NONE:CAPS"/>
+    <keyword type="constant" name="MM_OMA_FEATURE_DEVICE_PROVISIONING" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-FEATURE-DEVICE-PROVISIONING:CAPS"/>
+    <keyword type="constant" name="MM_OMA_FEATURE_PRL_UPDATE" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-FEATURE-PRL-UPDATE:CAPS"/>
+    <keyword type="constant" name="MM_OMA_FEATURE_HANDS_FREE_ACTIVATION" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-FEATURE-HANDS-FREE-ACTIVATION:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_FAILED" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-FAILED:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_UNKNOWN" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-UNKNOWN:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_STARTED" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-STARTED:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_RETRYING" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-RETRYING:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_CONNECTING" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-CONNECTING:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_CONNECTED" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-CONNECTED:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_AUTHENTICATED" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-AUTHENTICATED:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_MDN_DOWNLOADED" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-MDN-DOWNLOADED:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_MSID_DOWNLOADED" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-MSID-DOWNLOADED:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_PRL_DOWNLOADED" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-PRL-DOWNLOADED:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_MIP_PROFILE_DOWNLOADED" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-MIP-PROFILE-DOWNLOADED:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_COMPLETED" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-COMPLETED:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_FAILED_REASON_UNKNOWN" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-FAILED-REASON-UNKNOWN:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_FAILED_REASON_NETWORK_UNAVAILABLE" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-FAILED-REASON-NETWORK-UNAVAILABLE:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_FAILED_REASON_SERVER_UNAVAILABLE" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-FAILED-REASON-SERVER-UNAVAILABLE:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_FAILED_REASON_AUTHENTICATION_FAILED" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-FAILED-REASON-AUTHENTICATION-FAILED:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_FAILED_REASON_MAX_RETRY_EXCEEDED" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-FAILED-REASON-MAX-RETRY-EXCEEDED:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_STATE_FAILED_REASON_SESSION_CANCELLED" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-FAILED-REASON-SESSION-CANCELLED:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_TYPE_UNKNOWN" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-TYPE-UNKNOWN:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_TYPE_CLIENT_INITIATED_DEVICE_CONFIGURE" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-TYPE-CLIENT-INITIATED-DEVICE-CONFIGURE:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_TYPE_CLIENT_INITIATED_PRL_UPDATE" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-TYPE-CLIENT-INITIATED-PRL-UPDATE:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_TYPE_CLIENT_INITIATED_HANDS_FREE_ACTIVATION" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-TYPE-CLIENT-INITIATED-HANDS-FREE-ACTIVATION:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_TYPE_NETWORK_INITIATED_DEVICE_CONFIGURE" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-TYPE-NETWORK-INITIATED-DEVICE-CONFIGURE:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_TYPE_NETWORK_INITIATED_PRL_UPDATE" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-TYPE-NETWORK-INITIATED-PRL-UPDATE:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_TYPE_DEVICE_INITIATED_PRL_UPDATE" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-TYPE-DEVICE-INITIATED-PRL-UPDATE:CAPS"/>
+    <keyword type="constant" name="MM_OMA_SESSION_TYPE_DEVICE_INITIATED_HANDS_FREE_ACTIVATION" link="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-TYPE-DEVICE-INITIATED-HANDS-FREE-ACTIVATION:CAPS"/>
     <keyword type="constant" name="MM_SMS_PDU_TYPE_UNKNOWN" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-UNKNOWN:CAPS"/>
     <keyword type="constant" name="MM_SMS_PDU_TYPE_DELIVER" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-DELIVER:CAPS"/>
     <keyword type="constant" name="MM_SMS_PDU_TYPE_SUBMIT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-SUBMIT:CAPS"/>
     <keyword type="constant" name="MM_SMS_PDU_TYPE_STATUS_REPORT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-STATUS-REPORT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_PDU_TYPE_CDMA_DELIVER" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-CDMA-DELIVER:CAPS"/>
+    <keyword type="constant" name="MM_SMS_PDU_TYPE_CDMA_SUBMIT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-CDMA-SUBMIT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_PDU_TYPE_CDMA_CANCELLATION" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-CDMA-CANCELLATION:CAPS"/>
+    <keyword type="constant" name="MM_SMS_PDU_TYPE_CDMA_DELIVERY_ACKNOWLEDGEMENT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-CDMA-DELIVERY-ACKNOWLEDGEMENT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_PDU_TYPE_CDMA_USER_ACKNOWLEDGEMENT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-CDMA-USER-ACKNOWLEDGEMENT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_PDU_TYPE_CDMA_READ_ACKNOWLEDGEMENT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-CDMA-READ-ACKNOWLEDGEMENT:CAPS"/>
     <keyword type="constant" name="MM_SMS_STATE_UNKNOWN" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-STATE-UNKNOWN:CAPS"/>
     <keyword type="constant" name="MM_SMS_STATE_STORED" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-STATE-STORED:CAPS"/>
     <keyword type="constant" name="MM_SMS_STATE_RECEIVING" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-STATE-RECEIVING:CAPS"/>
@@ -478,6 +548,62 @@
     <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_FATAL_ERROR_QOS_NOT_AVAILABLE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-FATAL-ERROR-QOS-NOT-AVAILABLE:CAPS"/>
     <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_FATAL_ERROR_IN_SME" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-FATAL-ERROR-IN-SME:CAPS"/>
     <keyword type="constant" name="MM_SMS_DELIVERY_STATE_UNKNOWN" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-UNKNOWN:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_ADDRESS_VACANT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-NETWORK-PROBLEM-ADDRESS-VACANT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_ADDRESS_TRANSLATION_FAILURE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-NETWORK-PROBLEM-ADDRESS-TRANSLATION-FAILURE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_NETWORK_RESOURCE_OUTAGE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-NETWORK-PROBLEM-NETWORK-RESOURCE-OUTAGE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_NETWORK_FAILURE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-NETWORK-PROBLEM-NETWORK-FAILURE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_INVALID_TELESERVICE_ID" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-NETWORK-PROBLEM-INVALID-TELESERVICE-ID:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_NETWORK_PROBLEM_OTHER" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-NETWORK-PROBLEM-OTHER:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_NO_PAGE_RESPONSE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TERMINAL-PROBLEM-NO-PAGE-RESPONSE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_DESTINATION_BUSY" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TERMINAL-PROBLEM-DESTINATION-BUSY:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_NO_ACKNOWLEDGMENT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TERMINAL-PROBLEM-NO-ACKNOWLEDGMENT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_DESTINATION_RESOURCE_SHORTAGE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TERMINAL-PROBLEM-DESTINATION-RESOURCE-SHORTAGE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_SMS_DELIVERY_POSTPONED" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TERMINAL-PROBLEM-SMS-DELIVERY-POSTPONED:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_DESTINATION_OUT_OF_SERVICE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TERMINAL-PROBLEM-DESTINATION-OUT-OF-SERVICE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_DESTINATION_NO_LONGER_AT_THIS_ADDRESS" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TERMINAL-PROBLEM-DESTINATION-NO-LONGER-AT-THIS-ADDRESS:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TERMINAL_PROBLEM_OTHER" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TERMINAL-PROBLEM-OTHER:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_RADIO_INTERFACE_PROBLEM_RESOURCE_SHORTAGE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-RADIO-INTERFACE-PROBLEM-RESOURCE-SHORTAGE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_RADIO_INTERFACE_PROBLEM_INCOMPATIBILITY" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-RADIO-INTERFACE-PROBLEM-INCOMPATIBILITY:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_RADIO_INTERFACE_PROBLEM_OTHER" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-RADIO-INTERFACE-PROBLEM-OTHER:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_ENCODING" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-ENCODING:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_SMS_ORIGINATION_DENIED" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-SMS-ORIGINATION-DENIED:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_SMS_TERMINATION_DENIED" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-SMS-TERMINATION-DENIED:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_SUPPLEMENTARY_SERVICE_NOT_SUPPORTED" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-SUPPLEMENTARY-SERVICE-NOT-SUPPORTED:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_SMS_NOT_SUPPORTED" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-SMS-NOT-SUPPORTED:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_MISSING_EXPECTED_PARAMETER" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-MISSING-EXPECTED-PARAMETER:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_MISSING_MANDATORY_PARAMETER" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-MISSING-MANDATORY-PARAMETER:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_UNRECOGNIZED_PARAMETER_VALUE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-UNRECOGNIZED-PARAMETER-VALUE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_UNEXPECTED_PARAMETER_VALUE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-UNEXPECTED-PARAMETER-VALUE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_USER_DATA_SIZE_ERROR" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-USER-DATA-SIZE-ERROR:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_GENERAL_PROBLEM_OTHER" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-GENERAL-PROBLEM-OTHER:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_ADDRESS_VACANT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-NETWORK-PROBLEM-ADDRESS-VACANT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_ADDRESS_TRANSLATION_FAILURE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-NETWORK-PROBLEM-ADDRESS-TRANSLATION-FAILURE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_NETWORK_RESOURCE_OUTAGE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-NETWORK-PROBLEM-NETWORK-RESOURCE-OUTAGE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_NETWORK_FAILURE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-NETWORK-PROBLEM-NETWORK-FAILURE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_INVALID_TELESERVICE_ID" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-NETWORK-PROBLEM-INVALID-TELESERVICE-ID:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_NETWORK_PROBLEM_OTHER" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-NETWORK-PROBLEM-OTHER:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_NO_PAGE_RESPONSE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-TERMINAL-PROBLEM-NO-PAGE-RESPONSE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_DESTINATION_BUSY" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-TERMINAL-PROBLEM-DESTINATION-BUSY:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_NO_ACKNOWLEDGMENT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-TERMINAL-PROBLEM-NO-ACKNOWLEDGMENT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_DESTINATION_RESOURCE_SHORTAGE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-TERMINAL-PROBLEM-DESTINATION-RESOURCE-SHORTAGE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_SMS_DELIVERY_POSTPONED" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-TERMINAL-PROBLEM-SMS-DELIVERY-POSTPONED:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_DESTINATION_OUT_OF_SERVICE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-TERMINAL-PROBLEM-DESTINATION-OUT-OF-SERVICE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_DESTINATION_NO_LONGER_AT_THIS_ADDRESS" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-TERMINAL-PROBLEM-DESTINATION-NO-LONGER-AT-THIS-ADDRESS:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_TERMINAL_PROBLEM_OTHER" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-TERMINAL-PROBLEM-OTHER:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_RADIO_INTERFACE_PROBLEM_RESOURCE_SHORTAGE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-RADIO-INTERFACE-PROBLEM-RESOURCE-SHORTAGE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_RADIO_INTERFACE_PROBLEM_INCOMPATIBILITY" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-RADIO-INTERFACE-PROBLEM-INCOMPATIBILITY:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_RADIO_INTERFACE_PROBLEM_OTHER" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-RADIO-INTERFACE-PROBLEM-OTHER:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_ENCODING" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-ENCODING:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_SMS_ORIGINATION_DENIED" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-SMS-ORIGINATION-DENIED:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_SMS_TERMINATION_DENIED" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-SMS-TERMINATION-DENIED:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_SUPPLEMENTARY_SERVICE_NOT_SUPPORTED" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-SUPPLEMENTARY-SERVICE-NOT-SUPPORTED:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_SMS_NOT_SUPPORTED" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-SMS-NOT-SUPPORTED:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_MISSING_EXPECTED_PARAMETER" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-MISSING-EXPECTED-PARAMETER:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_MISSING_MANDATORY_PARAMETER" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-MISSING-MANDATORY-PARAMETER:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_UNRECOGNIZED_PARAMETER_VALUE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-UNRECOGNIZED-PARAMETER-VALUE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_UNEXPECTED_PARAMETER_VALUE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-UNEXPECTED-PARAMETER-VALUE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_USER_DATA_SIZE_ERROR" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-USER-DATA-SIZE-ERROR:CAPS"/>
+    <keyword type="constant" name="MM_SMS_DELIVERY_STATE_TEMPORARY_GENERAL_PROBLEM_OTHER" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-DELIVERY-STATE-TEMPORARY-GENERAL-PROBLEM-OTHER:CAPS"/>
     <keyword type="constant" name="MM_SMS_STORAGE_UNKNOWN" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-STORAGE-UNKNOWN:CAPS"/>
     <keyword type="constant" name="MM_SMS_STORAGE_SM" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-STORAGE-SM:CAPS"/>
     <keyword type="constant" name="MM_SMS_STORAGE_ME" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-STORAGE-ME:CAPS"/>
@@ -489,6 +615,52 @@
     <keyword type="constant" name="MM_SMS_VALIDITY_TYPE_RELATIVE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-VALIDITY-TYPE-RELATIVE:CAPS"/>
     <keyword type="constant" name="MM_SMS_VALIDITY_TYPE_ABSOLUTE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-VALIDITY-TYPE-ABSOLUTE:CAPS"/>
     <keyword type="constant" name="MM_SMS_VALIDITY_TYPE_ENHANCED" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-VALIDITY-TYPE-ENHANCED:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_TELESERVICE_ID_UNKNOWN" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-TELESERVICE-ID-UNKNOWN:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_TELESERVICE_ID_CMT91" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-TELESERVICE-ID-CMT91:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_TELESERVICE_ID_WPT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-TELESERVICE-ID-WPT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_TELESERVICE_ID_WMT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-TELESERVICE-ID-WMT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_TELESERVICE_ID_VMN" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-TELESERVICE-ID-VMN:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_TELESERVICE_ID_WAP" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-TELESERVICE-ID-WAP:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_TELESERVICE_ID_WEMT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-TELESERVICE-ID-WEMT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_TELESERVICE_ID_SCPT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-TELESERVICE-ID-SCPT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_TELESERVICE_ID_CATPT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-TELESERVICE-ID-CATPT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_UNKNOWN" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-UNKNOWN:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_EMERGENCY_BROADCAST" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-EMERGENCY-BROADCAST:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_ADMINISTRATIVE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-ADMINISTRATIVE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_MAINTENANCE" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-MAINTENANCE:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_GENERAL_NEWS_LOCAL" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-GENERAL-NEWS-LOCAL:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_GENERAL_NEWS_REGIONAL" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-GENERAL-NEWS-REGIONAL:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_GENERAL_NEWS_NATIONAL" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-GENERAL-NEWS-NATIONAL:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_GENERAL_NEWS_INTERNATIONAL" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-GENERAL-NEWS-INTERNATIONAL:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_BUSINESS_NEWS_LOCAL" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-BUSINESS-NEWS-LOCAL:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_BUSINESS_NEWS_REGIONAL" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-BUSINESS-NEWS-REGIONAL:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_BUSINESS_NEWS_NATIONAL" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-BUSINESS-NEWS-NATIONAL:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_BUSINESS_NEWS_INTERNATIONAL" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-BUSINESS-NEWS-INTERNATIONAL:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_SPORTS_NEWS_LOCAL" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-SPORTS-NEWS-LOCAL:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_SPORTS_NEWS_REGIONAL" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-SPORTS-NEWS-REGIONAL:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_SPORTS_NEWS_NATIONAL" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-SPORTS-NEWS-NATIONAL:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_SPORTS_NEWS_INTERNATIONAL" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-SPORTS-NEWS-INTERNATIONAL:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_ENTERTAINMENT_NEWS_LOCAL" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-ENTERTAINMENT-NEWS-LOCAL:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_ENTERTAINMENT_NEWS_REGIONAL" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-ENTERTAINMENT-NEWS-REGIONAL:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_ENTERTAINMENT_NEWS_NATIONAL" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-ENTERTAINMENT-NEWS-NATIONAL:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_ENTERTAINMENT_NEWS_INTERNATIONAL" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-ENTERTAINMENT-NEWS-INTERNATIONAL:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_LOCAL_WEATHER" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-LOCAL-WEATHER:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_TRAFFIC_REPORT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-TRAFFIC-REPORT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_FLIGHT_SCHEDULES" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-FLIGHT-SCHEDULES:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_RESTAURANTS" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-RESTAURANTS:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_LODGINGS" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-LODGINGS:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_RETAIL_DIRECTORY" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-RETAIL-DIRECTORY:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_ADVERTISEMENTS" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-ADVERTISEMENTS:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_STOCK_QUOTES" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-STOCK-QUOTES:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_EMPLOYMENT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-EMPLOYMENT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_HOSPITALS" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-HOSPITALS:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_TECHNOLOGY_NEWS" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-TECHNOLOGY-NEWS:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_MULTICATEGORY" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-MULTICATEGORY:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_PRESIDENTIAL_ALERT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-CMAS-PRESIDENTIAL-ALERT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_EXTREME_THREAT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-CMAS-EXTREME-THREAT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_SEVERE_THREAT" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-CMAS-SEVERE-THREAT:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_CHILD_ABDUCTION_EMERGENCY" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-CMAS-CHILD-ABDUCTION-EMERGENCY:CAPS"/>
+    <keyword type="constant" name="MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_TEST" link="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-CMAS-TEST:CAPS"/>
     <keyword type="constant" name="MM_CONNECTION_ERROR_UNKNOWN" link="ModemManager-Errors.html#MM-CONNECTION-ERROR-UNKNOWN:CAPS"/>
     <keyword type="constant" name="MM_CONNECTION_ERROR_NO_CARRIER" link="ModemManager-Errors.html#MM-CONNECTION-ERROR-NO-CARRIER:CAPS"/>
     <keyword type="constant" name="MM_CONNECTION_ERROR_NO_DIALTONE" link="ModemManager-Errors.html#MM-CONNECTION-ERROR-NO-DIALTONE:CAPS"/>

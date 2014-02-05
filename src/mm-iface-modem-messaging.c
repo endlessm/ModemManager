@@ -490,6 +490,17 @@ mm_iface_modem_messaging_is_storage_supported_for_receiving (MMIfaceModemMessagi
 /*****************************************************************************/
 
 static void
+update_message_list (MmGdbusModemMessaging *skeleton,
+                     MMSmsList *list)
+{
+    gchar **paths;
+
+    paths = mm_sms_list_get_paths (list);
+    mm_gdbus_modem_messaging_set_messages (skeleton, (const gchar *const *)paths);
+    g_strfreev (paths);
+}
+
+static void
 sms_added (MMSmsList *list,
            const gchar *sms_path,
            gboolean received,
@@ -498,6 +509,7 @@ sms_added (MMSmsList *list,
     mm_dbg ("Added %s SMS at '%s'",
             received ? "received" : "local",
             sms_path);
+    update_message_list (skeleton, list);
     mm_gdbus_modem_messaging_emit_added (skeleton, sms_path, received);
 }
 
@@ -507,6 +519,7 @@ sms_deleted (MMSmsList *list,
              MmGdbusModemMessaging *skeleton)
 {
     mm_dbg ("Deleted SMS at '%s'", sms_path);
+    update_message_list (skeleton, list);
     mm_gdbus_modem_messaging_emit_deleted (skeleton, sms_path);
 }
 
@@ -1079,6 +1092,21 @@ initialization_context_complete_and_free_if_cancelled (InitializationContext *ct
 }
 
 static void
+skip_unknown_storages (GArray *mem)
+{
+    guint i = mem->len;
+
+    if (!mem)
+        return;
+
+    /* Remove UNKNOWN from the list of supported storages */
+    while (i-- > 0) {
+        if (g_array_index (mem, MMSmsStorage, i) == MM_SMS_STORAGE_UNKNOWN)
+            g_array_remove_index (mem, i);
+    }
+}
+
+static void
 load_supported_storages_ready (MMIfaceModemMessaging *self,
                                GAsyncResult *res,
                                InitializationContext *ctx)
@@ -1102,6 +1130,11 @@ load_supported_storages_ready (MMIfaceModemMessaging *self,
         gchar *mem3;
         GArray *supported_storages;
         guint i;
+
+        /* Never add unknown storages */
+        skip_unknown_storages (storage_ctx->supported_mem1);
+        skip_unknown_storages (storage_ctx->supported_mem2);
+        skip_unknown_storages (storage_ctx->supported_mem3);
 
         mem1 = mm_common_build_sms_storages_string ((MMSmsStorage *)storage_ctx->supported_mem1->data,
                                                     storage_ctx->supported_mem1->len);

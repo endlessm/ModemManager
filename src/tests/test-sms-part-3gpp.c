@@ -23,7 +23,7 @@
 #define _LIBMM_INSIDE_MM
 #include <libmm-glib.h>
 
-#include "mm-sms-part.h"
+#include "mm-sms-part-3gpp.h"
 #include "mm-log.h"
 
 /* If defined will print debugging traces */
@@ -58,7 +58,7 @@ common_test_part_from_hexpdu (const gchar *hexpdu,
     MMSmsPart *part;
     GError *error = NULL;
 
-    part = mm_sms_part_new_from_pdu (0, hexpdu, &error);
+    part = mm_sms_part_3gpp_new_from_pdu (0, hexpdu, &error);
     g_assert_no_error (error);
     g_assert (part != NULL);
 
@@ -356,7 +356,7 @@ test_pdu_insufficient_data (void)
     };
 
     hexpdu = mm_utils_bin2hexstr (pdu, sizeof (pdu));
-    part = mm_sms_part_new_from_pdu (0, hexpdu, &error);
+    part = mm_sms_part_3gpp_new_from_pdu (0, hexpdu, &error);
     g_assert (part == NULL);
     /* We don't care for the specific error type */
     g_assert (error != NULL);
@@ -464,7 +464,7 @@ common_test_address_encode (const gchar *address,
     guint8 buf[20];
     gsize enclen;
 
-    enclen = mm_sms_part_encode_address (address, buf, sizeof (buf), smsc);
+    enclen = mm_sms_part_3gpp_encode_address (address, buf, sizeof (buf), smsc);
     g_assert_cmpuint (enclen, ==, expected_size);
     g_assert_cmpint (memcmp (buf, expected, expected_size), ==, 0);
 }
@@ -531,7 +531,7 @@ common_test_create_pdu (const gchar *smsc,
         MMSmsEncoding encoding = MM_SMS_ENCODING_UNKNOWN;
 
         /* Detect best encoding */
-        mm_sms_part_util_split_text (text, &encoding);
+        mm_sms_part_3gpp_util_split_text (text, &encoding);
         mm_sms_part_set_text (part, text);
         mm_sms_part_set_encoding (part, encoding);
     }
@@ -540,10 +540,10 @@ common_test_create_pdu (const gchar *smsc,
     if (class >= 0)
         mm_sms_part_set_class (part, class);
 
-    pdu = mm_sms_part_get_submit_pdu (part,
-                                      &len,
-                                      &msgstart,
-                                      &error);
+    pdu = mm_sms_part_3gpp_get_submit_pdu (part,
+                                           &len,
+                                           &msgstart,
+                                           &error);
 
     trace_pdu (pdu, len);
 
@@ -716,7 +716,7 @@ common_test_text_split (const gchar *text,
     MMSmsEncoding out_encoding = MM_SMS_ENCODING_UNKNOWN;
     guint i;
 
-    out = mm_sms_part_util_split_text (text, &out_encoding);
+    out = mm_sms_part_3gpp_util_split_text (text, &out_encoding);
 
     g_assert (out != NULL);
     g_assert (out_encoding != MM_SMS_ENCODING_UNKNOWN);
@@ -862,39 +862,39 @@ int main (int argc, char **argv)
     g_type_init ();
     g_test_init (&argc, &argv, NULL);
 
-    g_test_add_func ("/MM/SMS/PDU-Parser/pdu1", test_pdu1);
-    g_test_add_func ("/MM/SMS/PDU-Parser/pdu2", test_pdu2);
-    g_test_add_func ("/MM/SMS/PDU-Parser/pdu3", test_pdu3);
-    g_test_add_func ("/MM/SMS/PDU-Parser/pdu3-nonzero-pid", test_pdu3_nzpid);
-    g_test_add_func ("/MM/SMS/PDU-Parser/pdu3-mms", test_pdu3_mms);
-    g_test_add_func ("/MM/SMS/PDU-Parser/pdu3-natl", test_pdu3_natl);
-    g_test_add_func ("/MM/SMS/PDU-Parser/pdu3-8bit", test_pdu3_8bit);
-    g_test_add_func ("/MM/SMS/PDU-Parser/pdu-dcsf1", test_pdu_dcsf1);
-    g_test_add_func ("/MM/SMS/PDU-Parser/pdu-dcsf-8bit", test_pdu_dcsf_8bit);
-    g_test_add_func ("/MM/SMS/PDU-Parser/pdu-insufficient-data", test_pdu_insufficient_data);
-    g_test_add_func ("/MM/SMS/PDU-Parser/pdu-udhi", test_pdu_udhi);
-    g_test_add_func ("/MM/SMS/PDU-Parser/pdu-multipart", test_pdu_multipart);
-    g_test_add_func ("/MM/SMS/PDU-Parser/pdu-stored-by-us", test_pdu_stored_by_us);
-    g_test_add_func ("/MM/SMS/PDU-Parser/pdu-not-stored", test_pdu_not_stored);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Parser/pdu1", test_pdu1);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Parser/pdu2", test_pdu2);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Parser/pdu3", test_pdu3);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Parser/pdu3-nonzero-pid", test_pdu3_nzpid);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Parser/pdu3-mms", test_pdu3_mms);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Parser/pdu3-natl", test_pdu3_natl);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Parser/pdu3-8bit", test_pdu3_8bit);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Parser/pdu-dcsf1", test_pdu_dcsf1);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Parser/pdu-dcsf-8bit", test_pdu_dcsf_8bit);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Parser/pdu-insufficient-data", test_pdu_insufficient_data);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Parser/pdu-udhi", test_pdu_udhi);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Parser/pdu-multipart", test_pdu_multipart);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Parser/pdu-stored-by-us", test_pdu_stored_by_us);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Parser/pdu-not-stored", test_pdu_not_stored);
 
-    g_test_add_func ("/MM/SMS/Address-Encoder/smsc-intl", test_address_encode_smsc_intl);
-    g_test_add_func ("/MM/SMS/Address-Encoder/smsc-unknown", test_address_encode_smsc_unknown);
-    g_test_add_func ("/MM/SMS/Address-Encoder/intl", test_address_encode_intl);
-    g_test_add_func ("/MM/SMS/Address-Encoder/unknown", test_address_encode_unknown);
+    g_test_add_func ("/MM/SMS/3GPP/Address-Encoder/smsc-intl", test_address_encode_smsc_intl);
+    g_test_add_func ("/MM/SMS/3GPP/Address-Encoder/smsc-unknown", test_address_encode_smsc_unknown);
+    g_test_add_func ("/MM/SMS/3GPP/Address-Encoder/intl", test_address_encode_intl);
+    g_test_add_func ("/MM/SMS/3GPP/Address-Encoder/unknown", test_address_encode_unknown);
 
-    g_test_add_func ("/MM/SMS/PDU-Creator/UCS2-with-smsc", test_create_pdu_ucs2_with_smsc);
-    g_test_add_func ("/MM/SMS/PDU-Creator/UCS2-no-smsc", test_create_pdu_ucs2_no_smsc);
-    g_test_add_func ("/MM/SMS/PDU-Creator/GSM-with-smsc", test_create_pdu_gsm_with_smsc);
-    g_test_add_func ("/MM/SMS/PDU-Creator/GSM-no-smsc", test_create_pdu_gsm_no_smsc);
-    g_test_add_func ("/MM/SMS/PDU-Creator/GSM-3", test_create_pdu_gsm_3);
-    g_test_add_func ("/MM/SMS/PDU-Creator/GSM-no-validity", test_create_pdu_gsm_no_validity);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Creator/UCS2-with-smsc", test_create_pdu_ucs2_with_smsc);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Creator/UCS2-no-smsc", test_create_pdu_ucs2_no_smsc);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Creator/GSM-with-smsc", test_create_pdu_gsm_with_smsc);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Creator/GSM-no-smsc", test_create_pdu_gsm_no_smsc);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Creator/GSM-3", test_create_pdu_gsm_3);
+    g_test_add_func ("/MM/SMS/3GPP/PDU-Creator/GSM-no-validity", test_create_pdu_gsm_no_validity);
 
-    g_test_add_func ("/MM/SMS/Text-Split/short", test_text_split_short);
-    g_test_add_func ("/MM/SMS/Text-Split/short-UCS2", test_text_split_short_ucs2);
-    g_test_add_func ("/MM/SMS/Text-Split/max-single-pdu", test_text_split_max_single_pdu);
-    g_test_add_func ("/MM/SMS/Text-Split/max-single-pdu-UCS2", test_text_split_max_single_pdu_ucs2);
-    g_test_add_func ("/MM/SMS/Text-Split/two-pdu", test_text_split_two_pdu);
-    g_test_add_func ("/MM/SMS/Text-Split/two-pdu-UCS2", test_text_split_two_pdu_ucs2);
+    g_test_add_func ("/MM/SMS/3GPP/Text-Split/short", test_text_split_short);
+    g_test_add_func ("/MM/SMS/3GPP/Text-Split/short-UCS2", test_text_split_short_ucs2);
+    g_test_add_func ("/MM/SMS/3GPP/Text-Split/max-single-pdu", test_text_split_max_single_pdu);
+    g_test_add_func ("/MM/SMS/3GPP/Text-Split/max-single-pdu-UCS2", test_text_split_max_single_pdu_ucs2);
+    g_test_add_func ("/MM/SMS/3GPP/Text-Split/two-pdu", test_text_split_two_pdu);
+    g_test_add_func ("/MM/SMS/3GPP/Text-Split/two-pdu-UCS2", test_text_split_two_pdu_ucs2);
 
     return g_test_run ();
 }

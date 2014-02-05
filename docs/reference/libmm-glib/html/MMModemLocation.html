@@ -8,7 +8,7 @@
 <link rel="up" href="ch03s03.html" title="Location support">
 <link rel="prev" href="ch03s03.html" title="Location support">
 <link rel="next" href="MMLocation3gpp.html" title="MMLocation3gpp">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -48,13 +48,13 @@
 
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModemLocation.html#mm-modem-location-get-path" title="mm_modem_location_get_path ()">mm_modem_location_get_path</a>          (<em class="parameter"><code><a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModemLocation.html#mm-modem-location-dup-path" title="mm_modem_location_dup_path ()">mm_modem_location_dup_path</a>          (<em class="parameter"><code><a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a> *self</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLocationSource"><span class="returnvalue">MMModemLocationSource</span></a> <a class="link" href="MMModemLocation.html#mm-modem-location-get-capabilities" title="mm_modem_location_get_capabilities ()">mm_modem_location_get_capabilities</a>
+<span class="returnvalue">MMModemLocationSource</span> <a class="link" href="MMModemLocation.html#mm-modem-location-get-capabilities" title="mm_modem_location_get_capabilities ()">mm_modem_location_get_capabilities</a>
                                                         (<em class="parameter"><code><a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a> *self</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLocationSource"><span class="returnvalue">MMModemLocationSource</span></a> <a class="link" href="MMModemLocation.html#mm-modem-location-get-enabled" title="mm_modem_location_get_enabled ()">mm_modem_location_get_enabled</a>     (<em class="parameter"><code><a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a> *self</code></em>);
+<span class="returnvalue">MMModemLocationSource</span> <a class="link" href="MMModemLocation.html#mm-modem-location-get-enabled" title="mm_modem_location_get_enabled ()">mm_modem_location_get_enabled</a>     (<em class="parameter"><code><a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModemLocation.html#mm-modem-location-signals-location" title="mm_modem_location_signals_location ()">mm_modem_location_signals_location</a>  (<em class="parameter"><code><a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a> *self</code></em>);
 
 <span class="returnvalue">void</span>                <a class="link" href="MMModemLocation.html#mm-modem-location-setup" title="mm_modem_location_setup ()">mm_modem_location_setup</a>             (<em class="parameter"><code><a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLocationSource"><span class="type">MMModemLocationSource</span></a> sources</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemLocationSource</span> sources</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> signal_location</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
@@ -63,7 +63,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModemLocation.html#mm-modem-location-setup-sync" title="mm_modem_location_setup_sync ()">mm_modem_location_setup_sync</a>        (<em class="parameter"><code><a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLocationSource"><span class="type">MMModemLocationSource</span></a> sources</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemLocationSource</span> sources</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> signal_location</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
@@ -251,8 +251,32 @@ Gets a copy of the DBus path of the <a class="link" href="MMObject.html" title="
 <hr>
 <div class="refsect2">
 <a name="mm-modem-location-get-capabilities"></a><h3>mm_modem_location_get_capabilities ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLocationSource"><span class="returnvalue">MMModemLocationSource</span></a> mm_modem_location_get_capabilities
+<pre class="programlisting"><span class="returnvalue">MMModemLocationSource</span> mm_modem_location_get_capabilities
                                                         (<em class="parameter"><code><a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a> *self</code></em>);</pre>
+<p>
+Gets a bitmask of the location capabilities supported by this <a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A <span class="type">MMModemLocationSource</span>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-location-get-enabled"></a><h3>mm_modem_location_get_enabled ()</h3>
+<pre class="programlisting"><span class="returnvalue">MMModemLocationSource</span> mm_modem_location_get_enabled     (<em class="parameter"><code><a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a> *self</code></em>);</pre>
 <p>
 Gets a bitmask of the location capabilities which are enabled in this <a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a>.
 </p>
@@ -268,17 +292,10 @@ Gets a bitmask of the location capabilities which are enabled in this <a class="
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLocationSource"><span class="type">MMModemLocationSource</span></a>.</td>
+<td>A <span class="type">MMModemLocationSource</span>.</td>
 </tr>
 </tbody>
 </table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-location-get-enabled"></a><h3>mm_modem_location_get_enabled ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLocationSource"><span class="returnvalue">MMModemLocationSource</span></a> mm_modem_location_get_enabled     (<em class="parameter"><code><a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a> *self</code></em>);</pre>
-<p>
-</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -309,7 +326,7 @@ Gets the status of the location signaling in the <a class="link" href="MMModemLo
 <div class="refsect2">
 <a name="mm-modem-location-setup"></a><h3>mm_modem_location_setup ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                mm_modem_location_setup             (<em class="parameter"><code><a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLocationSource"><span class="type">MMModemLocationSource</span></a> sources</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemLocationSource</span> sources</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> signal_location</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
@@ -337,7 +354,7 @@ See <a class="link" href="MMModemLocation.html#mm-modem-location-setup-sync" tit
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sources</code></em> :</span></p></td>
-<td>Bitmask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLocationSource"><span class="type">MMModemLocationSource</span></a> values specifying which locations should get enabled.</td>
+<td>Bitmask of <span class="type">MMModemLocationSource</span> values specifying which locations should get enabled.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>signal_location</code></em> :</span></p></td>
@@ -398,7 +415,7 @@ Finishes an operation started with <a class="link" href="MMModemLocation.html#mm
 <div class="refsect2">
 <a name="mm-modem-location-setup-sync"></a><h3>mm_modem_location_setup_sync ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_location_setup_sync        (<em class="parameter"><code><a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLocationSource"><span class="type">MMModemLocationSource</span></a> sources</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemLocationSource</span> sources</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> signal_location</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
@@ -422,7 +439,7 @@ for the asynchronous version of this method.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sources</code></em> :</span></p></td>
-<td>Bitmask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLocationSource"><span class="type">MMModemLocationSource</span></a> values specifying which locations should get enabled.</td>
+<td>Bitmask of <span class="type">MMModemLocationSource</span> values specifying which locations should get enabled.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>signal_location</code></em> :</span></p></td>
@@ -517,7 +534,8 @@ Finishes an operation started with <a class="link" href="MMModemLocation.html#mm
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>(transfer full) A <a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>.</td>
+<td>A <a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -556,7 +574,8 @@ for the asynchronous version of this method.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>(transfer full) A <a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>.</td>
+<td>A <a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -634,7 +653,8 @@ Finishes an operation started with <a class="link" href="MMModemLocation.html#mm
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>(transfer full) A <a class="link" href="MMLocationGpsNmea.html" title="MMLocationGpsNmea"><span class="type">MMLocationGpsNmea</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>.</td>
+<td>A <a class="link" href="MMLocationGpsNmea.html" title="MMLocationGpsNmea"><span class="type">MMLocationGpsNmea</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -673,7 +693,8 @@ for the asynchronous version of this method.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>(transfer full) A <a class="link" href="MMLocationGpsNmea.html" title="MMLocationGpsNmea"><span class="type">MMLocationGpsNmea</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>.</td>
+<td>A <a class="link" href="MMLocationGpsNmea.html" title="MMLocationGpsNmea"><span class="type">MMLocationGpsNmea</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -751,7 +772,8 @@ Finishes an operation started with <a class="link" href="MMModemLocation.html#mm
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>(transfer full) A <a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>.</td>
+<td>A <a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -790,7 +812,8 @@ for the asynchronous version of this method.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>(transfer full) A <a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>.</td>
+<td>A <a class="link" href="MMLocationGpsRaw.html" title="MMLocationGpsRaw"><span class="type">MMLocationGpsRaw</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -868,7 +891,8 @@ Finishes an operation started with <a class="link" href="MMModemLocation.html#mm
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>(transfer full) A <a class="link" href="MMLocationCdmaBs.html" title="MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>.</td>
+<td>A <a class="link" href="MMLocationCdmaBs.html" title="MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -907,7 +931,8 @@ for the asynchronous version of this method.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>(transfer full) A <a class="link" href="MMLocationCdmaBs.html" title="MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>.</td>
+<td>A <a class="link" href="MMLocationCdmaBs.html" title="MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -1082,6 +1107,6 @@ for the asynchronous version of this method.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

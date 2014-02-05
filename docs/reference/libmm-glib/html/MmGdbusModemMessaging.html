@@ -8,7 +8,7 @@
 <link rel="up" href="pt02.html" title="Part II. Low level API">
 <link rel="prev" href="MmGdbusModemLocationSkeleton.html" title="MmGdbusModemLocationSkeleton">
 <link rel="next" href="MmGdbusModemMessagingProxy.html" title="MmGdbusModemMessagingProxy">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -50,6 +50,10 @@
 <pre class="synopsis">                    <a class="link" href="MmGdbusModemMessaging.html#MmGdbusModemMessaging-struct" title="MmGdbusModemMessaging">MmGdbusModemMessaging</a>;
 struct              <a class="link" href="MmGdbusModemMessaging.html#MmGdbusModemMessagingIface" title="struct MmGdbusModemMessagingIface">MmGdbusModemMessagingIface</a>;
 
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *const * <a class="link" href="MmGdbusModemMessaging.html#mm-gdbus-modem-messaging-get-messages" title="mm_gdbus_modem_messaging_get_messages ()">mm_gdbus_modem_messaging_get_messages</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging"><span class="type">MmGdbusModemMessaging</span></a> *object</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            <a class="link" href="MmGdbusModemMessaging.html#mm-gdbus-modem-messaging-dup-messages" title="mm_gdbus_modem_messaging_dup_messages ()">mm_gdbus_modem_messaging_dup_messages</a>
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging"><span class="type">MmGdbusModemMessaging</span></a> *object</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *          <a class="link" href="MmGdbusModemMessaging.html#mm-gdbus-modem-messaging-get-supported-storages" title="mm_gdbus_modem_messaging_get_supported_storages ()">mm_gdbus_modem_messaging_get_supported_storages</a>
                                                         (<em class="parameter"><code><a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging"><span class="type">MmGdbusModemMessaging</span></a> *object</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *          <a class="link" href="MmGdbusModemMessaging.html#mm-gdbus-modem-messaging-dup-supported-storages" title="mm_gdbus_modem_messaging_dup_supported_storages ()">mm_gdbus_modem_messaging_dup_supported_storages</a>
@@ -128,6 +132,7 @@ MmGdbusModemMessaging is implemented by
 <a name="MmGdbusModemMessaging.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
   "<a class="link" href="MmGdbusModemMessaging.html#MmGdbusModemMessaging--default-storage" title='The "default-storage" property'>default-storage</a>"          <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write
+  "<a class="link" href="MmGdbusModemMessaging.html#MmGdbusModemMessaging--messages" title='The "messages" property'>messages</a>"                 <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GStrv"><span class="type">GStrv</span></a>                 : Read / Write
   "<a class="link" href="MmGdbusModemMessaging.html#MmGdbusModemMessaging--supported-storages" title='The "supported-storages" property'>supported-storages</a>"       <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a>*             : Read / Write
 </pre>
 </div>
@@ -180,6 +185,8 @@ Abstract interface type for the D-Bus interface org.freedesktop.ModemManager1.Mo
 
   guint  (*get_default_storage) (MmGdbusModemMessaging *object);
 
+  const gchar *const * (*get_messages) (MmGdbusModemMessaging *object);
+
   GVariant * (*get_supported_storages) (MmGdbusModemMessaging *object);
 
   void (*added) (
@@ -222,6 +229,10 @@ Virtual table for the D-Bus interface org.freedesktop.ModemManager1.Modem.Messag
 <td>Getter for the <a class="link" href="MmGdbusModemMessaging.html#MmGdbusModemMessaging--default-storage" title='The "default-storage" property'><span class="type">"default-storage"</span></a> property.</td>
 </tr>
 <tr>
+<td><p><span class="term"><em class="structfield"><code><a name="MmGdbusModemMessagingIface.get-messages"></a>get_messages</code></em> ()</span></p></td>
+<td>Getter for the <a class="link" href="MmGdbusModemMessaging.html#MmGdbusModemMessaging--messages" title='The "messages" property'><span class="type">"messages"</span></a> property.</td>
+</tr>
+<tr>
 <td><p><span class="term"><em class="structfield"><code><a name="MmGdbusModemMessagingIface.get-supported-storages"></a>get_supported_storages</code></em> ()</span></p></td>
 <td>Getter for the <a class="link" href="MmGdbusModemMessaging.html#MmGdbusModemMessaging--supported-storages" title='The "supported-storages" property'><span class="type">"supported-storages"</span></a> property.</td>
 </tr>
@@ -238,11 +249,75 @@ Virtual table for the D-Bus interface org.freedesktop.ModemManager1.Modem.Messag
 </div>
 <hr>
 <div class="refsect2">
+<a name="mm-gdbus-modem-messaging-get-messages"></a><h3>mm_gdbus_modem_messaging_get_messages ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *const * mm_gdbus_modem_messaging_get_messages
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging"><span class="type">MmGdbusModemMessaging</span></a> *object</code></em>);</pre>
+<p>
+Gets the value of the "Messages" D-Bus property.
+</p>
+<p>
+Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+</p>
+<p>
+</p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where <em class="parameter"><code>object</code></em> was constructed. Use <a class="link" href="MmGdbusModemMessaging.html#mm-gdbus-modem-messaging-dup-messages" title="mm_gdbus_modem_messaging_dup_messages ()"><code class="function">mm_gdbus_modem_messaging_dup_messages()</code></a> if on another thread.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging"><span class="type">MmGdbusModemMessaging</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The property value or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-messaging-dup-messages"></a><h3>mm_gdbus_modem_messaging_dup_messages ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            mm_gdbus_modem_messaging_dup_messages
+                                                        (<em class="parameter"><code><a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging"><span class="type">MmGdbusModemMessaging</span></a> *object</code></em>);</pre>
+<p>
+Gets a copy of the "Messages" D-Bus property.
+</p>
+<p>
+Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging"><span class="type">MmGdbusModemMessaging</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The property value or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-String-Utility-Functions.html#g-strfreev"><code class="function">g_strfreev()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="mm-gdbus-modem-messaging-get-supported-storages"></a><h3>mm_gdbus_modem_messaging_get_supported_storages ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *          mm_gdbus_modem_messaging_get_supported_storages
                                                         (<em class="parameter"><code><a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging"><span class="type">MmGdbusModemMessaging</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.SupportedStorages">"SupportedStorages"</a> D-Bus property.
+Gets the value of the "SupportedStorages" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -277,7 +352,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *          mm_gdbus_modem_messaging_dup_supported_storages
                                                         (<em class="parameter"><code><a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging"><span class="type">MmGdbusModemMessaging</span></a> *object</code></em>);</pre>
 <p>
-Gets a copy of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.SupportedStorages">"SupportedStorages"</a> D-Bus property.
+Gets a copy of the "SupportedStorages" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -306,7 +381,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_gdbus_modem_messaging_get_default_storage
                                                         (<em class="parameter"><code><a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging"><span class="type">MmGdbusModemMessaging</span></a> *object</code></em>);</pre>
 <p>
-Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.DefaultStorage">"DefaultStorage"</a> D-Bus property.
+Gets the value of the "DefaultStorage" D-Bus property.
 </p>
 <p>
 Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
@@ -338,7 +413,7 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
-Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.Create"><GTKDOCLINK HREF="Create"><code class="function">Create()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
+Asynchronously invokes the <GTKDOCLINK HREF="Create"><code class="function">Create()</code></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
 When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
 You can then call <a class="link" href="MmGdbusModemMessaging.html#mm-gdbus-modem-messaging-call-create-finish" title="mm_gdbus_modem_messaging_call_create_finish ()"><code class="function">mm_gdbus_modem_messaging_call_create_finish()</code></a> to get the result of the operation.
 </p>
@@ -428,7 +503,7 @@ Finishes an operation started with <a class="link" href="MmGdbusModemMessaging.h
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
-Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.Create"><GTKDOCLINK HREF="Create"><code class="function">Create()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
+Synchronously invokes the <GTKDOCLINK HREF="Create"><code class="function">Create()</code></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
 </p>
 <p>
 See <a class="link" href="MmGdbusModemMessaging.html#mm-gdbus-modem-messaging-call-create" title="mm_gdbus_modem_messaging_call_create ()"><code class="function">mm_gdbus_modem_messaging_call_create()</code></a> for the asynchronous version of this method.
@@ -480,7 +555,7 @@ See <a class="link" href="MmGdbusModemMessaging.html#mm-gdbus-modem-messaging-ca
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
-Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.Delete"><GTKDOCLINK HREF="Delete"><code class="function">Delete()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
+Asynchronously invokes the <GTKDOCLINK HREF="Delete"><code class="function">Delete()</code></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
 When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
 You can then call <a class="link" href="MmGdbusModemMessaging.html#mm-gdbus-modem-messaging-call-delete-finish" title="mm_gdbus_modem_messaging_call_delete_finish ()"><code class="function">mm_gdbus_modem_messaging_call_delete_finish()</code></a> to get the result of the operation.
 </p>
@@ -563,7 +638,7 @@ Finishes an operation started with <a class="link" href="MmGdbusModemMessaging.h
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
-Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.Delete"><GTKDOCLINK HREF="Delete"><code class="function">Delete()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
+Synchronously invokes the <GTKDOCLINK HREF="Delete"><code class="function">Delete()</code></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
 </p>
 <p>
 See <a class="link" href="MmGdbusModemMessaging.html#mm-gdbus-modem-messaging-call-delete" title="mm_gdbus_modem_messaging_call_delete ()"><code class="function">mm_gdbus_modem_messaging_call_delete()</code></a> for the asynchronous version of this method.
@@ -608,7 +683,7 @@ See <a class="link" href="MmGdbusModemMessaging.html#mm-gdbus-modem-messaging-ca
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
-Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.List"><GTKDOCLINK HREF="List"><code class="function">List()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
+Asynchronously invokes the <GTKDOCLINK HREF="List"><code class="function">List()</code></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>.
 When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
 You can then call <a class="link" href="MmGdbusModemMessaging.html#mm-gdbus-modem-messaging-call-list-finish" title="mm_gdbus_modem_messaging_call_list_finish ()"><code class="function">mm_gdbus_modem_messaging_call_list_finish()</code></a> to get the result of the operation.
 </p>
@@ -693,7 +768,7 @@ Finishes an operation started with <a class="link" href="MmGdbusModemMessaging.h
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
-Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.List"><GTKDOCLINK HREF="List"><code class="function">List()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
+Synchronously invokes the <GTKDOCLINK HREF="List"><code class="function">List()</code></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>. The calling thread is blocked until a reply is received.
 </p>
 <p>
 See <a class="link" href="MmGdbusModemMessaging.html#mm-gdbus-modem-messaging-call-list" title="mm_gdbus_modem_messaging_call_list ()"><code class="function">mm_gdbus_modem_messaging_call_list()</code></a> for the asynchronous version of this method.
@@ -738,7 +813,7 @@ See <a class="link" href="MmGdbusModemMessaging.html#mm-gdbus-modem-messaging-ca
 <a name="MmGdbusModemMessaging--default-storage"></a><h3>The <code class="literal">"default-storage"</code> property</h3>
 <pre class="programlisting">  "default-storage"          <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.DefaultStorage">"DefaultStorage"</a>.
+Represents the D-Bus property "DefaultStorage".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -747,10 +822,21 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
 </div>
 <hr>
 <div class="refsect2">
+<a name="MmGdbusModemMessaging--messages"></a><h3>The <code class="literal">"messages"</code> property</h3>
+<pre class="programlisting">  "messages"                 <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GStrv"><span class="type">GStrv</span></a>                 : Read / Write</pre>
+<p>
+Represents the D-Bus property "Messages".
+</p>
+<p>
+Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
+</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="MmGdbusModemMessaging--supported-storages"></a><h3>The <code class="literal">"supported-storages"</code> property</h3>
 <pre class="programlisting">  "supported-storages"       <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a>*             : Read / Write</pre>
 <p>
-Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.SupportedStorages">"SupportedStorages"</a>.
+Represents the D-Bus property "SupportedStorages".
 </p>
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
@@ -768,7 +854,7 @@ Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobjec
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>               arg_received,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)         : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
-On the client-side, this signal is emitted whenever the D-Bus signal <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Messaging.Added">"Added"</a> is received.
+On the client-side, this signal is emitted whenever the D-Bus signal "Added" is received.
 </p>
 <p>
 On the service-side, this signal can be used with e.g. <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#g-signal-emit-by-name"><code class="function">g_signal_emit_by_name()</code></a> to make the object emit the D-Bus signal.
@@ -805,7 +891,7 @@ On the service-side, this signal can be used with e.g. <a href="http://library.g
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>                 *arg_path,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)      : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
-On the client-side, this signal is emitted whenever the D-Bus signal <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Messaging.Deleted">"Deleted"</a> is received.
+On the client-side, this signal is emitted whenever the D-Bus signal "Deleted" is received.
 </p>
 <p>
 On the service-side, this signal can be used with e.g. <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#g-signal-emit-by-name"><code class="function">g_signal_emit_by_name()</code></a> to make the object emit the D-Bus signal.
@@ -839,7 +925,7 @@ On the service-side, this signal can be used with e.g. <a href="http://library.g
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a>              *arg_properties,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)           : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
-Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.Create"><GTKDOCLINK HREF="Create"><code class="function">Create()</code></a></GTKDOCLINK> D-Bus method.
+Signal emitted when a remote caller is invoking the <GTKDOCLINK HREF="Create"><code class="function">Create()</code></GTKDOCLINK> D-Bus method.
 </p>
 <p>
 If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em> and eventually call <code class="function">mm_gdbus_modem_messaging_complete_create()</code> or e.g. <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="http://library.gnome.org/devel/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.
@@ -882,7 +968,7 @@ If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstabl
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>                 *arg_path,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)       : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
-Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.Delete"><GTKDOCLINK HREF="Delete"><code class="function">Delete()</code></a></GTKDOCLINK> D-Bus method.
+Signal emitted when a remote caller is invoking the <GTKDOCLINK HREF="Delete"><code class="function">Delete()</code></GTKDOCLINK> D-Bus method.
 </p>
 <p>
 If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em> and eventually call <code class="function">mm_gdbus_modem_messaging_complete_delete()</code> or e.g. <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="http://library.gnome.org/devel/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.
@@ -924,7 +1010,7 @@ If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstabl
                                                         <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a> *invocation,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)       : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
-Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.List"><GTKDOCLINK HREF="List"><code class="function">List()</code></a></GTKDOCLINK> D-Bus method.
+Signal emitted when a remote caller is invoking the <GTKDOCLINK HREF="List"><code class="function">List()</code></GTKDOCLINK> D-Bus method.
 </p>
 <p>
 If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em> and eventually call <code class="function">mm_gdbus_modem_messaging_complete_list()</code> or e.g. <a href="http://library.gnome.org/devel/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="http://library.gnome.org/devel/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.
@@ -959,6 +1045,6 @@ If a signal handler returns <a href="http://library.gnome.org/devel/glib/unstabl
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

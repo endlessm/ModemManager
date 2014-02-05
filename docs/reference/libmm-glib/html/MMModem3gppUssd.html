@@ -5,17 +5,17 @@
 <title>MMModem3gppUssd</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
-<link rel="up" href="ch03.html#idm211869297872" title="Generic interfaces">
+<link rel="up" href="ch03.html#id-1.2.4.3" title="Generic interfaces">
 <link rel="prev" href="MMModem3gpp.html" title="MMModem3gpp">
 <link rel="next" href="MMModemCdma.html" title="MMModemCdma">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
 <td><a accesskey="p" href="MMModem3gpp.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="ch03.html#idm211869297872"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="u" href="ch03.html#id-1.2.4.3"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">libmm-glib Reference Manual</th>
 <td><a accesskey="n" href="MMModemCdma.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
@@ -45,7 +45,7 @@
 
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModem3gppUssd.html#mm-modem-3gpp-ussd-get-path" title="mm_modem_3gpp_ussd_get_path ()">mm_modem_3gpp_ussd_get_path</a>         (<em class="parameter"><code><a class="link" href="MMModem3gppUssd.html" title="MMModem3gppUssd"><span class="type">MMModem3gppUssd</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModem3gppUssd.html#mm-modem-3gpp-ussd-dup-path" title="mm_modem_3gpp_ussd_dup_path ()">mm_modem_3gpp_ussd_dup_path</a>         (<em class="parameter"><code><a class="link" href="MMModem3gppUssd.html" title="MMModem3gppUssd"><span class="type">MMModem3gppUssd</span></a> *self</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppUssdSessionState"><span class="returnvalue">MMModem3gppUssdSessionState</span></a> <a class="link" href="MMModem3gppUssd.html#mm-modem-3gpp-ussd-get-state" title="mm_modem_3gpp_ussd_get_state ()">mm_modem_3gpp_ussd_get_state</a>
+<span class="returnvalue">MMModem3gppUssdSessionState</span> <a class="link" href="MMModem3gppUssd.html#mm-modem-3gpp-ussd-get-state" title="mm_modem_3gpp_ussd_get_state ()">mm_modem_3gpp_ussd_get_state</a>
                                                         (<em class="parameter"><code><a class="link" href="MMModem3gppUssd.html" title="MMModem3gppUssd"><span class="type">MMModem3gppUssd</span></a> *self</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModem3gppUssd.html#mm-modem-3gpp-ussd-get-network-request" title="mm_modem_3gpp_ussd_get_network_request ()">mm_modem_3gpp_ussd_get_network_request</a>
                                                         (<em class="parameter"><code><a class="link" href="MMModem3gppUssd.html" title="MMModem3gppUssd"><span class="type">MMModem3gppUssd</span></a> *self</code></em>);
@@ -180,7 +180,7 @@ Gets a copy of the DBus path of the <a class="link" href="MMObject.html" title="
 <hr>
 <div class="refsect2">
 <a name="mm-modem-3gpp-ussd-get-state"></a><h3>mm_modem_3gpp_ussd_get_state ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppUssdSessionState"><span class="returnvalue">MMModem3gppUssdSessionState</span></a> mm_modem_3gpp_ussd_get_state
+<pre class="programlisting"><span class="returnvalue">MMModem3gppUssdSessionState</span> mm_modem_3gpp_ussd_get_state
                                                         (<em class="parameter"><code><a class="link" href="MMModem3gppUssd.html" title="MMModem3gppUssd"><span class="type">MMModem3gppUssd</span></a> *self</code></em>);</pre>
 <p>
 Get the state of the ongoing USSD session, if any.
@@ -197,7 +197,7 @@ Get the state of the ongoing USSD session, if any.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppUssdSessionState"><span class="type">MMModem3gppUssdSessionState</span></a> value, specifying the current state.</td>
+<td>A <span class="type">MMModem3gppUssdSessionState</span> value, specifying the current state.</td>
 </tr>
 </tbody>
 </table></div>
@@ -712,6 +712,6 @@ for the asynchronous version of this method.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

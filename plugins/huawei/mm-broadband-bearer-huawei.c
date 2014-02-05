@@ -30,12 +30,15 @@
 #include "mm-log.h"
 #include "mm-modem-helpers.h"
 #include "mm-modem-helpers-huawei.h"
+#include "mm-daemon-enums-types.h"
 
 G_DEFINE_TYPE (MMBroadbandBearerHuawei, mm_broadband_bearer_huawei, MM_TYPE_BROADBAND_BEARER)
 
 struct _MMBroadbandBearerHuaweiPrivate {
     gpointer connect_pending;
     gpointer disconnect_pending;
+    /* Tag for the post task for network-initiated disconnect */
+    guint network_disconnect_pending_id;
 };
 
 /*****************************************************************************/
@@ -57,6 +60,7 @@ typedef struct {
     GSimpleAsyncResult *result;
     Connect3gppContextStep step;
     guint check_count;
+    guint failed_ndisstatqry_count;
 } Connect3gppContext;
 
 static void
@@ -111,10 +115,10 @@ connect_ndisstatqry_check_ready (MMBaseModem *modem,
     Connect3gppContext *ctx;
     const gchar *response;
     GError *error = NULL;
-    gboolean ipv4_available;
-    gboolean ipv4_connected;
-    gboolean ipv6_available;
-    gboolean ipv6_connected;
+    gboolean ipv4_available = FALSE;
+    gboolean ipv4_connected = FALSE;
+    gboolean ipv6_available = FALSE;
+    gboolean ipv6_connected = FALSE;
 
     ctx = self->priv->connect_pending;
     g_assert (ctx != NULL);
@@ -130,16 +134,10 @@ connect_ndisstatqry_check_ready (MMBaseModem *modem,
                                                &ipv6_available,
                                                &ipv6_connected,
                                                &error)) {
-        mm_dbg ("Modem doesn't properly support ^NDISSTATQRY command: %s", error->message);
+        ctx->failed_ndisstatqry_count++;
+        mm_dbg ("Unexpected response to ^NDISSTATQRY command: %s (Attempts so far: %u)",
+                error->message, ctx->failed_ndisstatqry_count);
         g_error_free (error);
-
-        ctx->self->priv->connect_pending = NULL;
-        g_simple_async_result_set_error (ctx->result,
-                                         MM_MOBILE_EQUIPMENT_ERROR,
-                                         MM_MOBILE_EQUIPMENT_ERROR_NOT_SUPPORTED,
-                                         "Connection attempt not supported");
-        connect_3gpp_context_complete_and_free (ctx);
-        return;
     }
 
     /* Connected in IPv4? */
@@ -236,6 +234,11 @@ connect_3gpp_context_step (Connect3gppContext *ctx)
         return;
     }
 
+    /* Network-initiated disconnect should not be outstanding at this point,
+     * because it interferes with the connect attempt.
+     */
+    g_assert (ctx->self->priv->network_disconnect_pending_id == 0);
+
     switch (ctx->step) {
     case CONNECT_3GPP_CONTEXT_STEP_FIRST: {
         MMBearerIpFamily ip_family;
@@ -316,6 +319,18 @@ connect_3gpp_context_step (Connect3gppContext *ctx)
             return;
         }
 
+        /* Give up if too many unexpected responses to NIDSSTATQRY are encountered. */
+        if (ctx->failed_ndisstatqry_count > 10) {
+            /* Clear context */
+            ctx->self->priv->connect_pending = NULL;
+            g_simple_async_result_set_error (ctx->result,
+                                             MM_MOBILE_EQUIPMENT_ERROR,
+                                             MM_MOBILE_EQUIPMENT_ERROR_NOT_SUPPORTED,
+                                             "Connection attempt not supported.");
+            connect_3gpp_context_complete_and_free (ctx);
+            return;
+        }
+
         /* Check if connected */
         ctx->check_count++;
         mm_base_modem_at_command_full (ctx->modem,
@@ -361,14 +376,28 @@ connect_3gpp (MMBroadbandBearer *self,
               gpointer user_data)
 {
     Connect3gppContext  *ctx;
+    MMPort *data;
 
     g_assert (primary != NULL);
+
+    /* We need a net data port */
+    data = mm_base_modem_peek_best_data_port (MM_BASE_MODEM (modem), MM_PORT_TYPE_NET);
+    if (!data) {
+        g_simple_async_report_error_in_idle (G_OBJECT (self),
+                                             callback,
+                                             user_data,
+                                             MM_CORE_ERROR,
+                                             MM_CORE_ERROR_NOT_FOUND,
+                                             "No valid data port found to launch connection");
+        return;
+    }
 
     /* Setup connection context */
     ctx = g_slice_new0 (Connect3gppContext);
     ctx->self = g_object_ref (self);
     ctx->modem = g_object_ref (modem);
     ctx->primary = g_object_ref (primary);
+    ctx->data = g_object_ref (data);
     ctx->result = g_simple_async_result_new (G_OBJECT (self),
                                              callback,
                                              user_data,
@@ -378,19 +407,6 @@ connect_3gpp (MMBroadbandBearer *self,
 
     g_assert (ctx->self->priv->connect_pending == NULL);
     g_assert (ctx->self->priv->disconnect_pending == NULL);
-
-    /* We need a net data port */
-    ctx->data = mm_base_modem_get_best_data_port (MM_BASE_MODEM (modem),
-                                                  MM_PORT_TYPE_NET);
-    if (!ctx->data) {
-        g_simple_async_result_set_error (
-            ctx->result,
-            MM_CORE_ERROR,
-            MM_CORE_ERROR_NOT_FOUND,
-            "No valid data port found to launch connection");
-        connect_3gpp_context_complete_and_free (ctx);
-        return;
-    }
 
     /* Run! */
     connect_3gpp_context_step (ctx);
@@ -413,6 +429,7 @@ typedef struct {
     GSimpleAsyncResult *result;
     Disconnect3gppContextStep step;
     guint check_count;
+    guint failed_ndisstatqry_count;
 } Disconnect3gppContext;
 
 static void
@@ -461,10 +478,10 @@ disconnect_ndisstatqry_check_ready (MMBaseModem *modem,
     Disconnect3gppContext *ctx;
     const gchar *response;
     GError *error = NULL;
-    gboolean ipv4_available;
-    gboolean ipv4_connected;
-    gboolean ipv6_available;
-    gboolean ipv6_connected;
+    gboolean ipv4_available = FALSE;
+    gboolean ipv4_connected = FALSE;
+    gboolean ipv6_available = FALSE;
+    gboolean ipv6_connected = FALSE;
 
     ctx = self->priv->disconnect_pending;
     g_assert (ctx != NULL);
@@ -480,16 +497,10 @@ disconnect_ndisstatqry_check_ready (MMBaseModem *modem,
                                                &ipv6_available,
                                                &ipv6_connected,
                                                &error)) {
-        mm_dbg ("Modem doesn't properly support ^NDISSTATQRY command: %s", error->message);
+        ctx->failed_ndisstatqry_count++;
+        mm_dbg ("Unexpected response to ^NDISSTATQRY command: %s (Attempts so far: %u)",
+                error->message, ctx->failed_ndisstatqry_count);
         g_error_free (error);
-
-        ctx->self->priv->connect_pending = NULL;
-        g_simple_async_result_set_error (ctx->result,
-                                         MM_MOBILE_EQUIPMENT_ERROR,
-                                         MM_MOBILE_EQUIPMENT_ERROR_NOT_SUPPORTED,
-                                         "Disconnection attempt not supported");
-        disconnect_3gpp_context_complete_and_free (ctx);
-        return;
     }
 
     /* Disconnected IPv4? */
@@ -541,6 +552,14 @@ disconnect_3gpp_context_step (Disconnect3gppContext *ctx)
         /* Store the context */
         ctx->self->priv->disconnect_pending = ctx;
 
+        /* We ignore any pending network-initiated disconnection in order to prevent it
+         * from interfering with the client-initiated disconnection, as we would like to
+         * proceed with the latter anyway. */
+        if (ctx->self->priv->network_disconnect_pending_id != 0) {
+            g_source_remove (ctx->self->priv->network_disconnect_pending_id);
+            ctx->self->priv->network_disconnect_pending_id = 0;
+        }
+
         ctx->step++;
         /* Fall down to the next step */
 
@@ -558,13 +577,25 @@ disconnect_3gpp_context_step (Disconnect3gppContext *ctx)
 
     case DISCONNECT_3GPP_CONTEXT_STEP_NDISSTATQRY:
         /* If too many retries (1s of wait between the retries), failed */
-        if (ctx->check_count > 10) {
+        if (ctx->check_count > 60) {
             /* Clear context */
             ctx->self->priv->disconnect_pending = NULL;
             g_simple_async_result_set_error (ctx->result,
                                              MM_MOBILE_EQUIPMENT_ERROR,
                                              MM_MOBILE_EQUIPMENT_ERROR_NETWORK_TIMEOUT,
                                              "Disconnection attempt timed out");
+            disconnect_3gpp_context_complete_and_free (ctx);
+            return;
+        }
+
+        /* Give up if too many unexpected responses to NIDSSTATQRY are encountered. */
+        if (ctx->failed_ndisstatqry_count > 10) {
+            /* Clear context */
+            ctx->self->priv->disconnect_pending = NULL;
+            g_simple_async_result_set_error (ctx->result,
+                                             MM_MOBILE_EQUIPMENT_ERROR,
+                                             MM_MOBILE_EQUIPMENT_ERROR_NOT_SUPPORTED,
+                                             "Disconnection attempt not supported.");
             disconnect_3gpp_context_complete_and_free (ctx);
             return;
         }
@@ -625,6 +656,67 @@ disconnect_3gpp (MMBroadbandBearer *self,
 
 /*****************************************************************************/
 
+static gboolean
+network_disconnect_3gpp_delayed (MMBroadbandBearerHuawei *self)
+{
+    mm_dbg ("Disconnect bearer '%s' on network request.",
+            mm_bearer_get_path (MM_BEARER (self)));
+
+    self->priv->network_disconnect_pending_id = 0;
+    mm_bearer_report_connection_status (MM_BEARER (self),
+                                        MM_BEARER_CONNECTION_STATUS_DISCONNECTED);
+    return FALSE;
+}
+
+static void
+report_connection_status (MMBearer *bearer,
+                          MMBearerConnectionStatus status)
+{
+    MMBroadbandBearerHuawei *self = MM_BROADBAND_BEARER_HUAWEI (bearer);
+
+    g_assert (status == MM_BEARER_CONNECTION_STATUS_CONNECTED ||
+              status == MM_BEARER_CONNECTION_STATUS_DISCONNECTING ||
+              status == MM_BEARER_CONNECTION_STATUS_DISCONNECTED);
+
+    /* When a pending connection / disconnection attempt is in progress, we use
+     * ^NDISSTATQRY? to check the connection status and thus temporarily ignore
+     * ^NDISSTAT unsolicited messages */
+    if (self->priv->connect_pending || self->priv->disconnect_pending)
+        return;
+
+    mm_dbg ("Received spontaneous ^NDISSTAT (%s)",
+            mm_bearer_connection_status_get_string (status));
+
+    /* Ignore 'CONNECTED' */
+    if (status == MM_BEARER_CONNECTION_STATUS_CONNECTED)
+        return;
+
+    /* We already use ^NDISSTATQRY? to poll the connection status, so only
+     * handle network-initiated disconnection here. */
+    if (status == MM_BEARER_CONNECTION_STATUS_DISCONNECTING) {
+        /* MM_BEARER_CONNECTION_STATUS_DISCONNECTING is used to indicate that the
+         * reporting of disconnection should be delayed. See MMBroadbandModemHuawei's
+         * bearer_report_connection_status for details. */
+        if (mm_bearer_get_status (bearer) == MM_BEARER_STATUS_CONNECTED &&
+            self->priv->network_disconnect_pending_id == 0) {
+            mm_dbg ("Delay network-initiated disconnection of bearer '%s'",
+                    mm_bearer_get_path (MM_BEARER (self)));
+            self->priv->network_disconnect_pending_id = (g_timeout_add_seconds (
+                                                             4,
+                                                             (GSourceFunc) network_disconnect_3gpp_delayed,
+                                                             self));
+        }
+        return;
+    }
+
+    /* Report disconnected right away */
+    MM_BEARER_CLASS (mm_broadband_bearer_huawei_parent_class)->report_connection_status (
+        bearer,
+        MM_BEARER_CONNECTION_STATUS_DISCONNECTED);
+}
+
+/*****************************************************************************/
+
 MMBearer *
 mm_broadband_bearer_huawei_new_finish (GAsyncResult *res,
                                        GError **error)
@@ -643,6 +735,19 @@ mm_broadband_bearer_huawei_new_finish (GAsyncResult *res,
     mm_bearer_export (MM_BEARER (bearer));
 
     return MM_BEARER (bearer);
+}
+
+static void
+dispose (GObject *object)
+{
+    MMBroadbandBearerHuawei *self = MM_BROADBAND_BEARER_HUAWEI (object);
+
+    if (self->priv->network_disconnect_pending_id != 0) {
+        g_source_remove (self->priv->network_disconnect_pending_id);
+        self->priv->network_disconnect_pending_id = 0;
+    }
+
+    G_OBJECT_CLASS (mm_broadband_bearer_huawei_parent_class)->dispose (object);
 }
 
 void
@@ -676,11 +781,13 @@ static void
 mm_broadband_bearer_huawei_class_init (MMBroadbandBearerHuaweiClass *klass)
 {
     GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
+    MMBearerClass *bearer_class = MM_BEARER_CLASS (klass);
     MMBroadbandBearerClass *broadband_bearer_class = MM_BROADBAND_BEARER_CLASS (klass);
 
     g_type_class_add_private (object_class, sizeof (MMBroadbandBearerHuaweiPrivate));
 
+    object_class->dispose = dispose;
+    bearer_class->report_connection_status = report_connection_status;
     broadband_bearer_class->connect_3gpp = connect_3gpp;
     broadband_bearer_class->connect_3gpp_finish = connect_3gpp_finish;
     broadband_bearer_class->disconnect_3gpp = disconnect_3gpp;

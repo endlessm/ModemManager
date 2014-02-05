@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>org.freedesktop.ModemManager1.Modem.Oma</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="ModemManager Reference Manual">
+<link rel="up" href="ref-dbus-object-modem.html" title="The /org/freedesktop/ModemManager/Modems objects">
+<link rel="prev" href="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html" title="org.freedesktop.ModemManager1.Modem.Signal">
+<link rel="next" href="ref-dbus-object-bearer.html" title="The /org/freedesktop/ModemManager/Bearers objects">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ref-dbus-object-modem.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">ModemManager Reference Manual</th>
+<td><a accesskey="n" href="ref-dbus-object-bearer.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#gdbus-org.freedesktop.ModemManager1.Modem.Oma.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Oma.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Oma.properties" class="shortcut">Properties</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Oma.signals" class="shortcut">Signals</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="gdbus-org.freedesktop.ModemManager1.Modem.Oma"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Oma.top_of_page"></a>org.freedesktop.ModemManager1.Modem.Oma</span></h2>
+<p>org.freedesktop.ModemManager1.Modem.Oma — The ModemManager Open Mobile Alliance interface.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Methods</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Oma.Setup" title="The Setup() method">Setup</a>                         (IN  u features);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Oma.StartClientInitiatedSession" title="The StartClientInitiatedSession() method">StartClientInitiatedSession</a>   (IN  u session_type);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Oma.AcceptNetworkInitiatedSession" title="The AcceptNetworkInitiatedSession() method">AcceptNetworkInitiatedSession</a> (IN  u session_id,
+                               IN  b accept);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Oma.CancelSession" title="The CancelSession() method">CancelSession</a>                 ();
+</pre>
+</div>
+<div class="refsect1">
+<a name="id-1.4.5.16.4"></a><h2>Signals</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Oma.SessionStateChanged" title='The "SessionStateChanged" signal'>SessionStateChanged</a> (i old_session_state,
+                     i new_session_state,
+                     u session_state_failed_reason);
+</pre>
+</div>
+<div class="refsect1">
+<a name="id-1.4.5.16.5"></a><h2>Properties</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Oma.Features" title='The "Features" property'>Features</a>                         readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Oma.PendingNetworkInitiatedSessions" title='The "PendingNetworkInitiatedSessions" property'>PendingNetworkInitiatedSessions</a>  readable   a(uu)
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Oma.SessionType" title='The "SessionType" property'>SessionType</a>                      readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Oma.SessionState" title='The "SessionState" property'>SessionState</a>                     readable   i
+</pre>
+</div>
+<div class="refsect1">
+<a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Oma"></a><h2>Description</h2>
+<p>      This interface allows clients to handle device management operations as
+      specified by the Open Mobile Alliance (OMA).
+</p>
+<p>      Device management sessions are either on-demand (client-initiated), or
+      automatically initiated by either the device itself or the network.
+</p>
+</div>
+<div class="refsect1">
+<a name="gdbus-methods-org.freedesktop.ModemManager1.Modem.Oma"></a><h2>Method Details</h2>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Oma.Setup"></a><h3>The Setup() method</h3>
+<pre class="programlisting">
+Setup (IN  u features);
+</pre>
+<p>        Configures which OMA device management features should be enabled.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN u <em class="parameter"><code>features</code></em></code>:</span></p></td>
+<td><p>Bitmask of MMModemOmaFeature flags, specifying which device management features should get enabled or disabled. <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-OMA-FEATURE-NONE:CAPS">MM_OMA_FEATURE_NONE</a> will disable all features.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Oma.StartClientInitiatedSession"></a><h3>The StartClientInitiatedSession() method</h3>
+<pre class="programlisting">
+StartClientInitiatedSession (IN  u session_type);
+</pre>
+<p>        Starts a client-initiated device management session.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN u <em class="parameter"><code>session_type</code></em></code>:</span></p></td>
+<td><p>Type of client-initiated device management session,given as a MMModemOmaSessionType</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Oma.AcceptNetworkInitiatedSession"></a><h3>The AcceptNetworkInitiatedSession() method</h3>
+<pre class="programlisting">
+AcceptNetworkInitiatedSession (IN  u session_id,
+                               IN  b accept);
+</pre>
+<p>        Accepts or rejects a network-initiated device management session.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN u <em class="parameter"><code>session_id</code></em></code>:</span></p></td>
+<td><p>Unique ID of the network-initiated device management session.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">IN b <em class="parameter"><code>accept</code></em></code>:</span></p></td>
+<td><p>Boolean specifying whether the session is accepted or rejected.</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Oma.CancelSession"></a><h3>The CancelSession() method</h3>
+<pre class="programlisting">
+CancelSession ();
+</pre>
+<p>        Cancels the current on-going device management session.
+</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-signals-org.freedesktop.ModemManager1.Modem.Oma"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="gdbus-signal-org-freedesktop-ModemManager1-Modem-Oma.SessionStateChanged"></a><h3>The "SessionStateChanged" signal</h3>
+<pre class="programlisting">
+SessionStateChanged (i old_session_state,
+                     i new_session_state,
+                     u session_state_failed_reason);
+</pre>
+<p>        The session state changed.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">i <em class="parameter"><code>old_session_state</code></em></code>:</span></p></td>
+<td><p>Previous session state, given as a <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMOmaSessionState" title="enum MMOmaSessionState">MMOmaSessionState</a>.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">i <em class="parameter"><code>new_session_state</code></em></code>:</span></p></td>
+<td><p>Current session state, given as a <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMOmaSessionState" title="enum MMOmaSessionState">MMOmaSessionState</a>.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">u <em class="parameter"><code>session_state_failed_reason</code></em></code>:</span></p></td>
+<td><p>Reason of failure, given as a  <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMOmaSessionStateFailedReason" title="enum MMOmaSessionStateFailedReason">MMOmaSessionStateFailedReason</a>, if <em class="parameter"><code>session_state</code></em> is <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-OMA-SESSION-STATE-FAILED:CAPS">MM_OMA_SESSION_STATE_FAILED</a>.</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-properties-org.freedesktop.ModemManager1.Modem.Oma"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Oma.Features"></a><h3>The "Features" property</h3>
+<pre class="programlisting">
+Features  readable   u
+</pre>
+<p>        Bitmask of MMModemOmaFeature
+        flags, specifying which device management features are enabled or
+        disabled.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Oma.PendingNetworkInitiatedSessions"></a><h3>The "PendingNetworkInitiatedSessions" property</h3>
+<pre class="programlisting">
+PendingNetworkInitiatedSessions  readable   a(uu)
+</pre>
+<p>        List of network-initiated sessions which are waiting to be accepted or
+        rejected, given as an array of unsigned integer pairs, where:
+</p>
+<p>        </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p></p></td>
+<td>
+              The first integer is a <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMOmaSessionType" title="enum MMOmaSessionType">MMOmaSessionType</a>.
+            </td>
+</tr>
+<tr>
+<td><p></p></td>
+<td>
+              The second integer is the unique session ID.
+            </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Oma.SessionType"></a><h3>The "SessionType" property</h3>
+<pre class="programlisting">
+SessionType  readable   u
+</pre>
+<p>        Type of the current on-going device management session, given as a
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMOmaSessionType" title="enum MMOmaSessionType">MMOmaSessionType</a>.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Oma.SessionState"></a><h3>The "SessionState" property</h3>
+<pre class="programlisting">
+SessionState  readable   i
+</pre>
+<p>        State of the current on-going device management session, given as a
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMOmaSessionState" title="enum MMOmaSessionState">MMOmaSessionState</a>.
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.19</div>
+</body>
+</html>

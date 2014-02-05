@@ -35,6 +35,7 @@
 
 /* Context */
 typedef struct {
+    GDBusConnection *connection;
     MMManager *manager;
     GCancellable *cancellable;
     MMObject *object;
@@ -105,7 +106,7 @@ static GOptionEntry entries[] = {
     },
     { "delete-bearer", 0, 0, G_OPTION_ARG_STRING, &delete_bearer_str,
       "Delete a data bearer from a given modem",
-      "[PATH]"
+      "[PATH|INDEX]"
     },
     { "set-current-capabilities", 0, 0, G_OPTION_ARG_STRING, &set_current_capabilities_str,
       "Set current modem capabilities.",
@@ -214,6 +215,8 @@ context_free (Context *ctx)
         g_object_unref (ctx->object);
     if (ctx->manager)
         g_object_unref (ctx->manager);
+    if (ctx->connection)
+        g_object_unref (ctx->connection);
     g_free (ctx);
 }
 
@@ -266,6 +269,7 @@ print_modem_info (void)
     MMUnlockRetries *unlock_retries;
     guint signal_quality = 0;
     gboolean signal_quality_recent = FALSE;
+    gchar *bearer_paths_string;
 
     /* Not the best thing to do, as we may be doing _get() calls twice, but
      * easiest to maintain */
@@ -350,6 +354,15 @@ print_modem_info (void)
 
     /* Get signal quality info */
     signal_quality = mm_modem_get_signal_quality (ctx->modem, &signal_quality_recent);
+
+    if (mm_modem_get_bearer_paths (ctx->modem)) {
+        bearer_paths_string = g_strjoinv (", ", (gchar **)mm_modem_get_bearer_paths (ctx->modem));
+        if (!bearer_paths_string[0]) {
+            g_free (bearer_paths_string);
+            bearer_paths_string = NULL;
+        }
+    } else
+        bearer_paths_string = NULL;
 
     /* Global IDs */
     g_print ("\n"
@@ -441,11 +454,14 @@ print_modem_info (void)
                  "           |  enabled locks: '%s'\n"
                  "           |    operator id: '%s'\n"
                  "           |  operator name: '%s'\n"
+                 "           |   subscription: '%s'\n"
                  "           |   registration: '%s'\n",
                  VALIDATE_UNKNOWN (mm_modem_3gpp_get_imei (ctx->modem_3gpp)),
                  facility_locks,
                  VALIDATE_UNKNOWN (mm_modem_3gpp_get_operator_code (ctx->modem_3gpp)),
                  VALIDATE_UNKNOWN (mm_modem_3gpp_get_operator_name (ctx->modem_3gpp)),
+                 mm_modem_3gpp_subscription_state_get_string (
+                     mm_modem_3gpp_get_subscription_state ((ctx->modem_3gpp))),
                  mm_modem_3gpp_registration_state_get_string (
                      mm_modem_3gpp_get_registration_state ((ctx->modem_3gpp))));
 
@@ -497,6 +513,12 @@ print_modem_info (void)
              VALIDATE_PATH (mm_modem_get_sim_path (ctx->modem)));
     g_print ("\n");
 
+    /* Bearers */
+    g_print ("  -------------------------\n"
+             "  Bearers  |          paths: '%s'\n",
+             VALIDATE_PATH (bearer_paths_string));
+    g_print ("\n");
+
     g_free (ports_string);
     g_free (supported_ip_families_string);
     g_free (current_bands_string);
@@ -511,6 +533,7 @@ print_modem_info (void)
     g_free (unlock_retries_string);
     g_free (own_numbers_string);
     g_free (drivers_string);
+    g_free (bearer_paths_string);
 }
 
 static void
@@ -788,6 +811,30 @@ delete_bearer_ready (MMModem      *modem,
     delete_bearer_process_reply (operation_result, error);
 
     mmcli_async_operation_done ();
+}
+
+static void
+get_bearer_to_delete_ready (GDBusConnection *connection,
+                            GAsyncResult *res)
+{
+    MMBearer *bearer;
+    MMObject *obj = NULL;
+
+    bearer = mmcli_get_bearer_finish (res, NULL, &obj);
+    if (!g_str_equal (mm_object_get_path (obj), mm_modem_get_path (ctx->modem))) {
+        g_printerr ("error: bearer '%s' not owned by modem '%s'",
+                    mm_bearer_get_path (bearer),
+                    mm_modem_get_path (ctx->modem));
+        exit (EXIT_FAILURE);
+    }
+
+    mm_modem_delete_bearer (ctx->modem,
+                            mm_bearer_get_path (bearer),
+                            ctx->cancellable,
+                            (GAsyncReadyCallback)delete_bearer_ready,
+                            NULL);
+    g_object_unref (bearer);
+    g_object_unref (obj);
 }
 
 static void
@@ -1096,11 +1143,11 @@ get_modem_ready (GObject      *source,
 
     /* Request to delete a given bearer? */
     if (delete_bearer_str) {
-        mm_modem_delete_bearer (ctx->modem,
-                                delete_bearer_str,
-                                ctx->cancellable,
-                                (GAsyncReadyCallback)delete_bearer_ready,
-                                NULL);
+        mmcli_get_bearer (ctx->connection,
+                          delete_bearer_str,
+                          ctx->cancellable,
+                          (GAsyncReadyCallback)get_bearer_to_delete_ready,
+                          NULL);
         return;
     }
 
@@ -1159,6 +1206,7 @@ mmcli_modem_run_asynchronous (GDBusConnection *connection,
     ctx = g_new0 (Context, 1);
     if (cancellable)
         ctx->cancellable = g_object_ref (cancellable);
+    ctx->connection = g_object_ref (connection);
 
     /* Get proper modem */
     mmcli_get_modem  (connection,
@@ -1319,11 +1367,26 @@ mmcli_modem_run_synchronous (GDBusConnection *connection)
     /* Request to delete a given bearer? */
     if (delete_bearer_str) {
         gboolean result;
+        MMBearer *bearer;
+        MMObject *obj = NULL;
+
+        bearer = mmcli_get_bearer_sync (connection,
+                                        delete_bearer_str,
+                                        NULL,
+                                        &obj);
+        if (!g_str_equal (mm_object_get_path (obj), mm_modem_get_path (ctx->modem))) {
+            g_printerr ("error: bearer '%s' not owned by modem '%s'",
+                        mm_bearer_get_path (bearer),
+                        mm_modem_get_path (ctx->modem));
+            exit (EXIT_FAILURE);
+        }
 
         result = mm_modem_delete_bearer_sync (ctx->modem,
-                                              delete_bearer_str,
+                                              mm_bearer_get_path (bearer),
                                               NULL,
                                               &error);
+        g_object_unref (bearer);
+        g_object_unref (obj);
 
         delete_bearer_process_reply (result, error);
         return;

@@ -97,7 +97,7 @@ mm_modem_time_dup_path (MMModemTime *self)
  *
  * Finishes an operation started with mm_modem_time_get_network_time().
  *
- * Returns: A string containing the network time, or %NULL if @error is set. The returned value should be freed with g_free().
+ * Returns: (transfer full): A string containing the network time, or %NULL if @error is set. The returned value should be freed with g_free().
  */
 gchar *
 mm_modem_time_get_network_time_finish (MMModemTime *self,
@@ -153,7 +153,7 @@ mm_modem_time_get_network_time (MMModemTime *self,
  * The calling thread is blocked until a reply is received. See mm_modem_time_get_network_time()
  * for the asynchronous version of this method.
  *
- * Returns: A string containing the network time, or %NULL if @error is set. The returned value should be freed with g_free().
+ * Returns: (transfer full): A string containing the network time, or %NULL if @error is set. The returned value should be freed with g_free().
  */
 gchar *
 mm_modem_time_get_network_time_sync (MMModemTime *self,
@@ -221,17 +221,17 @@ ensure_internal_timezone (MMModemTime *self,
 }
 
 /**
- * mm_modem_get_network_timezone:
- * @self: A #MMModem.
+ * mm_modem_time_get_network_timezone:
+ * @self: A #MMModemTime.
  *
  * Gets the network timezone information.
  *
  * <warning>The values reported by @self are not updated when the values in the
  * interface change. Instead, the client is expected to call
- * mm_modem_get_network_timezone() again to get a new #MMNetworkTimezone with the
+ * mm_modem_time_get_network_timezone() again to get a new #MMNetworkTimezone with the
  * new values.</warning>
  *
- * Returns: (transfer full) A #MMNetworkTimezone that must be freed with g_object_unref() or %NULL if unknown.
+ * Returns: (transfer full): A #MMNetworkTimezone that must be freed with g_object_unref() or %NULL if unknown.
  */
 MMNetworkTimezone *
 mm_modem_time_get_network_timezone (MMModemTime *self)
@@ -245,17 +245,17 @@ mm_modem_time_get_network_timezone (MMModemTime *self)
 }
 
 /**
- * mm_modem_peek_network_timezone:
- * @self: A #MMModem.
+ * mm_modem_time_peek_network_timezone:
+ * @self: A #MMModemTime.
  *
  * Gets the network timezone information.
  *
  * <warning>The returned value is only valid until the property changes so
  * it is only safe to use this function on the thread where
- * @self was constructed. Use mm_modem_get_network_timezone() if on another
+ * @self was constructed. Use mm_modem_time_get_network_timezone() if on another
  * thread.</warning>
  *
- * Returns: (transfer none) A #MMNetworkTimezone. Do not free the returned value, it belongs to @self.
+ * Returns: (transfer none): A #MMNetworkTimezone. Do not free the returned value, it belongs to @self.
  */
 MMNetworkTimezone *
 mm_modem_time_peek_network_timezone (MMModemTime *self)

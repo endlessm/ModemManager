@@ -30,6 +30,7 @@
 #include "mm-iface-modem.h"
 #include "mm-iface-modem-messaging.h"
 #include "mm-sms.h"
+#include "mm-sms-part-3gpp.h"
 #include "mm-base-modem-at.h"
 #include "mm-base-modem.h"
 #include "mm-log.h"
@@ -94,8 +95,8 @@ get_validity_relative (GVariant *tuple)
 }
 
 static gboolean
-generate_submit_pdus (MMSms *self,
-                      GError **error)
+generate_3gpp_submit_pdus (MMSms *self,
+                           GError **error)
 {
     guint i;
     guint n_parts;
@@ -123,7 +124,7 @@ generate_submit_pdus (MMSms *self,
     g_assert (!(text != NULL && data != NULL));
 
     if (text) {
-        split_text = mm_sms_part_util_split_text (text, &encoding);
+        split_text = mm_sms_part_3gpp_util_split_text (text, &encoding);
         if (!split_text) {
             g_set_error (error,
                          MM_CORE_ERROR,
@@ -134,7 +135,7 @@ generate_submit_pdus (MMSms *self,
         n_parts = g_strv_length (split_text);
     } else if (data) {
         encoding = MM_SMS_ENCODING_8BIT;
-        split_data = mm_sms_part_util_split_data (data, data_len);
+        split_data = mm_sms_part_3gpp_util_split_data (data, data_len);
         g_assert (split_data != NULL);
         /* noop within the for */
         for (n_parts = 0; split_data[n_parts]; n_parts++);
@@ -231,6 +232,90 @@ generate_submit_pdus (MMSms *self,
     return TRUE;
 }
 
+static gboolean
+generate_cdma_submit_pdus (MMSms *self,
+                           GError **error)
+{
+    const gchar *text;
+    GVariant *data_variant;
+    const guint8 *data;
+    gsize data_len = 0;
+
+    MMSmsPart *part;
+
+    g_assert (self->priv->parts == NULL);
+
+    text = mm_gdbus_sms_get_text (MM_GDBUS_SMS (self));
+    data_variant = mm_gdbus_sms_get_data (MM_GDBUS_SMS (self));
+    data = (data_variant ?
+            g_variant_get_fixed_array (data_variant,
+                                       &data_len,
+                                       sizeof (guchar)) :
+            NULL);
+
+    g_assert (text != NULL || data != NULL);
+    g_assert (!(text != NULL && data != NULL));
+
+    /* Create new part */
+    part = mm_sms_part_new (SMS_PART_INVALID_INDEX, MM_SMS_PDU_TYPE_CDMA_SUBMIT);
+    if (text)
+        mm_sms_part_set_text (part, text);
+    else if (data) {
+        GByteArray *part_data;
+
+        part_data = g_byte_array_sized_new (data_len);
+        g_byte_array_append (part_data, data, data_len);
+        mm_sms_part_take_data (part, part_data);
+    } else
+        g_assert_not_reached ();
+    mm_sms_part_set_encoding (part, data ? MM_SMS_ENCODING_8BIT : MM_SMS_ENCODING_UNKNOWN);
+    mm_sms_part_set_number (part, mm_gdbus_sms_get_number (MM_GDBUS_SMS (self)));
+
+    /* If creating a CDMA SMS part but we don't have a Teleservice ID, we default to WMT */
+    if (mm_gdbus_sms_get_teleservice_id (MM_GDBUS_SMS (self)) == MM_SMS_CDMA_TELESERVICE_ID_UNKNOWN) {
+        mm_dbg ("Defaulting to WMT teleservice ID when creating SMS part");
+        mm_sms_part_set_cdma_teleservice_id (part, MM_SMS_CDMA_TELESERVICE_ID_WMT);
+    } else
+        mm_sms_part_set_cdma_teleservice_id (part, mm_gdbus_sms_get_teleservice_id (MM_GDBUS_SMS (self)));
+
+    mm_sms_part_set_cdma_service_category (part, mm_gdbus_sms_get_service_category (MM_GDBUS_SMS (self)));
+
+    mm_dbg ("Created SMS part for CDMA SMS");
+
+    /* Add to the list of parts */
+    self->priv->parts = g_list_append (self->priv->parts, part);
+
+    /* No more parts are expected */
+    self->priv->is_assembled = TRUE;
+
+    return TRUE;
+}
+
+static gboolean
+generate_submit_pdus (MMSms *self,
+                      GError **error)
+{
+    MMBaseModem *modem;
+    gboolean is_3gpp;
+
+    /* First; decide which kind of PDU we'll generate, based on the current modem caps */
+
+    g_object_get (self,
+                  MM_SMS_MODEM, &modem,
+                  NULL);
+    g_assert (modem != NULL);
+
+    is_3gpp = mm_iface_modem_is_3gpp (MM_IFACE_MODEM (modem));
+    g_object_unref (modem);
+
+    /* On a 3GPP-capable modem, create always a 3GPP SMS (even if the modem is 3GPP+3GPP2) */
+    if (is_3gpp)
+        return generate_3gpp_submit_pdus (self, error);
+
+    /* Otherwise, create a 3GPP2 SMS */
+    return generate_cdma_submit_pdus (self, error);
+}
+
 /*****************************************************************************/
 /* Store SMS (DBus call handling) */
 
@@ -257,9 +342,12 @@ handle_store_ready (MMSms *self,
 {
     GError *error = NULL;
 
-    if (!MM_SMS_GET_CLASS (self)->store_finish (self, res, &error))
+    if (!MM_SMS_GET_CLASS (self)->store_finish (self, res, &error)) {
+        /* On error, clear up the parts we generated */
+        g_list_free_full (self->priv->parts, (GDestroyNotify)mm_sms_part_free);
+        self->priv->parts = NULL;
         g_dbus_method_invocation_take_error (ctx->invocation, error);
-    else {
+    } else {
         mm_gdbus_sms_set_storage (MM_GDBUS_SMS (ctx->self), ctx->storage);
 
         /* Transition from Unknown->Stored for SMS which were created by the user */
@@ -297,10 +385,12 @@ prepare_sms_to_be_stored (MMSms *self,
     /* If the message is a multipart message, we need to set a proper
      * multipart reference. When sending a message which wasn't stored
      * yet, we can just get a random multipart reference. */
-    self->priv->multipart_reference = reference;
-    for (l = self->priv->parts; l; l = g_list_next (l)) {
-        mm_sms_part_set_concat_reference ((MMSmsPart *)l->data,
-                                          self->priv->multipart_reference);
+    if (self->priv->is_multipart) {
+        self->priv->multipart_reference = reference;
+        for (l = self->priv->parts; l; l = g_list_next (l)) {
+            mm_sms_part_set_concat_reference ((MMSmsPart *)l->data,
+                                              self->priv->multipart_reference);
+        }
     }
 
     return TRUE;
@@ -426,9 +516,12 @@ handle_send_ready (MMSms *self,
 {
     GError *error = NULL;
 
-    if (!MM_SMS_GET_CLASS (self)->send_finish (self, res, &error))
+    if (!MM_SMS_GET_CLASS (self)->send_finish (self, res, &error)) {
+        /* On error, clear up the parts we generated */
+        g_list_free_full (self->priv->parts, (GDestroyNotify)mm_sms_part_free);
+        self->priv->parts = NULL;
         g_dbus_method_invocation_take_error (ctx->invocation, error);
-    else {
+    } else {
         /* Transition from Unknown->Sent or Stored->Sent */
         if (mm_gdbus_sms_get_state (MM_GDBUS_SMS (ctx->self)) == MM_SMS_STATE_UNKNOWN ||
             mm_gdbus_sms_get_state (MM_GDBUS_SMS (ctx->self)) == MM_SMS_STATE_STORED) {
@@ -464,10 +557,12 @@ prepare_sms_to_be_sent (MMSms *self,
     /* If the message is a multipart message, we need to set a proper
      * multipart reference. When sending a message which wasn't stored
      * yet, we can just get a random multipart reference. */
-    self->priv->multipart_reference = g_random_int_range (1,255);
-    for (l = self->priv->parts; l; l = g_list_next (l)) {
-        mm_sms_part_set_concat_reference ((MMSmsPart *)l->data,
-                                          self->priv->multipart_reference);
+    if (self->priv->is_multipart) {
+        self->priv->multipart_reference = g_random_int_range (1,255);
+        for (l = self->priv->parts; l; l = g_list_next (l)) {
+            mm_sms_part_set_concat_reference ((MMSmsPart *)l->data,
+                                              self->priv->multipart_reference);
+        }
     }
 
     return TRUE;
@@ -703,7 +798,7 @@ sms_get_store_or_send_command (MMSmsPart *part,
 
         /* AT+CMGW=<length>[, <stat>]<CR> PDU can be entered. <CTRL-Z>/<ESC> */
 
-        pdu = mm_sms_part_get_submit_pdu (part, &pdulen, &msgstart, error);
+        pdu = mm_sms_part_3gpp_get_submit_pdu (part, &pdulen, &msgstart, error);
         if (!pdu)
             /* 'error' should already be set */
             return FALSE;
@@ -1499,6 +1594,8 @@ assemble_sms (MMSms *self,
                                                         g_byte_array_ref (fulldata)),
                   "smsc",      mm_sms_part_get_smsc (sorted_parts[0]),
                   "class",     mm_sms_part_get_class (sorted_parts[0]),
+                  "teleservice-id",   mm_sms_part_get_cdma_teleservice_id (sorted_parts[0]),
+                  "service-category", mm_sms_part_get_cdma_service_category (sorted_parts[0]),
                   "number",    mm_sms_part_get_number (sorted_parts[0]),
                   "validity",                (validity_relative ?
                                               g_variant_new ("(uv)", MM_SMS_VALIDITY_TYPE_RELATIVE, g_variant_new_uint32 (validity_relative)) :
@@ -1725,7 +1822,9 @@ mm_sms_new_from_properties (MMBaseModem *modem,
                   "state",    MM_SMS_STATE_UNKNOWN,
                   "storage",  MM_SMS_STORAGE_UNKNOWN,
                   "number",   mm_sms_properties_get_number (properties),
-                  "pdu-type", MM_SMS_PDU_TYPE_SUBMIT,
+                  "pdu-type", (mm_sms_properties_get_teleservice_id (properties) == MM_SMS_CDMA_TELESERVICE_ID_UNKNOWN ?
+                               MM_SMS_PDU_TYPE_SUBMIT :
+                               MM_SMS_PDU_TYPE_CDMA_SUBMIT),
                   "text",     text,
                   "data",     (data ?
                                g_variant_new_from_data (G_VARIANT_TYPE ("ay"),
@@ -1737,7 +1836,10 @@ mm_sms_new_from_properties (MMBaseModem *modem,
                                NULL),
                   "smsc",     mm_sms_properties_get_smsc (properties),
                   "class",    mm_sms_properties_get_class (properties),
+                  "teleservice-id",          mm_sms_properties_get_teleservice_id (properties),
+                  "service-category",        mm_sms_properties_get_service_category (properties),
                   "delivery-report-request", mm_sms_properties_get_delivery_report_request (properties),
+                  "delivery-state",          MM_SMS_DELIVERY_STATE_UNKNOWN,
                   "validity", (mm_sms_properties_get_validity_type (properties) == MM_SMS_VALIDITY_TYPE_RELATIVE ?
                                g_variant_new ("(uv)", MM_SMS_VALIDITY_TYPE_RELATIVE, g_variant_new_uint32 (mm_sms_properties_get_validity_relative (properties))) :
                                g_variant_new ("(uv)", MM_SMS_VALIDITY_TYPE_UNKNOWN, g_variant_new_boolean (FALSE))),

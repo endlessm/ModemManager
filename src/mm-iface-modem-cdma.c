@@ -227,7 +227,7 @@ typedef struct {
     MmGdbusModemCdma *skeleton;
     GDBusMethodInvocation *invocation;
     MMIfaceModemCdma *self;
-    GVariant *properties;
+    GVariant *dictionary;
 } HandleActivateManualContext;
 
 static void
@@ -236,7 +236,7 @@ handle_activate_manual_context_free (HandleActivateManualContext *ctx)
     g_object_unref (ctx->skeleton);
     g_object_unref (ctx->invocation);
     g_object_unref (ctx->self);
-    g_variant_unref (ctx->properties);
+    g_variant_unref (ctx->dictionary);
     g_free (ctx);
 }
 
@@ -260,6 +260,7 @@ handle_activate_manual_auth_ready (MMBaseModem *self,
                                    GAsyncResult *res,
                                    HandleActivateManualContext *ctx)
 {
+    MMCdmaManualActivationProperties *properties;
     MMModemState modem_state;
     GError *error = NULL;
 
@@ -277,7 +278,7 @@ handle_activate_manual_auth_ready (MMBaseModem *self,
         return;
     }
 
-    /* If activating OTA is not implemented, report an error */
+    /* If manual activation is not implemented, report an error */
     if (!MM_IFACE_MODEM_CDMA_GET_INTERFACE (self)->activate_manual ||
         !MM_IFACE_MODEM_CDMA_GET_INTERFACE (self)->activate_manual_finish) {
         g_dbus_method_invocation_return_error (ctx->invocation,
@@ -285,6 +286,14 @@ handle_activate_manual_auth_ready (MMBaseModem *self,
                                                MM_CORE_ERROR_UNSUPPORTED,
                                                "Cannot perform manual activation: "
                                                "operation not supported");
+        handle_activate_manual_context_free (ctx);
+        return;
+    }
+
+    /* Parse input properties */
+    properties = mm_cdma_manual_activation_properties_new_from_dictionary (ctx->dictionary, &error);
+    if (!properties) {
+        g_dbus_method_invocation_take_error (ctx->invocation, error);
         handle_activate_manual_context_free (ctx);
         return;
     }
@@ -308,17 +317,17 @@ handle_activate_manual_auth_ready (MMBaseModem *self,
                                                MM_CORE_ERROR_WRONG_STATE,
                                                "Cannot perform manual activation: "
                                                "device not fully initialized yet");
-        handle_activate_manual_context_free (ctx);
-        return;
+        break;
 
     case MM_MODEM_STATE_ENABLED:
     case MM_MODEM_STATE_SEARCHING:
     case MM_MODEM_STATE_REGISTERED:
         MM_IFACE_MODEM_CDMA_GET_INTERFACE (self)->activate_manual (
             MM_IFACE_MODEM_CDMA (self),
-            ctx->properties,
+            properties,
             (GAsyncReadyCallback)handle_activate_manual_ready,
             ctx);
+        g_object_unref (properties);
         return;
 
     case MM_MODEM_STATE_DISABLING:
@@ -349,13 +358,14 @@ handle_activate_manual_auth_ready (MMBaseModem *self,
         break;
     }
 
+    g_object_unref (properties);
     handle_activate_manual_context_free (ctx);
 }
 
 static gboolean
 handle_activate_manual (MmGdbusModemCdma *skeleton,
                         GDBusMethodInvocation *invocation,
-                        GVariant *properties,
+                        GVariant *dictionary,
                         MMIfaceModemCdma *self)
 {
     HandleActivateManualContext *ctx;
@@ -364,7 +374,7 @@ handle_activate_manual (MmGdbusModemCdma *skeleton,
     ctx->skeleton = g_object_ref (skeleton);
     ctx->invocation = g_object_ref (invocation);
     ctx->self = g_object_ref (self);
-    ctx->properties = g_variant_ref (properties);
+    ctx->dictionary = g_variant_ref (dictionary);
 
     mm_base_modem_authorize (MM_BASE_MODEM (self),
                              invocation,

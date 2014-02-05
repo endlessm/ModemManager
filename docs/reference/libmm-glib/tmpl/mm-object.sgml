@@ -190,6 +190,24 @@ MMObject
 @Returns: 
 
 
+<!-- ##### FUNCTION mm_object_peek_modem_oma ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_object_get_modem_oma ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
 <!-- ##### FUNCTION mm_object_peek_modem_simple ##### -->
 <para>
 
@@ -200,6 +218,24 @@ MMObject
 
 
 <!-- ##### FUNCTION mm_object_get_modem_simple ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_object_peek_modem_signal ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_object_get_modem_signal ##### -->
 <para>
 
 </para>

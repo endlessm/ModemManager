@@ -79,6 +79,11 @@ MmGdbusModemMessaging
 
 </para>
 
+<!-- ##### ARG MmGdbusModemMessaging:messages ##### -->
+<para>
+
+</para>
+
 <!-- ##### ARG MmGdbusModemMessaging:supported-storages ##### -->
 <para>
 
@@ -94,9 +99,28 @@ MmGdbusModemMessaging
 @handle_delete: 
 @handle_list: 
 @get_default_storage: 
+@get_messages: 
 @get_supported_storages: 
 @added: 
 @deleted: 
+
+<!-- ##### FUNCTION mm_gdbus_modem_messaging_get_messages ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_modem_messaging_dup_messages ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
 
 <!-- ##### FUNCTION mm_gdbus_modem_messaging_get_supported_storages ##### -->
 <para>

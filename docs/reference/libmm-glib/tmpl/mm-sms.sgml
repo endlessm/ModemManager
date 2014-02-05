@@ -165,6 +165,24 @@ MMSms
 @Returns: 
 
 
+<!-- ##### FUNCTION mm_sms_get_teleservice_id ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_sms_get_service_category ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
 <!-- ##### FUNCTION mm_sms_get_validity_type ##### -->
 <para>
 

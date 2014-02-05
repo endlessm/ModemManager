@@ -35,9 +35,13 @@
 #include "mm-iface-modem-messaging.h"
 #include "mm-iface-modem-location.h"
 #include "mm-iface-modem-firmware.h"
+#include "mm-iface-modem-signal.h"
+#include "mm-iface-modem-oma.h"
 #include "mm-sim-qmi.h"
 #include "mm-bearer-qmi.h"
 #include "mm-sms-qmi.h"
+#include "mm-sms-part-3gpp.h"
+#include "mm-sms-part-cdma.h"
 
 static void iface_modem_init (MMIfaceModem *iface);
 static void iface_modem_3gpp_init (MMIfaceModem3gpp *iface);
@@ -45,7 +49,9 @@ static void iface_modem_3gpp_ussd_init (MMIfaceModem3gppUssd *iface);
 static void iface_modem_cdma_init (MMIfaceModemCdma *iface);
 static void iface_modem_messaging_init (MMIfaceModemMessaging *iface);
 static void iface_modem_location_init (MMIfaceModemLocation *iface);
+static void iface_modem_oma_init (MMIfaceModemOma *iface);
 static void iface_modem_firmware_init (MMIfaceModemFirmware *iface);
+static void iface_modem_signal_init (MMIfaceModemSignal *iface);
 
 static MMIfaceModemMessaging *iface_modem_messaging_parent;
 static MMIfaceModemLocation *iface_modem_location_parent;
@@ -57,6 +63,8 @@ G_DEFINE_TYPE_EXTENDED (MMBroadbandModemQmi, mm_broadband_modem_qmi, MM_TYPE_BRO
                         G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM_CDMA, iface_modem_cdma_init)
                         G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM_MESSAGING, iface_modem_messaging_init)
                         G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM_LOCATION, iface_modem_location_init)
+                        G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM_SIGNAL, iface_modem_signal_init)
+                        G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM_OMA, iface_modem_oma_init)
                         G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM_FIRMWARE, iface_modem_firmware_init))
 
 struct _MMBroadbandModemQmiPrivate {
@@ -104,6 +112,11 @@ struct _MMBroadbandModemQmiPrivate {
     /* Location helpers */
     MMModemLocationSource enabled_sources;
     guint location_event_report_indication_id;
+
+    /* Oma helpers */
+    gboolean oma_unsolicited_events_enabled;
+    gboolean oma_unsolicited_events_setup;
+    guint oma_event_report_indication_id;
 
     /* Firmware helpers */
     GList *firmware_list;
@@ -1431,21 +1444,31 @@ dms_uim_get_pin_status_ready (QmiClientDms *client,
         g_prefix_error (&error, "QMI operation failed: ");
         g_simple_async_result_take_error (simple, error);
     } else if (!qmi_message_dms_uim_get_pin_status_output_get_result (output, &error)) {
-        /* When no SIM inserted, an internal error when checking PIN status
-         * needs to be fatal so that we mark the modem unusable. */
+        /* Fatal, so that we mark the modem unusable.*/
         if (g_error_matches (error,
                              QMI_PROTOCOL_ERROR,
-                             QMI_PROTOCOL_ERROR_INTERNAL) ||
-            g_error_matches (error,
-                             QMI_PROTOCOL_ERROR,
                              QMI_PROTOCOL_ERROR_UIM_UNINITIALIZED)) {
+            /* This error won't force a pin check retry */
             g_simple_async_result_set_error (simple,
                                              MM_MOBILE_EQUIPMENT_ERROR,
                                              MM_MOBILE_EQUIPMENT_ERROR_SIM_FAILURE,
-                                             "Couldn't get PIN status: %s",
+                                             "SIM failure: %s",
                                              error->message);
             g_error_free (error);
-        } else {
+        }
+        /* Internal errors are retry-able before being fatal */
+        else if (g_error_matches (error,
+                                  QMI_PROTOCOL_ERROR,
+                                  QMI_PROTOCOL_ERROR_INTERNAL)) {
+            g_simple_async_result_set_error (simple,
+                                             MM_CORE_ERROR,
+                                             MM_CORE_ERROR_RETRY,
+                                             "Couldn't get PIN status (retry): %s",
+                                             error->message);
+            g_error_free (error);
+        }
+        /* Other errors, just propagate them */
+        else {
             g_prefix_error (&error, "Couldn't get PIN status: ");
             g_simple_async_result_take_error (simple, error);
         }
@@ -1855,7 +1878,7 @@ modem_load_current_bands (MMIfaceModem *self,
 
 #if defined WITH_NEWEST_QMI_COMMANDS
     /* Introduced in NAS 1.19 */
-    if (qmi_client_check_version (ctx->client, 1, 19)) {
+    if (qmi_client_check_version (client, 1, 19)) {
         qmi_client_nas_get_rf_band_information (QMI_CLIENT_NAS (client),
                                                 NULL,
                                                 5,
@@ -2267,7 +2290,7 @@ get_signal_info_ready (QmiClientNas *client,
 {
     QmiMessageNasGetSignalInfoOutput *output;
     GError *error = NULL;
-    guint quality = 0;
+    gint8 quality = 0;
 
     output = qmi_client_nas_get_signal_info_finish (client, res, &error);
     if (!output) {
@@ -4156,7 +4179,7 @@ process_gsm_info (QmiMessageNasGetSystemInfoOutput *response_output,
                 &cid_valid,            &cid,
                 NULL, NULL, NULL, /* registration_reject_info */
                 &network_id_valid,     &mcc, &mnc,
-                &egprs_support_valid,  &egprs_support,
+                NULL, NULL, /* egprs support */
                 NULL, NULL, /* dtm_support */
                 NULL)) {
             mm_dbg ("No GSM service reported");
@@ -4180,7 +4203,7 @@ process_gsm_info (QmiMessageNasGetSystemInfoOutput *response_output,
                 &cid_valid,            &cid,
                 NULL, NULL, NULL, /* registration_reject_info */
                 &network_id_valid,     &mcc, &mnc,
-                &egprs_support_valid,  &egprs_support,
+                NULL, NULL, /* egprs support */
                 NULL, NULL, /* dtm_support */
                 NULL)) {
             mm_dbg ("No GSM service reported");
@@ -5113,7 +5136,9 @@ modem_cdma_load_activation_state (MMIfaceModemCdma *self,
 }
 
 /*****************************************************************************/
-/* OTA activation (CDMA interface) */
+/* Manual and OTA Activation (CDMA interface) */
+
+#define MAX_MDN_CHECK_RETRIES 10
 
 typedef enum {
     CDMA_ACTIVATION_STEP_FIRST,
@@ -5129,7 +5154,15 @@ typedef struct {
     QmiClientDms *client;
     GSimpleAsyncResult *result;
     CdmaActivationStep step;
-    gchar *carrier_code;
+    /* OTA activation... */
+    QmiMessageDmsActivateAutomaticInput *input_automatic;
+    /* Manual activation... */
+    QmiMessageDmsActivateManualInput *input_manual;
+    guint total_segments_size;
+    guint segment_i;
+    guint n_segments;
+    GArray **segments;
+    guint n_mdn_check_retries;
 } CdmaActivationContext;
 
 static void
@@ -5138,11 +5171,18 @@ cdma_activation_context_complete_and_free (CdmaActivationContext *ctx)
     /* Cleanup the activation context from the private info */
     ctx->self->priv->activation_ctx = NULL;
 
+    for (ctx->segment_i = 0; ctx->segment_i < ctx->n_segments; ctx->segment_i++)
+        g_array_unref (ctx->segments[ctx->segment_i]);
+    g_free (ctx->segments);
+
+    if (ctx->input_automatic)
+        qmi_message_dms_activate_automatic_input_unref (ctx->input_automatic);
+    if (ctx->input_manual)
+        qmi_message_dms_activate_manual_input_unref (ctx->input_manual);
     g_simple_async_result_complete (ctx->result);
     g_object_unref (ctx->result);
     g_object_unref (ctx->client);
     g_object_unref (ctx->self);
-    g_free (ctx->carrier_code);
     g_slice_free (CdmaActivationContext, ctx);
 }
 
@@ -5150,6 +5190,14 @@ static gboolean
 modem_cdma_activate_finish (MMIfaceModemCdma *self,
                             GAsyncResult *res,
                             GError **error)
+{
+    return !g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error);
+}
+
+static gboolean
+modem_cdma_activate_manual_finish (MMIfaceModemCdma *self,
+                                   GAsyncResult *res,
+                                   GError **error)
 {
     return !g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error);
 }
@@ -5189,6 +5237,61 @@ activation_power_cycle_ready (MMBroadbandModemQmi *self,
     /* And go on to next step */
     ctx->step++;
     cdma_activation_context_step (ctx);
+}
+
+static gboolean
+retry_msisdn_check_cb (CdmaActivationContext *ctx)
+{
+    cdma_activation_context_step (ctx);
+    return FALSE;
+}
+
+static void
+activate_manual_get_msisdn_ready (QmiClientDms *client,
+                                  GAsyncResult *res,
+                                  CdmaActivationContext *ctx)
+{
+    QmiMessageDmsGetMsisdnOutput *output = NULL;
+    GError *error = NULL;
+    const gchar *current_mdn = NULL;
+    const gchar *expected_mdn = NULL;
+
+    qmi_message_dms_activate_manual_input_get_info (ctx->input_manual,
+                                                    NULL, /* spc */
+                                                    NULL, /* sid */
+                                                    &expected_mdn,
+                                                    NULL, /* min */
+                                                    NULL);
+
+    output = qmi_client_dms_get_msisdn_finish (client, res, &error);
+    if (output &&
+        qmi_message_dms_get_msisdn_output_get_result (output, NULL) &&
+        qmi_message_dms_get_msisdn_output_get_msisdn (output, &current_mdn, NULL) &&
+        g_str_equal (current_mdn, expected_mdn)) {
+        mm_dbg ("MDN successfully updated to '%s'", expected_mdn);
+        qmi_message_dms_get_msisdn_output_unref (output);
+        /* And go on to next step */
+        ctx->step++;
+        cdma_activation_context_step (ctx);
+        return;
+    }
+
+    if (output)
+        qmi_message_dms_get_msisdn_output_unref (output);
+
+    if (ctx->n_mdn_check_retries < MAX_MDN_CHECK_RETRIES) {
+        /* Retry after some time */
+        mm_dbg ("MDN not yet updated, retrying...");
+        g_timeout_add (1, (GSourceFunc) retry_msisdn_check_cb, ctx);
+        return;
+    }
+
+    /* Well, all retries consumed already, return error */
+    g_simple_async_result_set_error (ctx->result,
+                                     MM_CORE_ERROR,
+                                     MM_CORE_ERROR_FAILED,
+                                     "MDN was not correctly set during manual activation");
+    cdma_activation_context_complete_and_free (ctx);
 }
 
 static void
@@ -5287,6 +5390,47 @@ activate_automatic_ready (QmiClientDms *client,
 }
 
 static void
+activate_manual_ready (QmiClientDms *client,
+                       GAsyncResult *res,
+                       CdmaActivationContext *ctx)
+{
+    QmiMessageDmsActivateManualOutput *output;
+    GError *error = NULL;
+
+    output = qmi_client_dms_activate_manual_finish (client, res, &error);
+    if (!output) {
+        g_prefix_error (&error, "QMI operation failed: ");
+        g_simple_async_result_take_error (ctx->result, error);
+        cdma_activation_context_complete_and_free (ctx);
+        return;
+    }
+
+    if (!qmi_message_dms_activate_manual_output_get_result (output, &error)) {
+        g_prefix_error (&error, "Couldn't request manual activation: ");
+        g_simple_async_result_take_error (ctx->result, error);
+        qmi_message_dms_activate_manual_output_unref (output);
+        cdma_activation_context_complete_and_free (ctx);
+        return;
+    }
+
+    qmi_message_dms_activate_manual_output_unref (output);
+
+    /* If pending segments to send, re-run same step */
+    if (ctx->n_segments) {
+        ctx->segment_i++;
+        if (ctx->segment_i < ctx->n_segments) {
+            /* There's a pending segment */
+            cdma_activation_context_step (ctx);
+            return;
+        }
+    }
+
+    /* No more segments to send, go on */
+    ctx->step++;
+    cdma_activation_context_step (ctx);
+}
+
+static void
 ser_activation_state_ready (QmiClientDms *client,
                             GAsyncResult *res,
                             CdmaActivationContext *ctx)
@@ -5336,54 +5480,98 @@ cdma_activation_context_step (CdmaActivationContext *ctx)
         ctx->step++;
         /* Fall down to next step */
 
-    case CDMA_ACTIVATION_STEP_ENABLE_INDICATIONS: {
-        QmiMessageDmsSetEventReportInput *input;
+    case CDMA_ACTIVATION_STEP_ENABLE_INDICATIONS:
+        /* Indications needed in automatic activation */
+        if (ctx->input_automatic) {
+            QmiMessageDmsSetEventReportInput *input;
 
-        mm_info ("Automatic activation step [1/5]: enabling indications");
+            mm_info ("Activation step [1/5]: enabling indications");
 
-        input = qmi_message_dms_set_event_report_input_new ();
-        qmi_message_dms_set_event_report_input_set_activation_state_reporting (input, TRUE, NULL);
-        qmi_client_dms_set_event_report (
-            ctx->client,
-            input,
-            5,
-            NULL,
-            (GAsyncReadyCallback)ser_activation_state_ready,
-            ctx);
-        qmi_message_dms_set_event_report_input_unref (input);
+            input = qmi_message_dms_set_event_report_input_new ();
+            qmi_message_dms_set_event_report_input_set_activation_state_reporting (input, TRUE, NULL);
+            qmi_client_dms_set_event_report (
+                ctx->client,
+                input,
+                5,
+                NULL,
+                (GAsyncReadyCallback)ser_activation_state_ready,
+                ctx);
+            qmi_message_dms_set_event_report_input_unref (input);
+            return;
+        }
+
+        /* Manual activation, no indications needed */
+        g_assert (ctx->input_manual != NULL);
+        mm_info ("Activation step [1/5]: indications not needed in manual activation");
+        ctx->step++;
+        /* Fall down to next step */
+
+    case CDMA_ACTIVATION_STEP_REQUEST_ACTIVATION:
+        /* Automatic activation */
+        if (ctx->input_automatic) {
+            mm_info ("Activation step [2/5]: requesting automatic (OTA) activation");
+
+            qmi_client_dms_activate_automatic (ctx->client,
+                                               ctx->input_automatic,
+                                               10,
+                                               NULL,
+                                               (GAsyncReadyCallback)activate_automatic_ready,
+                                               ctx);
+            return;
+        }
+
+        /* Manual activation */
+        g_assert (ctx->input_manual != NULL);
+        if (!ctx->segments)
+            mm_info ("Activation step [2/5]: requesting manual activation");
+        else {
+            mm_info ("Activation step [2/5]: requesting manual activation (PRL segment %u/%u)",
+                     (ctx->segment_i + 1), ctx->n_segments);
+            qmi_message_dms_activate_manual_input_set_prl (
+                ctx->input_manual,
+                (guint16)ctx->total_segments_size,
+                (guint8)ctx->segment_i,
+                ctx->segments[ctx->segment_i],
+                NULL);
+        }
+
+        qmi_client_dms_activate_manual (ctx->client,
+                                        ctx->input_manual,
+                                        10,
+                                        NULL,
+                                        (GAsyncReadyCallback)activate_manual_ready,
+                                        ctx);
         return;
-    }
-
-    case CDMA_ACTIVATION_STEP_REQUEST_ACTIVATION: {
-        QmiMessageDmsActivateAutomaticInput *input;
-
-        mm_info ("Automatic activation step [2/5]: requesting activation");
-
-        input = qmi_message_dms_activate_automatic_input_new ();
-        qmi_message_dms_activate_automatic_input_set_activation_code (input, ctx->carrier_code, NULL);
-        qmi_client_dms_activate_automatic (ctx->client,
-                                           input,
-                                           10,
-                                           NULL,
-                                           (GAsyncReadyCallback)activate_automatic_ready,
-                                           ctx);
-        qmi_message_dms_activate_automatic_input_unref (input);
-        return;
-    }
 
     case CDMA_ACTIVATION_STEP_WAIT_UNTIL_FINISHED:
-        mm_info ("Automatic activation step [3/5]: waiting for activation state updates");
+        /* Automatic activation */
+        if (ctx->input_automatic) {
+            /* State updates via unsolicited messages */
+            mm_info ("Activation step [3/5]: waiting for activation state updates");
+            return;
+        }
+
+        /* Manual activation; needs MSISDN checks */
+        g_assert (ctx->input_manual != NULL);
+        ctx->n_mdn_check_retries++;
+        mm_info ("Activation step [3/5]: checking MDN update (retry %u)", ctx->n_mdn_check_retries);
+        qmi_client_dms_get_msisdn (ctx->client,
+                                   NULL,
+                                   5,
+                                   NULL,
+                                   (GAsyncReadyCallback)activate_manual_get_msisdn_ready,
+                                   ctx);
         return;
 
     case CDMA_ACTIVATION_STEP_POWER_CYCLE:
-        mm_info ("Automatic activation step [4/5]: power-cycling...");
+        mm_info ("Activation step [4/5]: power-cycling...");
         power_cycle (ctx->self,
                      (GAsyncReadyCallback)activation_power_cycle_ready,
                      ctx);
         return;
 
     case CDMA_ACTIVATION_STEP_LAST:
-        mm_info ("Automatic activation step [5/5]: finished");
+        mm_info ("Activation step [5/5]: finished");
         g_simple_async_result_set_op_res_gboolean (ctx->result, TRUE);
         cdma_activation_context_complete_and_free (ctx);
         return;
@@ -5431,12 +5619,126 @@ modem_cdma_activate (MMIfaceModemCdma *_self,
     ctx->self = g_object_ref (self);
     ctx->client = g_object_ref (client);
     ctx->result = result;
-    ctx->carrier_code = g_strdup (carrier_code);
     ctx->step = CDMA_ACTIVATION_STEP_FIRST;
+
+    /* Build base input bundle for the Automatic activation */
+    ctx->input_automatic = qmi_message_dms_activate_automatic_input_new ();
+    qmi_message_dms_activate_automatic_input_set_activation_code (ctx->input_automatic, carrier_code, NULL);
 
     /* We keep the activation context in the private data, so that we don't
      * allow multiple activation requests at the same time. */
     self->priv->activation_ctx = ctx;
+    cdma_activation_context_step (ctx);
+}
+
+static void
+modem_cdma_activate_manual (MMIfaceModemCdma *_self,
+                            MMCdmaManualActivationProperties *properties,
+                            GAsyncReadyCallback callback,
+                            gpointer user_data)
+{
+    MMBroadbandModemQmi *self = MM_BROADBAND_MODEM_QMI (_self);
+    GSimpleAsyncResult *result;
+    CdmaActivationContext *ctx;
+    QmiClient *client = NULL;
+
+    if (!ensure_qmi_client (MM_BROADBAND_MODEM_QMI (self),
+                            QMI_SERVICE_DMS, &client,
+                            callback, user_data))
+        return;
+
+    result = g_simple_async_result_new (G_OBJECT (self),
+                                        callback,
+                                        user_data,
+                                        modem_cdma_activate_manual);
+
+    /* Fail if we have already an activation ongoing */
+    if (self->priv->activation_ctx) {
+        g_simple_async_result_set_error (
+            result,
+            MM_CORE_ERROR,
+            MM_CORE_ERROR_IN_PROGRESS,
+            "An activation operation is already in progress");
+        g_simple_async_result_complete_in_idle (result);
+        g_object_unref (result);
+        return;
+    }
+
+    /* Setup context */
+    ctx = g_slice_new0 (CdmaActivationContext);
+    ctx->self = g_object_ref (self);
+    ctx->client = g_object_ref (client);
+    ctx->result = result;
+
+    /* We keep the activation context in the private data, so that we don't
+     * allow multiple activation requests at the same time. */
+    self->priv->activation_ctx = ctx;
+
+    /* Build base input bundle for the Manual activation */
+    ctx->input_manual = qmi_message_dms_activate_manual_input_new ();
+    qmi_message_dms_activate_manual_input_set_info (
+        ctx->input_manual,
+        mm_cdma_manual_activation_properties_get_spc (properties),
+        mm_cdma_manual_activation_properties_get_sid (properties),
+        mm_cdma_manual_activation_properties_get_mdn (properties),
+        mm_cdma_manual_activation_properties_get_min (properties),
+        NULL);
+
+    if (mm_cdma_manual_activation_properties_get_mn_ha_key (properties))
+        qmi_message_dms_activate_manual_input_set_mn_ha_key (
+            ctx->input_manual,
+            mm_cdma_manual_activation_properties_get_mn_ha_key (properties),
+            NULL);
+
+    if (mm_cdma_manual_activation_properties_get_mn_aaa_key (properties))
+        qmi_message_dms_activate_manual_input_set_mn_aaa_key (
+            ctx->input_manual,
+            mm_cdma_manual_activation_properties_get_mn_aaa_key (properties),
+            NULL);
+
+    if (mm_cdma_manual_activation_properties_peek_prl_bytearray (properties)) {
+        GByteArray *full_prl;
+        guint i;
+        guint adding;
+        guint remaining;
+
+        /* Just assume 512 is the max segment size...
+         * TODO: probably need to read max segment size from the usb descriptor
+         * WARN! Never ever use a MAX_PRL_SEGMENT_SIZE less than 64, or the sequence number
+         * won't fit in a single byte!!! (16384/256=64) */
+#define MAX_PRL_SEGMENT_SIZE 512
+
+        full_prl = mm_cdma_manual_activation_properties_peek_prl_bytearray (properties);
+
+        /* NOTE:  max PRL size should already be checked when reading from DBus,
+         * so assert if longer */
+        ctx->total_segments_size = full_prl->len;
+        g_assert (ctx->total_segments_size <= 16384);
+
+        ctx->n_segments = (guint) (full_prl->len / MAX_PRL_SEGMENT_SIZE);
+        if (full_prl->len % MAX_PRL_SEGMENT_SIZE != 0)
+            ctx->n_segments++;
+        g_assert (ctx->n_segments <= 256);
+
+        ctx->segments = g_new0 (GArray *, (ctx->n_segments + 1));
+
+        adding = 0;
+        remaining = full_prl->len;
+        for (i = 0; i < ctx->n_segments; i++) {
+            guint current_add;
+
+            g_assert (remaining > 0);
+            current_add = remaining > MAX_PRL_SEGMENT_SIZE ? MAX_PRL_SEGMENT_SIZE : remaining;
+            ctx->segments[i] = g_array_sized_new (FALSE, FALSE, sizeof (guint8), current_add);
+            g_array_append_vals (ctx->segments[i], &(full_prl->data[adding]), current_add);
+            adding += current_add;
+            g_assert (remaining >= current_add);
+            remaining -= current_add;
+        }
+
+#undef MAX_PRL_SEGMENT_SIZE
+    }
+
     cdma_activation_context_step (ctx);
 }
 
@@ -6273,17 +6575,8 @@ messaging_check_support (MMIfaceModemMessaging *self,
         return;
     }
 
-    /* We only handle 3GPP messaging (PDU based) currently, so just ignore
-     * CDMA-only QMI modems */
-    if (mm_iface_modem_is_cdma_only (MM_IFACE_MODEM (self))) {
-        mm_dbg ("Messaging capabilities supported by this modem, "
-                "but 3GPP2 messaging not supported yet by ModemManager");
-        g_simple_async_result_set_op_res_gboolean (result, FALSE);
-    } else {
-        mm_dbg ("Messaging capabilities supported");
-        g_simple_async_result_set_op_res_gboolean (result, TRUE);
-    }
-
+    mm_dbg ("Messaging capabilities supported");
+    g_simple_async_result_set_op_res_gboolean (result, TRUE);
     g_simple_async_result_complete_in_idle (result);
     g_object_unref (result);
 }
@@ -6308,8 +6601,11 @@ messaging_load_supported_storages_finish (MMIfaceModemMessaging *_self,
     }
 
     *mem1 = g_array_sized_new (FALSE, FALSE, sizeof (MMSmsStorage), 2);
-    supported = MM_SMS_STORAGE_SM;
-    g_array_append_val (*mem1, supported);
+    /* Add SM storage only if not CDMA-only */
+    if (!mm_iface_modem_is_cdma_only (MM_IFACE_MODEM (self))) {
+        supported = MM_SMS_STORAGE_SM;
+        g_array_append_val (*mem1, supported);
+    }
     supported = MM_SMS_STORAGE_ME;
     g_array_append_val (*mem1, supported);
     *mem2 = g_array_ref (*mem1);
@@ -6484,11 +6780,20 @@ messaging_set_default_storage (MMIfaceModemMessaging *_self,
 
 typedef enum {
     LOAD_INITIAL_SMS_PARTS_STEP_FIRST,
-    LOAD_INITIAL_SMS_PARTS_STEP_LIST_ALL,
-    LOAD_INITIAL_SMS_PARTS_STEP_LIST_MT_READ,
-    LOAD_INITIAL_SMS_PARTS_STEP_LIST_MT_NOT_READ,
-    LOAD_INITIAL_SMS_PARTS_STEP_LIST_MO_SENT,
-    LOAD_INITIAL_SMS_PARTS_STEP_LIST_MO_NOT_SENT,
+    LOAD_INITIAL_SMS_PARTS_STEP_3GPP_FIRST,
+    LOAD_INITIAL_SMS_PARTS_STEP_3GPP_LIST_ALL,
+    LOAD_INITIAL_SMS_PARTS_STEP_3GPP_LIST_MT_READ,
+    LOAD_INITIAL_SMS_PARTS_STEP_3GPP_LIST_MT_NOT_READ,
+    LOAD_INITIAL_SMS_PARTS_STEP_3GPP_LIST_MO_SENT,
+    LOAD_INITIAL_SMS_PARTS_STEP_3GPP_LIST_MO_NOT_SENT,
+    LOAD_INITIAL_SMS_PARTS_STEP_3GPP_LAST,
+    LOAD_INITIAL_SMS_PARTS_STEP_CDMA_FIRST,
+    LOAD_INITIAL_SMS_PARTS_STEP_CDMA_LIST_ALL,
+    LOAD_INITIAL_SMS_PARTS_STEP_CDMA_LIST_MT_READ,
+    LOAD_INITIAL_SMS_PARTS_STEP_CDMA_LIST_MT_NOT_READ,
+    LOAD_INITIAL_SMS_PARTS_STEP_CDMA_LIST_MO_SENT,
+    LOAD_INITIAL_SMS_PARTS_STEP_CDMA_LIST_MO_NOT_SENT,
+    LOAD_INITIAL_SMS_PARTS_STEP_CDMA_LAST,
     LOAD_INITIAL_SMS_PARTS_STEP_LAST
 } LoadInitialSmsPartsStep;
 
@@ -6543,42 +6848,42 @@ add_new_read_sms_part (MMIfaceModemMessaging *self,
                        QmiWmsMessageFormat format,
                        GArray *data)
 {
+    MMSmsPart *part = NULL;
+    GError *error = NULL;
+
     switch (format) {
     case QMI_WMS_MESSAGE_FORMAT_CDMA:
-        mm_dbg ("Skipping CDMA messages for now...");
+        part = mm_sms_part_cdma_new_from_binary_pdu (index,
+                                                     (guint8 *)data->data,
+                                                     data->len,
+                                                     &error);
+
+        break;
+    case QMI_WMS_MESSAGE_FORMAT_GSM_WCDMA_POINT_TO_POINT:
+    case QMI_WMS_MESSAGE_FORMAT_GSM_WCDMA_BROADCAST:
+        part = mm_sms_part_3gpp_new_from_binary_pdu (index,
+                                                     (guint8 *)data->data,
+                                                     data->len,
+                                                     &error);
         break;
     case QMI_WMS_MESSAGE_FORMAT_MWI:
         mm_dbg ("Don't know how to process 'message waiting indicator' messages");
         break;
-    case QMI_WMS_MESSAGE_FORMAT_GSM_WCDMA_POINT_TO_POINT:
-    case QMI_WMS_MESSAGE_FORMAT_GSM_WCDMA_BROADCAST: {
-        MMSmsPart *part;
-        GError *error = NULL;
-
-        part = mm_sms_part_new_from_binary_pdu (index,
-                                                (guint8 *)data->data,
-                                                data->len,
-                                                &error);
-        if (part) {
-            mm_dbg ("Correctly parsed PDU (%d)",
-                    index);
-            mm_iface_modem_messaging_take_part (self,
-                                                part,
-                                                mm_sms_state_from_qmi_message_tag (tag),
-                                                mm_sms_storage_from_qmi_storage_type (storage));
-        } else {
-            /* Don't treat the error as critical */
-            mm_dbg ("Error parsing PDU (%d): %s",
-                    index,
-                    error->message);
-            g_error_free (error);
-        }
-
-        break;
-    }
     default:
         mm_dbg ("Unhandled message format '%u'", format);
         break;
+    }
+
+    if (part) {
+        mm_dbg ("Correctly parsed PDU (%d)", index);
+        mm_iface_modem_messaging_take_part (self,
+                                            part,
+                                            mm_sms_state_from_qmi_message_tag (tag),
+                                            mm_sms_storage_from_qmi_storage_type (storage));
+    } else if (error) {
+        /* Don't treat the error as critical */
+        mm_dbg ("Error parsing PDU (%d): %s", index, error->message);
+        g_error_free (error);
     }
 }
 
@@ -6642,8 +6947,10 @@ read_next_sms_part (LoadInitialSmsPartsContext *ctx)
     if (ctx->i >= ctx->message_array->len ||
         !ctx->message_array) {
         /* If we just listed all SMS, we're done. Otherwise go to next tag. */
-        if (ctx->step == LOAD_INITIAL_SMS_PARTS_STEP_LIST_ALL)
-            ctx->step = LOAD_INITIAL_SMS_PARTS_STEP_LAST;
+        if (ctx->step == LOAD_INITIAL_SMS_PARTS_STEP_3GPP_LIST_ALL)
+            ctx->step = LOAD_INITIAL_SMS_PARTS_STEP_3GPP_LAST;
+        else if (ctx->step == LOAD_INITIAL_SMS_PARTS_STEP_CDMA_LIST_ALL)
+            ctx->step = LOAD_INITIAL_SMS_PARTS_STEP_CDMA_LAST;
         else
             ctx->step++;
         load_initial_sms_parts_step (ctx);
@@ -6660,11 +6967,21 @@ read_next_sms_part (LoadInitialSmsPartsContext *ctx)
         mm_sms_storage_to_qmi_storage_type (ctx->storage),
         message->memory_index,
         NULL);
-    /* Only reading 3GPP SMS for now */
-    qmi_message_wms_raw_read_input_set_message_mode (
-        input,
-        QMI_WMS_MESSAGE_MODE_GSM_WCDMA,
-        NULL);
+
+    /* set message mode */
+    if (ctx->step < LOAD_INITIAL_SMS_PARTS_STEP_3GPP_LAST)
+        qmi_message_wms_raw_read_input_set_message_mode (
+            input,
+            QMI_WMS_MESSAGE_MODE_GSM_WCDMA,
+            NULL);
+    else if (ctx->step < LOAD_INITIAL_SMS_PARTS_STEP_CDMA_LAST)
+        qmi_message_wms_raw_read_input_set_message_mode (
+            input,
+            QMI_WMS_MESSAGE_MODE_CDMA,
+            NULL);
+    else
+        g_assert_not_reached ();
+
     qmi_client_wms_raw_read (QMI_CLIENT_WMS (ctx->client),
                              input,
                              3,
@@ -6719,36 +7036,95 @@ static void
 load_initial_sms_parts_step (LoadInitialSmsPartsContext *ctx)
 {
     QmiMessageWmsListMessagesInput *input;
+    gint mode = -1;
     gint tag_type = -1;
 
     switch (ctx->step) {
     case LOAD_INITIAL_SMS_PARTS_STEP_FIRST:
         ctx->step++;
         /* Fall down */
-    case LOAD_INITIAL_SMS_PARTS_STEP_LIST_ALL:
-        mm_dbg ("loading all messages from storage '%s'...",
+    case LOAD_INITIAL_SMS_PARTS_STEP_3GPP_FIRST:
+        /* If modem doesn't have 3GPP caps, skip 3GPP SMS */
+        if (!mm_iface_modem_is_3gpp (MM_IFACE_MODEM (ctx->self))) {
+            ctx->step = LOAD_INITIAL_SMS_PARTS_STEP_3GPP_LAST;
+            load_initial_sms_parts_step (ctx);
+            return;
+        }
+        ctx->step++;
+        /* Fall down */
+    case LOAD_INITIAL_SMS_PARTS_STEP_3GPP_LIST_ALL:
+        mm_dbg ("loading all 3GPP messages from storage '%s'...",
                 mm_sms_storage_get_string (ctx->storage));
+        mode = QMI_WMS_MESSAGE_MODE_GSM_WCDMA;
         break;
-    case LOAD_INITIAL_SMS_PARTS_STEP_LIST_MT_READ:
-        mm_dbg ("loading MT-read messages from storage '%s'...",
+    case LOAD_INITIAL_SMS_PARTS_STEP_3GPP_LIST_MT_READ:
+        mm_dbg ("loading 3GPP MT-read messages from storage '%s'...",
                 mm_sms_storage_get_string (ctx->storage));
         tag_type = QMI_WMS_MESSAGE_TAG_TYPE_MT_READ;
+        mode = QMI_WMS_MESSAGE_MODE_GSM_WCDMA;
         break;
-    case LOAD_INITIAL_SMS_PARTS_STEP_LIST_MT_NOT_READ:
-        mm_dbg ("loading MT-not-read messages from storage '%s'...",
+    case LOAD_INITIAL_SMS_PARTS_STEP_3GPP_LIST_MT_NOT_READ:
+        mm_dbg ("loading 3GPP MT-not-read messages from storage '%s'...",
                 mm_sms_storage_get_string (ctx->storage));
         tag_type = QMI_WMS_MESSAGE_TAG_TYPE_MT_NOT_READ;
+        mode = QMI_WMS_MESSAGE_MODE_GSM_WCDMA;
         break;
-    case LOAD_INITIAL_SMS_PARTS_STEP_LIST_MO_SENT:
-        mm_dbg ("loading MO-sent messages from storage '%s'...",
+    case LOAD_INITIAL_SMS_PARTS_STEP_3GPP_LIST_MO_SENT:
+        mm_dbg ("loading 3GPP MO-sent messages from storage '%s'...",
                 mm_sms_storage_get_string (ctx->storage));
         tag_type = QMI_WMS_MESSAGE_TAG_TYPE_MO_SENT;
+        mode = QMI_WMS_MESSAGE_MODE_GSM_WCDMA;
         break;
-    case LOAD_INITIAL_SMS_PARTS_STEP_LIST_MO_NOT_SENT:
-        mm_dbg ("loading MO-not-sent messages from storage '%s'...",
+    case LOAD_INITIAL_SMS_PARTS_STEP_3GPP_LIST_MO_NOT_SENT:
+        mm_dbg ("loading 3GPP MO-not-sent messages from storage '%s'...",
                 mm_sms_storage_get_string (ctx->storage));
         tag_type = QMI_WMS_MESSAGE_TAG_TYPE_MO_NOT_SENT;
+        mode = QMI_WMS_MESSAGE_MODE_GSM_WCDMA;
         break;
+    case LOAD_INITIAL_SMS_PARTS_STEP_3GPP_LAST:
+        ctx->step++;
+        /* Fall down */
+    case LOAD_INITIAL_SMS_PARTS_STEP_CDMA_FIRST:
+        /* If modem doesn't have CDMA caps, skip CDMA SMS */
+        if (!mm_iface_modem_is_cdma (MM_IFACE_MODEM (ctx->self))) {
+            ctx->step = LOAD_INITIAL_SMS_PARTS_STEP_CDMA_LAST;
+            load_initial_sms_parts_step (ctx);
+            return;
+        }
+        ctx->step++;
+        /* Fall down */
+    case LOAD_INITIAL_SMS_PARTS_STEP_CDMA_LIST_ALL:
+        mm_dbg ("loading all CDMA messages from storage '%s'...",
+                mm_sms_storage_get_string (ctx->storage));
+        mode = QMI_WMS_MESSAGE_MODE_CDMA;
+        break;
+    case LOAD_INITIAL_SMS_PARTS_STEP_CDMA_LIST_MT_READ:
+        mm_dbg ("loading CDMA MT-read messages from storage '%s'...",
+                mm_sms_storage_get_string (ctx->storage));
+        tag_type = QMI_WMS_MESSAGE_TAG_TYPE_MT_READ;
+        mode = QMI_WMS_MESSAGE_MODE_CDMA;
+        break;
+    case LOAD_INITIAL_SMS_PARTS_STEP_CDMA_LIST_MT_NOT_READ:
+        mm_dbg ("loading CDMA MT-not-read messages from storage '%s'...",
+                mm_sms_storage_get_string (ctx->storage));
+        tag_type = QMI_WMS_MESSAGE_TAG_TYPE_MT_NOT_READ;
+        mode = QMI_WMS_MESSAGE_MODE_CDMA;
+        break;
+    case LOAD_INITIAL_SMS_PARTS_STEP_CDMA_LIST_MO_SENT:
+        mm_dbg ("loading CDMA MO-sent messages from storage '%s'...",
+                mm_sms_storage_get_string (ctx->storage));
+        tag_type = QMI_WMS_MESSAGE_TAG_TYPE_MO_SENT;
+        mode = QMI_WMS_MESSAGE_MODE_CDMA;
+        break;
+    case LOAD_INITIAL_SMS_PARTS_STEP_CDMA_LIST_MO_NOT_SENT:
+        mm_dbg ("loading CDMA MO-not-sent messages from storage '%s'...",
+                mm_sms_storage_get_string (ctx->storage));
+        tag_type = QMI_WMS_MESSAGE_TAG_TYPE_MO_NOT_SENT;
+        mode = QMI_WMS_MESSAGE_MODE_CDMA;
+        break;
+    case LOAD_INITIAL_SMS_PARTS_STEP_CDMA_LAST:
+        ctx->step++;
+        /* Fall down */
     case LOAD_INITIAL_SMS_PARTS_STEP_LAST:
         /* All steps done */
         g_simple_async_result_set_op_res_gboolean (ctx->result, TRUE);
@@ -6756,7 +7132,7 @@ load_initial_sms_parts_step (LoadInitialSmsPartsContext *ctx)
         return;
     }
 
-    /* Request to list messages in a given storage */
+    g_assert (mode != -1);
     input = qmi_message_wms_list_messages_input_new ();
     qmi_message_wms_list_messages_input_set_storage_type (
         input,
@@ -6764,7 +7140,7 @@ load_initial_sms_parts_step (LoadInitialSmsPartsContext *ctx)
         NULL);
     qmi_message_wms_list_messages_input_set_message_mode (
         input,
-        QMI_WMS_MESSAGE_MODE_GSM_WCDMA,
+        (QmiWmsMessageMode)mode,
         NULL);
     if (tag_type != -1)
         qmi_message_wms_list_messages_input_set_message_tag (
@@ -7071,7 +7447,7 @@ messaging_disable_unsolicited_events_finish (MMIfaceModemMessaging *_self,
     MMBroadbandModemQmi *self = MM_BROADBAND_MODEM_QMI (_self);
 
     /* Handle fallback */
-    if (self->priv->messaging_fallback_at) {
+    if (self->priv->messaging_fallback_at && iface_modem_messaging_parent->disable_unsolicited_events_finish) {
         return iface_modem_messaging_parent->disable_unsolicited_events_finish (_self, res, error);
     }
 
@@ -7180,6 +7556,21 @@ messaging_disable_unsolicited_events (MMIfaceModemMessaging *_self,
 
     /* Handle fallback */
     if (self->priv->messaging_fallback_at) {
+        /* Generic implementation doesn't actually have a method to disable
+         * unsolicited messaging events */
+        if (!iface_modem_messaging_parent->disable_unsolicited_events) {
+            GSimpleAsyncResult *result;
+
+            result = g_simple_async_result_new (G_OBJECT (self),
+                                                callback,
+                                                user_data,
+                                                messaging_disable_unsolicited_events);
+            g_simple_async_result_set_op_res_gboolean (result, TRUE);
+            g_simple_async_result_complete_in_idle (result);
+            g_object_unref (result);
+            return;
+        }
+
         return iface_modem_messaging_parent->disable_unsolicited_events (_self, callback, user_data);
     }
 
@@ -7705,6 +8096,659 @@ enable_location_gathering (MMIfaceModemLocation *self,
         source,
         (GAsyncReadyCallback)parent_enable_location_gathering_ready,
         ctx);
+}
+
+/*****************************************************************************/
+/* Check support (OMA interface) */
+
+static gboolean
+oma_check_support_finish (MMIfaceModemOma *self,
+                          GAsyncResult *res,
+                          GError **error)
+{
+    /* no error expected here */
+    return g_simple_async_result_get_op_res_gboolean (G_SIMPLE_ASYNC_RESULT (res));
+}
+
+static void
+oma_check_support (MMIfaceModemOma *self,
+                   GAsyncReadyCallback callback,
+                   gpointer user_data)
+{
+    GSimpleAsyncResult *result;
+    MMQmiPort *port;
+
+    result = g_simple_async_result_new (G_OBJECT (self),
+                                        callback,
+                                        user_data,
+                                        oma_check_support);
+
+    port = mm_base_modem_peek_port_qmi (MM_BASE_MODEM (self));
+    /* If we have support for the OMA client, OMA is supported */
+    if (!port || !mm_qmi_port_peek_client (port, QMI_SERVICE_OMA, MM_QMI_PORT_FLAG_DEFAULT)) {
+        mm_dbg ("OMA capabilities not supported");
+        g_simple_async_result_set_op_res_gboolean (result, FALSE);
+    } else {
+        mm_dbg ("OMA capabilities supported");
+        g_simple_async_result_set_op_res_gboolean (result, TRUE);
+    }
+
+    g_simple_async_result_complete_in_idle (result);
+    g_object_unref (result);
+}
+
+/*****************************************************************************/
+/* Load features (OMA interface) */
+
+static MMOmaFeature
+oma_load_features_finish (MMIfaceModemOma *self,
+                          GAsyncResult *res,
+                          GError **error)
+{
+    if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
+        return MM_OMA_FEATURE_NONE;
+
+    return (MMOmaFeature) GPOINTER_TO_UINT (g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res)));
+}
+
+static void
+oma_get_feature_setting_ready (QmiClientOma *client,
+                               GAsyncResult *res,
+                               GSimpleAsyncResult *simple)
+{
+    QmiMessageOmaGetFeatureSettingOutput *output = NULL;
+    GError *error = NULL;
+
+    output = qmi_client_oma_get_feature_setting_finish (client, res, &error);
+    if (!output || !qmi_message_oma_get_feature_setting_output_get_result (output, &error))
+        g_simple_async_result_take_error (simple, error);
+    else {
+        MMOmaFeature features = MM_OMA_FEATURE_NONE;
+        gboolean enabled;
+
+        if (qmi_message_oma_get_feature_setting_output_get_device_provisioning_service_update_config (
+                output,
+                &enabled,
+                NULL) &&
+            enabled)
+            features |= MM_OMA_FEATURE_DEVICE_PROVISIONING;
+
+        if (qmi_message_oma_get_feature_setting_output_get_prl_update_service_config (
+                output,
+                &enabled,
+                NULL) &&
+            enabled)
+            features |= MM_OMA_FEATURE_PRL_UPDATE;
+
+        if (qmi_message_oma_get_feature_setting_output_get_hfa_feature_config (
+                output,
+                &enabled,
+                NULL) &&
+            enabled)
+            features |= MM_OMA_FEATURE_HANDS_FREE_ACTIVATION;
+
+        g_simple_async_result_set_op_res_gpointer (simple, GUINT_TO_POINTER ((guint)features), NULL);
+    }
+
+    if (output)
+        qmi_message_oma_get_feature_setting_output_unref (output);
+
+    g_simple_async_result_complete (simple);
+    g_object_unref (simple);
+}
+
+static void
+oma_load_features (MMIfaceModemOma *self,
+                   GAsyncReadyCallback callback,
+                   gpointer user_data)
+{
+    QmiClient *client = NULL;
+
+    if (!ensure_qmi_client (MM_BROADBAND_MODEM_QMI (self),
+                            QMI_SERVICE_OMA, &client,
+                            callback, user_data))
+        return;
+
+    qmi_client_oma_get_feature_setting (
+        QMI_CLIENT_OMA (client),
+        NULL,
+        5,
+        NULL,
+        (GAsyncReadyCallback)oma_get_feature_setting_ready,
+        g_simple_async_result_new (G_OBJECT (self),
+                                   callback,
+                                   user_data,
+                                   oma_load_features));
+}
+
+/*****************************************************************************/
+/* Setup (OMA interface) */
+
+static gboolean
+oma_setup_finish (MMIfaceModemOma *self,
+                  GAsyncResult *res,
+                  GError **error)
+{
+    return !g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error);
+}
+
+static void
+oma_set_feature_setting_ready (QmiClientOma *client,
+                               GAsyncResult *res,
+                               GSimpleAsyncResult *simple)
+{
+    QmiMessageOmaSetFeatureSettingOutput *output;
+    GError *error = NULL;
+
+    output = qmi_client_oma_set_feature_setting_finish (client, res, &error);
+    if (!output || !qmi_message_oma_set_feature_setting_output_get_result (output, &error))
+        g_simple_async_result_take_error (simple, error);
+    else
+        g_simple_async_result_set_op_res_gboolean (simple, TRUE);
+
+    if (output)
+        qmi_message_oma_set_feature_setting_output_unref (output);
+
+    g_simple_async_result_complete (simple);
+    g_object_unref (simple);
+}
+
+static void
+oma_setup (MMIfaceModemOma *self,
+           MMOmaFeature features,
+           GAsyncReadyCallback callback,
+           gpointer user_data)
+{
+    QmiClient *client = NULL;
+    QmiMessageOmaSetFeatureSettingInput *input;
+
+    if (!ensure_qmi_client (MM_BROADBAND_MODEM_QMI (self),
+                            QMI_SERVICE_OMA, &client,
+                            callback, user_data))
+        return;
+
+    input = qmi_message_oma_set_feature_setting_input_new ();
+    qmi_message_oma_set_feature_setting_input_set_device_provisioning_service_update_config (
+        input,
+        !!(features & MM_OMA_FEATURE_DEVICE_PROVISIONING),
+        NULL);
+    qmi_message_oma_set_feature_setting_input_set_prl_update_service_config (
+        input,
+        !!(features & MM_OMA_FEATURE_PRL_UPDATE),
+        NULL);
+    qmi_message_oma_set_feature_setting_input_set_hfa_feature_config (
+        input,
+        !!(features & MM_OMA_FEATURE_HANDS_FREE_ACTIVATION),
+        NULL);
+
+    qmi_client_oma_set_feature_setting (
+        QMI_CLIENT_OMA (client),
+        input,
+        5,
+        NULL,
+        (GAsyncReadyCallback)oma_set_feature_setting_ready,
+        g_simple_async_result_new (G_OBJECT (self),
+                                   callback,
+                                   user_data,
+                                   oma_setup));
+
+    qmi_message_oma_set_feature_setting_input_unref (input);
+}
+
+/*****************************************************************************/
+/* Start client initiated session (OMA interface) */
+
+static gboolean
+oma_start_client_initiated_session_finish (MMIfaceModemOma *self,
+                                           GAsyncResult *res,
+                                           GError **error)
+{
+    return !g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error);
+}
+
+static void
+oma_start_session_ready (QmiClientOma *client,
+                         GAsyncResult *res,
+                         GSimpleAsyncResult *simple)
+{
+    QmiMessageOmaStartSessionOutput *output;
+    GError *error = NULL;
+
+    output = qmi_client_oma_start_session_finish (client, res, &error);
+    if (!output || !qmi_message_oma_start_session_output_get_result (output, &error))
+        g_simple_async_result_take_error (simple, error);
+    else
+        g_simple_async_result_set_op_res_gboolean (simple, TRUE);
+
+    if (output)
+        qmi_message_oma_start_session_output_unref (output);
+
+    g_simple_async_result_complete (simple);
+    g_object_unref (simple);
+}
+
+static void
+oma_start_client_initiated_session (MMIfaceModemOma *self,
+                                    MMOmaSessionType session_type,
+                                    GAsyncReadyCallback callback,
+                                    gpointer user_data)
+{
+    QmiClient *client = NULL;
+    QmiMessageOmaStartSessionInput *input;
+
+    if (!ensure_qmi_client (MM_BROADBAND_MODEM_QMI (self),
+                            QMI_SERVICE_OMA, &client,
+                            callback, user_data))
+        return;
+
+    /* It's already checked in mm-iface-modem-oma; so just assert if this is not ok */
+    g_assert (session_type == MM_OMA_SESSION_TYPE_CLIENT_INITIATED_DEVICE_CONFIGURE ||
+              session_type == MM_OMA_SESSION_TYPE_CLIENT_INITIATED_PRL_UPDATE ||
+              session_type == MM_OMA_SESSION_TYPE_CLIENT_INITIATED_HANDS_FREE_ACTIVATION);
+
+    input = qmi_message_oma_start_session_input_new ();
+    qmi_message_oma_start_session_input_set_session_type (
+        input,
+        mm_oma_session_type_to_qmi_oma_session_type (session_type),
+        NULL);
+
+    qmi_client_oma_start_session (
+        QMI_CLIENT_OMA (client),
+        input,
+        5,
+        NULL,
+        (GAsyncReadyCallback)oma_start_session_ready,
+        g_simple_async_result_new (G_OBJECT (self),
+                                   callback,
+                                   user_data,
+                                   oma_start_client_initiated_session));
+
+    qmi_message_oma_start_session_input_unref (input);
+}
+
+/*****************************************************************************/
+/* Accept network initiated session (OMA interface) */
+
+static gboolean
+oma_accept_network_initiated_session_finish (MMIfaceModemOma *self,
+                                             GAsyncResult *res,
+                                             GError **error)
+{
+    return !g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error);
+}
+
+static void
+oma_send_selection_ready (QmiClientOma *client,
+                          GAsyncResult *res,
+                          GSimpleAsyncResult *simple)
+{
+    QmiMessageOmaSendSelectionOutput *output;
+    GError *error = NULL;
+
+    output = qmi_client_oma_send_selection_finish (client, res, &error);
+    if (!output || !qmi_message_oma_send_selection_output_get_result (output, &error))
+        g_simple_async_result_take_error (simple, error);
+    else
+        g_simple_async_result_set_op_res_gboolean (simple, TRUE);
+
+    if (output)
+        qmi_message_oma_send_selection_output_unref (output);
+
+    g_simple_async_result_complete (simple);
+    g_object_unref (simple);
+}
+
+static void
+oma_accept_network_initiated_session (MMIfaceModemOma *self,
+                                      guint session_id,
+                                      gboolean accept,
+                                      GAsyncReadyCallback callback,
+                                      gpointer user_data)
+{
+    QmiClient *client = NULL;
+    QmiMessageOmaSendSelectionInput *input;
+
+    if (!ensure_qmi_client (MM_BROADBAND_MODEM_QMI (self),
+                            QMI_SERVICE_OMA, &client,
+                            callback, user_data))
+        return;
+
+    input = qmi_message_oma_send_selection_input_new ();
+    qmi_message_oma_send_selection_input_set_network_initiated_alert_selection (
+        input,
+        accept,
+        (guint16)session_id,
+        NULL);
+
+    qmi_client_oma_send_selection (
+        QMI_CLIENT_OMA (client),
+        input,
+        5,
+        NULL,
+        (GAsyncReadyCallback)oma_send_selection_ready,
+        g_simple_async_result_new (G_OBJECT (self),
+                                   callback,
+                                   user_data,
+                                   oma_accept_network_initiated_session));
+
+    qmi_message_oma_send_selection_input_unref (input);
+}
+
+/*****************************************************************************/
+/* Cancel session (OMA interface) */
+
+static gboolean
+oma_cancel_session_finish (MMIfaceModemOma *self,
+                           GAsyncResult *res,
+                           GError **error)
+{
+    return !g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error);
+}
+
+static void
+oma_cancel_session_ready (QmiClientOma *client,
+                          GAsyncResult *res,
+                          GSimpleAsyncResult *simple)
+{
+    QmiMessageOmaCancelSessionOutput *output;
+    GError *error = NULL;
+
+    output = qmi_client_oma_cancel_session_finish (client, res, &error);
+    if (!output || !qmi_message_oma_cancel_session_output_get_result (output, &error))
+        g_simple_async_result_take_error (simple, error);
+    else
+        g_simple_async_result_set_op_res_gboolean (simple, TRUE);
+
+    if (output)
+        qmi_message_oma_cancel_session_output_unref (output);
+
+    g_simple_async_result_complete (simple);
+    g_object_unref (simple);
+}
+
+static void
+oma_cancel_session (MMIfaceModemOma *self,
+                    GAsyncReadyCallback callback,
+                    gpointer user_data)
+{
+    QmiClient *client = NULL;
+
+    if (!ensure_qmi_client (MM_BROADBAND_MODEM_QMI (self),
+                            QMI_SERVICE_OMA, &client,
+                            callback, user_data))
+        return;
+
+    qmi_client_oma_cancel_session (
+        QMI_CLIENT_OMA (client),
+        NULL,
+        5,
+        NULL,
+        (GAsyncReadyCallback)oma_cancel_session_ready,
+        g_simple_async_result_new (G_OBJECT (self),
+                                   callback,
+                                   user_data,
+                                   oma_cancel_session));
+}
+
+/*****************************************************************************/
+/* Setup/Cleanup unsolicited event handlers (OMA interface) */
+
+static void
+oma_event_report_indication_cb (QmiClientNas *client,
+                                QmiIndicationOmaEventReportOutput *output,
+                                MMBroadbandModemQmi *self)
+{
+    QmiOmaSessionState qmi_session_state;
+    QmiOmaSessionType network_initiated_alert_session_type;
+    guint16 network_initiated_alert_session_id;
+
+    /* Update session state? */
+    if (qmi_indication_oma_event_report_output_get_session_state (
+            output,
+            &qmi_session_state,
+            NULL)) {
+        QmiOmaSessionFailedReason qmi_oma_session_failed_reason = QMI_OMA_SESSION_FAILED_REASON_UNKNOWN;
+
+        if (qmi_session_state == QMI_OMA_SESSION_STATE_FAILED)
+            qmi_indication_oma_event_report_output_get_session_fail_reason (
+                output,
+                &qmi_oma_session_failed_reason,
+                NULL);
+
+        mm_iface_modem_oma_update_session_state (
+            MM_IFACE_MODEM_OMA (self),
+            mm_oma_session_state_from_qmi_oma_session_state (qmi_session_state),
+            mm_oma_session_state_failed_reason_from_qmi_oma_session_failed_reason (qmi_oma_session_failed_reason));
+    }
+
+    /* New network initiated session? */
+    if (qmi_indication_oma_event_report_output_get_network_initiated_alert (
+            output,
+            &network_initiated_alert_session_type,
+            &network_initiated_alert_session_id,
+            NULL)) {
+        MMOmaSessionType session_type;
+
+        session_type = mm_oma_session_type_from_qmi_oma_session_type (network_initiated_alert_session_type);
+        if (session_type == MM_OMA_SESSION_TYPE_UNKNOWN)
+            g_warning ("Unknown QMI OMA session type '%u'", network_initiated_alert_session_type);
+        else
+            mm_iface_modem_oma_add_pending_network_initiated_session (
+                MM_IFACE_MODEM_OMA (self),
+                session_type,
+                (guint)network_initiated_alert_session_id);
+    }
+}
+
+static gboolean
+common_oma_setup_cleanup_unsolicited_events_finish (MMIfaceModemOma *_self,
+                                                    GAsyncResult *res,
+                                                    GError **error)
+{
+    return !g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error);
+}
+
+static void
+common_setup_cleanup_oma_unsolicited_events (MMBroadbandModemQmi *self,
+                                             gboolean enable,
+                                             GAsyncReadyCallback callback,
+                                             gpointer user_data)
+{
+    GSimpleAsyncResult *result;
+    QmiClient *client = NULL;
+
+    if (!ensure_qmi_client (MM_BROADBAND_MODEM_QMI (self),
+                            QMI_SERVICE_OMA, &client,
+                            callback, user_data))
+        return;
+
+    result = g_simple_async_result_new (G_OBJECT (self),
+                                        callback,
+                                        user_data,
+                                        common_setup_cleanup_oma_unsolicited_events);
+
+    if (enable == self->priv->oma_unsolicited_events_setup) {
+        mm_dbg ("OMA unsolicited events already %s; skipping",
+                enable ? "setup" : "cleanup");
+        g_simple_async_result_set_op_res_gboolean (result, TRUE);
+        g_simple_async_result_complete_in_idle (result);
+        g_object_unref (result);
+        return;
+    }
+
+    /* Store new state */
+    self->priv->oma_unsolicited_events_setup = enable;
+
+    /* Connect/Disconnect "Event Report" indications */
+    if (enable) {
+        g_assert (self->priv->oma_event_report_indication_id == 0);
+        self->priv->oma_event_report_indication_id =
+            g_signal_connect (client,
+                              "event-report",
+                              G_CALLBACK (oma_event_report_indication_cb),
+                              self);
+    } else {
+        g_assert (self->priv->oma_event_report_indication_id != 0);
+        g_signal_handler_disconnect (client, self->priv->oma_event_report_indication_id);
+        self->priv->oma_event_report_indication_id = 0;
+    }
+
+    g_simple_async_result_set_op_res_gboolean (result, TRUE);
+    g_simple_async_result_complete_in_idle (result);
+    g_object_unref (result);
+}
+
+static void
+oma_cleanup_unsolicited_events (MMIfaceModemOma *self,
+                                GAsyncReadyCallback callback,
+                                gpointer user_data)
+{
+    common_setup_cleanup_oma_unsolicited_events (MM_BROADBAND_MODEM_QMI (self),
+                                                 FALSE,
+                                                 callback,
+                                                 user_data);
+}
+
+static void
+oma_setup_unsolicited_events (MMIfaceModemOma *self,
+                              GAsyncReadyCallback callback,
+                              gpointer user_data)
+{
+    common_setup_cleanup_oma_unsolicited_events (MM_BROADBAND_MODEM_QMI (self),
+                                                 TRUE,
+                                                 callback,
+                                                 user_data);
+}
+
+/*****************************************************************************/
+/* Enable/Disable unsolicited events (OMA interface) */
+
+typedef struct {
+    MMBroadbandModemQmi *self;
+    GSimpleAsyncResult *result;
+    QmiClientOma *client;
+    gboolean enable;
+} EnableOmaUnsolicitedEventsContext;
+
+static void
+enable_oma_unsolicited_events_context_complete_and_free (EnableOmaUnsolicitedEventsContext *ctx)
+{
+    g_simple_async_result_complete (ctx->result);
+    g_object_unref (ctx->result);
+    g_object_unref (ctx->client);
+    g_object_unref (ctx->self);
+    g_slice_free (EnableOmaUnsolicitedEventsContext, ctx);
+}
+
+static gboolean
+common_oma_enable_disable_unsolicited_events_finish (MMIfaceModemOma *self,
+                                                     GAsyncResult *res,
+                                                     GError **error)
+{
+    return !g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error);
+}
+
+static void
+ser_oma_indicator_ready (QmiClientOma *client,
+                         GAsyncResult *res,
+                         EnableOmaUnsolicitedEventsContext *ctx)
+{
+    QmiMessageOmaSetEventReportOutput *output = NULL;
+    GError *error = NULL;
+
+    output = qmi_client_oma_set_event_report_finish (client, res, &error);
+    if (!output) {
+        mm_dbg ("QMI operation failed: '%s'", error->message);
+        g_error_free (error);
+    } else if (!qmi_message_oma_set_event_report_output_get_result (output, &error)) {
+        mm_dbg ("Couldn't set event report: '%s'", error->message);
+        g_error_free (error);
+    }
+
+    if (output)
+        qmi_message_oma_set_event_report_output_unref (output);
+
+    /* Just ignore errors for now */
+    ctx->self->priv->oma_unsolicited_events_enabled = ctx->enable;
+    g_simple_async_result_set_op_res_gboolean (ctx->result, TRUE);
+    enable_oma_unsolicited_events_context_complete_and_free (ctx);
+}
+
+static void
+common_enable_disable_oma_unsolicited_events (MMBroadbandModemQmi *self,
+                                              gboolean enable,
+                                              GAsyncReadyCallback callback,
+                                              gpointer user_data)
+{
+    EnableOmaUnsolicitedEventsContext *ctx;
+    GSimpleAsyncResult *result;
+    QmiClient *client = NULL;
+    QmiMessageOmaSetEventReportInput *input;
+
+    if (!ensure_qmi_client (MM_BROADBAND_MODEM_QMI (self),
+                            QMI_SERVICE_OMA, &client,
+                            callback, user_data))
+        return;
+
+    result = g_simple_async_result_new (G_OBJECT (self),
+                                        callback,
+                                        user_data,
+                                        common_enable_disable_oma_unsolicited_events);
+
+    if (enable == self->priv->oma_unsolicited_events_enabled) {
+        mm_dbg ("OMA unsolicited events already %s; skipping",
+                enable ? "enabled" : "disabled");
+        g_simple_async_result_set_op_res_gboolean (result, TRUE);
+        g_simple_async_result_complete_in_idle (result);
+        g_object_unref (result);
+        return;
+    }
+
+    ctx = g_slice_new0 (EnableOmaUnsolicitedEventsContext);
+    ctx->self = g_object_ref (self);
+    ctx->client = g_object_ref (client);
+    ctx->enable = enable;
+    ctx->result = result;
+
+    input = qmi_message_oma_set_event_report_input_new ();
+    qmi_message_oma_set_event_report_input_set_session_state_reporting (
+        input,
+        ctx->enable,
+        NULL);
+    qmi_message_oma_set_event_report_input_set_network_initiated_alert_reporting (
+        input,
+        ctx->enable,
+        NULL);
+    qmi_client_oma_set_event_report (
+        ctx->client,
+        input,
+        5,
+        NULL,
+        (GAsyncReadyCallback)ser_oma_indicator_ready,
+        ctx);
+    qmi_message_oma_set_event_report_input_unref (input);
+}
+
+static void
+oma_disable_unsolicited_events (MMIfaceModemOma *self,
+                                GAsyncReadyCallback callback,
+                                gpointer user_data)
+{
+    common_enable_disable_oma_unsolicited_events (MM_BROADBAND_MODEM_QMI (self),
+                                                  FALSE,
+                                                  callback,
+                                                  user_data);
+}
+
+static void
+oma_enable_unsolicited_events (MMIfaceModemOma *self,
+                               GAsyncReadyCallback callback,
+                               gpointer user_data)
+{
+    common_enable_disable_oma_unsolicited_events (MM_BROADBAND_MODEM_QMI (self),
+                                                  TRUE,
+                                                  callback,
+                                                  user_data);
 }
 
 /*****************************************************************************/
@@ -8337,6 +9381,481 @@ firmware_change_current (MMIfaceModemFirmware *self,
 }
 
 /*****************************************************************************/
+/* Check support (Signal interface) */
+
+static gboolean
+signal_check_support_finish (MMIfaceModemSignal *self,
+                             GAsyncResult *res,
+                             GError **error)
+{
+
+    return g_simple_async_result_get_op_res_gboolean (G_SIMPLE_ASYNC_RESULT (res));
+}
+
+static void
+signal_check_support (MMIfaceModemSignal *self,
+                      GAsyncReadyCallback callback,
+                      gpointer user_data)
+{
+    GSimpleAsyncResult *result;
+    MMQmiPort *port;
+    gboolean supported = FALSE;
+
+    result = g_simple_async_result_new (G_OBJECT (self),
+                                        callback,
+                                        user_data,
+                                        signal_check_support);
+
+    port = mm_base_modem_peek_port_qmi (MM_BASE_MODEM (self));
+
+    /* If NAS service is available, assume either signal info or signal strength are supported */
+    if (port)
+        supported = !!mm_qmi_port_peek_client (port, QMI_SERVICE_NAS, MM_QMI_PORT_FLAG_DEFAULT);
+
+    mm_dbg ("Extended signal capabilities %ssupported", supported ? "" : "not ");
+    g_simple_async_result_set_op_res_gboolean (result, supported);
+    g_simple_async_result_complete_in_idle (result);
+    g_object_unref (result);
+}
+
+/*****************************************************************************/
+/* Load extended signal information */
+
+typedef enum {
+    SIGNAL_LOAD_VALUES_STEP_SIGNAL_FIRST,
+    SIGNAL_LOAD_VALUES_STEP_SIGNAL_INFO,
+    SIGNAL_LOAD_VALUES_STEP_SIGNAL_STRENGTH,
+    SIGNAL_LOAD_VALUES_STEP_SIGNAL_LAST
+} SignalLoadValuesStep;
+
+typedef struct {
+    MMSignal *cdma;
+    MMSignal *evdo;
+    MMSignal *gsm;
+    MMSignal *umts;
+    MMSignal *lte;
+} SignalLoadValuesResult;
+
+typedef struct {
+    MMBroadbandModemQmi *self;
+    QmiClientNas *client;
+    GSimpleAsyncResult *result;
+    SignalLoadValuesStep step;
+    SignalLoadValuesResult *values_result;
+} SignalLoadValuesContext;
+
+static void
+signal_load_values_result_free (SignalLoadValuesResult *result)
+{
+    if (result->cdma)
+        g_object_unref (result->cdma);
+    if (result->evdo)
+        g_object_unref (result->evdo);
+    if (result->gsm)
+        g_object_unref (result->gsm);
+    if (result->umts)
+        g_object_unref (result->umts);
+    if (result->lte)
+        g_object_unref (result->lte);
+    g_slice_free (SignalLoadValuesResult, result);
+}
+
+static void
+signal_load_values_context_complete_and_free (SignalLoadValuesContext *ctx)
+{
+    g_simple_async_result_complete (ctx->result);
+    if (ctx->values_result)
+        signal_load_values_result_free (ctx->values_result);
+    g_object_unref (ctx->result);
+    g_object_unref (ctx->self);
+    g_slice_free (SignalLoadValuesContext, ctx);
+}
+
+static gdouble
+get_db_from_sinr_level (QmiNasEvdoSinrLevel level)
+{
+    switch (level) {
+    case QMI_NAS_EVDO_SINR_LEVEL_0: return -9.0;
+    case QMI_NAS_EVDO_SINR_LEVEL_1: return -6;
+    case QMI_NAS_EVDO_SINR_LEVEL_2: return -4.5;
+    case QMI_NAS_EVDO_SINR_LEVEL_3: return -3;
+    case QMI_NAS_EVDO_SINR_LEVEL_4: return -2;
+    case QMI_NAS_EVDO_SINR_LEVEL_5: return 1;
+    case QMI_NAS_EVDO_SINR_LEVEL_6: return 3;
+    case QMI_NAS_EVDO_SINR_LEVEL_7: return 6;
+    case QMI_NAS_EVDO_SINR_LEVEL_8: return +9;
+    default:
+        mm_warn ("Invalid SINR level '%u'", level);
+        return -G_MAXDOUBLE;
+    }
+}
+
+static gboolean
+signal_load_values_finish (MMIfaceModemSignal *self,
+                           GAsyncResult *res,
+                           MMSignal **cdma,
+                           MMSignal **evdo,
+                           MMSignal **gsm,
+                           MMSignal **umts,
+                           MMSignal **lte,
+                           GError **error)
+{
+    SignalLoadValuesResult *values_result;
+
+    if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
+        return FALSE;
+
+    values_result = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res));
+    *cdma = values_result->cdma ? g_object_ref (values_result->cdma) : NULL;
+    *evdo = values_result->evdo ? g_object_ref (values_result->evdo) : NULL;
+    *gsm  = values_result->gsm  ? g_object_ref (values_result->gsm)  : NULL;
+    *umts = values_result->umts ? g_object_ref (values_result->umts) : NULL;
+    *lte  = values_result->lte  ? g_object_ref (values_result->lte)  : NULL;
+
+    return TRUE;
+}
+
+static void signal_load_values_context_step (SignalLoadValuesContext *ctx);
+
+static void
+signal_load_values_get_signal_strength_ready (QmiClientNas *client,
+                                              GAsyncResult *res,
+                                              SignalLoadValuesContext *ctx)
+{
+    QmiMessageNasGetSignalStrengthOutput *output;
+    GArray *array;
+    gint32 aux_int32;
+    gint16 aux_int16;
+    gint8 aux_int8;
+    QmiNasRadioInterface radio_interface;
+    QmiNasEvdoSinrLevel sinr;
+
+    output = qmi_client_nas_get_signal_strength_finish (client, res, NULL);
+    if (!output || !qmi_message_nas_get_signal_strength_output_get_result (output, NULL)) {
+        /* No hard errors, go on to next step */
+        ctx->step++;
+        signal_load_values_context_step (ctx);
+        if (output)
+            qmi_message_nas_get_signal_strength_output_unref (output);
+        return;
+    }
+
+    /* Good, we have results */
+    ctx->values_result = g_slice_new0 (SignalLoadValuesResult);
+
+    /* RSSI
+     *
+     * We will assume that valid access technologies reported in this output
+     * are the ones which are listed in the RSSI output. If a given access tech
+     * is not given in this list, it will not be considered afterwards (e.g. if
+     * no EV-DO is given in the RSSI list, the SINR level won't be processed,
+     * even if the TLV is available.
+     */
+    if (qmi_message_nas_get_signal_strength_output_get_rssi_list (output, &array, NULL)) {
+        guint i;
+
+        for (i = 0; i < array->len; i++) {
+            QmiMessageNasGetSignalStrengthOutputRssiListElement *element;
+
+            element = &g_array_index (array, QmiMessageNasGetSignalStrengthOutputRssiListElement, i);
+
+            switch (element->radio_interface) {
+            case QMI_NAS_RADIO_INTERFACE_CDMA_1X:
+                if (!ctx->values_result->cdma)
+                    ctx->values_result->cdma = mm_signal_new ();
+                mm_signal_set_rssi (ctx->values_result->cdma, (gdouble)element->rssi);
+                break;
+            case QMI_NAS_RADIO_INTERFACE_CDMA_1XEVDO:
+                if (!ctx->values_result->evdo)
+                    ctx->values_result->evdo = mm_signal_new ();
+                mm_signal_set_rssi (ctx->values_result->evdo, (gdouble)element->rssi);
+                break;
+            case QMI_NAS_RADIO_INTERFACE_GSM:
+                if (!ctx->values_result->gsm)
+                    ctx->values_result->gsm = mm_signal_new ();
+                mm_signal_set_rssi (ctx->values_result->gsm, (gdouble)element->rssi);
+                break;
+            case QMI_NAS_RADIO_INTERFACE_UMTS:
+                if (!ctx->values_result->umts)
+                    ctx->values_result->umts = mm_signal_new ();
+                mm_signal_set_rssi (ctx->values_result->umts, (gdouble)element->rssi);
+                break;
+            case QMI_NAS_RADIO_INTERFACE_LTE:
+                if (!ctx->values_result->lte)
+                    ctx->values_result->lte = mm_signal_new ();
+                mm_signal_set_rssi (ctx->values_result->lte, (gdouble)element->rssi);
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
+    /* ECIO (CDMA, EV-DO and UMTS) */
+    if (qmi_message_nas_get_signal_strength_output_get_ecio_list (output, &array, NULL)) {
+        guint i;
+
+        for (i = 0; i < array->len; i++) {
+            QmiMessageNasGetSignalStrengthOutputEcioListElement *element;
+
+            element = &g_array_index (array, QmiMessageNasGetSignalStrengthOutputEcioListElement, i);
+
+            switch (element->radio_interface) {
+            case QMI_NAS_RADIO_INTERFACE_CDMA_1X:
+                if (ctx->values_result->cdma)
+                    mm_signal_set_ecio (ctx->values_result->cdma, ((gdouble)element->ecio) * (-0.5));
+                break;
+            case QMI_NAS_RADIO_INTERFACE_CDMA_1XEVDO:
+                if (ctx->values_result->evdo)
+                    mm_signal_set_ecio (ctx->values_result->evdo, ((gdouble)element->ecio) * (-0.5));
+                break;
+            case QMI_NAS_RADIO_INTERFACE_UMTS:
+                if (ctx->values_result->umts)
+                    mm_signal_set_ecio (ctx->values_result->umts, ((gdouble)element->ecio) * (-0.5));
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
+    /* IO (EV-DO) */
+    if (qmi_message_nas_get_signal_strength_output_get_io (output, &aux_int32, NULL)) {
+        if (ctx->values_result->evdo)
+            mm_signal_set_io (ctx->values_result->evdo, (gdouble)aux_int32);
+    }
+
+    /* RSRP (LTE) */
+    if (qmi_message_nas_get_signal_strength_output_get_lte_rsrp (output, &aux_int16, NULL)) {
+        if (ctx->values_result->lte)
+            mm_signal_set_rsrp (ctx->values_result->lte, (gdouble)aux_int16);
+    }
+
+    /* RSRQ (LTE) */
+    if (qmi_message_nas_get_signal_strength_output_get_rsrq (output, &aux_int8, &radio_interface, NULL) &&
+        radio_interface == QMI_NAS_RADIO_INTERFACE_LTE) {
+        if (ctx->values_result->lte)
+            mm_signal_set_rsrq (ctx->values_result->lte, (gdouble)aux_int8);
+    }
+
+    /* SNR (LTE) */
+    if (qmi_message_nas_get_signal_strength_output_get_lte_snr (output, &aux_int16, NULL)) {
+        if (ctx->values_result->lte)
+            mm_signal_set_snr (ctx->values_result->lte, (0.1) * ((gdouble)aux_int16));
+    }
+
+    /* SINR (EV-DO) */
+    if (qmi_message_nas_get_signal_strength_output_get_sinr (output, &sinr, NULL)) {
+        if (ctx->values_result->evdo)
+            mm_signal_set_sinr (ctx->values_result->evdo, get_db_from_sinr_level (sinr));
+    }
+
+    qmi_message_nas_get_signal_strength_output_unref (output);
+
+    /* Go on */
+    ctx->step++;
+    signal_load_values_context_step (ctx);
+}
+
+static void
+signal_load_values_get_signal_info_ready (QmiClientNas *client,
+                                          GAsyncResult *res,
+                                          SignalLoadValuesContext *ctx)
+{
+    QmiMessageNasGetSignalInfoOutput *output;
+    gint8 rssi;
+    gint16 ecio;
+    QmiNasEvdoSinrLevel sinr_level;
+    gint32 io;
+    gint8 rsrq;
+    gint16 rsrp;
+    gint16 snr;
+
+    output = qmi_client_nas_get_signal_info_finish (client, res, NULL);
+    if (!output || !qmi_message_nas_get_signal_info_output_get_result (output, NULL)) {
+        /* No hard errors, go on to next step */
+        ctx->step++;
+        signal_load_values_context_step (ctx);
+        if (output)
+            qmi_message_nas_get_signal_info_output_unref (output);
+        return;
+    }
+
+    /* Good, we have results */
+    ctx->values_result = g_slice_new0 (SignalLoadValuesResult);
+
+    /* CDMA */
+    if (qmi_message_nas_get_signal_info_output_get_cdma_signal_strength (output,
+                                                                         &rssi,
+                                                                         &ecio,
+                                                                         NULL)) {
+        ctx->values_result->cdma = mm_signal_new ();
+        mm_signal_set_rssi (ctx->values_result->cdma, (gdouble)rssi);
+        mm_signal_set_ecio (ctx->values_result->cdma, ((gdouble)ecio) * (-0.5));
+    }
+
+    /* HDR... */
+    if (qmi_message_nas_get_signal_info_output_get_hdr_signal_strength (output,
+                                                                        &rssi,
+                                                                        &ecio,
+                                                                        &sinr_level,
+                                                                        &io,
+                                                                        NULL)) {
+        ctx->values_result->evdo = mm_signal_new ();
+        mm_signal_set_rssi (ctx->values_result->evdo, (gdouble)rssi);
+        mm_signal_set_ecio (ctx->values_result->evdo, ((gdouble)ecio) * (-0.5));
+        mm_signal_set_sinr (ctx->values_result->evdo, get_db_from_sinr_level (sinr_level));
+        mm_signal_set_io (ctx->values_result->evdo, (gdouble)io);
+    }
+
+    /* GSM */
+    if (qmi_message_nas_get_signal_info_output_get_gsm_signal_strength (output,
+                                                                        &rssi,
+                                                                        NULL)) {
+        ctx->values_result->gsm = mm_signal_new ();
+        mm_signal_set_rssi (ctx->values_result->gsm, (gdouble)rssi);
+    }
+
+    /* WCDMA... */
+    if (qmi_message_nas_get_signal_info_output_get_wcdma_signal_strength (output,
+                                                                          &rssi,
+                                                                          &ecio,
+                                                                          NULL)) {
+        ctx->values_result->umts = mm_signal_new ();
+        mm_signal_set_rssi (ctx->values_result->umts, (gdouble)rssi);
+        mm_signal_set_ecio (ctx->values_result->umts, ((gdouble)ecio) * (-0.5));
+    }
+
+    /* LTE... */
+    if (qmi_message_nas_get_signal_info_output_get_lte_signal_strength (output,
+                                                                        &rssi,
+                                                                        &rsrq,
+                                                                        &rsrp,
+                                                                        &snr,
+                                                                        NULL)) {
+        ctx->values_result->lte = mm_signal_new ();
+        mm_signal_set_rssi (ctx->values_result->lte, (gdouble)rssi);
+        mm_signal_set_rsrq (ctx->values_result->lte, (gdouble)rsrq);
+        mm_signal_set_rsrp (ctx->values_result->lte, (gdouble)rsrp);
+        mm_signal_set_snr (ctx->values_result->lte, (0.1) * ((gdouble)snr));
+    }
+
+    qmi_message_nas_get_signal_info_output_unref (output);
+
+    /* Keep on */
+    ctx->step++;
+    signal_load_values_context_step (ctx);
+}
+
+static void
+signal_load_values_context_step (SignalLoadValuesContext *ctx)
+{
+
+#define VALUES_RESULT_LOADED(ctx)    \
+    (ctx->values_result &&           \
+     (ctx->values_result->cdma ||    \
+      ctx->values_result->evdo ||    \
+      ctx->values_result->gsm  ||    \
+      ctx->values_result->umts ||    \
+      ctx->values_result->lte))
+
+    switch (ctx->step) {
+    case SIGNAL_LOAD_VALUES_STEP_SIGNAL_FIRST:
+        ctx->step++;
+        /* Fall down */
+
+    case SIGNAL_LOAD_VALUES_STEP_SIGNAL_INFO:
+        if (qmi_client_check_version (QMI_CLIENT (ctx->client), 1, 8)) {
+            qmi_client_nas_get_signal_info (ctx->client,
+                                            NULL,
+                                            5,
+                                            NULL,
+                                            (GAsyncReadyCallback)signal_load_values_get_signal_info_ready,
+                                            ctx);
+            return;
+        }
+        ctx->step++;
+        /* Fall down */
+
+   case SIGNAL_LOAD_VALUES_STEP_SIGNAL_STRENGTH:
+       /* If already loaded with signal info, don't try signal strength */
+       if (!VALUES_RESULT_LOADED (ctx)) {
+           QmiMessageNasGetSignalStrengthInput *input;
+
+           input = qmi_message_nas_get_signal_strength_input_new ();
+           qmi_message_nas_get_signal_strength_input_set_request_mask (
+               input,
+               (QMI_NAS_SIGNAL_STRENGTH_REQUEST_RSSI |
+                QMI_NAS_SIGNAL_STRENGTH_REQUEST_ECIO |
+                QMI_NAS_SIGNAL_STRENGTH_REQUEST_IO |
+                QMI_NAS_SIGNAL_STRENGTH_REQUEST_SINR |
+                QMI_NAS_SIGNAL_STRENGTH_REQUEST_RSRQ |
+                QMI_NAS_SIGNAL_STRENGTH_REQUEST_LTE_SNR |
+                QMI_NAS_SIGNAL_STRENGTH_REQUEST_LTE_RSRP),
+               NULL);
+           qmi_client_nas_get_signal_strength (ctx->client,
+                                               input,
+                                               5,
+                                               NULL,
+                                               (GAsyncReadyCallback)signal_load_values_get_signal_strength_ready,
+                                               ctx);
+           qmi_message_nas_get_signal_strength_input_unref (input);
+           return;
+       }
+       ctx->step++;
+       /* Fall down */
+
+    case SIGNAL_LOAD_VALUES_STEP_SIGNAL_LAST:
+        /* If any result is set, succeed */
+        if (VALUES_RESULT_LOADED (ctx)) {
+            g_simple_async_result_set_op_res_gpointer (ctx->result,
+                                                       ctx->values_result,
+                                                       (GDestroyNotify)signal_load_values_result_free);
+            ctx->values_result = NULL;
+        } else {
+            g_simple_async_result_set_error (ctx->result,
+                                             MM_CORE_ERROR,
+                                             MM_CORE_ERROR_FAILED,
+                                             "No way to load extended signal information");
+        }
+        signal_load_values_context_complete_and_free (ctx);
+        return;
+    }
+
+    g_assert_not_reached ();
+
+#undef VALUES_RESULT_LOADED
+}
+
+static void
+signal_load_values (MMIfaceModemSignal *self,
+                    GCancellable *cancellable,
+                    GAsyncReadyCallback callback,
+                    gpointer user_data)
+{
+    SignalLoadValuesContext *ctx;
+    QmiClient *client = NULL;
+
+    mm_dbg ("loading extended signal information...");
+
+    if (!ensure_qmi_client (MM_BROADBAND_MODEM_QMI (self),
+                            QMI_SERVICE_NAS, &client,
+                            callback, user_data))
+        return;
+
+    ctx = g_slice_new0 (SignalLoadValuesContext);
+    ctx->self = g_object_ref (self);
+    ctx->client = g_object_ref (client);
+    ctx->result = g_simple_async_result_new (G_OBJECT (self),
+                                             callback,
+                                             user_data,
+                                             signal_load_values);
+    ctx->step = SIGNAL_LOAD_VALUES_STEP_SIGNAL_FIRST;
+
+    signal_load_values_context_step (ctx);
+}
+
+/*****************************************************************************/
 /* First enabling step */
 
 static gboolean
@@ -8567,7 +10086,8 @@ initialization_started (MMBroadbandModem *self,
     ctx->services[1] = QMI_SERVICE_NAS;
     ctx->services[2] = QMI_SERVICE_WMS;
     ctx->services[3] = QMI_SERVICE_PDS;
-    ctx->services[4] = QMI_SERVICE_UNKNOWN;
+    ctx->services[4] = QMI_SERVICE_OMA;
+    ctx->services[5] = QMI_SERVICE_UNKNOWN;
 
     /* Now open our QMI port */
     mm_qmi_port_open (ctx->qmi,
@@ -8794,6 +10314,8 @@ iface_modem_cdma_init (MMIfaceModemCdma *iface)
     iface->load_activation_state_finish = modem_cdma_load_activation_state_finish;
     iface->activate = modem_cdma_activate;
     iface->activate_finish = modem_cdma_activate_finish;
+    iface->activate_manual = modem_cdma_activate_manual;
+    iface->activate_manual_finish = modem_cdma_activate_manual_finish;
 }
 
 static void
@@ -8833,6 +10355,40 @@ iface_modem_location_init (MMIfaceModemLocation *iface)
     iface->enable_location_gathering_finish = enable_location_gathering_finish;
     iface->disable_location_gathering = disable_location_gathering;
     iface->disable_location_gathering_finish = disable_location_gathering_finish;
+}
+
+static void
+iface_modem_signal_init (MMIfaceModemSignal *iface)
+{
+    iface->check_support = signal_check_support;
+    iface->check_support_finish = signal_check_support_finish;
+    iface->load_values = signal_load_values;
+    iface->load_values_finish = signal_load_values_finish;
+}
+
+static void
+iface_modem_oma_init (MMIfaceModemOma *iface)
+{
+    iface->check_support = oma_check_support;
+    iface->check_support_finish = oma_check_support_finish;
+    iface->load_features = oma_load_features;
+    iface->load_features_finish = oma_load_features_finish;
+    iface->setup = oma_setup;
+    iface->setup_finish = oma_setup_finish;
+    iface->start_client_initiated_session = oma_start_client_initiated_session;
+    iface->start_client_initiated_session_finish = oma_start_client_initiated_session_finish;
+    iface->accept_network_initiated_session = oma_accept_network_initiated_session;
+    iface->accept_network_initiated_session_finish = oma_accept_network_initiated_session_finish;
+    iface->cancel_session = oma_cancel_session;
+    iface->cancel_session_finish = oma_cancel_session_finish;
+    iface->setup_unsolicited_events = oma_setup_unsolicited_events;
+    iface->setup_unsolicited_events_finish = common_oma_setup_cleanup_unsolicited_events_finish;
+    iface->cleanup_unsolicited_events = oma_cleanup_unsolicited_events;
+    iface->cleanup_unsolicited_events_finish = common_oma_setup_cleanup_unsolicited_events_finish;
+    iface->enable_unsolicited_events = oma_enable_unsolicited_events;
+    iface->enable_unsolicited_events_finish = common_oma_enable_disable_unsolicited_events_finish;
+    iface->disable_unsolicited_events = oma_disable_unsolicited_events;
+    iface->disable_unsolicited_events_finish = common_oma_enable_disable_unsolicited_events_finish;
 }
 
 static void

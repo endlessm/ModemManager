@@ -1,0 +1,671 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MMCdmaManualActivationProperties</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="libmm-glib Reference Manual">
+<link rel="up" href="ch03.html#id-1.2.4.3" title="Generic interfaces">
+<link rel="prev" href="MMModemCdma.html" title="MMModemCdma">
+<link rel="next" href="MMUnlockRetries.html" title="MMUnlockRetries">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="MMModemCdma.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html#id-1.2.4.3"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libmm-glib Reference Manual</th>
+<td><a accesskey="n" href="MMUnlockRetries.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#MMCdmaManualActivationProperties.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#MMCdmaManualActivationProperties.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#MMCdmaManualActivationProperties.object-hierarchy" class="shortcut">Object Hierarchy</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="MMCdmaManualActivationProperties"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="MMCdmaManualActivationProperties.top_of_page"></a>MMCdmaManualActivationProperties</span></h2>
+<p>MMCdmaManualActivationProperties — Helper object to handle manual CDMA activation properties.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="MMCdmaManualActivationProperties.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">struct              <a class="link" href="MMCdmaManualActivationProperties.html#MMCdmaManualActivationProperties-struct" title="struct MMCdmaManualActivationProperties">MMCdmaManualActivationProperties</a>;
+
+<a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="returnvalue">MMCdmaManualActivationProperties</span></a> * <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-new" title="mm_cdma_manual_activation_properties_new ()">mm_cdma_manual_activation_properties_new</a>
+                                                        (<em class="parameter"><code><span class="type">void</span></code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-get-spc" title="mm_cdma_manual_activation_properties_get_spc ()">mm_cdma_manual_activation_properties_get_spc</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-set-spc" title="mm_cdma_manual_activation_properties_set_spc ()">mm_cdma_manual_activation_properties_set_spc</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *spc</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>             <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-get-sid" title="mm_cdma_manual_activation_properties_get_sid ()">mm_cdma_manual_activation_properties_get_sid</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-set-sid" title="mm_cdma_manual_activation_properties_set_sid ()">mm_cdma_manual_activation_properties_set_sid</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> sid</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-get-mdn" title="mm_cdma_manual_activation_properties_get_mdn ()">mm_cdma_manual_activation_properties_get_mdn</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-set-mdn" title="mm_cdma_manual_activation_properties_set_mdn ()">mm_cdma_manual_activation_properties_set_mdn</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *mdn</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-get-min" title="mm_cdma_manual_activation_properties_get_min ()">mm_cdma_manual_activation_properties_get_min</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-set-min" title="mm_cdma_manual_activation_properties_set_min ()">mm_cdma_manual_activation_properties_set_min</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *min</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-get-mn-ha-key" title="mm_cdma_manual_activation_properties_get_mn_ha_key ()">mm_cdma_manual_activation_properties_get_mn_ha_key</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-set-mn-ha-key" title="mm_cdma_manual_activation_properties_set_mn_ha_key ()">mm_cdma_manual_activation_properties_set_mn_ha_key</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *mn_ha_key</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-get-mn-aaa-key" title="mm_cdma_manual_activation_properties_get_mn_aaa_key ()">mm_cdma_manual_activation_properties_get_mn_aaa_key</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-set-mn-aaa-key" title="mm_cdma_manual_activation_properties_set_mn_aaa_key ()">mm_cdma_manual_activation_properties_set_mn_aaa_key</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *mn_aaa_key</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a> *      <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-get-prl" title="mm_cdma_manual_activation_properties_get_prl ()">mm_cdma_manual_activation_properties_get_prl</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> *prl_len</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="returnvalue">GByteArray</span></a> *        <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-peek-prl-bytearray" title="mm_cdma_manual_activation_properties_peek_prl_bytearray ()">mm_cdma_manual_activation_properties_peek_prl_bytearray</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="returnvalue">GByteArray</span></a> *        <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-get-prl-bytearray" title="mm_cdma_manual_activation_properties_get_prl_bytearray ()">mm_cdma_manual_activation_properties_get_prl_bytearray</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-set-prl" title="mm_cdma_manual_activation_properties_set_prl ()">mm_cdma_manual_activation_properties_set_prl</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *prl</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> prl_length</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMCdmaManualActivationProperties.html#mm-cdma-manual-activation-properties-set-prl-bytearray" title="mm_cdma_manual_activation_properties_set_prl_bytearray ()">mm_cdma_manual_activation_properties_set_prl_bytearray</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="type">GByteArray</span></a> *prl</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMCdmaManualActivationProperties.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----MMCdmaManualActivationProperties
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMCdmaManualActivationProperties.description"></a><h2>Description</h2>
+<p>
+The <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> is an object handling the properties
+required during a manual CDMA activation request.
+</p>
+</div>
+<div class="refsect1">
+<a name="MMCdmaManualActivationProperties.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="MMCdmaManualActivationProperties-struct"></a><h3>struct MMCdmaManualActivationProperties</h3>
+<pre class="programlisting">struct MMCdmaManualActivationProperties;</pre>
+<p>
+The <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> structure contains private data and should only be accessed
+using the provided API.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-new"></a><h3>mm_cdma_manual_activation_properties_new ()</h3>
+<pre class="programlisting"><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="returnvalue">MMCdmaManualActivationProperties</span></a> * mm_cdma_manual_activation_properties_new
+                                                        (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+Creates a new <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> object.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-get-spc"></a><h3>mm_cdma_manual_activation_properties_get_spc ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_cdma_manual_activation_properties_get_spc
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>);</pre>
+<p>
+Gets the Service Programming Code.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The SPC. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-set-spc"></a><h3>mm_cdma_manual_activation_properties_set_spc ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_cdma_manual_activation_properties_set_spc
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *spc</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Sets the Service Programming Code.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>spc</code></em> :</span></p></td>
+<td>The SPC string, exactly 6 digits.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the SPC was successfully set, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-get-sid"></a><h3>mm_cdma_manual_activation_properties_get_sid ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint16"><span class="returnvalue">guint16</span></a>             mm_cdma_manual_activation_properties_get_sid
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>);</pre>
+<p>
+Gets the System Identification Number.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The SID.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-set-sid"></a><h3>mm_cdma_manual_activation_properties_set_sid ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_cdma_manual_activation_properties_set_sid
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint16"><span class="type">guint16</span></a> sid</code></em>);</pre>
+<p>
+Sets the Service Identification Number.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sid</code></em> :</span></p></td>
+<td>The SID.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-get-mdn"></a><h3>mm_cdma_manual_activation_properties_get_mdn ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_cdma_manual_activation_properties_get_mdn
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>);</pre>
+<p>
+Gets the Mobile Directory Number.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The MDN. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-set-mdn"></a><h3>mm_cdma_manual_activation_properties_set_mdn ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_cdma_manual_activation_properties_set_mdn
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *mdn</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Sets the Mobile Directory Number.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mdn</code></em> :</span></p></td>
+<td>The MDN string, maximum 15 characters.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the MDN was successfully set, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-get-min"></a><h3>mm_cdma_manual_activation_properties_get_min ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_cdma_manual_activation_properties_get_min
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>);</pre>
+<p>
+Gets the Mobile Indentification Number.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The MIN. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-set-min"></a><h3>mm_cdma_manual_activation_properties_set_min ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_cdma_manual_activation_properties_set_min
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *min</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Sets the Mobile Identification Number.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>min</code></em> :</span></p></td>
+<td>The MIN string, maximum 15 characters.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the MIN was successfully set, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-get-mn-ha-key"></a><h3>mm_cdma_manual_activation_properties_get_mn_ha_key ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_cdma_manual_activation_properties_get_mn_ha_key
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>);</pre>
+<p>
+Gets the MN-HA key.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The MN-HA key. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-set-mn-ha-key"></a><h3>mm_cdma_manual_activation_properties_set_mn_ha_key ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_cdma_manual_activation_properties_set_mn_ha_key
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *mn_ha_key</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Sets the Mobile Identification Number.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mn_ha_key</code></em> :</span></p></td>
+<td>The MN-HA key string, maximum 16 characters.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the MN-HA key was successfully set, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-get-mn-aaa-key"></a><h3>mm_cdma_manual_activation_properties_get_mn_aaa_key ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_cdma_manual_activation_properties_get_mn_aaa_key
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>);</pre>
+<p>
+Gets the MN-AAA key.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The MN-AAA key. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-set-mn-aaa-key"></a><h3>mm_cdma_manual_activation_properties_set_mn_aaa_key ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_cdma_manual_activation_properties_set_mn_aaa_key
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *mn_aaa_key</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Sets the Mobile Identification Number.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mn_aaa_key</code></em> :</span></p></td>
+<td>The MN-AAA key string, maximum 16 characters.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the MN-AAA key was successfully set, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-get-prl"></a><h3>mm_cdma_manual_activation_properties_get_prl ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a> *      mm_cdma_manual_activation_properties_get_prl
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> *prl_len</code></em>);</pre>
+<p>
+Gets the Preferred Roaming List.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>prl_len</code></em> :</span></p></td>
+<td>Size of the returned PRL. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The PRL. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-peek-prl-bytearray"></a><h3>mm_cdma_manual_activation_properties_peek_prl_bytearray ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="returnvalue">GByteArray</span></a> *        mm_cdma_manual_activation_properties_peek_prl_bytearray
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>);</pre>
+<p>
+Gets the Preferred Roaming List.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="type">GByteArray</span></a> with the PRL, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it doesn't contain any. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-get-prl-bytearray"></a><h3>mm_cdma_manual_activation_properties_get_prl_bytearray ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="returnvalue">GByteArray</span></a> *        mm_cdma_manual_activation_properties_get_prl_bytearray
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>);</pre>
+<p>
+Gets the Preferred Roaming List.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="type">GByteArray</span></a> with the PRL, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it doesn't contain any. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#g-byte-array-unref"><code class="function">g_byte_array_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-set-prl"></a><h3>mm_cdma_manual_activation_properties_set_prl ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_cdma_manual_activation_properties_set_prl
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *prl</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> prl_length</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Sets the Preferred Roaming List.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>prl</code></em> :</span></p></td>
+<td>The PRL.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>prl_length</code></em> :</span></p></td>
+<td>Length of <em class="parameter"><code>prl</code></em>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the PRL was successfully set, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-cdma-manual-activation-properties-set-prl-bytearray"></a><h3>mm_cdma_manual_activation_properties_set_prl_bytearray ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_cdma_manual_activation_properties_set_prl_bytearray
+                                                        (<em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="type">GByteArray</span></a> *prl</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Sets the Preferred Roaming List.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>prl</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="type">GByteArray</span></a> with the PRL to set. This method takes a new reference of <em class="parameter"><code>prl</code></em>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the PRL was successfully set, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.19</div>
+</body>
+</html>

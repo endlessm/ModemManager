@@ -5,17 +5,17 @@
 <title>MMModem</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
-<link rel="up" href="ch03.html#idm211869297872" title="Generic interfaces">
+<link rel="up" href="ch03.html#id-1.2.4.3" title="Generic interfaces">
 <link rel="prev" href="MMObject.html" title="MMObject">
 <link rel="next" href="MMModem3gpp.html" title="MMModem3gpp">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
 <td><a accesskey="p" href="MMObject.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="ch03.html#idm211869297872"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="u" href="ch03.html#id-1.2.4.3"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">libmm-glib Reference Manual</th>
 <td><a accesskey="n" href="MMModem3gpp.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
@@ -42,23 +42,23 @@
 <div class="refsynopsisdiv">
 <a name="MMModem.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">struct              <a class="link" href="MMModem.html#MMModem-struct" title="struct MMModem">MMModem</a>;
-                    <a class="link" href="MMModem.html#MMModemModeCombination" title="MMModemModeCombination">MMModemModeCombination</a>;
-                    <a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo">MMModemPortInfo</a>;
+struct              <a class="link" href="MMModem.html#MMModemModeCombination" title="struct MMModemModeCombination">MMModemModeCombination</a>;
+struct              <a class="link" href="MMModem.html#MMModemPortInfo" title="struct MMModemPortInfo">MMModemPortInfo</a>;
 
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModem.html#mm-modem-get-path" title="mm_modem_get_path ()">mm_modem_get_path</a>                   (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModem.html#mm-modem-dup-path" title="mm_modem_dup_path ()">mm_modem_dup_path</a>                   (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemState"><span class="returnvalue">MMModemState</span></a>        <a class="link" href="MMModem.html#mm-modem-get-state" title="mm_modem_get_state ()">mm_modem_get_state</a>                  (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemStateFailedReason"><span class="returnvalue">MMModemStateFailedReason</span></a> <a class="link" href="MMModem.html#mm-modem-get-state-failed-reason" title="mm_modem_get_state_failed_reason ()">mm_modem_get_state_failed_reason</a>
+<span class="returnvalue">MMModemState</span>        <a class="link" href="MMModem.html#mm-modem-get-state" title="mm_modem_get_state ()">mm_modem_get_state</a>                  (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
+<span class="returnvalue">MMModemStateFailedReason</span> <a class="link" href="MMModem.html#mm-modem-get-state-failed-reason" title="mm_modem_get_state_failed_reason ()">mm_modem_get_state_failed_reason</a>
                                                         (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="returnvalue">MMModemPowerState</span></a>   <a class="link" href="MMModem.html#mm-modem-get-power-state" title="mm_modem_get_power_state ()">mm_modem_get_power_state</a>            (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
+<span class="returnvalue">MMModemPowerState</span>   <a class="link" href="MMModem.html#mm-modem-get-power-state" title="mm_modem_get_power_state ()">mm_modem_get_power_state</a>            (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModem.html#mm-modem-peek-supported-capabilities" title="mm_modem_peek_supported_capabilities ()">mm_modem_peek_supported_capabilities</a>
                                                         (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> **capabilities</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">MMModemCapability</span> **capabilities</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_capabilities</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModem.html#mm-modem-get-supported-capabilities" title="mm_modem_get_supported_capabilities ()">mm_modem_get_supported_capabilities</a> (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> **capabilities</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemCapability</span> **capabilities</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_capabilities</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="returnvalue">MMModemCapability</span></a>   <a class="link" href="MMModem.html#mm-modem-get-current-capabilities" title="mm_modem_get_current_capabilities ()">mm_modem_get_current_capabilities</a>   (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
+<span class="returnvalue">MMModemCapability</span>   <a class="link" href="MMModem.html#mm-modem-get-current-capabilities" title="mm_modem_get_current_capabilities ()">mm_modem_get_current_capabilities</a>   (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModem.html#mm-modem-get-manufacturer" title="mm_modem_get_manufacturer ()">mm_modem_get_manufacturer</a>           (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModem.html#mm-modem-dup-manufacturer" title="mm_modem_dup_manufacturer ()">mm_modem_dup_manufacturer</a>           (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModem.html#mm-modem-get-model" title="mm_modem_get_model ()">mm_modem_get_model</a>                  (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
@@ -72,10 +72,10 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModem.html#mm-modem-get-primary-port" title="mm_modem_get_primary_port ()">mm_modem_get_primary_port</a>           (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModem.html#mm-modem-dup-primary-port" title="mm_modem_dup_primary_port ()">mm_modem_dup_primary_port</a>           (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModem.html#mm-modem-peek-ports" title="mm_modem_peek_ports ()">mm_modem_peek_ports</a>                 (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> **ports</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="MMModem.html#MMModemPortInfo" title="struct MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> **ports</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_ports</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModem.html#mm-modem-get-ports" title="mm_modem_get_ports ()">mm_modem_get_ports</a>                  (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> **ports</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MMModem.html#MMModemPortInfo" title="struct MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> **ports</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_ports</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModem.html#mm-modem-get-device" title="mm_modem_get_device ()">mm_modem_get_device</a>                 (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModem.html#mm-modem-dup-device" title="mm_modem_dup_device ()">mm_modem_dup_device</a>                 (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
@@ -83,38 +83,40 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModem.html#mm-modem-dup-equipment-identifier" title="mm_modem_dup_equipment_identifier ()">mm_modem_dup_equipment_identifier</a>   (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModem.html#mm-modem-get-device-identifier" title="mm_modem_get_device_identifier ()">mm_modem_get_device_identifier</a>      (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModem.html#mm-modem-dup-device-identifier" title="mm_modem_dup_device_identifier ()">mm_modem_dup_device_identifier</a>      (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="returnvalue">MMModemLock</span></a>         <a class="link" href="MMModem.html#mm-modem-get-unlock-required" title="mm_modem_get_unlock_required ()">mm_modem_get_unlock_required</a>        (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
+<span class="returnvalue">MMModemLock</span>         <a class="link" href="MMModem.html#mm-modem-get-unlock-required" title="mm_modem_get_unlock_required ()">mm_modem_get_unlock_required</a>        (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 <a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="returnvalue">MMUnlockRetries</span></a> *   <a class="link" href="MMModem.html#mm-modem-peek-unlock-retries" title="mm_modem_peek_unlock_retries ()">mm_modem_peek_unlock_retries</a>        (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 <a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="returnvalue">MMUnlockRetries</span></a> *   <a class="link" href="MMModem.html#mm-modem-get-unlock-retries" title="mm_modem_get_unlock_retries ()">mm_modem_get_unlock_retries</a>         (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMModem.html#mm-modem-get-max-bearers" title="mm_modem_get_max_bearers ()">mm_modem_get_max_bearers</a>            (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMModem.html#mm-modem-get-max-active-bearers" title="mm_modem_get_max_active_bearers ()">mm_modem_get_max_active_bearers</a>     (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> * const * <a class="link" href="MMModem.html#mm-modem-get-bearer-paths" title="mm_modem_get_bearer_paths ()">mm_modem_get_bearer_paths</a>         (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            <a class="link" href="MMModem.html#mm-modem-dup-bearer-paths" title="mm_modem_dup_bearer_paths ()">mm_modem_dup_bearer_paths</a>           (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *const  * <a class="link" href="MMModem.html#mm-modem-get-own-numbers" title="mm_modem_get_own_numbers ()">mm_modem_get_own_numbers</a>          (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            <a class="link" href="MMModem.html#mm-modem-dup-own-numbers" title="mm_modem_dup_own_numbers ()">mm_modem_dup_own_numbers</a>            (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModem.html#mm-modem-peek-supported-modes" title="mm_modem_peek_supported_modes ()">mm_modem_peek_supported_modes</a>       (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a class="link" href="MMModem.html#MMModemModeCombination" title="MMModemModeCombination"><span class="type">MMModemModeCombination</span></a> **modes</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="MMModem.html#MMModemModeCombination" title="struct MMModemModeCombination"><span class="type">MMModemModeCombination</span></a> **modes</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_modes</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModem.html#mm-modem-get-supported-modes" title="mm_modem_get_supported_modes ()">mm_modem_get_supported_modes</a>        (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="MMModem.html#MMModemModeCombination" title="MMModemModeCombination"><span class="type">MMModemModeCombination</span></a> **modes</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MMModem.html#MMModemModeCombination" title="struct MMModemModeCombination"><span class="type">MMModemModeCombination</span></a> **modes</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_modes</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModem.html#mm-modem-get-current-modes" title="mm_modem_get_current_modes ()">mm_modem_get_current_modes</a>          (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> *allowed</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> *preferred</code></em>);
+                                                         <em class="parameter"><code><span class="type">MMModemMode</span> *allowed</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemMode</span> *preferred</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModem.html#mm-modem-peek-supported-bands" title="mm_modem_peek_supported_bands ()">mm_modem_peek_supported_bands</a>       (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> **bands</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">MMModemBand</span> **bands</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_bands</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModem.html#mm-modem-get-supported-bands" title="mm_modem_get_supported_bands ()">mm_modem_get_supported_bands</a>        (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> **bands</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemBand</span> **bands</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_bands</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModem.html#mm-modem-peek-current-bands" title="mm_modem_peek_current_bands ()">mm_modem_peek_current_bands</a>         (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> **bands</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">MMModemBand</span> **bands</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_bands</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModem.html#mm-modem-get-current-bands" title="mm_modem_get_current_bands ()">mm_modem_get_current_bands</a>          (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> **bands</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemBand</span> **bands</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_bands</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="returnvalue">MMBearerIpFamily</span></a>    <a class="link" href="MMModem.html#mm-modem-get-supported-ip-families" title="mm_modem_get_supported_ip_families ()">mm_modem_get_supported_ip_families</a>  (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
+<span class="returnvalue">MMBearerIpFamily</span>    <a class="link" href="MMModem.html#mm-modem-get-supported-ip-families" title="mm_modem_get_supported_ip_families ()">mm_modem_get_supported_ip_families</a>  (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMModem.html#mm-modem-get-signal-quality" title="mm_modem_get_signal_quality ()">mm_modem_get_signal_quality</a>         (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> *recent</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"><span class="returnvalue">MMModemAccessTechnology</span></a> <a class="link" href="MMModem.html#mm-modem-get-access-technologies" title="mm_modem_get_access_technologies ()">mm_modem_get_access_technologies</a>
+<span class="returnvalue">MMModemAccessTechnology</span> <a class="link" href="MMModem.html#mm-modem-get-access-technologies" title="mm_modem_get_access_technologies ()">mm_modem_get_access_technologies</a>
                                                         (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModem.html#mm-modem-get-sim-path" title="mm_modem_get_sim_path ()">mm_modem_get_sim_path</a>               (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
@@ -151,7 +153,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="MMModem.html#mm-modem-set-power-state" title="mm_modem_set_power_state ()">mm_modem_set_power_state</a>            (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="type">MMModemPowerState</span></a> state</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemPowerState</span> state</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
@@ -159,12 +161,12 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModem.html#mm-modem-set-power-state-sync" title="mm_modem_set_power_state_sync ()">mm_modem_set_power_state_sync</a>       (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="type">MMModemPowerState</span></a> state</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemPowerState</span> state</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="MMModem.html#mm-modem-set-current-modes" title="mm_modem_set_current_modes ()">mm_modem_set_current_modes</a>          (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> modes</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> preferred</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemMode</span> modes</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemMode</span> preferred</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
@@ -172,12 +174,12 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModem.html#mm-modem-set-current-modes-sync" title="mm_modem_set_current_modes_sync ()">mm_modem_set_current_modes_sync</a>     (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> modes</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> preferred</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemMode</span> modes</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemMode</span> preferred</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="MMModem.html#mm-modem-set-current-bands" title="mm_modem_set_current_bands ()">mm_modem_set_current_bands</a>          (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> *bands</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">MMModemBand</span> *bands</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> n_bands</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
@@ -186,12 +188,12 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModem.html#mm-modem-set-current-bands-sync" title="mm_modem_set_current_bands_sync ()">mm_modem_set_current_bands_sync</a>     (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> *bands</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">MMModemBand</span> *bands</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> n_bands</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="MMModem.html#mm-modem-set-current-capabilities" title="mm_modem_set_current_capabilities ()">mm_modem_set_current_capabilities</a>   (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> capabilities</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemCapability</span> capabilities</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
@@ -201,7 +203,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModem.html#mm-modem-set-current-capabilities-sync" title="mm_modem_set_current_capabilities_sync ()">mm_modem_set_current_capabilities_sync</a>
                                                         (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> capabilities</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemCapability</span> capabilities</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="MMModem.html#mm-modem-reset" title="mm_modem_reset ()">mm_modem_reset</a>                      (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
@@ -276,7 +278,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 
-<span class="returnvalue">void</span>                <a class="link" href="MMModem.html#mm-modem-port-info-array-free" title="mm_modem_port_info_array_free ()">mm_modem_port_info_array_free</a>       (<em class="parameter"><code><a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> *array</code></em>,
+<span class="returnvalue">void</span>                <a class="link" href="MMModem.html#mm-modem-port-info-array-free" title="mm_modem_port_info_array_free ()">mm_modem_port_info_array_free</a>       (<em class="parameter"><code><a class="link" href="MMModem.html#MMModemPortInfo" title="struct MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> *array</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> array_size</code></em>);
 </pre>
 </div>
@@ -318,14 +320,14 @@ using the provided API.
 </div>
 <hr>
 <div class="refsect2">
-<a name="MMModemModeCombination"></a><h3>MMModemModeCombination</h3>
-<pre class="programlisting">typedef struct {
+<a name="MMModemModeCombination"></a><h3>struct MMModemModeCombination</h3>
+<pre class="programlisting">struct MMModemModeCombination {
     MMModemMode allowed;
     MMModemMode preferred;
-} MMModemModeCombination;
+};
 </pre>
 <p>
-<a class="link" href="MMModem.html#MMModemModeCombination" title="MMModemModeCombination"><span class="type">MMModemModeCombination</span></a> is a simple struct holding a pair of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> values.
+<a class="link" href="MMModem.html#MMModemModeCombination" title="struct MMModemModeCombination"><span class="type">MMModemModeCombination</span></a> is a simple struct holding a pair of <span class="type">MMModemMode</span> values.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -334,23 +336,23 @@ using the provided API.
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> <em class="structfield"><code><a name="MMModemModeCombination.allowed"></a>allowed</code></em>;</span></p></td>
-<td>Mask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> values specifying allowed modes.</td>
+<td><p><span class="term"><span class="type">MMModemMode</span> <em class="structfield"><code><a name="MMModemModeCombination.allowed"></a>allowed</code></em>;</span></p></td>
+<td>Mask of <span class="type">MMModemMode</span> values specifying allowed modes.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> <em class="structfield"><code><a name="MMModemModeCombination.preferred"></a>preferred</code></em>;</span></p></td>
-<td>A single <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> value specifying the preferred mode.</td>
+<td><p><span class="term"><span class="type">MMModemMode</span> <em class="structfield"><code><a name="MMModemModeCombination.preferred"></a>preferred</code></em>;</span></p></td>
+<td>A single <span class="type">MMModemMode</span> value specifying the preferred mode.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="MMModemPortInfo"></a><h3>MMModemPortInfo</h3>
-<pre class="programlisting">typedef struct {
+<a name="MMModemPortInfo"></a><h3>struct MMModemPortInfo</h3>
+<pre class="programlisting">struct MMModemPortInfo {
     gchar *name;
     MMModemPortType type;
-} MMModemPortInfo;
+};
 </pre>
 <p>
 Information of a given port.
@@ -366,8 +368,8 @@ Information of a given port.
 <td>Name of the port.</td>
 </tr>
 <tr>
-<td><p><span class="term"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPortType"><span class="type">MMModemPortType</span></a> <em class="structfield"><code><a name="MMModemPortInfo.type"></a>type</code></em>;</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPortType"><span class="type">MMModemPortType</span></a> value.</td>
+<td><p><span class="term"><span class="type">MMModemPortType</span> <em class="structfield"><code><a name="MMModemPortInfo.type"></a>type</code></em>;</span></p></td>
+<td>A <span class="type">MMModemPortType</span> value.</td>
 </tr>
 </tbody>
 </table></div>
@@ -425,7 +427,7 @@ Gets a copy of the DBus path of the <a class="link" href="MMObject.html" title="
 <hr>
 <div class="refsect2">
 <a name="mm-modem-get-state"></a><h3>mm_modem_get_state ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemState"><span class="returnvalue">MMModemState</span></a>        mm_modem_get_state                  (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">MMModemState</span>        mm_modem_get_state                  (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
 <p>
 Gets the overall state of the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.
 </p>
@@ -441,7 +443,7 @@ Gets the overall state of the <a class="link" href="MMModem.html" title="MMModem
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemState"><span class="type">MMModemState</span></a> value.</td>
+<td>A <span class="type">MMModemState</span> value.</td>
 </tr>
 </tbody>
 </table></div>
@@ -449,10 +451,10 @@ Gets the overall state of the <a class="link" href="MMModem.html" title="MMModem
 <hr>
 <div class="refsect2">
 <a name="mm-modem-get-state-failed-reason"></a><h3>mm_modem_get_state_failed_reason ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemStateFailedReason"><span class="returnvalue">MMModemStateFailedReason</span></a> mm_modem_get_state_failed_reason
+<pre class="programlisting"><span class="returnvalue">MMModemStateFailedReason</span> mm_modem_get_state_failed_reason
                                                         (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
 <p>
-Gets the reason specifying why the modem is in <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-STATE-FAILED:CAPS"><span class="type">MM_MODEM_STATE_FAILED</span></a> state.
+Gets the reason specifying why the modem is in <span class="type">MM_MODEM_STATE_FAILED</span> state.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -466,7 +468,7 @@ Gets the reason specifying why the modem is in <a href="/usr/share/gtk-doc/html/
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemStateFailedReason"><span class="type">MMModemStateFailedReason</span></a> value.</td>
+<td>A <span class="type">MMModemStateFailedReason</span> value.</td>
 </tr>
 </tbody>
 </table></div>
@@ -474,7 +476,7 @@ Gets the reason specifying why the modem is in <a href="/usr/share/gtk-doc/html/
 <hr>
 <div class="refsect2">
 <a name="mm-modem-get-power-state"></a><h3>mm_modem_get_power_state ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="returnvalue">MMModemPowerState</span></a>   mm_modem_get_power_state            (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">MMModemPowerState</span>   mm_modem_get_power_state            (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
 <p>
 Gets the power state of the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.
 </p>
@@ -490,7 +492,7 @@ Gets the power state of the <a class="link" href="MMModem.html" title="MMModem">
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="type">MMModemPowerState</span></a> value.</td>
+<td>A <span class="type">MMModemPowerState</span> value.</td>
 </tr>
 </tbody>
 </table></div>
@@ -500,7 +502,7 @@ Gets the power state of the <a class="link" href="MMModem.html" title="MMModem">
 <a name="mm-modem-peek-supported-capabilities"></a><h3>mm_modem_peek_supported_capabilities ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_peek_supported_capabilities
                                                         (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> **capabilities</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">MMModemCapability</span> **capabilities</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_capabilities</code></em>);</pre>
 <p>
 Gets the list of combinations of generic families of access technologies supported by this <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.
@@ -517,7 +519,7 @@ Gets the list of combinations of generic families of access technologies support
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>capabilities</code></em> :</span></p></td>
-<td>Return location for the array of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> values. Do not free the returned array, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_capabilities]</span>
+<td>Return location for the array of <span class="type">MMModemCapability</span> values. Do not free the returned array, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_capabilities]</span>
 </td>
 </tr>
 <tr>
@@ -537,7 +539,7 @@ Gets the list of combinations of generic families of access technologies support
 <div class="refsect2">
 <a name="mm-modem-get-supported-capabilities"></a><h3>mm_modem_get_supported_capabilities ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_get_supported_capabilities (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> **capabilities</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemCapability</span> **capabilities</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_capabilities</code></em>);</pre>
 <p>
 Gets the list of combinations of generic families of access technologies supported by this <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.
@@ -554,7 +556,7 @@ Gets the list of combinations of generic families of access technologies support
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>capabilities</code></em> :</span></p></td>
-<td>Return location for the array of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> values. The returned array should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_capabilities]</span>
+<td>Return location for the array of <span class="type">MMModemCapability</span> values. The returned array should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_capabilities]</span>
 </td>
 </tr>
 <tr>
@@ -573,7 +575,7 @@ Gets the list of combinations of generic families of access technologies support
 <hr>
 <div class="refsect2">
 <a name="mm-modem-get-current-capabilities"></a><h3>mm_modem_get_current_capabilities ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="returnvalue">MMModemCapability</span></a>   mm_modem_get_current_capabilities   (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">MMModemCapability</span>   mm_modem_get_current_capabilities   (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
 <p>
 Gets the list of generic families of access technologies supported by this <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>
 without a firmware reload or reinitialization.
@@ -590,7 +592,7 @@ without a firmware reload or reinitialization.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A bitmask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> flags.</td>
+<td>A bitmask of <span class="type">MMModemCapability</span> flags.</td>
 </tr>
 </tbody>
 </table></div>
@@ -955,7 +957,7 @@ Gets a copy of the name of the primary port controlling this <a class="link" hre
 <div class="refsect2">
 <a name="mm-modem-peek-ports"></a><h3>mm_modem_peek_ports ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_peek_ports                 (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> **ports</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="MMModem.html#MMModemPortInfo" title="struct MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> **ports</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_ports</code></em>);</pre>
 <p>
 </p>
@@ -964,7 +966,7 @@ Gets a copy of the name of the primary port controlling this <a class="link" hre
 <div class="refsect2">
 <a name="mm-modem-get-ports"></a><h3>mm_modem_get_ports ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_get_ports                  (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> **ports</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MMModem.html#MMModemPortInfo" title="struct MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> **ports</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_ports</code></em>);</pre>
 <p>
 Gets the list of ports in the modem.
@@ -981,7 +983,7 @@ Gets the list of ports in the modem.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>ports</code></em> :</span></p></td>
-<td>Return location for the array of <a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> values. The returned array should be freed with <a class="link" href="MMModem.html#mm-modem-port-info-array-free" title="mm_modem_port_info_array_free ()"><code class="function">mm_modem_port_info_array_free()</code></a> when no longer needed. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_ports]</span>
+<td>Return location for the array of <a class="link" href="MMModem.html#MMModemPortInfo" title="struct MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> values. The returned array should be freed with <a class="link" href="MMModem.html#mm-modem-port-info-array-free" title="mm_modem_port_info_array_free ()"><code class="function">mm_modem_port_info_array_free()</code></a> when no longer needed. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_ports]</span>
 </td>
 </tr>
 <tr>
@@ -1209,7 +1211,7 @@ before unlocking the device via a PIN.
 <hr>
 <div class="refsect2">
 <a name="mm-modem-get-unlock-required"></a><h3>mm_modem_get_unlock_required ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="returnvalue">MMModemLock</span></a>         mm_modem_get_unlock_required        (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">MMModemLock</span>         mm_modem_get_unlock_required        (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
 <p>
 Gets current lock state of the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.
 </p>
@@ -1225,7 +1227,7 @@ Gets current lock state of the <a class="link" href="MMModem.html" title="MMMode
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a> value, specifying the current lock state.</td>
+<td>A <span class="type">MMModemLock</span> value, specifying the current lock state.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1236,7 +1238,7 @@ Gets current lock state of the <a class="link" href="MMModem.html" title="MMMode
 <pre class="programlisting"><a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="returnvalue">MMUnlockRetries</span></a> *   mm_modem_peek_unlock_retries        (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
 <p>
 Gets a <a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> object, which provides, for each
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock">MMModemLock</a> handled by the modem, the
+MMModemLock handled by the modem, the
 number of PIN tries remaining before the code becomes blocked (requiring a PUK)
 or permanently blocked.
 </p>
@@ -1261,7 +1263,8 @@ thread.</div>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>(transfer none) A <a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a>. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>.</td>
+<td>A <a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a>. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -1272,7 +1275,7 @@ thread.</div>
 <pre class="programlisting"><a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="returnvalue">MMUnlockRetries</span></a> *   mm_modem_get_unlock_retries         (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
 <p>
 Gets a <a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> object, which provides, for each
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock">MMModemLock</a> handled by the modem, the
+MMModemLock handled by the modem, the
 number of PIN tries remaining before the code becomes blocked (requiring a PUK)
 or permanently blocked.
 </p>
@@ -1297,7 +1300,8 @@ new values.</div>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>(transfer full) A <a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> that must be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown.</td>
+<td>A <a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> that must be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -1359,6 +1363,65 @@ at least two active bearers.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>the maximum number of defined packet data bearers.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-get-bearer-paths"></a><h3>mm_modem_get_bearer_paths ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> * const * mm_modem_get_bearer_paths         (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
+<p>
+Gets the DBus paths of the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> handled in this <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.
+</p>
+<p>
+</p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>The returned value is only valid until the property changes so
+it is only safe to use this function on the thread where
+<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMModem.html#mm-modem-dup-bearer-paths" title="mm_modem_dup_bearer_paths ()"><code class="function">mm_modem_dup_bearer_paths()</code></a> if on another
+thread.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The DBus paths of the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> handled in this <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none available. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-dup-bearer-paths"></a><h3>mm_modem_dup_bearer_paths ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            mm_modem_dup_bearer_paths           (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
+<p>
+Gets a copy of the DBus paths of the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> handled in this <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The DBus paths of the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> handled in this <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none available. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-String-Utility-Functions.html#g-strfreev"><code class="function">g_strfreev()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -1428,7 +1491,7 @@ handled by this modem.
 <div class="refsect2">
 <a name="mm-modem-peek-supported-modes"></a><h3>mm_modem_peek_supported_modes ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_peek_supported_modes       (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a class="link" href="MMModem.html#MMModemModeCombination" title="MMModemModeCombination"><span class="type">MMModemModeCombination</span></a> **modes</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="MMModem.html#MMModemModeCombination" title="struct MMModemModeCombination"><span class="type">MMModemModeCombination</span></a> **modes</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_modes</code></em>);</pre>
 <p>
 Gets the list of supported mode combinations.
@@ -1445,7 +1508,7 @@ Gets the list of supported mode combinations.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>modes</code></em> :</span></p></td>
-<td>Return location for the array of <a class="link" href="MMModem.html#MMModemModeCombination" title="MMModemModeCombination"><span class="type">MMModemModeCombination</span></a> values. Do not free the returned array, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_modes]</span>
+<td>Return location for the array of <a class="link" href="MMModem.html#MMModemModeCombination" title="struct MMModemModeCombination"><span class="type">MMModemModeCombination</span></a> values. Do not free the returned array, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_modes]</span>
 </td>
 </tr>
 <tr>
@@ -1465,7 +1528,7 @@ Gets the list of supported mode combinations.
 <div class="refsect2">
 <a name="mm-modem-get-supported-modes"></a><h3>mm_modem_get_supported_modes ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_get_supported_modes        (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="MMModem.html#MMModemModeCombination" title="MMModemModeCombination"><span class="type">MMModemModeCombination</span></a> **modes</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MMModem.html#MMModemModeCombination" title="struct MMModemModeCombination"><span class="type">MMModemModeCombination</span></a> **modes</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_modes</code></em>);</pre>
 <p>
 Gets the list of supported mode combinations.
@@ -1482,7 +1545,7 @@ Gets the list of supported mode combinations.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>modes</code></em> :</span></p></td>
-<td>Return location for the array of <a class="link" href="MMModem.html#MMModemModeCombination" title="MMModemModeCombination"><span class="type">MMModemModeCombination</span></a> structs. The returned array should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_modes]</span>
+<td>Return location for the array of <a class="link" href="MMModem.html#MMModemModeCombination" title="struct MMModemModeCombination"><span class="type">MMModemModeCombination</span></a> structs. The returned array should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_modes]</span>
 </td>
 </tr>
 <tr>
@@ -1502,8 +1565,8 @@ Gets the list of supported mode combinations.
 <div class="refsect2">
 <a name="mm-modem-get-current-modes"></a><h3>mm_modem_get_current_modes ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_get_current_modes          (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> *allowed</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> *preferred</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">MMModemMode</span> *allowed</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemMode</span> *preferred</code></em>);</pre>
 <p>
 Gets the list of modes specifying the access technologies (eg 2G/3G/4G)
 the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> is currently allowed to use when connecting to a network, as
@@ -1521,12 +1584,12 @@ well as the preferred one, if any.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>allowed</code></em> :</span></p></td>
-<td>Return location for a bitmask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> values. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+<td>Return location for a bitmask of <span class="type">MMModemMode</span> values. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>preferred</code></em> :</span></p></td>
-<td>Return location for a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> value. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+<td>Return location for a <span class="type">MMModemMode</span> value. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
 </td>
 </tr>
 <tr>
@@ -1541,13 +1604,13 @@ well as the preferred one, if any.
 <div class="refsect2">
 <a name="mm-modem-peek-supported-bands"></a><h3>mm_modem_peek_supported_bands ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_peek_supported_bands       (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> **bands</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">MMModemBand</span> **bands</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_bands</code></em>);</pre>
 <p>
 Gets the list of radio frequency and technology bands supported by the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.
 </p>
 <p>
-For POTS devices, only <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-BAND-ANY:CAPS"><span class="type">MM_MODEM_BAND_ANY</span></a> will be returned in <em class="parameter"><code>bands</code></em>.
+For POTS devices, only <span class="type">MM_MODEM_BAND_ANY</span> will be returned in <em class="parameter"><code>bands</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -1561,7 +1624,7 @@ For POTS devices, only <a href="/usr/share/gtk-doc/html/ModemManager/ModemManage
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>bands</code></em> :</span></p></td>
-<td>Return location for the array of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> values. Do not free the returned array, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_bands]</span>
+<td>Return location for the array of <span class="type">MMModemBand</span> values. Do not free the returned array, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_bands]</span>
 </td>
 </tr>
 <tr>
@@ -1581,13 +1644,13 @@ For POTS devices, only <a href="/usr/share/gtk-doc/html/ModemManager/ModemManage
 <div class="refsect2">
 <a name="mm-modem-get-supported-bands"></a><h3>mm_modem_get_supported_bands ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_get_supported_bands        (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> **bands</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemBand</span> **bands</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_bands</code></em>);</pre>
 <p>
 Gets the list of radio frequency and technology bands supported by the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.
 </p>
 <p>
-For POTS devices, only <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-BAND-ANY:CAPS"><span class="type">MM_MODEM_BAND_ANY</span></a> will be returned in <em class="parameter"><code>bands</code></em>.
+For POTS devices, only <span class="type">MM_MODEM_BAND_ANY</span> will be returned in <em class="parameter"><code>bands</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -1601,7 +1664,7 @@ For POTS devices, only <a href="/usr/share/gtk-doc/html/ModemManager/ModemManage
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>bands</code></em> :</span></p></td>
-<td>Return location for the array of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> values. The returned array should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_bands]</span>
+<td>Return location for the array of <span class="type">MMModemBand</span> values. The returned array should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_bands]</span>
 </td>
 </tr>
 <tr>
@@ -1621,14 +1684,14 @@ For POTS devices, only <a href="/usr/share/gtk-doc/html/ModemManager/ModemManage
 <div class="refsect2">
 <a name="mm-modem-peek-current-bands"></a><h3>mm_modem_peek_current_bands ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_peek_current_bands         (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> **bands</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">MMModemBand</span> **bands</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_bands</code></em>);</pre>
 <p>
 Gets the list of radio frequency and technology bands the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> is currently
 using when connecting to a network.
 </p>
 <p>
-For POTS devices, only the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-BAND-ANY:CAPS"><span class="type">MM_MODEM_BAND_ANY</span></a> band is supported.
+For POTS devices, only the <span class="type">MM_MODEM_BAND_ANY</span> band is supported.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -1642,7 +1705,7 @@ For POTS devices, only the <a href="/usr/share/gtk-doc/html/ModemManager/ModemMa
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>bands</code></em> :</span></p></td>
-<td>Return location for the array of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> values. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_storages]</span>
+<td>Return location for the array of <span class="type">MMModemBand</span> values. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_bands]</span>
 </td>
 </tr>
 <tr>
@@ -1662,14 +1725,14 @@ For POTS devices, only the <a href="/usr/share/gtk-doc/html/ModemManager/ModemMa
 <div class="refsect2">
 <a name="mm-modem-get-current-bands"></a><h3>mm_modem_get_current_bands ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_get_current_bands          (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> **bands</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemBand</span> **bands</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_bands</code></em>);</pre>
 <p>
 Gets the list of radio frequency and technology bands the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> is currently
 using when connecting to a network.
 </p>
 <p>
-For POTS devices, only the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-BAND-ANY:CAPS"><span class="type">MM_MODEM_BAND_ANY</span></a> band is supported.
+For POTS devices, only the <span class="type">MM_MODEM_BAND_ANY</span> band is supported.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -1683,7 +1746,7 @@ For POTS devices, only the <a href="/usr/share/gtk-doc/html/ModemManager/ModemMa
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>bands</code></em> :</span></p></td>
-<td>Return location for the array of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> values. The returned array should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_bands]</span>
+<td>Return location for the array of <span class="type">MMModemBand</span> values. The returned array should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_bands]</span>
 </td>
 </tr>
 <tr>
@@ -1702,7 +1765,7 @@ For POTS devices, only the <a href="/usr/share/gtk-doc/html/ModemManager/ModemMa
 <hr>
 <div class="refsect2">
 <a name="mm-modem-get-supported-ip-families"></a><h3>mm_modem_get_supported_ip_families ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="returnvalue">MMBearerIpFamily</span></a>    mm_modem_get_supported_ip_families  (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">MMBearerIpFamily</span>    mm_modem_get_supported_ip_families  (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
 <p>
 Gets the list of supported IP families.
 </p>
@@ -1718,7 +1781,7 @@ Gets the list of supported IP families.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A bitmask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="type">MMBearerIpFamily</span></a> values.</td>
+<td>A bitmask of <span class="type">MMBearerIpFamily</span> values.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1760,7 +1823,7 @@ Always 0 for POTS devices.
 <hr>
 <div class="refsect2">
 <a name="mm-modem-get-access-technologies"></a><h3>mm_modem_get_access_technologies ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"><span class="returnvalue">MMModemAccessTechnology</span></a> mm_modem_get_access_technologies
+<pre class="programlisting"><span class="returnvalue">MMModemAccessTechnology</span> mm_modem_get_access_technologies
                                                         (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
 <p>
 </p>
@@ -1896,7 +1959,8 @@ Finishes an operation started with <a class="link" href="MMModem.html#mm-modem-g
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if none available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>.</td>
+<td>a <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if none available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -1935,7 +1999,8 @@ for the asynchronous version of this method.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if none available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>.</td>
+<td>a <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if none available. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -2186,13 +2251,13 @@ for the asynchronous version of this method.
 <div class="refsect2">
 <a name="mm-modem-set-power-state"></a><h3>mm_modem_set_power_state ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                mm_modem_set_power_state            (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="type">MMModemPowerState</span></a> state</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemPowerState</span> state</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Asynchronously sets the power state of the device. This method can only be
-used while the modem is in <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-STATE-DISABLED:CAPS"><code class="literal">MM_MODEM_STATE_DISABLED</code></a> state.
+used while the modem is in <code class="literal">MM_MODEM_STATE_DISABLED</code> state.
 </p>
 <p>
 When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
@@ -2213,7 +2278,7 @@ See <a class="link" href="MMModem.html#mm-modem-set-power-state-sync" title="mm_
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>state</code></em> :</span></p></td>
-<td>Either <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-POWER-STATE-LOW:CAPS"><code class="literal">MM_MODEM_POWER_STATE_LOW</code></a> or <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-POWER-STATE-ON:CAPS"><code class="literal">MM_MODEM_POWER_STATE_ON</code></a>. Every other <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="type">MMModemPowerState</span></a> value is not allowed.</td>
+<td>Either <code class="literal">MM_MODEM_POWER_STATE_LOW</code> or <code class="literal">MM_MODEM_POWER_STATE_ON</code>. Every other <span class="type">MMModemPowerState</span> value is not allowed.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
@@ -2270,12 +2335,12 @@ Finishes an operation started with <a class="link" href="MMModem.html#mm-modem-s
 <div class="refsect2">
 <a name="mm-modem-set-power-state-sync"></a><h3>mm_modem_set_power_state_sync ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_set_power_state_sync       (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="type">MMModemPowerState</span></a> state</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemPowerState</span> state</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Synchronously sets the power state of the device. This method can only be
-used while the modem is in <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-STATE-DISABLED:CAPS"><code class="literal">MM_MODEM_STATE_DISABLED</code></a> state.
+used while the modem is in <code class="literal">MM_MODEM_STATE_DISABLED</code> state.
 </p>
 <p>
 The calling thread is blocked until a reply is received. See <a class="link" href="MMModem.html#mm-modem-set-power-state" title="mm_modem_set_power_state ()"><code class="function">mm_modem_set_power_state()</code></a>
@@ -2293,7 +2358,7 @@ for the asynchronous version of this method.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>state</code></em> :</span></p></td>
-<td>Either <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-POWER-STATE-LOW:CAPS"><code class="literal">MM_MODEM_POWER_STATE_LOW</code></a> or <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-POWER-STATE-ON:CAPS"><code class="literal">MM_MODEM_POWER_STATE_ON</code></a>. Every other <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="type">MMModemPowerState</span></a> value is not allowed.</td>
+<td>Either <code class="literal">MM_MODEM_POWER_STATE_LOW</code> or <code class="literal">MM_MODEM_POWER_STATE_ON</code>. Every other <span class="type">MMModemPowerState</span> value is not allowed.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
@@ -2316,8 +2381,8 @@ for the asynchronous version of this method.
 <div class="refsect2">
 <a name="mm-modem-set-current-modes"></a><h3>mm_modem_set_current_modes ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                mm_modem_set_current_modes          (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> modes</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> preferred</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemMode</span> modes</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemMode</span> preferred</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
@@ -2344,11 +2409,11 @@ See <a class="link" href="MMModem.html#mm-modem-set-current-modes-sync" title="m
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>modes</code></em> :</span></p></td>
-<td>Mask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> values specifying which modes are allowed.</td>
+<td>Mask of <span class="type">MMModemMode</span> values specifying which modes are allowed.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>preferred</code></em> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> value specifying which of the modes given in <em class="parameter"><code>modes</code></em> is the preferred one, or <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-MODE-NONE:CAPS"><span class="type">MM_MODEM_MODE_NONE</span></a> if none.</td>
+<td>A <span class="type">MMModemMode</span> value specifying which of the modes given in <em class="parameter"><code>modes</code></em> is the preferred one, or <span class="type">MM_MODEM_MODE_NONE</span> if none.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
@@ -2405,8 +2470,8 @@ Finishes an operation started with <a class="link" href="MMModem.html#mm-modem-s
 <div class="refsect2">
 <a name="mm-modem-set-current-modes-sync"></a><h3>mm_modem_set_current_modes_sync ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_set_current_modes_sync     (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> modes</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> preferred</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemMode</span> modes</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemMode</span> preferred</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
@@ -2429,11 +2494,11 @@ for the asynchronous version of this method.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>modes</code></em> :</span></p></td>
-<td>Mask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> values specifying which modes are allowed.</td>
+<td>Mask of <span class="type">MMModemMode</span> values specifying which modes are allowed.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>preferred</code></em> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> value specifying which of the modes given in <em class="parameter"><code>modes</code></em> is the preferred one, or <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-MODE-NONE:CAPS"><span class="type">MM_MODEM_MODE_NONE</span></a> if none.</td>
+<td>A <span class="type">MMModemMode</span> value specifying which of the modes given in <em class="parameter"><code>modes</code></em> is the preferred one, or <span class="type">MM_MODEM_MODE_NONE</span> if none.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
@@ -2456,7 +2521,7 @@ for the asynchronous version of this method.
 <div class="refsect2">
 <a name="mm-modem-set-current-bands"></a><h3>mm_modem_set_current_bands ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                mm_modem_set_current_bands          (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> *bands</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">MMModemBand</span> *bands</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> n_bands</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
@@ -2484,7 +2549,7 @@ See <a class="link" href="MMModem.html#mm-modem-set-current-bands-sync" title="m
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>bands</code></em> :</span></p></td>
-<td>An array of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> values specifying which bands are allowed.</td>
+<td>An array of <span class="type">MMModemBand</span> values specifying which bands are allowed.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>n_bands</code></em> :</span></p></td>
@@ -2545,7 +2610,7 @@ Finishes an operation started with <a class="link" href="MMModem.html#mm-modem-s
 <div class="refsect2">
 <a name="mm-modem-set-current-bands-sync"></a><h3>mm_modem_set_current_bands_sync ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_set_current_bands_sync     (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> *bands</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">MMModemBand</span> *bands</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> n_bands</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
@@ -2569,7 +2634,7 @@ for the asynchronous version of this method.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>bands</code></em> :</span></p></td>
-<td>An array of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> values specifying which bands are allowed.</td>
+<td>An array of <span class="type">MMModemBand</span> values specifying which bands are allowed.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>n_bands</code></em> :</span></p></td>
@@ -2596,7 +2661,7 @@ for the asynchronous version of this method.
 <div class="refsect2">
 <a name="mm-modem-set-current-capabilities"></a><h3>mm_modem_set_current_capabilities ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                mm_modem_set_current_capabilities   (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> capabilities</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemCapability</span> capabilities</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
@@ -2622,7 +2687,7 @@ See <a class="link" href="MMModem.html#mm-modem-set-current-capabilities-sync" t
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>capabilities</code></em> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> mask.</td>
+<td>A <span class="type">MMModemCapability</span> mask.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
@@ -2681,7 +2746,7 @@ Finishes an operation started with <a class="link" href="MMModem.html#mm-modem-s
 <a name="mm-modem-set-current-capabilities-sync"></a><h3>mm_modem_set_current_capabilities_sync ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_set_current_capabilities_sync
                                                         (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> capabilities</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMModemCapability</span> capabilities</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
@@ -2703,7 +2768,7 @@ for the asynchronous version of this method.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>capabilities</code></em> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> mask.</td>
+<td>A <span class="type">MMModemCapability</span> mask.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
@@ -3044,7 +3109,7 @@ Finishes an operation started with <a class="link" href="MMModem.html#mm-modem-l
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The list of <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> objects, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if either none found or if <em class="parameter"><code>error</code></em> is set. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+<td>The list of <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> objects, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if either none found or if <em class="parameter"><code>error</code></em> is set. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> ModemManager.Modem]</span>
 </td>
 </tr>
 </tbody>
@@ -3084,7 +3149,7 @@ for the asynchronous version of this method.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The list of <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> objects, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if either none found or if <em class="parameter"><code>error</code></em> is set. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+<td>The list of <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> objects, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if either none found or if <em class="parameter"><code>error</code></em> is set. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> ModemManager.Modem]</span>
 </td>
 </tr>
 </tbody>
@@ -3106,7 +3171,7 @@ This request may fail if the modem does not support additional bearers,
 if too many bearers are already defined, or if <em class="parameter"><code>properties</code></em> are invalid.
 </p>
 <p>
-See <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-method-org-freedesktop-ModemManager1-Modem.CreateBearer">CreateBearer</a> to check which properties may be passed.
+See CreateBearer to check which properties may be passed.
 </p>
 <p>
 When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
@@ -3195,7 +3260,7 @@ This request may fail if the modem does not support additional bearers,
 if too many bearers are already defined, or if <em class="parameter"><code>properties</code></em> are invalid.
 </p>
 <p>
-See <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-method-org-freedesktop-ModemManager1-Modem.CreateBearer">CreateBearer</a> to check which properties may be passed.
+See CreateBearer to check which properties may be passed.
 </p>
 <p>
 The calling thread is blocked until a reply is received. See <a class="link" href="MMModem.html#mm-modem-create-bearer" title="mm_modem_create_bearer ()"><code class="function">mm_modem_create_bearer()</code></a>
@@ -3442,7 +3507,8 @@ Finishes an operation started with <a class="link" href="MMModem.html#mm-modem-c
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>(transfer full) A newly allocated string with the reply to the command, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>.</td>
+<td>A newly allocated string with the reply to the command, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -3491,7 +3557,8 @@ for the asynchronous version of this method.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>(transfer full) A newly allocated string with the reply to the command, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>.</td>
+<td>A newly allocated string with the reply to the command, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -3499,10 +3566,10 @@ for the asynchronous version of this method.
 <hr>
 <div class="refsect2">
 <a name="mm-modem-port-info-array-free"></a><h3>mm_modem_port_info_array_free ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_modem_port_info_array_free       (<em class="parameter"><code><a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> *array</code></em>,
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_modem_port_info_array_free       (<em class="parameter"><code><a class="link" href="MMModem.html#MMModemPortInfo" title="struct MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> *array</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> array_size</code></em>);</pre>
 <p>
-Frees an array of <a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> values.
+Frees an array of <a class="link" href="MMModem.html#MMModemPortInfo" title="struct MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> values.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -3512,7 +3579,7 @@ Frees an array of <a class="link" href="MMModem.html#MMModemPortInfo" title="MMM
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>array</code></em> :</span></p></td>
-<td>an array of <a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> values.</td>
+<td>an array of <a class="link" href="MMModem.html#MMModemPortInfo" title="struct MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> values.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>array_size</code></em> :</span></p></td>
@@ -3525,6 +3592,6 @@ Frees an array of <a class="link" href="MMModem.html#MMModemPortInfo" title="MMM
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

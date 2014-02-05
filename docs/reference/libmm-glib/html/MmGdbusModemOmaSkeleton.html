@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MmGdbusModemOmaSkeleton</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="libmm-glib Reference Manual">
+<link rel="up" href="pt02.html" title="Part II. Low level API">
+<link rel="prev" href="MmGdbusModemOmaProxy.html" title="MmGdbusModemOmaProxy">
+<link rel="next" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="MmGdbusModemOmaProxy.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="pt02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libmm-glib Reference Manual</th>
+<td><a accesskey="n" href="MmGdbusModemSimple.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#MmGdbusModemOmaSkeleton.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#MmGdbusModemOmaSkeleton.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#MmGdbusModemOmaSkeleton.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#MmGdbusModemOmaSkeleton.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="MmGdbusModemOmaSkeleton"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="MmGdbusModemOmaSkeleton.top_of_page"></a>MmGdbusModemOmaSkeleton</span></h2>
+<p>MmGdbusModemOmaSkeleton</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="MmGdbusModemOmaSkeleton.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">struct              <a class="link" href="MmGdbusModemOmaSkeleton.html#MmGdbusModemOmaSkeleton-struct" title="struct MmGdbusModemOmaSkeleton">MmGdbusModemOmaSkeleton</a>;
+
+<a class="link" href="MmGdbusModemOma.html" title="MmGdbusModemOma"><span class="returnvalue">MmGdbusModemOma</span></a> *   <a class="link" href="MmGdbusModemOmaSkeleton.html#mm-gdbus-modem-oma-skeleton-new" title="mm_gdbus_modem_oma_skeleton_new ()">mm_gdbus_modem_oma_skeleton_new</a>     (<em class="parameter"><code><span class="type">void</span></code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="MmGdbusModemOmaSkeleton.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----<a href="http://library.gnome.org/devel/gio/unstable/GDBusInterfaceSkeleton.html">GDBusInterfaceSkeleton</a>
+         +----MmGdbusModemOmaSkeleton
+</pre>
+</div>
+<div class="refsect1">
+<a name="MmGdbusModemOmaSkeleton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
+<p>
+MmGdbusModemOmaSkeleton implements
+ <a href="http://library.gnome.org/devel/gio/unstable/GDBusInterface.html">GDBusInterface</a> and  <a class="link" href="MmGdbusModemOma.html" title="MmGdbusModemOma">MmGdbusModemOma</a>.</p>
+</div>
+<div class="refsect1">
+<a name="MmGdbusModemOmaSkeleton.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1">
+<a name="MmGdbusModemOmaSkeleton.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="MmGdbusModemOmaSkeleton-struct"></a><h3>struct MmGdbusModemOmaSkeleton</h3>
+<pre class="programlisting">struct MmGdbusModemOmaSkeleton;</pre>
+<p>
+The <a class="link" href="MmGdbusModemOmaSkeleton.html" title="MmGdbusModemOmaSkeleton"><span class="type">MmGdbusModemOmaSkeleton</span></a> structure contains only private data and should only be accessed using the provided API.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-oma-skeleton-new"></a><h3>mm_gdbus_modem_oma_skeleton_new ()</h3>
+<pre class="programlisting"><a class="link" href="MmGdbusModemOma.html" title="MmGdbusModemOma"><span class="returnvalue">MmGdbusModemOma</span></a> *   mm_gdbus_modem_oma_skeleton_new     (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+Creates a skeleton object for the D-Bus interface org.freedesktop.ModemManager1.Modem.Oma.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The skeleton object. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> MmGdbusModemOmaSkeleton]</span>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.19</div>
+</body>
+</html>

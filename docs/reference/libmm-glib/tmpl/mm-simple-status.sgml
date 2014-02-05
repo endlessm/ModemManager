@@ -73,6 +73,11 @@ MMSimpleStatus
 
 </para>
 
+<!-- ##### ARG MMSimpleStatus:m3gpp-subscription-state ##### -->
+<para>
+
+</para>
+
 <!-- ##### ARG MMSimpleStatus:signal-quality ##### -->
 <para>
 
@@ -140,6 +145,15 @@ MMSimpleStatus
 
 
 <!-- ##### FUNCTION mm_simple_status_get_3gpp_operator_name ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_simple_status_get_3gpp_subscription_state ##### -->
 <para>
 
 </para>

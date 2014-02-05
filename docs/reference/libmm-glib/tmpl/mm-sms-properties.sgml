@@ -201,3 +201,39 @@ MMSmsProperties
 @request: 
 
 
+<!-- ##### FUNCTION mm_sms_properties_get_teleservice_id ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_sms_properties_set_teleservice_id ##### -->
+<para>
+
+</para>
+
+@self: 
+@teleservice_id: 
+
+
+<!-- ##### FUNCTION mm_sms_properties_get_service_category ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_sms_properties_set_service_category ##### -->
+<para>
+
+</para>
+
+@self: 
+@service_category: 
+
+

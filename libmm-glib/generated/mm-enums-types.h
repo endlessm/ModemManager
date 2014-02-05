@@ -250,6 +250,38 @@ const gchar *mm_sms_validity_type_get_string (MMSmsValidityType val);
 gchar *mm_sms_validity_type_build_string_from_mask (MMSmsValidityType mask);
 #endif
 
+GType mm_sms_cdma_teleservice_id_get_type (void) G_GNUC_CONST;
+#define MM_TYPE_SMS_CDMA_TELESERVICE_ID (mm_sms_cdma_teleservice_id_get_type ())
+
+/* Define type-specific symbols */
+#undef __MM_IS_ENUM__
+#undef __MM_IS_FLAGS__
+#define __MM_IS_ENUM__
+
+#if defined __MM_IS_ENUM__
+const gchar *mm_sms_cdma_teleservice_id_get_string (MMSmsCdmaTeleserviceId val);
+#endif
+
+#if defined __MM_IS_FLAGS__
+gchar *mm_sms_cdma_teleservice_id_build_string_from_mask (MMSmsCdmaTeleserviceId mask);
+#endif
+
+GType mm_sms_cdma_service_category_get_type (void) G_GNUC_CONST;
+#define MM_TYPE_SMS_CDMA_SERVICE_CATEGORY (mm_sms_cdma_service_category_get_type ())
+
+/* Define type-specific symbols */
+#undef __MM_IS_ENUM__
+#undef __MM_IS_FLAGS__
+#define __MM_IS_ENUM__
+
+#if defined __MM_IS_ENUM__
+const gchar *mm_sms_cdma_service_category_get_string (MMSmsCdmaServiceCategory val);
+#endif
+
+#if defined __MM_IS_FLAGS__
+gchar *mm_sms_cdma_service_category_build_string_from_mask (MMSmsCdmaServiceCategory mask);
+#endif
+
 GType mm_modem_location_source_get_type (void) G_GNUC_CONST;
 #define MM_TYPE_MODEM_LOCATION_SOURCE (mm_modem_location_source_get_type ())
 
@@ -426,6 +458,22 @@ const gchar *mm_modem_3gpp_network_availability_get_string (MMModem3gppNetworkAv
 gchar *mm_modem_3gpp_network_availability_build_string_from_mask (MMModem3gppNetworkAvailability mask);
 #endif
 
+GType mm_modem_3gpp_subscription_state_get_type (void) G_GNUC_CONST;
+#define MM_TYPE_MODEM_3GPP_SUBSCRIPTION_STATE (mm_modem_3gpp_subscription_state_get_type ())
+
+/* Define type-specific symbols */
+#undef __MM_IS_ENUM__
+#undef __MM_IS_FLAGS__
+#define __MM_IS_ENUM__
+
+#if defined __MM_IS_ENUM__
+const gchar *mm_modem_3gpp_subscription_state_get_string (MMModem3gppSubscriptionState val);
+#endif
+
+#if defined __MM_IS_FLAGS__
+gchar *mm_modem_3gpp_subscription_state_build_string_from_mask (MMModem3gppSubscriptionState mask);
+#endif
+
 GType mm_modem_3gpp_ussd_session_state_get_type (void) G_GNUC_CONST;
 #define MM_TYPE_MODEM_3GPP_USSD_SESSION_STATE (mm_modem_3gpp_ussd_session_state_get_type ())
 
@@ -456,6 +504,70 @@ const gchar *mm_firmware_image_type_get_string (MMFirmwareImageType val);
 
 #if defined __MM_IS_FLAGS__
 gchar *mm_firmware_image_type_build_string_from_mask (MMFirmwareImageType mask);
+#endif
+
+GType mm_oma_feature_get_type (void) G_GNUC_CONST;
+#define MM_TYPE_OMA_FEATURE (mm_oma_feature_get_type ())
+
+/* Define type-specific symbols */
+#undef __MM_IS_ENUM__
+#undef __MM_IS_FLAGS__
+#define __MM_IS_FLAGS__
+
+#if defined __MM_IS_ENUM__
+const gchar *mm_oma_feature_get_string (MMOmaFeature val);
+#endif
+
+#if defined __MM_IS_FLAGS__
+gchar *mm_oma_feature_build_string_from_mask (MMOmaFeature mask);
+#endif
+
+GType mm_oma_session_type_get_type (void) G_GNUC_CONST;
+#define MM_TYPE_OMA_SESSION_TYPE (mm_oma_session_type_get_type ())
+
+/* Define type-specific symbols */
+#undef __MM_IS_ENUM__
+#undef __MM_IS_FLAGS__
+#define __MM_IS_ENUM__
+
+#if defined __MM_IS_ENUM__
+const gchar *mm_oma_session_type_get_string (MMOmaSessionType val);
+#endif
+
+#if defined __MM_IS_FLAGS__
+gchar *mm_oma_session_type_build_string_from_mask (MMOmaSessionType mask);
+#endif
+
+GType mm_oma_session_state_get_type (void) G_GNUC_CONST;
+#define MM_TYPE_OMA_SESSION_STATE (mm_oma_session_state_get_type ())
+
+/* Define type-specific symbols */
+#undef __MM_IS_ENUM__
+#undef __MM_IS_FLAGS__
+#define __MM_IS_ENUM__
+
+#if defined __MM_IS_ENUM__
+const gchar *mm_oma_session_state_get_string (MMOmaSessionState val);
+#endif
+
+#if defined __MM_IS_FLAGS__
+gchar *mm_oma_session_state_build_string_from_mask (MMOmaSessionState mask);
+#endif
+
+GType mm_oma_session_state_failed_reason_get_type (void) G_GNUC_CONST;
+#define MM_TYPE_OMA_SESSION_STATE_FAILED_REASON (mm_oma_session_state_failed_reason_get_type ())
+
+/* Define type-specific symbols */
+#undef __MM_IS_ENUM__
+#undef __MM_IS_FLAGS__
+#define __MM_IS_ENUM__
+
+#if defined __MM_IS_ENUM__
+const gchar *mm_oma_session_state_failed_reason_get_string (MMOmaSessionStateFailedReason val);
+#endif
+
+#if defined __MM_IS_FLAGS__
+gchar *mm_oma_session_state_failed_reason_build_string_from_mask (MMOmaSessionStateFailedReason mask);
 #endif
 
 G_END_DECLS
