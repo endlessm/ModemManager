@@ -38,11 +38,6 @@ MmGdbusObject
 
 </para>
 
-<!-- ##### ARG MmGdbusObject:modem-contacts ##### -->
-<para>
-
-</para>
-
 <!-- ##### ARG MmGdbusObject:modem-firmware ##### -->
 <para>
 
@@ -221,24 +216,6 @@ MmGdbusObject
 
 
 <!-- ##### FUNCTION mm_gdbus_object_get_modem_firmware ##### -->
-<para>
-
-</para>
-
-@object: 
-@Returns: 
-
-
-<!-- ##### FUNCTION mm_gdbus_object_peek_modem_contacts ##### -->
-<para>
-
-</para>
-
-@object: 
-@Returns: 
-
-
-<!-- ##### FUNCTION mm_gdbus_object_get_modem_contacts ##### -->
 <para>
 
 </para>

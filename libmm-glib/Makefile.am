@@ -6,6 +6,7 @@ libmm_glib_la_SOURCES = \
 	libmm-glib.h \
 	mm-helpers.h \
 	mm-helper-types.h \
+	mm-helper-types.c \
 	mm-manager.h \
 	mm-manager.c \
 	mm-object.h \
@@ -74,6 +75,9 @@ libmm_glib_la_CPPFLAGS = \
 libmm_glib_la_LIBADD = \
 	${top_builddir}/libmm-glib/generated/libmm-generated.la \
 	$(LIBMM_GLIB_LIBS)
+
+libmm_glib_la_LDFLAGS = \
+	-version-info $(MM_GLIB_LT_CURRENT):$(MM_GLIB_LT_REVISION):$(MM_GLIB_LT_AGE)
 
 includedir = @includedir@/libmm-glib
 include_HEADERS = \

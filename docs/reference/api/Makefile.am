@@ -63,6 +63,7 @@ content_files = \
 expand_content_files = \
 	ModemManager-overview.xml \
 	ModemManager-dbus-reference.xml \
+	ModemManager-migration-reference.xml \
 	$(top_builddir)/libmm-glib/generated/mm-gdbus-doc-org.freedesktop.ModemManager1.xml \
 	$(top_builddir)/libmm-glib/generated/mm-gdbus-doc-org.freedesktop.ModemManager1.Sim.xml \
 	$(top_builddir)/libmm-glib/generated/mm-gdbus-doc-org.freedesktop.ModemManager1.Sms.xml \
@@ -72,7 +73,6 @@ expand_content_files = \
 	$(top_builddir)/libmm-glib/generated/mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Location.xml \
 	$(top_builddir)/libmm-glib/generated/mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Time.xml \
 	$(top_builddir)/libmm-glib/generated/mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Firmware.xml \
-	$(top_builddir)/libmm-glib/generated/mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Contacts.xml \
 	$(top_builddir)/libmm-glib/generated/mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.ModemCdma.xml \
 	$(top_builddir)/libmm-glib/generated/mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Modem3gpp.xml \
 	$(top_builddir)/libmm-glib/generated/mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.xml \
@@ -92,6 +92,7 @@ endif
 EXTRA_DIST += \
 	ModemManager-overview.xml \
 	ModemManager-dbus-reference.xml \
+	ModemManager-migration-reference.xml \
 	version.xml.in \
 	$(DIAGRAMS) \
 	$(NULL)

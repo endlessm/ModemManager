@@ -73,15 +73,6 @@ MmGdbusObjectSkeleton
 @interface_: 
 
 
-<!-- ##### FUNCTION mm_gdbus_object_skeleton_set_modem_contacts ##### -->
-<para>
-
-</para>
-
-@object: 
-@interface_: 
-
-
 <!-- ##### FUNCTION mm_gdbus_object_skeleton_set_modem_firmware ##### -->
 <para>
 

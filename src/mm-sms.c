@@ -87,9 +87,6 @@ get_validity_relative (GVariant *tuple)
 
     if (type == MM_SMS_VALIDITY_TYPE_RELATIVE)
         value_integer = g_variant_get_uint32 (value);
-    else
-        /* Currently not supported other than relative */
-        g_warn_if_reached ();
 
     g_variant_unref (value);
 
@@ -1668,6 +1665,9 @@ mm_sms_multipart_new (MMBaseModem *modem,
                   MM_SMS_MULTIPART_REFERENCE, reference,
                   "state",                    state,
                   "storage",                  storage,
+                  "validity",                 g_variant_new ("(uv)",
+                                                             MM_SMS_VALIDITY_TYPE_UNKNOWN,
+                                                             g_variant_new_boolean (FALSE)),
                   NULL);
 
     if (!mm_sms_multipart_take_part (self, first_part, error))

@@ -21,32 +21,41 @@
 <td><a accesskey="n" href="ch03s04.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
-<a href="#libmm-glib-MMLocationCdmaBs.synopsis" class="shortcut">Top</a>
+<a href="#MMLocationCdmaBs.synopsis" class="shortcut">Top</a>
                    | 
-                  <a href="#libmm-glib-MMLocationCdmaBs.description" class="shortcut">Description</a>
+                  <a href="#MMLocationCdmaBs.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#MMLocationCdmaBs.object-hierarchy" class="shortcut">Object Hierarchy</a>
 </td></tr>
 </table>
 <div class="refentry">
-<a name="libmm-glib-MMLocationCdmaBs"></a><div class="titlepage"></div>
+<a name="MMLocationCdmaBs"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle"><a name="libmm-glib-MMLocationCdmaBs.top_of_page"></a>MMLocationCdmaBs</span></h2>
+<h2><span class="refentrytitle"><a name="MMLocationCdmaBs.top_of_page"></a>MMLocationCdmaBs</span></h2>
 <p>MMLocationCdmaBs — Helper object to handle CDMA Base Station location information.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<a name="libmm-glib-MMLocationCdmaBs.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">struct              <a class="link" href="libmm-glib-MMLocationCdmaBs.html#MMLocationCdmaBs" title="struct MMLocationCdmaBs">MMLocationCdmaBs</a>;
+<a name="MMLocationCdmaBs.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">struct              <a class="link" href="MMLocationCdmaBs.html#MMLocationCdmaBs-struct" title="struct MMLocationCdmaBs">MMLocationCdmaBs</a>;
 
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="libmm-glib-MMLocationCdmaBs.html#mm-location-cdma-bs-get-latitude" title="mm_location_cdma_bs_get_latitude ()">mm_location_cdma_bs_get_latitude</a>    (<em class="parameter"><code><a class="link" href="libmm-glib-MMLocationCdmaBs.html#MMLocationCdmaBs" title="struct MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a> *self</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="libmm-glib-MMLocationCdmaBs.html#mm-location-cdma-bs-get-longitude" title="mm_location_cdma_bs_get_longitude ()">mm_location_cdma_bs_get_longitude</a>   (<em class="parameter"><code><a class="link" href="libmm-glib-MMLocationCdmaBs.html#MMLocationCdmaBs" title="struct MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="MMLocationCdmaBs.html#mm-location-cdma-bs-get-latitude" title="mm_location_cdma_bs_get_latitude ()">mm_location_cdma_bs_get_latitude</a>    (<em class="parameter"><code><a class="link" href="MMLocationCdmaBs.html" title="MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="MMLocationCdmaBs.html#mm-location-cdma-bs-get-longitude" title="mm_location_cdma_bs_get_longitude ()">mm_location_cdma_bs_get_longitude</a>   (<em class="parameter"><code><a class="link" href="MMLocationCdmaBs.html" title="MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a> *self</code></em>);
 </pre>
 </div>
 <div class="refsect1">
-<a name="libmm-glib-MMLocationCdmaBs.description"></a><h2>Description</h2>
+<a name="MMLocationCdmaBs.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----MMLocationCdmaBs
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMLocationCdmaBs.description"></a><h2>Description</h2>
 <p>
-The <a class="link" href="libmm-glib-MMLocationCdmaBs.html#MMLocationCdmaBs" title="struct MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a> is an object handling the location information of the
+The <a class="link" href="MMLocationCdmaBs.html" title="MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a> is an object handling the location information of the
 CDMA base station in which the modem is registered.
 </p>
 <p>
@@ -56,21 +65,19 @@ This object is retrieved with either <a class="link" href="MMModemLocation.html#
 </p>
 </div>
 <div class="refsect1">
-<a name="libmm-glib-MMLocationCdmaBs.details"></a><h2>Details</h2>
+<a name="MMLocationCdmaBs.details"></a><h2>Details</h2>
 <div class="refsect2">
-<a name="MMLocationCdmaBs"></a><h3>struct MMLocationCdmaBs</h3>
-<pre class="programlisting">struct MMLocationCdmaBs {
-};
-</pre>
+<a name="MMLocationCdmaBs-struct"></a><h3>struct MMLocationCdmaBs</h3>
+<pre class="programlisting">struct MMLocationCdmaBs;</pre>
 <p>
-The <a class="link" href="libmm-glib-MMLocationCdmaBs.html#MMLocationCdmaBs" title="struct MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a> structure contains private data and should
+The <a class="link" href="MMLocationCdmaBs.html" title="MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a> structure contains private data and should
 only be accessed using the provided API.
 </p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="mm-location-cdma-bs-get-latitude"></a><h3>mm_location_cdma_bs_get_latitude ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             mm_location_cdma_bs_get_latitude    (<em class="parameter"><code><a class="link" href="libmm-glib-MMLocationCdmaBs.html#MMLocationCdmaBs" title="struct MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a> *self</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             mm_location_cdma_bs_get_latitude    (<em class="parameter"><code><a class="link" href="MMLocationCdmaBs.html" title="MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a> *self</code></em>);</pre>
 <p>
 Gets the latitude, in the [-90,90] range.
 </p>
@@ -82,7 +89,7 @@ Gets the latitude, in the [-90,90] range.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libmm-glib-MMLocationCdmaBs.html#MMLocationCdmaBs" title="struct MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a>.</td>
+<td>a <a class="link" href="MMLocationCdmaBs.html" title="MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a>.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -94,7 +101,7 @@ Gets the latitude, in the [-90,90] range.
 <hr>
 <div class="refsect2">
 <a name="mm-location-cdma-bs-get-longitude"></a><h3>mm_location_cdma_bs_get_longitude ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             mm_location_cdma_bs_get_longitude   (<em class="parameter"><code><a class="link" href="libmm-glib-MMLocationCdmaBs.html#MMLocationCdmaBs" title="struct MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a> *self</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             mm_location_cdma_bs_get_longitude   (<em class="parameter"><code><a class="link" href="MMLocationCdmaBs.html" title="MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a> *self</code></em>);</pre>
 <p>
 Gets the longitude, in the [-180,180] range.
 </p>
@@ -106,7 +113,7 @@ Gets the longitude, in the [-180,180] range.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libmm-glib-MMLocationCdmaBs.html#MMLocationCdmaBs" title="struct MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a>.</td>
+<td>a <a class="link" href="MMLocationCdmaBs.html" title="MMLocationCdmaBs"><span class="type">MMLocationCdmaBs</span></a>.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>

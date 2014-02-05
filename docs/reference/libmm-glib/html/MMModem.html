@@ -5,7 +5,7 @@
 <title>MMModem</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
-<link rel="up" href="ch03.html#idm266932738048" title="Generic interfaces">
+<link rel="up" href="ch03.html#idm211869297872" title="Generic interfaces">
 <link rel="prev" href="MMObject.html" title="MMObject">
 <link rel="next" href="MMModem3gpp.html" title="MMModem3gpp">
 <meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
@@ -15,7 +15,7 @@
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
 <td><a accesskey="p" href="MMObject.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="ch03.html#idm266932738048"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="u" href="ch03.html#idm211869297872"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">libmm-glib Reference Manual</th>
 <td><a accesskey="n" href="MMModem3gpp.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
@@ -43,6 +43,7 @@
 <a name="MMModem.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">struct              <a class="link" href="MMModem.html#MMModem-struct" title="struct MMModem">MMModem</a>;
                     <a class="link" href="MMModem.html#MMModemModeCombination" title="MMModemModeCombination">MMModemModeCombination</a>;
+                    <a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo">MMModemPortInfo</a>;
 
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModem.html#mm-modem-get-path" title="mm_modem_get_path ()">mm_modem_get_path</a>                   (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModem.html#mm-modem-dup-path" title="mm_modem_dup_path ()">mm_modem_dup_path</a>                   (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
@@ -70,6 +71,12 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModem.html#mm-modem-dup-plugin" title="mm_modem_dup_plugin ()">mm_modem_dup_plugin</a>                 (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModem.html#mm-modem-get-primary-port" title="mm_modem_get_primary_port ()">mm_modem_get_primary_port</a>           (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModem.html#mm-modem-dup-primary-port" title="mm_modem_dup_primary_port ()">mm_modem_dup_primary_port</a>           (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModem.html#mm-modem-peek-ports" title="mm_modem_peek_ports ()">mm_modem_peek_ports</a>                 (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> **ports</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_ports</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModem.html#mm-modem-get-ports" title="mm_modem_get_ports ()">mm_modem_get_ports</a>                  (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> **ports</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_ports</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModem.html#mm-modem-get-device" title="mm_modem_get_device ()">mm_modem_get_device</a>                 (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModem.html#mm-modem-dup-device" title="mm_modem_dup_device ()">mm_modem_dup_device</a>                 (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModem.html#mm-modem-get-equipment-identifier" title="mm_modem_get_equipment_identifier ()">mm_modem_get_equipment_identifier</a>   (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);
@@ -268,6 +275,9 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> timeout</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+
+<span class="returnvalue">void</span>                <a class="link" href="MMModem.html#mm-modem-port-info-array-free" title="mm_modem_port_info_array_free ()">mm_modem_port_info_array_free</a>       (<em class="parameter"><code><a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> *array</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> array_size</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -330,6 +340,34 @@ using the provided API.
 <tr>
 <td><p><span class="term"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> <em class="structfield"><code><a name="MMModemModeCombination.preferred"></a>preferred</code></em>;</span></p></td>
 <td>A single <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> value specifying the preferred mode.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMModemPortInfo"></a><h3>MMModemPortInfo</h3>
+<pre class="programlisting">typedef struct {
+    gchar *name;
+    MMModemPortType type;
+} MMModemPortInfo;
+</pre>
+<p>
+Information of a given port.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="MMModemPortInfo.name"></a>name</code></em>;</span></p></td>
+<td>Name of the port.</td>
+</tr>
+<tr>
+<td><p><span class="term"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPortType"><span class="type">MMModemPortType</span></a> <em class="structfield"><code><a name="MMModemPortInfo.type"></a>type</code></em>;</span></p></td>
+<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPortType"><span class="type">MMModemPortType</span></a> value.</td>
 </tr>
 </tbody>
 </table></div>
@@ -909,6 +947,52 @@ Gets a copy of the name of the primary port controlling this <a class="link" hre
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The name of the primary port. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
 </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-peek-ports"></a><h3>mm_modem_peek_ports ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_peek_ports                 (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> **ports</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_ports</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-get-ports"></a><h3>mm_modem_get_ports ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_get_ports                  (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> **ports</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_ports</code></em>);</pre>
+<p>
+Gets the list of ports in the modem.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ports</code></em> :</span></p></td>
+<td>Return location for the array of <a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> values. The returned array should be freed with <a class="link" href="MMModem.html#mm-modem-port-info-array-free" title="mm_modem_port_info_array_free ()"><code class="function">mm_modem_port_info_array_free()</code></a> when no longer needed. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_ports]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n_ports</code></em> :</span></p></td>
+<td>Return location for the number of values in <em class="parameter"><code>ports</code></em>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>ports</code></em> and <em class="parameter"><code>n_ports</code></em> are set, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3408,6 +3492,31 @@ for the asynchronous version of this method.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>(transfer full) A newly allocated string with the reply to the command, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-port-info-array-free"></a><h3>mm_modem_port_info_array_free ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_modem_port_info_array_free       (<em class="parameter"><code><a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> *array</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> array_size</code></em>);</pre>
+<p>
+Frees an array of <a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> values.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>array</code></em> :</span></p></td>
+<td>an array of <a class="link" href="MMModem.html#MMModemPortInfo" title="MMModemPortInfo"><span class="type">MMModemPortInfo</span></a> values.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>array_size</code></em> :</span></p></td>
+<td>length of <em class="parameter"><code>array</code></em>.</td>
 </tr>
 </tbody>
 </table></div>

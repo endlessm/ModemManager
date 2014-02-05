@@ -6,13 +6,13 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="ModemManager Reference Manual">
 <link rel="up" href="index.html" title="ModemManager Reference Manual">
-<link rel="prev" href="gdbus-org.freedesktop.ModemManager1.Sms.html" title="org.freedesktop.ModemManager1.Sms">
+<link rel="prev" href="ch12s04.html" title="Simple connection">
 <meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="gdbus-org.freedesktop.ModemManager1.Sms.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="ch12s04.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td> </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">ModemManager Reference Manual</th>
@@ -20,7 +20,7 @@
 </tr></table>
 <div class="index">
 <div class="titlepage"><div><div><h1 class="title">
-<a name="idm266943367152"></a>Index</h1></div></div></div>
+<a name="idm211863868880"></a>Index</h1></div></div></div>
 <div class="index">
 <div class="indexdiv">
 <h3>B</h3>
@@ -58,6 +58,8 @@
 <dl>
 <dt>MMCdmaActivationError, <a class="indexterm" href="ModemManager-Errors.html#MMCdmaActivationError">enum MMCdmaActivationError</a>
 </dt>
+<dt>MM_CHECK_VERSION, <a class="indexterm" href="ModemManager-Version-checks.html#MM-CHECK-VERSION:CAPS">MM_CHECK_VERSION()</a>
+</dt>
 <dt>MMConnectionError, <a class="indexterm" href="ModemManager-Errors.html#MMConnectionError">enum MMConnectionError</a>
 </dt>
 <dt>MMCoreError, <a class="indexterm" href="ModemManager-Errors.html#MMCoreError">enum MMCoreError</a>
@@ -72,31 +74,19 @@
 <div class="indexdiv">
 <h3>M</h3>
 <dl>
+<dt>MM_MAJOR_VERSION, <a class="indexterm" href="ModemManager-Version-checks.html#MM-MAJOR-VERSION:CAPS">MM_MAJOR_VERSION</a>
+</dt>
 <dt>MMMessageError, <a class="indexterm" href="ModemManager-Errors.html#MMMessageError">enum MMMessageError</a>
+</dt>
+<dt>MM_MICRO_VERSION, <a class="indexterm" href="ModemManager-Version-checks.html#MM-MICRO-VERSION:CAPS">MM_MICRO_VERSION</a>
+</dt>
+<dt>MM_MINOR_VERSION, <a class="indexterm" href="ModemManager-Version-checks.html#MM-MINOR-VERSION:CAPS">MM_MINOR_VERSION</a>
 </dt>
 <dt>MMMobileEquipmentError, <a class="indexterm" href="ModemManager-Errors.html#MMMobileEquipmentError">enum MMMobileEquipmentError</a>
 </dt>
 <dt>org.freedesktop.ModemManager1.Modem, <a class="indexterm" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-interface-org-freedesktop-ModemManager1-Modem.top_of_page">org.freedesktop.ModemManager1.Modem</a>
 </dt>
 <dt>org.freedesktop.ModemManager1.Modem.Command(), <a class="indexterm" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-method-org-freedesktop-ModemManager1-Modem.Command">The Command() method</a>
-</dt>
-<dt>org.freedesktop.ModemManager1.Modem.Contacts, <a class="indexterm" href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-interface-org-freedesktop-ModemManager1-Modem-Contacts.top_of_page">org.freedesktop.ModemManager1.Modem.Contacts</a>
-</dt>
-<dt>org.freedesktop.ModemManager1.Modem.Contacts.Add(), <a class="indexterm" href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Add">The Add() method</a>
-</dt>
-<dt>org.freedesktop.ModemManager1.Modem.Contacts.Delete(), <a class="indexterm" href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Delete">The Delete() method</a>
-</dt>
-<dt>org.freedesktop.ModemManager1.Modem.Contacts.Find(), <a class="indexterm" href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Find">The Find() method</a>
-</dt>
-<dt>org.freedesktop.ModemManager1.Modem.Contacts.Get(), <a class="indexterm" href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.Get">The Get() method</a>
-</dt>
-<dt>org.freedesktop.ModemManager1.Modem.Contacts.GetCount(), <a class="indexterm" href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.GetCount">The GetCount() method</a>
-</dt>
-<dt>org.freedesktop.ModemManager1.Modem.Contacts.List(), <a class="indexterm" href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Contacts.List">The List() method</a>
-</dt>
-<dt>org.freedesktop.ModemManager1.Modem.Contacts::Added, <a class="indexterm" href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Contacts.Added">The "Added" signal</a>
-</dt>
-<dt>org.freedesktop.ModemManager1.Modem.Contacts::Deleted, <a class="indexterm" href="gdbus-org.freedesktop.ModemManager1.Modem.Contacts.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Contacts.Deleted">The "Deleted" signal</a>
 </dt>
 <dt>org.freedesktop.ModemManager1.Modem.CreateBearer(), <a class="indexterm" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-method-org-freedesktop-ModemManager1-Modem.CreateBearer">The CreateBearer() method</a>
 </dt>
@@ -238,6 +228,8 @@
 </dt>
 <dt>org.freedesktop.ModemManager1.Modem:Plugin, <a class="indexterm" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Plugin">The "Plugin" property</a>
 </dt>
+<dt>org.freedesktop.ModemManager1.Modem:Ports, <a class="indexterm" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Ports">The "Ports" property</a>
+</dt>
 <dt>org.freedesktop.ModemManager1.Modem:PowerState, <a class="indexterm" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.PowerState">The "PowerState" property</a>
 </dt>
 <dt>org.freedesktop.ModemManager1.Modem:PrimaryPort, <a class="indexterm" href="gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.PrimaryPort">The "PrimaryPort" property</a>
@@ -305,6 +297,8 @@
 <dt>MMModemLock, <a class="indexterm" href="ModemManager-Flags-and-Enumerations.html#MMModemLock">enum MMModemLock</a>
 </dt>
 <dt>MMModemMode, <a class="indexterm" href="ModemManager-Flags-and-Enumerations.html#MMModemMode">enum MMModemMode</a>
+</dt>
+<dt>MMModemPortType, <a class="indexterm" href="ModemManager-Flags-and-Enumerations.html#MMModemPortType">enum MMModemPortType</a>
 </dt>
 <dt>MMModemPowerState, <a class="indexterm" href="ModemManager-Flags-and-Enumerations.html#MMModemPowerState">enum MMModemPowerState</a>
 </dt>

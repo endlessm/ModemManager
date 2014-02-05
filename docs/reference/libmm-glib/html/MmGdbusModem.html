@@ -84,6 +84,8 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MmGdbusModem.html#mm-gdbus-modem-get-power-state" title="mm_gdbus_modem_get_power_state ()">mm_gdbus_modem_get_power_state</a>      (<em class="parameter"><code><a class="link" href="MmGdbusModem.html" title="MmGdbusModem"><span class="type">MmGdbusModem</span></a> *object</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MmGdbusModem.html#mm-gdbus-modem-get-primary-port" title="mm_gdbus_modem_get_primary_port ()">mm_gdbus_modem_get_primary_port</a>     (<em class="parameter"><code><a class="link" href="MmGdbusModem.html" title="MmGdbusModem"><span class="type">MmGdbusModem</span></a> *object</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MmGdbusModem.html#mm-gdbus-modem-dup-primary-port" title="mm_gdbus_modem_dup_primary_port ()">mm_gdbus_modem_dup_primary_port</a>     (<em class="parameter"><code><a class="link" href="MmGdbusModem.html" title="MmGdbusModem"><span class="type">MmGdbusModem</span></a> *object</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *          <a class="link" href="MmGdbusModem.html#mm-gdbus-modem-get-ports" title="mm_gdbus_modem_get_ports ()">mm_gdbus_modem_get_ports</a>            (<em class="parameter"><code><a class="link" href="MmGdbusModem.html" title="MmGdbusModem"><span class="type">MmGdbusModem</span></a> *object</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *          <a class="link" href="MmGdbusModem.html#mm-gdbus-modem-dup-ports" title="mm_gdbus_modem_dup_ports ()">mm_gdbus_modem_dup_ports</a>            (<em class="parameter"><code><a class="link" href="MmGdbusModem.html" title="MmGdbusModem"><span class="type">MmGdbusModem</span></a> *object</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MmGdbusModem.html#mm-gdbus-modem-get-revision" title="mm_gdbus_modem_get_revision ()">mm_gdbus_modem_get_revision</a>         (<em class="parameter"><code><a class="link" href="MmGdbusModem.html" title="MmGdbusModem"><span class="type">MmGdbusModem</span></a> *object</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MmGdbusModem.html#mm-gdbus-modem-dup-revision" title="mm_gdbus_modem_dup_revision ()">mm_gdbus_modem_dup_revision</a>         (<em class="parameter"><code><a class="link" href="MmGdbusModem.html" title="MmGdbusModem"><span class="type">MmGdbusModem</span></a> *object</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *          <a class="link" href="MmGdbusModem.html#mm-gdbus-modem-get-signal-quality" title="mm_gdbus_modem_get_signal_quality ()">mm_gdbus_modem_get_signal_quality</a>   (<em class="parameter"><code><a class="link" href="MmGdbusModem.html" title="MmGdbusModem"><span class="type">MmGdbusModem</span></a> *object</code></em>);
@@ -300,6 +302,7 @@ MmGdbusModem is implemented by
   "<a class="link" href="MmGdbusModem.html#MmGdbusModem--model" title='The "model" property'>model</a>"                    <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
   "<a class="link" href="MmGdbusModem.html#MmGdbusModem--own-numbers" title='The "own-numbers" property'>own-numbers</a>"              <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GStrv"><span class="type">GStrv</span></a>                 : Read / Write
   "<a class="link" href="MmGdbusModem.html#MmGdbusModem--plugin" title='The "plugin" property'>plugin</a>"                   <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
+  "<a class="link" href="MmGdbusModem.html#MmGdbusModem--ports" title='The "ports" property'>ports</a>"                    <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a>*             : Read / Write
   "<a class="link" href="MmGdbusModem.html#MmGdbusModem--power-state" title='The "power-state" property'>power-state</a>"              <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write
   "<a class="link" href="MmGdbusModem.html#MmGdbusModem--primary-port" title='The "primary-port" property'>primary-port</a>"             <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
   "<a class="link" href="MmGdbusModem.html#MmGdbusModem--revision" title='The "revision" property'>revision</a>"                 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
@@ -436,6 +439,8 @@ Abstract interface type for the D-Bus interface org.freedesktop.ModemManager1.Mo
   const gchar *const * (*get_own_numbers) (MmGdbusModem *object);
 
   const gchar * (*get_plugin) (MmGdbusModem *object);
+
+  GVariant * (*get_ports) (MmGdbusModem *object);
 
   guint  (*get_power_state) (MmGdbusModem *object);
 
@@ -582,6 +587,10 @@ Virtual table for the D-Bus interface org.freedesktop.ModemManager1.Modem.
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="MmGdbusModemIface.get-plugin"></a>get_plugin</code></em> ()</span></p></td>
 <td>Getter for the <a class="link" href="MmGdbusModem.html#MmGdbusModem--plugin" title='The "plugin" property'><span class="type">"plugin"</span></a> property.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="MmGdbusModemIface.get-ports"></a>get_ports</code></em> ()</span></p></td>
+<td>Getter for the <a class="link" href="MmGdbusModem.html#MmGdbusModem--ports" title='The "ports" property'><span class="type">"ports"</span></a> property.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="MmGdbusModemIface.get-power-state"></a>get_power_state</code></em> ()</span></p></td>
@@ -1461,6 +1470,68 @@ Since this D-Bus property is readable, it is meaningful to use this function on 
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The property value or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-get-ports"></a><h3>mm_gdbus_modem_get_ports ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *          mm_gdbus_modem_get_ports            (<em class="parameter"><code><a class="link" href="MmGdbusModem.html" title="MmGdbusModem"><span class="type">MmGdbusModem</span></a> *object</code></em>);</pre>
+<p>
+Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Ports">"Ports"</a> D-Bus property.
+</p>
+<p>
+Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+</p>
+<p>
+</p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where <em class="parameter"><code>object</code></em> was constructed. Use <a class="link" href="MmGdbusModem.html#mm-gdbus-modem-dup-ports" title="mm_gdbus_modem_dup_ports ()"><code class="function">mm_gdbus_modem_dup_ports()</code></a> if on another thread.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModem.html" title="MmGdbusModem"><span class="type">MmGdbusModem</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The property value or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-modem-dup-ports"></a><h3>mm_gdbus_modem_dup_ports ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *          mm_gdbus_modem_dup_ports            (<em class="parameter"><code><a class="link" href="MmGdbusModem.html" title="MmGdbusModem"><span class="type">MmGdbusModem</span></a> *object</code></em>);</pre>
+<p>
+Gets a copy of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Ports">"Ports"</a> D-Bus property.
+</p>
+<p>
+Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModem.html" title="MmGdbusModem"><span class="type">MmGdbusModem</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The property value or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#g-variant-unref"><code class="function">g_variant_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
 </td>
 </tr>
 </tbody>
@@ -3622,6 +3693,19 @@ Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbu
 <p>
 Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
 </p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MmGdbusModem--ports"></a><h3>The <code class="literal">"ports"</code> property</h3>
+<pre class="programlisting">  "ports"                    <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a>*             : Read / Write</pre>
+<p>
+Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.html#gdbus-property-org-freedesktop-ModemManager1-Modem.Ports">"Ports"</a>.
+</p>
+<p>
+Since the D-Bus property for this <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.
+</p>
+<p>Allowed values: GVariant&lt;a(su)&gt;</p>
 <p>Default value: NULL</p>
 </div>
 <hr>

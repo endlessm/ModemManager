@@ -56,7 +56,6 @@
 #define MM_DBUS_INTERFACE_MODEM_LOCATION "org.freedesktop.ModemManager1.Modem.Location"
 #define MM_DBUS_INTERFACE_MODEM_TIME "org.freedesktop.ModemManager1.Modem.Time"
 #define MM_DBUS_INTERFACE_MODEM_FIRMWARE "org.freedesktop.ModemManager1.Modem.Firmware"
-#define MM_DBUS_INTERFACE_MODEM_CONTACTS "org.freedesktop.ModemManager1.Modem.Contacts"
 
 /******************************
  * Methods/Signals/Properties *
@@ -142,6 +141,7 @@
 #define MM_MODEM_PROPERTY_DRIVERS "Drivers"
 #define MM_MODEM_PROPERTY_PLUGIN "Plugin"
 #define MM_MODEM_PROPERTY_PRIMARYPORT "PrimaryPort"
+#define MM_MODEM_PROPERTY_PORTS "Ports"
 #define MM_MODEM_PROPERTY_EQUIPMENTIDENTIFIER "EquipmentIdentifier"
 #define MM_MODEM_PROPERTY_UNLOCKREQUIRED "UnlockRequired"
 #define MM_MODEM_PROPERTY_UNLOCKRETRIES "UnlockRetries"
@@ -225,18 +225,6 @@
  
 #define MM_MODEM_FIRMWARE_METHOD_LIST "List"
 #define MM_MODEM_FIRMWARE_METHOD_SELECT "Select"
-/*
- * Interface 'org.freedesktop.ModemManager1.Modem.Contacts'
- */
- 
-#define MM_MODEM_CONTACTS_METHOD_ADD "Add"
-#define MM_MODEM_CONTACTS_METHOD_DELETE "Delete"
-#define MM_MODEM_CONTACTS_METHOD_GET "Get"
-#define MM_MODEM_CONTACTS_METHOD_LIST "List"
-#define MM_MODEM_CONTACTS_METHOD_FIND "Find"
-#define MM_MODEM_CONTACTS_METHOD_GETCOUNT "GetCount"
-#define MM_MODEM_CONTACTS_SIGNAL_ADDED "Added"
-#define MM_MODEM_CONTACTS_SIGNAL_DELETED "Deleted"
 
 #endif /*  _MODEM_MANAGER_NAMES_H_ */
 

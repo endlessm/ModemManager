@@ -34,16 +34,7 @@ endif
 # DBus Activation file
 dbusactivationdir = $(datadir)/dbus-1/system-services
 dbusactivation_DATA = org.freedesktop.ModemManager1.service
-dbusactivation_in_files_systemd = org.freedesktop.ModemManager1.service.systemd.in
-dbusactivation_in_files_nosystemd = org.freedesktop.ModemManager1.service.nosystemd.in
-if HAVE_SYSTEMD
-org.freedesktop.ModemManager1.service: org.freedesktop.ModemManager1.service.systemd.in
-	$(edit) $< >$@
-else
-org.freedesktop.ModemManager1.service: org.freedesktop.ModemManager1.service.nosystemd.in
-	$(edit) $< >$@
-endif
-
+dbusactivation_in_files = org.freedesktop.ModemManager1.service.in
 
 # Icon
 icondir=${datadir}/icons/hicolor/22x22/apps
@@ -65,10 +56,10 @@ diagrams = \
 
 
 # Polkit
-dist_polkit_policy_in_files = org.freedesktop.ModemManager1.policy.in
+polkit_policy_in_in_files = org.freedesktop.ModemManager1.policy.in.in
 if WITH_POLKIT
 polkit_policydir = $(datadir)/polkit-1/actions
-dist_polkit_policy_DATA = $(dist_polkit_policy_in_files:.policy.in=.policy)
+polkit_policy_DATA = $(polkit_policy_in_in_files:.policy.in.in=.policy)
 @INTLTOOL_POLICY_RULE@
 endif
 
@@ -82,7 +73,8 @@ pkgconfig_DATA = \
 
 DISTCLEANFILES = \
 	$(dbusactivation_DATA) \
-	$(dbusservice_DATA)
+	$(dbusservice_DATA) \
+	$(polkit_policy_DATA)
 
 if HAVE_SYSTEMD
 DISTCLEANFILES += $(systemdsystemunit_DATA)
@@ -91,11 +83,10 @@ endif
 
 EXTRA_DIST = \
 	$(systemdsystemunit_in_files) \
-	$(dbusactivation_in_files_systemd) \
-	$(dbusactivation_in_files_nosystemd) \
+	$(dbusactivation_in_files) \
 	$(dbusservice_file_polkit) \
 	$(dbusservice_file_nopolkit) \
 	$(icon_DATA) \
-	$(dist_polkit_policy_in_files) \
+	$(polkit_policy_in_in_files) \
 	$(logos) \
 	$(diagrams)

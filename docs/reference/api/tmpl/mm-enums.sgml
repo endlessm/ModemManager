@@ -363,6 +363,19 @@ Flags and Enumerations
 @MM_MODEM_POWER_STATE_LOW: 
 @MM_MODEM_POWER_STATE_ON: 
 
+<!-- ##### ENUM MMModemPortType ##### -->
+<para>
+
+</para>
+
+@MM_MODEM_PORT_TYPE_UNKNOWN: 
+@MM_MODEM_PORT_TYPE_NET: 
+@MM_MODEM_PORT_TYPE_AT: 
+@MM_MODEM_PORT_TYPE_QCDM: 
+@MM_MODEM_PORT_TYPE_GPS: 
+@MM_MODEM_PORT_TYPE_QMI: 
+@MM_MODEM_PORT_TYPE_MBIM: 
+
 <!-- ##### ENUM MMSmsPduType ##### -->
 <para>
 

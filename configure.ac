@@ -1,7 +1,27 @@
-AC_PREREQ([2.60])
+AC_PREREQ([2.63])
 
-AC_INIT([ModemManager],[0.7.991],[dcbw@redhat.com],[ModemManager])
-AM_INIT_AUTOMAKE([1.9 subdir-objects tar-ustar no-dist-gzip dist-bzip2 -Wno-portability])
+dnl The MM version number
+m4_define([mm_major_version], [1])
+m4_define([mm_minor_version], [0])
+m4_define([mm_micro_version], [0])
+m4_define([mm_version],
+          [mm_major_version.mm_minor_version.mm_micro_version])
+
+dnl libtool versioning for libmm-glib (-version-info c:r:a)
+dnl    If the interface is unchanged, but the implementation has changed or
+dnl        been fixed, then increment r.
+dnl    Otherwise, increment c and zero r.
+dnl        If the interface has grown (that is, the new library is compatible
+dnl            with old code), increment a.
+dnl        If the interface has changed in an incompatible way (that is,
+dnl            functions have changed or been removed), then zero a.
+m4_define([mm_glib_lt_current],  [0])
+m4_define([mm_glib_lt_revision], [0])
+m4_define([mm_glib_lt_age],      [0])
+
+
+AC_INIT([ModemManager],[mm_version],[modemmanager-devel@lists.freedesktop.org],[ModemManager])
+AM_INIT_AUTOMAKE([1.9 subdir-objects tar-ustar no-dist-gzip dist-xz -Wno-portability])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AM_MAINTAINER_MODE([enable])
 
@@ -20,6 +40,24 @@ AC_PROG_INSTALL
 dnl Initialize libtool
 LT_PREREQ([2.2])
 LT_INIT
+
+dnl Version stuff
+MM_MAJOR_VERSION=mm_major_version
+MM_MINOR_VERSION=mm_minor_version
+MM_MICRO_VERSION=mm_micro_version
+MM_VERSION=mm_version
+AC_SUBST(MM_MAJOR_VERSION)
+AC_SUBST(MM_MINOR_VERSION)
+AC_SUBST(MM_MICRO_VERSION)
+AC_SUBST(MM_VERSION)
+
+dnl libtool version stuff
+MM_GLIB_LT_CURRENT=mm_glib_lt_current
+MM_GLIB_LT_REVISION=mm_glib_lt_revision
+MM_GLIB_LT_AGE=mm_glib_lt_age
+AC_SUBST(MM_GLIB_LT_CURRENT)
+AC_SUBST(MM_GLIB_LT_REVISION)
+AC_SUBST(MM_GLIB_LT_AGE)
 
 dnl
 dnl Documentation
@@ -99,84 +137,72 @@ fi
 AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$SYSTEMD_UNIT_DIR" -a "$SYSTEMD_UNIT_DIR" != xno ])
 
 # PolicyKit
-AC_ARG_WITH(polkit, AS_HELP_STRING([--with-polkit], [Build with PolicyKit support]))
-AM_CONDITIONAL(WITH_POLKIT, test "x$with_polkit" = "xyes")
-case $with_polkit in
-    yes)
-        with_polkit=yes
-	PKG_CHECK_MODULES(POLKIT, polkit-gobject-1 >= 0.97)
-	AC_DEFINE(WITH_POLKIT, 1, [Define if you want to use PolicyKit])
-	AC_SUBST(POLKIT_CFLAGS)
-	AC_SUBST(POLKIT_LIBS)
-
-	AM_GLIB_GNU_GETTEXT
-        ;;
-    *)
-        with_polkit=no
-        ;;
-esac
-
-# PPPD
-AC_CHECK_HEADERS(pppd/pppd.h, have_pppd_headers="yes", have_pppd_headers="no")
-AM_CONDITIONAL(HAVE_PPPD_H, test "x$have_pppd_headers" = "xyes")
-case $have_pppd_headers in
-    yes) ;;
-    *)
-        have_pppd_headers=no
-        ;;
-esac
-
-AC_ARG_WITH([pppd-plugin-dir], AS_HELP_STRING([--with-pppd-plugin-dir=DIR], [path to the pppd plugins directory]))
-
-if test -n "$with_pppd_plugin_dir" ; then
-	PPPD_PLUGIN_DIR="$with_pppd_plugin_dir"
-else
-	PPPD_PLUGIN_DIR="${libdir}/pppd/2.4.5"
-fi
-AC_SUBST(PPPD_PLUGIN_DIR)
-
-
-dnl
-dnl Tests
-dnl
-AC_ARG_WITH(tests, AS_HELP_STRING([--with-tests], [Build ModemManager tests]))
-AM_CONDITIONAL(WITH_TESTS, test "x$with_tests" = "xyes")
-case $with_tests in
-    yes)
-        with_tests=yes
-        ;;
-    *)
-        with_tests=no
-        ;;
-esac
-
-dnl
-dnl MBIM support (auto by default)
-dnl
-AC_ARG_WITH(mbim, AS_HELP_STRING([--without-mbim], [Build without MBIM support]), [], [with_mbim=auto])
-if (test "${with_mbim}" != "no"); then
-    PKG_CHECK_MODULES(MBIM,
-                      [mbim-glib >= 1.0.0],
-                      [have_libmbim_glib=yes],
-                      [have_libmbim_glib=no])
-    AC_SUBST(MBIM_CFLAGS)
-    AC_SUBST(MBIM_LIBS)
-
-    if (test "${have_libmbim_glib}" = "no"); then
-        if (test "${with_mbim}" = "yes"); then
-            AC_MSG_ERROR([Couldn't find libmbim-glib])
-        else
-            with_mbim="no"
-        fi
+PKG_CHECK_MODULES(POLKIT, [polkit-gobject-1 >= 0.97], [have_polkit=yes],[have_polkit=no])
+AC_ARG_WITH(polkit,
+            AS_HELP_STRING([--with-polkit=(strict|permissive|none)],
+                           [Enable PolicyKit support [[default=auto]]]),,
+            [with_polkit=auto])
+# Handle 'auto' ('strict' if polkit found, 'none' otherwise),
+#  'yes' ('strict') and 'no' ('none')
+if test "x$with_polkit" = "xauto"; then
+	if test "x$have_polkit" = "xno"; then
+        with_polkit="none"
     else
-        with_mbim="yes"
+        with_polkit="strict"
     fi
+elif test "x$with_polkit" = "xno"; then
+    with_polkit=none
+elif test "x$with_polkit" = "xyes"; then
+    with_polkit=strict
+fi
+# Build policies context
+if test "x$with_polkit" = "xnone"; then
+    AC_DEFINE(WITH_POLKIT, 0, [Define if you have PolicyKit support])
+else
+	if test "x$have_polkit" = "xno"; then
+		AC_MSG_ERROR(PolicyKit development headers are required)
+	fi
+
+    case "x$with_polkit" in
+        "xpermissive")
+            MM_DEFAULT_USER_POLICY="yes"
+            ;;
+        "xstrict")
+            MM_DEFAULT_USER_POLICY="auth_self_keep"
+            ;;
+        *)
+            AC_MSG_ERROR([Wrong value for --with-polkit: $with_polkit])
+            ;;
+    esac
+
+    AC_DEFINE(WITH_POLKIT, 1, [Define if you have PolicyKit support])
+    AC_SUBST(POLKIT_CFLAGS)
+    AC_SUBST(POLKIT_LIBS)
+    AC_SUBST(MM_DEFAULT_USER_POLICY)
 fi
 
-if (test "${with_mbim}" = "yes"); then
-    AC_DEFINE(WITH_MBIM, 1, [Define if you want MBIM support])
-fi
-AM_CONDITIONAL(WITH_MBIM, test "${with_mbim}" = "yes")
+AM_CONDITIONAL(WITH_POLKIT, [test "x$with_polkit" != "xnone" ])
+
+dnl
+dnl MBIM support (enabled by default)
+dnl
+AC_ARG_WITH(mbim, AS_HELP_STRING([--without-mbim], [Build without MBIM support]), [], [with_mbim=yes])
+AM_CONDITIONAL(WITH_MBIM, test "x$with_mbim" = "xyes")
+case $with_mbim in
+    yes)
+        PKG_CHECK_MODULES(MBIM, [mbim-glib >= 1.4], [have_mbim=yes],[have_mbim=no])
+        if test "x$have_mbim" = "xno"; then
+            AC_MSG_ERROR([Couldn't find libmbim-glib. Install it, or otherwise configure using --without-mbim to disable MBIM support.])
+        else
+            AC_DEFINE(WITH_MBIM, 1, [Define if you want MBIM support])
+            AC_SUBST(MBIM_CFLAGS)
+            AC_SUBST(MBIM_LIBS)
+        fi
+        ;;
+    *)
+        with_mbim=no
+        ;;
+esac
 
 dnl
 dnl QMI support (enabled by default)
@@ -185,10 +211,14 @@ AC_ARG_WITH(qmi, AS_HELP_STRING([--without-qmi], [Build without QMI support]), [
 AM_CONDITIONAL(WITH_QMI, test "x$with_qmi" = "xyes")
 case $with_qmi in
     yes)
-        PKG_CHECK_MODULES(QMI, qmi-glib)
-        AC_DEFINE(WITH_QMI, 1, [Define if you want QMI support])
-        AC_SUBST(QMI_CFLAGS)
-        AC_SUBST(QMI_LIBS)
+        PKG_CHECK_MODULES(QMI, [qmi-glib >= 1.4], [have_qmi=yes],[have_qmi=no])
+        if test "x$have_qmi" = "xno"; then
+            AC_MSG_ERROR([Couldn't find libqmi-glib. Install it, or otherwise configure using --without-qmi to disable QMI support.])
+        else
+            AC_DEFINE(WITH_QMI, 1, [Define if you want QMI support])
+            AC_SUBST(QMI_CFLAGS)
+            AC_SUBST(QMI_LIBS)
+        fi
         ;;
     *)
         with_qmi=no
@@ -234,8 +264,10 @@ Makefile
 data/Makefile
 data/ModemManager.pc
 data/mm-glib.pc
-data/org.freedesktop.ModemManager1.policy
+data/org.freedesktop.ModemManager1.policy.in
+data/org.freedesktop.ModemManager1.service
 include/Makefile
+include/ModemManager-version.h
 build-aux/Makefile
 libqcdm/Makefile
 libqcdm/src/Makefile
@@ -276,7 +308,6 @@ echo "
     udev base directory:     ${UDEV_BASE_DIR}
     systemd unit directory:  ${with_systemdsystemunitdir}
 
-    PPP-enabled tests:       ${have_pppd_headers}
     PolicyKit support:       ${with_polkit}
     Documentation:           ${enable_gtk_doc}
     MBIM support:            ${with_mbim}

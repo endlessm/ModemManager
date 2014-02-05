@@ -130,6 +130,15 @@ Flags and Enumerations
 @Returns: 
 
 
+<!-- ##### FUNCTION mm_modem_port_type_get_string ##### -->
+<para>
+
+</para>
+
+@val: 
+@Returns: 
+
+
 <!-- ##### FUNCTION mm_modem_3gpp_registration_state_get_string ##### -->
 <para>
 

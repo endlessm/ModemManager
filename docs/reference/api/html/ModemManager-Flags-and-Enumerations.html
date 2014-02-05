@@ -5,8 +5,8 @@
 <title>Flags and Enumerations</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="ModemManager Reference Manual">
-<link rel="up" href="ref-dbus-common-types.html" title="Common types">
-<link rel="prev" href="ref-dbus-common-types.html" title="Common types">
+<link rel="up" href="ref-common-types.html" title="Part II. Common types and definitions">
+<link rel="prev" href="ModemManager-Version-checks.html" title="Version checks">
 <link rel="next" href="ModemManager-Errors.html" title="Errors">
 <meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -14,8 +14,8 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="ref-dbus-common-types.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="ref-dbus-common-types.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="ModemManager-Version-checks.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ref-common-types.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">ModemManager Reference Manual</th>
 <td><a accesskey="n" href="ModemManager-Errors.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
@@ -59,6 +59,7 @@ enum                <a class="link" href="ModemManager-Flags-and-Enumerations.ht
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemStateFailedReason" title="enum MMModemStateFailedReason">MMModemStateFailedReason</a>;
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemStateChangeReason" title="enum MMModemStateChangeReason">MMModemStateChangeReason</a>;
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemPowerState" title="enum MMModemPowerState">MMModemPowerState</a>;
+enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMModemPortType" title="enum MMModemPortType">MMModemPortType</a>;
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsPduType" title="enum MMSmsPduType">MMSmsPduType</a>;
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsState" title="enum MMSmsState">MMSmsState</a>;
 enum                <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsDeliveryState" title="enum MMSmsDeliveryState">MMSmsDeliveryState</a>;
@@ -1752,6 +1753,67 @@ Power state of the modem.
 <tr>
 <td><p><a name="MM-MODEM-POWER-STATE-ON:CAPS"></a><span class="term"><code class="literal">MM_MODEM_POWER_STATE_ON</code></span></p></td>
 <td>Full power mode.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMModemPortType"></a><h3>enum MMModemPortType</h3>
+<pre class="programlisting">typedef enum {
+ /*&lt; underscore_name=mm_modem_port_type &gt;*/
+    MM_MODEM_PORT_TYPE_UNKNOWN = 1,
+    MM_MODEM_PORT_TYPE_NET     = 2,
+    MM_MODEM_PORT_TYPE_AT      = 3,
+    MM_MODEM_PORT_TYPE_QCDM    = 4,
+    MM_MODEM_PORT_TYPE_GPS     = 5,
+    MM_MODEM_PORT_TYPE_QMI     = 6,
+    MM_MODEM_PORT_TYPE_MBIM    = 7
+} MMModemPortType;
+</pre>
+<p>
+Type of modem port.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><a name="MM-MODEM-PORT-TYPE-UNKNOWN:CAPS"></a><span class="term"><code class="literal">MM_MODEM_PORT_TYPE_UNKNOWN</code></span></p></td>
+<td>Unknown.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-MODEM-PORT-TYPE-NET:CAPS"></a><span class="term"><code class="literal">MM_MODEM_PORT_TYPE_NET</code></span></p></td>
+<td>Net port.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-MODEM-PORT-TYPE-AT:CAPS"></a><span class="term"><code class="literal">MM_MODEM_PORT_TYPE_AT</code></span></p></td>
+<td>AT port.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-MODEM-PORT-TYPE-QCDM:CAPS"></a><span class="term"><code class="literal">MM_MODEM_PORT_TYPE_QCDM</code></span></p></td>
+<td>QCDM port.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-MODEM-PORT-TYPE-GPS:CAPS"></a><span class="term"><code class="literal">MM_MODEM_PORT_TYPE_GPS</code></span></p></td>
+<td>GPS port.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-MODEM-PORT-TYPE-QMI:CAPS"></a><span class="term"><code class="literal">MM_MODEM_PORT_TYPE_QMI</code></span></p></td>
+<td>QMI port.
+</td>
+</tr>
+<tr>
+<td><p><a name="MM-MODEM-PORT-TYPE-MBIM:CAPS"></a><span class="term"><code class="literal">MM_MODEM_PORT_TYPE_MBIM</code></span></p></td>
+<td>MBIM port.
 </td>
 </tr>
 </tbody>
