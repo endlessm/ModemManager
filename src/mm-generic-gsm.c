@@ -37,6 +37,7 @@
 #include "mm-properties-changed-signal.h"
 #include "mm-utils.h"
 #include "mm-modem-location.h"
+#include "mm-sms-utils.h"
 
 static void modem_init (MMModem *modem_class);
 static void modem_gsm_card_init (MMModemGsmCard *gsm_card_class);
@@ -120,7 +121,11 @@ typedef struct {
     gboolean loc_enabled;
     gboolean loc_signal;
 
+    gboolean ussd_enabled;
+    MMCallbackInfo *pending_ussd_info;
     MMModemGsmUssdState ussd_state;
+    char *ussd_network_request;
+    char *ussd_network_notification;
 
     /* SMS */
     GHashTable *sms_present;
@@ -174,10 +179,13 @@ static void cmti_received (MMAtSerialPort *port,
                            GMatchInfo *info,
                            gpointer user_data);
 
+static void cusd_received (MMAtSerialPort *port,
+                           GMatchInfo *info,
+                           gpointer user_data);
+
 #define GS_HASH_TAG "get-sms"
 static GValue *simple_string_value (const char *str);
 static GValue *simple_uint_value (guint32 i);
-static GValue *simple_boolean_value (gboolean b);
 static void simple_free_gvalue (gpointer data);
 
 MMModem *
@@ -838,9 +846,14 @@ mm_generic_gsm_grab_port (MMGenericGsm *self,
 
         regex = g_regex_new ("\\r\\n\\+CIEV: (\\d+),(\\d)\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
         mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (port), regex, ciev_received, self, NULL);
+        g_regex_unref (regex);
 
         regex = g_regex_new ("\\r\\n\\+CMTI: \"(\\S+)\",(\\d+)\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
         mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (port), regex, cmti_received, self, NULL);
+        g_regex_unref (regex);
+
+        regex = g_regex_new ("\\r\\n\\+CUSD:\\s*(.*)\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
+        mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (port), regex, cusd_received, self, NULL);
         g_regex_unref (regex);
 
         if (ptype == MM_PORT_TYPE_PRIMARY) {
@@ -1400,6 +1413,21 @@ cind_cb (MMAtSerialPort *port,
     }
 }
 
+static void
+cusd_enable_cb (MMAtSerialPort *port,
+                GString *response,
+                GError *error,
+                gpointer user_data)
+{
+    if (error) {
+        mm_warn ("(%s): failed to enable USSD notifications.",
+                 mm_port_get_device (MM_PORT (port)));
+        return;
+    }
+
+    MM_GENERIC_GSM_GET_PRIVATE (user_data)->ussd_enabled = TRUE;
+}
+
 void
 mm_generic_gsm_enable_complete (MMGenericGsm *self,
                                 GError *error,
@@ -1438,10 +1466,14 @@ mm_generic_gsm_enable_complete (MMGenericGsm *self,
         mm_at_serial_port_queue_command (priv->primary, cmd, 3, NULL, NULL);
     g_free (cmd);
 
-    /* Enable SMS notifications */
-    mm_at_serial_port_queue_command (priv->primary, "+CNMI=2,1,2,1,0", 3, NULL, NULL);
     /* Set SMS storage location to ME */
     mm_at_serial_port_queue_command (priv->primary, "+CPMS=\"ME\",\"ME\",\"ME\"", 3, NULL, NULL);
+
+    /* Enable SMS notifications */
+    mm_at_serial_port_queue_command (priv->primary, "+CNMI=2,1,2,1,0", 3, NULL, NULL);
+
+    /* Enable USSD notifications */
+    mm_at_serial_port_queue_command (priv->primary, "+CUSD=1", 3, cusd_enable_cb, self);
 
     mm_at_serial_port_queue_command (priv->primary, "+CIND=?", 3, cind_cb, self);
 
@@ -1543,7 +1575,13 @@ enable_flash_done (MMSerialPort *port, GError *error, gpointer user_data)
         return;
     }
 
+    /* Send the init command twice; some devices (Nokia N900) appear to take a
+     * few commands before responding correctly.  Instead of penalizing them for
+     * being stupid the first time by failing to enable the device, just
+     * try again.
+     */
     g_object_get (G_OBJECT (info->modem), MM_GENERIC_GSM_INIT_CMD, &cmd, NULL);
+    mm_at_serial_port_queue_command (MM_AT_SERIAL_PORT (port), cmd, 3, NULL, NULL);
     mm_at_serial_port_queue_command (MM_AT_SERIAL_PORT (port), cmd, 3, init_done, user_data);
     g_free (cmd);
 }
@@ -1672,6 +1710,11 @@ disable_flash_done (MMSerialPort *port,
     mm_at_serial_port_queue_command (MM_AT_SERIAL_PORT (port), "+CREG=0", 3, NULL, NULL);
     mm_at_serial_port_queue_command (MM_AT_SERIAL_PORT (port), "+CGREG=0", 3, NULL, NULL);
 
+    if (priv->ussd_enabled) {
+        mm_at_serial_port_queue_command (MM_AT_SERIAL_PORT (port), "+CUSD=0", 3, NULL, NULL);
+        priv->ussd_enabled = FALSE;
+    }
+
     if (priv->cmer_enabled) {
         mm_at_serial_port_queue_command (MM_AT_SERIAL_PORT (port), "+CMER=0", 3, NULL, NULL);
 
@@ -1714,6 +1757,8 @@ disable (MMModem *modem,
     priv->cid = -1;
 
     mm_generic_gsm_pending_registration_stop (MM_GENERIC_GSM (modem));
+
+    mm_generic_gsm_ussd_cleanup (MM_GENERIC_GSM (modem));
 
     if (priv->poll_id) {
         g_source_remove (priv->poll_id);
@@ -1873,8 +1918,8 @@ get_operator_id_imsi_done (MMModem *modem,
                            GError *error,
                            gpointer user_data)
 {
-    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
+    MMAtSerialPort *port;
 
     if (error) {
         info->error = g_error_copy (error);
@@ -1882,10 +1927,17 @@ get_operator_id_imsi_done (MMModem *modem,
         return;
     }
 
+    g_clear_error (&info->error);
+    port = mm_generic_gsm_get_best_at_port (MM_GENERIC_GSM (modem), &info->error);
+    if (!port) {
+        mm_callback_info_schedule (info);
+        return;
+    }
+
     mm_callback_info_set_data (info, "imsi", g_strdup (result), g_free);
 
     /* READ BINARY of EFad (Administrative Data) ETSI 51.011 section 10.3.18 */
-    mm_at_serial_port_queue_command_cached (priv->primary,
+    mm_at_serial_port_queue_command_cached (port,
                                             "+CRSM=176,28589,0,0,4",
                                             3,
                                             get_mnc_length_done,
@@ -1948,7 +2000,7 @@ get_spn_done (MMAtSerialPort *port,
         }
 
         /* Remove the FF filler at the end */
-        while (bin[buflen - 1] == (char)0xff)
+        while (buflen > 1 && bin[buflen - 1] == (char)0xff)
             buflen--;
 
         /* First byte is metadata; remainder is GSM-7 unpacked into octets; convert to UTF8 */
@@ -1972,11 +2024,18 @@ get_imei (MMModemGsmCard *modem,
           MMModemStringFn callback,
           gpointer user_data)
 {
-    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
     MMCallbackInfo *info;
+    MMAtSerialPort *port;
 
     info = mm_callback_info_string_new (MM_MODEM (modem), callback, user_data);
-    mm_at_serial_port_queue_command_cached (priv->primary, "+CGSN", 3, get_string_done, info);
+
+    port = mm_generic_gsm_get_best_at_port (MM_GENERIC_GSM (modem), &info->error);
+    if (!port)
+        mm_callback_info_schedule (info);
+    else {
+        g_clear_error (&info->error);
+        mm_at_serial_port_queue_command_cached (port, "+CGSN", 3, get_string_done, info);
+    }
 }
 
 static void
@@ -1984,11 +2043,18 @@ get_imsi (MMModemGsmCard *modem,
           MMModemStringFn callback,
           gpointer user_data)
 {
-    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
     MMCallbackInfo *info;
+    MMAtSerialPort *port;
 
     info = mm_callback_info_string_new (MM_MODEM (modem), callback, user_data);
-    mm_at_serial_port_queue_command_cached (priv->primary, "+CIMI", 3, get_string_done, info);
+
+    port = mm_generic_gsm_get_best_at_port (MM_GENERIC_GSM (modem), &info->error);
+    if (!port)
+        mm_callback_info_schedule (info);
+    else {
+        g_clear_error (&info->error);
+        mm_at_serial_port_queue_command_cached (port, "+CIMI", 3, get_string_done, info);
+    }
 }
 
 static void
@@ -2009,17 +2075,24 @@ get_spn (MMModemGsmCard *modem,
          MMModemStringFn callback,
          gpointer user_data)
 {
-    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
     MMCallbackInfo *info;
+    MMAtSerialPort *port;
 
     info = mm_callback_info_string_new (MM_MODEM (modem), callback, user_data);
 
-    /* READ BINARY of EFspn (Service Provider Name) ETSI 51.011 section 10.3.11 */
-    mm_at_serial_port_queue_command_cached (priv->primary,
-                                            "+CRSM=176,28486,0,0,17",
-                                            3,
-                                            get_spn_done,
-                                            info);
+    port = mm_generic_gsm_get_best_at_port (MM_GENERIC_GSM (modem), &info->error);
+    if (!port)
+        mm_callback_info_schedule (info);
+    else {
+        g_clear_error (&info->error);
+
+        /* READ BINARY of EFspn (Service Provider Name) ETSI 51.011 section 10.3.11 */
+        mm_at_serial_port_queue_command_cached (port,
+                                                "+CRSM=176,28486,0,0,17",
+                                                3,
+                                                get_spn_done,
+                                                info);
+    }
 }
 
 static void
@@ -2358,6 +2431,19 @@ reg_info_updated (MMGenericGsm *self,
         priv->reg_status[rs_type - 1] = status;
         if (gsm_reg_status (self, NULL) != old_status)
             changed = TRUE;
+    }
+
+    /* Don't clear oper code or oper num if at least one of CS or PS state
+     * is home or roaming.
+     */
+    if (   priv->reg_status[0] == MM_MODEM_GSM_NETWORK_REG_STATUS_HOME
+        || priv->reg_status[0] == MM_MODEM_GSM_NETWORK_REG_STATUS_ROAMING
+        || priv->reg_status[1] == MM_MODEM_GSM_NETWORK_REG_STATUS_HOME
+        || priv->reg_status[1] == MM_MODEM_GSM_NETWORK_REG_STATUS_ROAMING) {
+        if (update_code && oper_code == NULL)
+            update_code = FALSE;
+        if (update_name && oper_name == NULL)
+            update_name = FALSE;
     }
 
     if (update_code) {
@@ -3499,7 +3585,12 @@ existing_apns_read (MMAtSerialPort *port,
         return;
 
     if (error) {
-        info->error = g_error_copy (error);
+        /* Some Android phones don't support querying existing PDP contexts,
+         * but will accept setting the APN.  So if CGDCONT? isn't supported,
+         * just ignore that error and hope for the best. (bgo #637327)
+         */
+        if (g_error_matches (error, MM_MOBILE_ERROR, MM_MOBILE_ERROR_NOT_SUPPORTED) == FALSE)
+            info->error = g_error_copy (error);
     } else if (g_str_has_prefix (response->str, "+CGDCONT:")) {
         GRegex *r;
         GMatchInfo *match_info;
@@ -4101,35 +4192,6 @@ mm_generic_gsm_get_charset (MMGenericGsm *self)
 /* MMModemGsmSms interface */
 
 
-#define SMS_TP_MTI_MASK	              0x03
-#define  SMS_TP_MTI_SMS_DELIVER       0x00
-#define  SMS_TP_MTI_SMS_SUBMIT_REPORT 0x01
-#define  SMS_TP_MTI_SMS_STATUS_REPORT 0x02
-
-#define SMS_NUMBER_TYPE_MASK          0x70
-#define SMS_NUMBER_TYPE_UNKNOWN       0x00
-#define SMS_NUMBER_TYPE_INTL          0x10
-#define SMS_NUMBER_TYPE_ALPHA         0x50
-
-#define SMS_NUMBER_PLAN_MASK          0x0f
-#define SMS_NUMBER_PLAN_TELEPHONE     0x01
-
-#define SMS_TP_MMS                    0x04
-#define SMS_TP_SRI                    0x20
-#define SMS_TP_UDHI                   0x40
-#define SMS_TP_RP                     0x80
-
-#define SMS_DCS_CODING_MASK           0xec
-#define  SMS_DCS_CODING_DEFAULT       0x00
-#define  SMS_DCS_CODING_8BIT          0x04
-#define  SMS_DCS_CODING_UCS2          0x08
-
-#define SMS_DCS_CLASS_VALID           0x10
-#define SMS_DCS_CLASS_MASK            0x03
-
-#define SMS_TIMESTAMP_LEN 7
-#define SMS_MIN_PDU_LEN (7 + SMS_TIMESTAMP_LEN)
-#define SMS_MAX_PDU_LEN 344
 
 static void
 sms_send_done (MMAtSerialPort *port,
@@ -4180,219 +4242,7 @@ sms_send (MMModemGsmSms *modem,
     g_free (command);
 }
 
-static char sms_bcd_chars[] = "0123456789*#abc\0\0";
 
-static void
-sms_semi_octets_to_bcd_string (char *dest, const guint8 *octets, int num_octets)
-{
-    int i;
-
-    for (i = 0 ; i < num_octets; i++) {
-        *dest++ = sms_bcd_chars[octets[i] & 0xf];
-        *dest++ = sms_bcd_chars[(octets[i] >> 4) & 0xf];
-    }
-    *dest++ = '\0';
-}
-
-/* len is in semi-octets */
-static char *
-sms_decode_address (const guint8 *address, int len)
-{
-    guint8 addrtype, addrplan;
-    char *utf8;
-
-    addrtype = address[0] & SMS_NUMBER_TYPE_MASK;
-    addrplan = address[0] & SMS_NUMBER_PLAN_MASK;
-    address++;
-
-    if (addrtype == SMS_NUMBER_TYPE_ALPHA) {
-        guint8 *unpacked;
-        guint32 unpacked_len;
-        unpacked = gsm_unpack (address, (len * 4) / 7, 0, &unpacked_len);
-        utf8 = (char *)mm_charset_gsm_unpacked_to_utf8 (unpacked,
-                                                        unpacked_len);
-        g_free(unpacked);
-    } else if (addrtype == SMS_NUMBER_TYPE_INTL &&
-               addrplan == SMS_NUMBER_PLAN_TELEPHONE) {
-        /* International telphone number, format as "+1234567890" */
-        utf8 = g_malloc (len + 3); /* '+' + digits + possible trailing 0xf + NUL */
-        utf8[0] = '+';
-        sms_semi_octets_to_bcd_string (utf8 + 1, address, (len + 1) / 2);
-    } else {
-        /*
-         * All non-alphanumeric types and plans are just digits, but
-         * don't apply any special formatting if we don't know the
-         * format.
-         */
-        utf8 = g_malloc (len + 2); /* digits + possible trailing 0xf + NUL */
-        sms_semi_octets_to_bcd_string (utf8, address, (len + 1) / 2);
-    }
-
-    return utf8;
-}
-
-
-static char *
-sms_decode_timestamp (const guint8 *timestamp)
-{
-    /* YYMMDDHHMMSS+ZZ */
-    char *timestr;
-    int quarters, hours;
-
-    timestr = g_malloc0 (16);
-    sms_semi_octets_to_bcd_string (timestr, timestamp, 6);
-    quarters = ((timestamp[6] & 0x7) * 10) + ((timestamp[6] >> 4) & 0xf);
-    hours = quarters / 4;
-    if (timestamp[6] & 0x08)
-        timestr[12] = '-';
-    else
-        timestr[12] = '+';
-    timestr[13] = (hours / 10) + '0';
-    timestr[14] = (hours % 10) + '0';
-    /* TODO(njw): Change timestamp rep to something that includes quarter-hours */
-    return timestr;
-}
-
-static char *
-sms_decode_text (const guint8 *text, int len, int dcs, int bit_offset)
-{
-    char *utf8;
-    guint8 coding = dcs & SMS_DCS_CODING_MASK;
-    guint8 *unpacked;
-    guint32 unpacked_len;
-
-    if (coding == SMS_DCS_CODING_DEFAULT) {
-        unpacked = gsm_unpack ((const guint8 *) text, len, bit_offset, &unpacked_len);
-        utf8 = (char *) mm_charset_gsm_unpacked_to_utf8 (unpacked, unpacked_len);
-        g_free (unpacked);
-    } else if (coding == SMS_DCS_CODING_UCS2)
-        utf8 = g_convert ((char *) text, len, "UTF8", "UCS-2BE", NULL, NULL, NULL);
-    else if (coding == SMS_DCS_CODING_8BIT)
-        utf8 = g_strndup ((const char *)text, len);
-    else
-        utf8 = g_strdup ("");
-
-    return utf8;
-}
-
-
-static GHashTable *
-sms_parse_pdu (const char *hexpdu)
-{
-    GHashTable *properties;
-    gsize pdu_len;
-    guint8 *pdu;
-    int smsc_addr_num_octets, variable_length_items, msg_start_offset,
-            sender_addr_num_digits, sender_addr_num_octets,
-            tp_pid_offset, tp_dcs_offset, user_data_offset, user_data_len,
-            user_data_len_offset, user_data_dcs, bit_offset;
-    char *smsc_addr, *sender_addr, *sc_timestamp, *msg_text;
-
-    /* Convert PDU from hex to binary */
-    pdu = (guint8 *) utils_hexstr2bin (hexpdu, &pdu_len);
-    if (!pdu) {
-        mm_err("Couldn't parse PDU of SMS GET response from hex");
-        return NULL;
-    }
-
-    /* SMSC, in address format, precedes the TPDU */
-    smsc_addr_num_octets = pdu[0];
-    variable_length_items = smsc_addr_num_octets;
-    if (pdu_len < variable_length_items + SMS_MIN_PDU_LEN) {
-        mm_err ("PDU too short (1): %zd vs %d", pdu_len,
-                variable_length_items + SMS_MIN_PDU_LEN);
-        g_free (pdu);
-        return NULL;
-    }
-
-    /* where in the PDU the actual SMS protocol message begins */
-    msg_start_offset = 1 + smsc_addr_num_octets;
-    sender_addr_num_digits = pdu[msg_start_offset + 1];
-    /*
-     * round the sender address length up to an even number of
-     * semi-octets, and thus an integral number of octets
-     */
-    sender_addr_num_octets = (sender_addr_num_digits + 1) >> 1;
-    variable_length_items += sender_addr_num_octets;
-    if (pdu_len < variable_length_items + SMS_MIN_PDU_LEN) {
-        mm_err ("PDU too short (2): %zd vs %d", pdu_len,
-                variable_length_items + SMS_MIN_PDU_LEN);
-        g_free (pdu);
-        return NULL;
-    }
-
-    tp_pid_offset = msg_start_offset + 3 + sender_addr_num_octets;
-    tp_dcs_offset = tp_pid_offset + 1;
-
-    user_data_len_offset = tp_dcs_offset + 1 + SMS_TIMESTAMP_LEN;
-    user_data_offset = user_data_len_offset + 1;
-    user_data_len = pdu[user_data_len_offset];
-    user_data_dcs = pdu[tp_dcs_offset];
-    if ((user_data_dcs & SMS_DCS_CODING_MASK) == SMS_DCS_CODING_DEFAULT)
-        variable_length_items += (7 * (user_data_len + 1 )) / 8;
-    else
-        variable_length_items += user_data_len;
-    if (pdu_len < variable_length_items + SMS_MIN_PDU_LEN) {
-        mm_err ("PDU too short (3): %zd vs %d", pdu_len,
-                variable_length_items + SMS_MIN_PDU_LEN);
-        g_free (pdu);
-        return NULL;
-    }
-
-    /* Only handle SMS-DELIVER */
-    if ((pdu[msg_start_offset] & SMS_TP_MTI_MASK) != SMS_TP_MTI_SMS_DELIVER) {
-        mm_err ("Unhandled message type: 0x%02x", pdu[msg_start_offset]);
-        g_free (pdu);
-        return NULL;
-    }
-
-    smsc_addr = sms_decode_address (&pdu[1], 2 * (pdu[0] - 1));
-    sender_addr = sms_decode_address (&pdu[msg_start_offset + 2],
-                                      pdu[msg_start_offset + 1]);
-    sc_timestamp = sms_decode_timestamp (&pdu[tp_dcs_offset + 1]);
-    bit_offset = 0;
-    if (pdu[msg_start_offset] & SMS_TP_UDHI) {
-        /*
-         * Skip over the user data headers to prevent it from being
-         * decoded into garbage text.
-         */
-        int udhl;
-        udhl = pdu[user_data_offset] + 1;
-        user_data_offset += udhl;
-        if ((user_data_dcs & SMS_DCS_CODING_MASK) == SMS_DCS_CODING_DEFAULT) {
-            bit_offset = 7 - (udhl * 8) % 7;
-            user_data_len -= (udhl * 8 + bit_offset) / 7;
-        } else
-            user_data_len -= udhl;
-    }
-
-    msg_text = sms_decode_text (&pdu[user_data_offset], user_data_len,
-                                user_data_dcs, bit_offset);
-
-    properties = g_hash_table_new_full (g_str_hash, g_str_equal, NULL,
-                                        simple_free_gvalue);
-    g_hash_table_insert (properties, "number",
-                         simple_string_value (sender_addr));
-    g_hash_table_insert (properties, "text",
-                         simple_string_value (msg_text));
-    g_hash_table_insert (properties, "smsc",
-                         simple_string_value (smsc_addr));
-    g_hash_table_insert (properties, "timestamp",
-                         simple_string_value (sc_timestamp));
-    if (user_data_dcs & SMS_DCS_CLASS_VALID)
-        g_hash_table_insert (properties, "class",
-                             simple_uint_value (user_data_dcs &
-                                                SMS_DCS_CLASS_MASK));
-    g_hash_table_insert (properties, "completed", simple_boolean_value (TRUE));
-
-    g_free (smsc_addr);
-    g_free (sender_addr);
-    g_free (sc_timestamp);
-    g_free (msg_text);
-    g_free (pdu);
-
-    return properties;
-}
 
 static void
 sms_get_done (MMAtSerialPort *port,
@@ -4426,11 +4276,8 @@ sms_get_done (MMAtSerialPort *port,
         goto out;
     }
 
-    properties = sms_parse_pdu (pdu);
+    properties = sms_parse_pdu (pdu, &info->error);
     if (!properties) {
-        info->error = g_error_new_literal (MM_MODEM_ERROR,
-                                           MM_MODEM_ERROR_GENERAL,
-                                           "Failed to parse SMS PDU");
         goto out;
     }
 
@@ -4543,6 +4390,7 @@ sms_list_done (MMAtSerialPort *port,
 
         while (*rstr) {
             GHashTable *properties;
+            GError *local;
             int idx;
             char pdu[SMS_MAX_PDU_LEN + 1];
 
@@ -4554,11 +4402,14 @@ sms_list_done (MMAtSerialPort *port,
             }
             rstr += offset;
 
-            properties = sms_parse_pdu (pdu);
+            properties = sms_parse_pdu (pdu, &local);
             if (properties) {
                 g_hash_table_insert (properties, "index",
                                      simple_uint_value (idx));
                 g_ptr_array_add (results, properties);
+            } else {
+                /* Ignore the error */
+                g_clear_error(&local);
             }
         }
         /*
@@ -4659,6 +4510,179 @@ ussd_update_state (MMGenericGsm *self, MMModemGsmUssdState new_state)
     }
 }
 
+void
+mm_generic_gsm_ussd_cleanup (MMGenericGsm *self)
+{
+    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (self);
+
+    if (priv->pending_ussd_info) {
+        /* And schedule the callback */
+        g_clear_error (&priv->pending_ussd_info->error);
+        priv->pending_ussd_info->error = g_error_new_literal (MM_MODEM_ERROR,
+                                                              MM_MODEM_ERROR_GENERAL,
+                                                              "USSD session terminated without reply.");
+        mm_callback_info_schedule (priv->pending_ussd_info);
+        priv->pending_ussd_info = NULL;
+    }
+
+    ussd_update_state (self, MM_MODEM_GSM_USSD_STATE_IDLE);
+
+    g_free (priv->ussd_network_request);
+    priv->ussd_network_request = NULL;
+    g_object_notify (G_OBJECT (self), MM_MODEM_GSM_USSD_NETWORK_REQUEST);
+
+    g_free (priv->ussd_network_notification);
+    priv->ussd_network_notification = NULL;
+    g_object_notify (G_OBJECT (self), MM_MODEM_GSM_USSD_NETWORK_NOTIFICATION);
+}
+
+static char *
+decode_ussd_response (MMGenericGsm *self,
+                      const char *reply,
+                      MMModemCharset cur_charset)
+{
+    char **items, **iter, *p;
+    char *str = NULL;
+    gint encoding = -1;
+
+    /* Look for the first ',' */
+    p = strchr (reply, ',');
+    if (p == NULL)
+        return NULL;
+
+    items = g_strsplit_set (p + 1, " ,", -1);
+    for (iter = items; iter && *iter; iter++) {
+        if (*iter[0] == '\0')
+            continue;
+        if (str == NULL)
+            str = *iter;
+        else if (encoding == -1) {
+            encoding = atoi (*iter);
+            mm_dbg ("USSD data coding scheme %d", encoding);
+            break;  /* All done */
+        }
+    }
+
+    /* Strip quotes */
+    if (str[0] == '"')
+        str++;
+    p = strchr (str, '"');
+    if (p)
+        *p = '\0';
+
+    return mm_modem_gsm_ussd_decode (MM_MODEM_GSM_USSD (self), str,
+                                     cur_charset);
+}
+
+static char*
+ussd_encode (MMModemGsmUssd *modem, const char* command, guint *scheme)
+{
+    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
+    GByteArray *ussd_command = g_byte_array_new();
+    gboolean success;
+    char *hex = NULL;
+
+    /* encode to cur_charset */
+    success = mm_modem_charset_byte_array_append (ussd_command, command, FALSE,
+                                                  priv->cur_charset);
+    g_warn_if_fail (success == TRUE);
+    if (!success)
+        goto out;
+
+    *scheme = MM_MODEM_GSM_USSD_SCHEME_7BIT;
+    /* convert to hex representation */
+    hex = utils_bin2hexstr (ussd_command->data, ussd_command->len);
+
+ out:
+    g_byte_array_free (ussd_command, TRUE);
+    return hex;
+}
+
+static char*
+ussd_decode (MMModemGsmUssd *modem, const char* reply, guint scheme)
+{
+    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
+    char *converted;
+
+    converted = mm_modem_charset_hex_to_utf8 (reply, priv->cur_charset);
+    return converted;
+}
+
+static void
+cusd_received (MMAtSerialPort *port,
+               GMatchInfo *info,
+               gpointer user_data)
+{
+    MMGenericGsm *self = MM_GENERIC_GSM (user_data);
+    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (self);
+    GError *error = NULL;
+    gint status;
+    MMModemGsmUssdState ussd_state = MM_MODEM_GSM_USSD_STATE_IDLE;
+    char *reply = NULL, *converted;
+
+    reply = g_match_info_fetch (info, 1);
+    if (!reply || !isdigit (*reply)) {
+        mm_warn ("Recieved invalid USSD response: '%s'", reply ? reply : "(none)");
+        g_free (reply);
+        return;
+    }
+
+    status = g_ascii_digit_value (*reply);
+    switch (status) {
+    case 0: /* no further action required */
+        converted = decode_ussd_response (self, reply, priv->cur_charset);
+        if (priv->pending_ussd_info) {
+            /* Response to the user's request */
+            mm_callback_info_set_result (priv->pending_ussd_info, converted, g_free);
+        } else {
+            /* Network-initiated USSD-Notify */
+            g_free (priv->ussd_network_notification);
+            priv->ussd_network_notification = converted;
+            g_object_notify (G_OBJECT (self), MM_MODEM_GSM_USSD_NETWORK_NOTIFICATION);
+        }
+        break;
+    case 1: /* further action required */
+        ussd_state = MM_MODEM_GSM_USSD_STATE_USER_RESPONSE;
+        converted = decode_ussd_response (self, reply, priv->cur_charset);
+        if (priv->pending_ussd_info) {
+            mm_callback_info_set_result (priv->pending_ussd_info, converted, g_free);
+        } else {
+            /* Network-initiated USSD-Request */
+            g_free (priv->ussd_network_request);
+            priv->ussd_network_request = converted;
+            g_object_notify (G_OBJECT (self), MM_MODEM_GSM_USSD_NETWORK_REQUEST);
+        }
+        break;
+    case 2:
+        error = g_error_new_literal (MM_MODEM_ERROR,
+                                     MM_MODEM_ERROR_GENERAL,
+                                     "USSD terminated by network.");
+        break;
+    case 4:
+        error = g_error_new_literal (MM_MODEM_ERROR,
+                                     MM_MODEM_ERROR_GENERAL,
+                                     "Operation not supported.");
+        break;
+    default:
+        error = g_error_new (MM_MODEM_ERROR,
+                             MM_MODEM_ERROR_GENERAL,
+                             "Unhandled USSD reply %d", status);
+        break;
+    }
+
+    ussd_update_state (self, ussd_state);
+
+    if (priv->pending_ussd_info) {
+        if (error)
+            priv->pending_ussd_info->error = g_error_copy (error);
+        mm_callback_info_schedule (priv->pending_ussd_info);
+        priv->pending_ussd_info = NULL;
+    }
+
+    g_clear_error (&error);
+    g_free (reply);
+}
+
 static void
 ussd_send_done (MMAtSerialPort *port,
                 GString *response,
@@ -4667,85 +4691,26 @@ ussd_send_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
     MMGenericGsmPrivate *priv;
-    gint status;
-    gboolean parsed = FALSE;
-    MMModemGsmUssdState ussd_state = MM_MODEM_GSM_USSD_STATE_IDLE;
-    const char *str, *start = NULL, *end = NULL;
-    char *reply = NULL, *converted;
 
     /* If the modem has already been removed, return without
      * scheduling callback */
     if (mm_callback_info_check_modem_removed (info))
         return;
 
-    if (error) {
-        info->error = g_error_copy (error);
-        goto done;
-    }
-
     priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
-    ussd_state = priv->ussd_state;
 
-    str = mm_strip_tag (response->str, "+CUSD:");
-    if (!str || !isdigit (*str))
-        goto done;
+    if (error) {
+        /* Some immediate error happened when sending the USSD request */
+        info->error = g_error_copy (error);
+        priv->pending_ussd_info = NULL;
+        mm_callback_info_schedule (info);
 
-    status = g_ascii_digit_value (*str);
-    switch (status) {
-    case 0: /* no further action required */
-        ussd_state = MM_MODEM_GSM_USSD_STATE_IDLE;
-        break;
-    case 1: /* further action required */
-        ussd_state = MM_MODEM_GSM_USSD_STATE_USER_RESPONSE;
-        break;
-    case 2:
-        info->error = g_error_new (MM_MODEM_ERROR,
-                                   MM_MODEM_ERROR_GENERAL,
-                                   "USSD terminated by network.");
-        ussd_state = MM_MODEM_GSM_USSD_STATE_IDLE;
-        break;
-    case 4:
-        info->error = g_error_new (MM_MODEM_ERROR,
-                                   MM_MODEM_ERROR_GENERAL,
-                                   "Operiation not supported.");
-        ussd_state = MM_MODEM_GSM_USSD_STATE_IDLE;
-        break;
-    default:
-        info->error = g_error_new (MM_MODEM_ERROR,
-                                   MM_MODEM_ERROR_GENERAL,
-                                   "Unknown USSD reply %d", status);
-        ussd_state = MM_MODEM_GSM_USSD_STATE_IDLE;
-        break;
-    }
-    if (info->error)
-        goto done;
-
-    /* look for the reply */
-    if ((start = strchr (str, '"')) && (end = strrchr (str, '"')) && (start != end))
-        reply = g_strndup (start + 1, end - start -1);
-
-    if (reply) {
-        /* look for the reply data coding scheme */
-        if ((start = strrchr (end, ',')) != NULL)
-            mm_dbg ("USSD data coding scheme %d", atoi (start + 1));
-
-        converted = mm_modem_charset_hex_to_utf8 (reply, priv->cur_charset);
-        mm_callback_info_set_result (info, converted, g_free);
-        parsed = TRUE;
-        g_free (reply);
+        ussd_update_state (MM_GENERIC_GSM (info->modem), MM_MODEM_GSM_USSD_STATE_IDLE);
     }
 
-done:
-    if (!parsed && !info->error) {
-        info->error = g_error_new (MM_MODEM_ERROR,
-                                   MM_MODEM_ERROR_GENERAL,
-                                   "Could not parse USSD reply '%s'",
-                                   response->str);
-    }
-    mm_callback_info_schedule (info);
-
-    if (info->modem)
-        ussd_update_state (MM_GENERIC_GSM (info->modem), ussd_state);
+    /* Otherwise if no error wait for the response to show up via the 
+     * unsolicited response code.
+     */
 }
 
 static void
@@ -4757,10 +4722,11 @@ ussd_send (MMModemGsmUssd *modem,
     MMCallbackInfo *info;
     char *atc_command;
     char *hex;
-    GByteArray *ussd_command = g_byte_array_new();
+    guint scheme = 0;
     MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
     MMAtSerialPort *port;
-    gboolean success;
+
+    g_warn_if_fail (priv->pending_ussd_info == NULL);
 
     info = mm_callback_info_string_new (MM_MODEM (modem), callback, user_data);
 
@@ -4770,14 +4736,19 @@ ussd_send (MMModemGsmUssd *modem,
         return;
     }
 
-    /* encode to cur_charset */
-    success = mm_modem_charset_byte_array_append (ussd_command, command, FALSE, priv->cur_charset);
-    g_warn_if_fail (success == TRUE);
+    /* Cache the callback info since the response is an unsolicited one */
+    priv->pending_ussd_info = info;
 
-    /* convert to hex representation */
-    hex = utils_bin2hexstr (ussd_command->data, ussd_command->len);
-    g_byte_array_free (ussd_command, TRUE);
-    atc_command = g_strdup_printf ("+CUSD=1,\"%s\",15", hex);
+    hex = mm_modem_gsm_ussd_encode (MM_MODEM_GSM_USSD (modem), command, &scheme);
+    if (!hex) {
+        info->error =  g_error_new (MM_MODEM_ERROR,
+                                    MM_MODEM_ERROR_GENERAL,
+                                    "Failed to encode USSD command '%s'",
+                                    command);
+        mm_callback_info_schedule (info);
+        return;
+    }
+    atc_command = g_strdup_printf ("+CUSD=1,\"%s\",%d", hex, scheme);
     g_free (hex);
 
     mm_at_serial_port_queue_command (port, atc_command, 10, ussd_send_done, info);
@@ -4795,9 +4766,8 @@ ussd_initiate (MMModemGsmUssd *modem,
     MMCallbackInfo *info;
     MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
 
-    info = mm_callback_info_string_new (MM_MODEM (modem), callback, user_data);
-
     if (priv->ussd_state != MM_MODEM_GSM_USSD_STATE_IDLE) {
+        info = mm_callback_info_string_new (MM_MODEM (modem), callback, user_data);
         info->error = g_error_new (MM_MODEM_ERROR,
                                    MM_MODEM_ERROR_GENERAL,
                                    "USSD session already active.");
@@ -4816,9 +4786,8 @@ ussd_respond (MMModemGsmUssd *modem,
     MMCallbackInfo *info;
     MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
 
-    info = mm_callback_info_string_new (MM_MODEM (modem), callback, user_data);
-
     if (priv->ussd_state != MM_MODEM_GSM_USSD_STATE_USER_RESPONSE) {
+        info = mm_callback_info_string_new (MM_MODEM (modem), callback, user_data);
         info->error = g_error_new (MM_MODEM_ERROR,
                                    MM_MODEM_ERROR_GENERAL,
                                    "No active USSD session, cannot respond.");
@@ -5155,18 +5124,6 @@ simple_uint_value (guint32 i)
     val = g_slice_new0 (GValue);
     g_value_init (val, G_TYPE_UINT);
     g_value_set_uint (val, i);
-
-    return val;
-}
-
-static GValue *
-simple_boolean_value (gboolean b)
-{
-    GValue *val;
-
-    val = g_slice_new0 (GValue);
-    g_value_init (val, G_TYPE_BOOLEAN);
-    g_value_set_boolean (val, b);
 
     return val;
 }
@@ -5526,6 +5483,8 @@ modem_gsm_ussd_init (MMModemGsmUssd *class)
     class->initiate = ussd_initiate;
     class->respond = ussd_respond;
     class->cancel = ussd_cancel;
+    class->encode = ussd_encode;
+    class->decode = ussd_decode;
 }
 
 static void
@@ -5719,10 +5678,10 @@ get_property (GObject *object, guint prop_id,
         g_value_set_string (value, ussd_state_to_string (priv->ussd_state));
         break;
     case MM_GENERIC_GSM_PROP_USSD_NETWORK_REQUEST:
-        g_value_set_string (value, "");
+        g_value_set_string (value, priv->ussd_network_request);
         break;
     case MM_GENERIC_GSM_PROP_USSD_NETWORK_NOTIFICATION:
-        g_value_set_string (value, "");
+        g_value_set_string (value, priv->ussd_network_notification);
         break;
     case MM_GENERIC_GSM_PROP_FLOW_CONTROL_CMD:
         /* By default, try to set XOFF/XON flow control */
@@ -5740,6 +5699,7 @@ finalize (GObject *object)
     MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (object);
 
     mm_generic_gsm_pending_registration_stop (MM_GENERIC_GSM (object));
+    mm_generic_gsm_ussd_cleanup (MM_GENERIC_GSM (object));
 
     if (priv->pin_check_timeout) {
         g_source_remove (priv->pin_check_timeout);

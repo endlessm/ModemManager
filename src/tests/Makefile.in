@@ -35,7 +35,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 noinst_PROGRAMS = test-modem-helpers$(EXEEXT) test-charsets$(EXEEXT) \
-	test-qcdm-serial-port$(EXEEXT)
+	test-qcdm-serial-port$(EXEEXT) test-sms$(EXEEXT)
 subdir = src/tests
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -71,6 +71,13 @@ test_qcdm_serial_port_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(top_builddir)/src/libserial.la \
 	$(top_builddir)/src/libmodem-helpers.la \
 	$(top_builddir)/libqcdm/src/libqcdm.la
+am_test_sms_OBJECTS = test_sms-test-sms.$(OBJEXT)
+test_sms_OBJECTS = $(am_test_sms_OBJECTS)
+test_sms_DEPENDENCIES = $(top_builddir)/src/libmodem-helpers.la \
+	$(am__DEPENDENCIES_1)
+test_sms_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(test_sms_CFLAGS) \
+	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -98,9 +105,9 @@ AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(test_charsets_SOURCES) $(test_modem_helpers_SOURCES) \
-	$(test_qcdm_serial_port_SOURCES)
+	$(test_qcdm_serial_port_SOURCES) $(test_sms_SOURCES)
 DIST_SOURCES = $(test_charsets_SOURCES) $(test_modem_helpers_SOURCES) \
-	$(test_qcdm_serial_port_SOURCES)
+	$(test_qcdm_serial_port_SOURCES) $(test_sms_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -292,6 +299,16 @@ test_qcdm_serial_port_LDADD = \
 	$(top_builddir)/libqcdm/src/libqcdm.la \
 	-lutil
 
+test_sms_SOURCES = \
+	test-sms.c
+
+test_sms_CFLAGS = \
+	$(MM_CFLAGS)
+
+test_sms_LDADD = \
+	$(top_builddir)/src/libmodem-helpers.la \
+	$(MM_LIBS)
+
 all: all-am
 
 .SUFFIXES:
@@ -344,6 +361,9 @@ test-modem-helpers$(EXEEXT): $(test_modem_helpers_OBJECTS) $(test_modem_helpers_
 test-qcdm-serial-port$(EXEEXT): $(test_qcdm_serial_port_OBJECTS) $(test_qcdm_serial_port_DEPENDENCIES) 
 	@rm -f test-qcdm-serial-port$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(test_qcdm_serial_port_OBJECTS) $(test_qcdm_serial_port_LDADD) $(LIBS)
+test-sms$(EXEEXT): $(test_sms_OBJECTS) $(test_sms_DEPENDENCIES) 
+	@rm -f test-sms$(EXEEXT)
+	$(AM_V_CCLD)$(test_sms_LINK) $(test_sms_OBJECTS) $(test_sms_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -354,6 +374,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_charsets-test-charsets.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_modem_helpers-test-modem-helpers.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_qcdm_serial_port-test-qcdm-serial-port.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_sms-test-sms.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -429,6 +450,22 @@ test_qcdm_serial_port-test-qcdm-serial-port.obj: test-qcdm-serial-port.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='test-qcdm-serial-port.c' object='test_qcdm_serial_port-test-qcdm-serial-port.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_qcdm_serial_port_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o test_qcdm_serial_port-test-qcdm-serial-port.obj `if test -f 'test-qcdm-serial-port.c'; then $(CYGPATH_W) 'test-qcdm-serial-port.c'; else $(CYGPATH_W) '$(srcdir)/test-qcdm-serial-port.c'; fi`
+
+test_sms-test-sms.o: test-sms.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_sms_CFLAGS) $(CFLAGS) -MT test_sms-test-sms.o -MD -MP -MF $(DEPDIR)/test_sms-test-sms.Tpo -c -o test_sms-test-sms.o `test -f 'test-sms.c' || echo '$(srcdir)/'`test-sms.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_sms-test-sms.Tpo $(DEPDIR)/test_sms-test-sms.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='test-sms.c' object='test_sms-test-sms.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_sms_CFLAGS) $(CFLAGS) -c -o test_sms-test-sms.o `test -f 'test-sms.c' || echo '$(srcdir)/'`test-sms.c
+
+test_sms-test-sms.obj: test-sms.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_sms_CFLAGS) $(CFLAGS) -MT test_sms-test-sms.obj -MD -MP -MF $(DEPDIR)/test_sms-test-sms.Tpo -c -o test_sms-test-sms.obj `if test -f 'test-sms.c'; then $(CYGPATH_W) 'test-sms.c'; else $(CYGPATH_W) '$(srcdir)/test-sms.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_sms-test-sms.Tpo $(DEPDIR)/test_sms-test-sms.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='test-sms.c' object='test_sms-test-sms.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_sms_CFLAGS) $(CFLAGS) -c -o test_sms-test-sms.obj `if test -f 'test-sms.c'; then $(CYGPATH_W) 'test-sms.c'; else $(CYGPATH_W) '$(srcdir)/test-sms.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -641,6 +678,7 @@ uninstall-am:
 @WITH_TESTS_TRUE@	$(abs_builddir)/test-modem-helpers
 @WITH_TESTS_TRUE@	$(abs_builddir)/test-charsets
 @WITH_TESTS_TRUE@	$(abs_builddir)/test-qcdm-serial-port
+@WITH_TESTS_TRUE@	$(abs_builddir)/test-sms
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
