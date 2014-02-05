@@ -121,6 +121,9 @@ typedef struct {
     gboolean loc_signal;
 
     MMModemGsmUssdState ussd_state;
+
+    /* SMS */
+    GHashTable *sms_present;
 } MMGenericGsmPrivate;
 
 static void get_registration_status (MMAtSerialPort *port, MMCallbackInfo *info);
@@ -271,6 +274,11 @@ pin_check_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
     gboolean parsed = FALSE;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
 
     if (error)
         info->error = g_error_copy (error);
@@ -509,6 +517,11 @@ real_get_iccid_done (MMAtSerialPort *port,
     int sw1, sw2;
     gboolean success = FALSE;
     char buf[21], swapped[21];
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
 
     if (error) {
         info->error = g_error_copy (error);
@@ -1061,21 +1074,21 @@ cgreg1_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = user_data;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->modem) {
-        if (info->error) {
-            MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
 
-            g_clear_error (&info->error);
+    if (error) {
+        MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
 
-            /* The modem doesn't like unsolicited CGREG, so we'll need to poll */
-            priv->cgreg_poll = TRUE;
-        } else
-            mm_callback_info_set_data (info, CGREG_NUM_TAG, GUINT_TO_POINTER (1), NULL);
+        /* The modem doesn't like unsolicited CGREG, so we'll need to poll */
+        priv->cgreg_poll = TRUE;
+    } else
+        mm_callback_info_set_data (info, CGREG_NUM_TAG, GUINT_TO_POINTER (1), NULL);
 
-        /* Success; get initial state */
-        mm_at_serial_port_queue_command (port, "+CGREG?", 10, reg_poll_response, info->modem);
-    }
+    /* Success; get initial state */
+    mm_at_serial_port_queue_command (port, "+CGREG?", 10, reg_poll_response, info->modem);
 
     initial_unsolicited_reg_check_done (info);
 }
@@ -1088,27 +1101,25 @@ cgreg2_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = user_data;
 
-    /* Ignore errors except modem removal errors */
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->modem) {
-        if (info->error) {
-            g_clear_error (&info->error);
-            /* Try CGREG=1 instead */
-            mm_at_serial_port_queue_command (port, "+CGREG=1", 3, cgreg1_done, info);
-        } else {
-            add_loc_capability (MM_GENERIC_GSM (info->modem), MM_MODEM_LOCATION_CAPABILITY_GSM_LAC_CI);
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
 
-            mm_callback_info_set_data (info, CGREG_NUM_TAG, GUINT_TO_POINTER (2), NULL);
-
-            /* Success; get initial state */
-            mm_at_serial_port_queue_command (port, "+CGREG?", 10, reg_poll_response, info->modem);
-
-            /* All done */
-            initial_unsolicited_reg_check_done (info);
-        }
+    /* Ignore errors */
+    if (error) {
+        /* Try CGREG=1 instead */
+        mm_at_serial_port_queue_command (port, "+CGREG=1", 3, cgreg1_done, info);
     } else {
-        /* Modem got removed */
-        mm_callback_info_schedule (info);
+        add_loc_capability (MM_GENERIC_GSM (info->modem), MM_MODEM_LOCATION_CAPABILITY_GSM_LAC_CI);
+
+        mm_callback_info_set_data (info, CGREG_NUM_TAG, GUINT_TO_POINTER (2), NULL);
+
+        /* Success; get initial state */
+        mm_at_serial_port_queue_command (port, "+CGREG?", 10, reg_poll_response, info->modem);
+
+        /* All done */
+        initial_unsolicited_reg_check_done (info);
     }
 }
 
@@ -1119,28 +1130,26 @@ creg1_done (MMAtSerialPort *port,
             gpointer user_data)
 {
     MMCallbackInfo *info = user_data;
+    MMGenericGsmPrivate *priv;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->modem) {
-        MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
 
-        if (info->error) {
-            g_clear_error (&info->error);
+    priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
 
-            /* The modem doesn't like unsolicited CREG, so we'll need to poll */
-            priv->creg_poll = TRUE;
-        } else
-            mm_callback_info_set_data (info, CREG_NUM_TAG, GUINT_TO_POINTER (1), NULL);
+    if (error) {
+        /* The modem doesn't like unsolicited CREG, so we'll need to poll */
+        priv->creg_poll = TRUE;
+    } else
+        mm_callback_info_set_data (info, CREG_NUM_TAG, GUINT_TO_POINTER (1), NULL);
 
-        /* Success; get initial state */
-        mm_at_serial_port_queue_command (port, "+CREG?", 10, reg_poll_response, info->modem);
+    /* Success; get initial state */
+    mm_at_serial_port_queue_command (port, "+CREG?", 10, reg_poll_response, info->modem);
 
-        /* Now try to set up CGREG messages */
-        mm_at_serial_port_queue_command (port, "+CGREG=2", 3, cgreg2_done, info);
-    } else {
-        /* Modem got removed */
-        mm_callback_info_schedule (info);
-    }
+    /* Now try to set up CGREG messages */
+    mm_at_serial_port_queue_command (port, "+CGREG=2", 3, cgreg2_done, info);
 }
 
 static void
@@ -1151,26 +1160,24 @@ creg2_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = user_data;
 
-    /* Ignore errors except modem removal errors */
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->modem) {
-        if (info->error) {
-            g_clear_error (&info->error);
-            mm_at_serial_port_queue_command (port, "+CREG=1", 3, creg1_done, info);
-        } else {
-            add_loc_capability (MM_GENERIC_GSM (info->modem), MM_MODEM_LOCATION_CAPABILITY_GSM_LAC_CI);
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
 
-            mm_callback_info_set_data (info, CREG_NUM_TAG, GUINT_TO_POINTER (2), NULL);
+    /* Ignore errors */
+    if (error)
+        mm_at_serial_port_queue_command (port, "+CREG=1", 3, creg1_done, info);
+    else {
+        add_loc_capability (MM_GENERIC_GSM (info->modem), MM_MODEM_LOCATION_CAPABILITY_GSM_LAC_CI);
 
-            /* Success; get initial state */
-            mm_at_serial_port_queue_command (port, "+CREG?", 10, reg_poll_response, info->modem);
+        mm_callback_info_set_data (info, CREG_NUM_TAG, GUINT_TO_POINTER (2), NULL);
 
-            /* Now try to set up CGREG messages */
-            mm_at_serial_port_queue_command (port, "+CGREG=2", 3, cgreg2_done, info);
-        }
-    } else {
-        /* Modem got removed */
-        mm_callback_info_schedule (info);
+        /* Success; get initial state */
+        mm_at_serial_port_queue_command (port, "+CREG?", 10, reg_poll_response, info->modem);
+
+        /* Now try to set up CGREG messages */
+        mm_at_serial_port_queue_command (port, "+CGREG=2", 3, cgreg2_done, info);
     }
 }
 
@@ -1179,20 +1186,23 @@ enable_failed (MMModem *modem, GError *error, MMCallbackInfo *info)
 {
     MMGenericGsmPrivate *priv;
 
-    info->error = mm_modem_check_removed (modem, error);
+    /* If modem already removed, do nothing */
+    if (!modem || mm_callback_info_check_modem_removed (info))
+        return;
 
-    if (modem) {
-        mm_modem_set_state (modem,
-                            MM_MODEM_STATE_DISABLED,
-                            MM_MODEM_STATE_REASON_NONE);
+    if (error)
+        info->error = g_error_copy (error);
 
-        priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
+    mm_modem_set_state (modem,
+                        MM_MODEM_STATE_DISABLED,
+                        MM_MODEM_STATE_REASON_NONE);
 
-        if (priv->primary && mm_serial_port_is_open (MM_SERIAL_PORT (priv->primary)))
-            mm_serial_port_close_force (MM_SERIAL_PORT (priv->primary));
-        if (priv->secondary && mm_serial_port_is_open (MM_SERIAL_PORT (priv->secondary)))
-            mm_serial_port_close_force (MM_SERIAL_PORT (priv->secondary));
-    }
+    priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
+
+    if (priv->primary && mm_serial_port_is_open (MM_SERIAL_PORT (priv->primary)))
+        mm_serial_port_close_force (MM_SERIAL_PORT (priv->primary));
+    if (priv->secondary && mm_serial_port_is_open (MM_SERIAL_PORT (priv->secondary)))
+        mm_serial_port_close_force (MM_SERIAL_PORT (priv->secondary));
 
     mm_callback_info_schedule (info);
 }
@@ -1312,14 +1322,21 @@ cmti_received (MMAtSerialPort *port,
                gpointer user_data)
 {
     MMGenericGsm *self = MM_GENERIC_GSM (user_data);
-
-    guint idx=0;
+    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (self);
+    guint idx = 0;
     char *str;
 
     str = g_match_info_fetch (info, 2);
     if (str)
         idx = atoi (str);
     g_free (str);
+
+    /* Don't signal multiple times if there are multiple CMTI notifications for a message */
+    if (g_hash_table_lookup_extended (priv->sms_present, GINT_TO_POINTER (idx), NULL, NULL))
+        return;
+
+    /* Nothing is currently stored in the hash table - presence is all that matters. */
+    g_hash_table_insert (priv->sms_present, GINT_TO_POINTER (idx), NULL);
 
     /* todo: parse pdu to know if the sms is complete */
     mm_modem_gsm_sms_received (MM_MODEM_GSM_SMS (self),
@@ -1458,6 +1475,11 @@ enable_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
 
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
     /* Let subclasses handle the power up command response/error; many devices
      * don't support +CFUN, but for those that do let them handle the error
      * correctly.
@@ -1477,6 +1499,11 @@ init_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
     char *cmd = NULL;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
 
     if (error) {
         mm_generic_gsm_enable_complete (MM_GENERIC_GSM (info->modem), error, info);
@@ -1580,8 +1607,14 @@ disable_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = user_data;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (!info->error) {
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error)
+        info->error = g_error_copy (error);
+    else {
         MMGenericGsm *self = MM_GENERIC_GSM (info->modem);
 
         mm_serial_port_close_force (MM_SERIAL_PORT (port));
@@ -1615,15 +1648,19 @@ disable_flash_done (MMSerialPort *port,
     MMModemState prev_state;
     char *cmd = NULL;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->error) {
-        if (info->modem) {
-            /* Reset old state since the operation failed */
-            prev_state = GPOINTER_TO_UINT (mm_callback_info_get_data (info, MM_GENERIC_GSM_PREV_STATE_TAG));
-            mm_modem_set_state (MM_MODEM (info->modem),
-                                prev_state,
-                                MM_MODEM_STATE_REASON_NONE);
-        }
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error) {
+        info->error = g_error_copy (error);
+
+        /* Reset old state since the operation failed */
+        prev_state = GPOINTER_TO_UINT (mm_callback_info_get_data (info, MM_GENERIC_GSM_PREV_STATE_TAG));
+        mm_modem_set_state (MM_MODEM (info->modem),
+                            prev_state,
+                            MM_MODEM_STATE_REASON_NONE);
 
         mm_callback_info_schedule (info);
         return;
@@ -1731,6 +1768,11 @@ get_string_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
 
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
     if (error)
         info->error = g_error_copy (error);
     else
@@ -1751,6 +1793,11 @@ get_mnc_length_done (MMAtSerialPort *port,
     gboolean success = FALSE;
     char hex[51];
     char *bin;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
 
     if (error) {
         info->error = g_error_copy (error);
@@ -1793,6 +1840,7 @@ get_mnc_length_done (MMAtSerialPort *port,
                                        MM_MODEM_ERROR_GENERAL,
                                        "SIM returned malformed response '%s'",
                                        hex);
+            g_free (bin);
             goto done;
         }
 
@@ -1807,6 +1855,7 @@ get_mnc_length_done (MMAtSerialPort *port,
                                        "SIM returned invalid MNC length %d (should be either 2 or 3)",
                                        mnc_len);
         }
+        g_free (bin);
     } else {
         info->error = g_error_new (MM_MODEM_ERROR,
                                    MM_MODEM_ERROR_GENERAL,
@@ -1842,6 +1891,81 @@ get_operator_id_imsi_done (MMModem *modem,
                                             get_mnc_length_done,
                                             info);
 }
+
+static void
+get_spn_done (MMAtSerialPort *port,
+              GString *response,
+              GError *error,
+              gpointer user_data)
+{
+    MMCallbackInfo *info = (MMCallbackInfo *) user_data;
+    int sw1, sw2;
+    gboolean success = FALSE;
+    char hex[51];
+    char *bin, *utf8;
+
+    if (error) {
+        info->error = g_error_copy (error);
+        goto done;
+    }
+
+    memset (hex, 0, sizeof (hex));
+    if (sscanf (response->str, "+CRSM:%d,%d,\"%50c\"", &sw1, &sw2, (char *) &hex) == 3)
+        success = TRUE;
+    else {
+        /* May not include quotes... */
+        if (sscanf (response->str, "+CRSM:%d,%d,%50c", &sw1, &sw2, (char *) &hex) == 3)
+            success = TRUE;
+    }
+
+    if (!success) {
+        info->error = g_error_new_literal (MM_MODEM_ERROR,
+                                           MM_MODEM_ERROR_GENERAL,
+                                           "Could not parse the CRSM response");
+        goto done;
+    }
+
+    if ((sw1 == 0x90 && sw2 == 0x00) || (sw1 == 0x91) || (sw1 == 0x92) || (sw1 == 0x9f)) {
+        gsize buflen = 0;
+
+        /* Make sure the buffer is only hex characters */
+        while (buflen < sizeof (hex) && hex[buflen]) {
+            if (!isxdigit (hex[buflen])) {
+                hex[buflen] = 0x0;
+                break;
+            }
+            buflen++;
+        }
+
+        /* Convert hex string to binary */
+        bin = utils_hexstr2bin (hex, &buflen);
+        if (!bin) {
+            info->error = g_error_new (MM_MODEM_ERROR,
+                                       MM_MODEM_ERROR_GENERAL,
+                                       "SIM returned malformed response '%s'",
+                                       hex);
+            goto done;
+        }
+
+        /* Remove the FF filler at the end */
+        while (bin[buflen - 1] == (char)0xff)
+            buflen--;
+
+        /* First byte is metadata; remainder is GSM-7 unpacked into octets; convert to UTF8 */
+        utf8 = (char *)mm_charset_gsm_unpacked_to_utf8 ((guint8 *)bin + 1, buflen - 1);
+        g_free(bin);
+        mm_callback_info_set_result(info, utf8, g_free);
+    } else {
+        info->error = g_error_new (MM_MODEM_ERROR,
+                                   MM_MODEM_ERROR_GENERAL,
+                                   "SIM failed to handle CRSM request (sw1 %d sw2 %d)",
+                                   sw1, sw2);
+    }
+
+done:
+    mm_callback_info_schedule (info);
+}
+
 
 static void
 get_imei (MMModemGsmCard *modem,
@@ -1881,6 +2005,24 @@ get_operator_id (MMModemGsmCard *modem,
 }
 
 static void
+get_spn (MMModemGsmCard *modem,
+         MMModemStringFn callback,
+         gpointer user_data)
+{
+    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
+    MMCallbackInfo *info;
+
+    info = mm_callback_info_string_new (MM_MODEM (modem), callback, user_data);
+
+    /* READ BINARY of EFspn (Service Provider Name) ETSI 51.011 section 10.3.11 */
+    mm_at_serial_port_queue_command_cached (priv->primary,
+                                            "+CRSM=176,28486,0,0,17",
+                                            3,
+                                            get_spn_done,
+                                            info);
+}
+
+static void
 get_card_info (MMModem *modem,
                MMModemInfoFn callback,
                gpointer user_data)
@@ -1913,35 +2055,33 @@ static void
 pin_puk_recheck_done (MMModem *modem, GError *error, gpointer user_data)
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
+    MMGenericGsmPrivate *priv;
     MMSerialPort *port;
     GError *saved_error;
+
+    /* Do nothing if modem removed */
+    if (!modem || mm_callback_info_check_modem_removed (info))
+        return;
+
+    priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
 
     /* Clear the pin check timeout to ensure that it won't ever get a
      * stale MMCallbackInfo if the modem got removed.  We'll reschedule it here
      * anyway if needed.
      */
-    if (info->modem) {
-        MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
+    if (priv->pin_check_timeout)
+        g_source_remove (priv->pin_check_timeout);
+    priv->pin_check_timeout = 0;
 
-        if (priv->pin_check_timeout)
-            g_source_remove (priv->pin_check_timeout);
-        priv->pin_check_timeout = 0;
-    }
-
-    /* modem could have been removed before we get here, in which case
-     * 'modem' will be NULL.
-     */
-    info->error = mm_modem_check_removed (modem, error);
+    /* Propagate the error to the info */
+    if (error)
+        info->error = g_error_copy (error);
 
     /* If the modem wasn't removed, and the modem isn't ready yet, ask it for
      * the current PIN status a few times since some devices take a bit to fully
      * enable themselves after a SIM PIN/PUK unlock.
      */
-    if (   info->modem
-        && info->error
-        && !g_error_matches (info->error, MM_MODEM_ERROR, MM_MODEM_ERROR_REMOVED)) {
-        MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
-
+    if (info->error && !g_error_matches (info->error, MM_MODEM_ERROR, MM_MODEM_ERROR_REMOVED)) {
         if (priv->pin_check_tries < 4) {
             g_clear_error (&info->error);
             priv->pin_check_tries++;
@@ -1952,13 +2092,13 @@ pin_puk_recheck_done (MMModem *modem, GError *error, gpointer user_data)
 
     /* Otherwise, clean up and return the PIN check result */
     port = mm_callback_info_get_data (info, PIN_PORT_TAG);
-    if (modem && port)
+    if (port)
         mm_serial_port_close (port);
 
     /* If we have a saved error from sending PIN/PUK, return that to callers */
     saved_error = mm_callback_info_get_data (info, SAVED_ERROR_TAG);
     if (saved_error) {
-        if (info->modem && !mm_modem_base_get_unlock_required (MM_MODEM_BASE (info->modem))) {
+        if (!mm_modem_base_get_unlock_required (MM_MODEM_BASE (info->modem))) {
             /* Original unlock failed but the modem is actually unlocked, so
              * return success.  Sometimes happens if the modem doesn't allow
              * CPIN="xxxx" when it's already unlocked and returns an error.
@@ -1981,6 +2121,11 @@ send_puk_done (MMAtSerialPort *port,
                gpointer user_data)
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
 
     if (error) {
         if (error->domain != MM_MOBILE_ERROR) {
@@ -2046,6 +2191,11 @@ send_pin_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
 
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
     if (error) {
         if (error->domain != MM_MOBILE_ERROR) {
             info->error = g_error_copy (error);
@@ -2109,6 +2259,11 @@ enable_pin_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
 
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
     if (error)
         info->error = g_error_copy (error);
     mm_callback_info_schedule (info);
@@ -2138,6 +2293,11 @@ change_pin_done (MMAtSerialPort *port,
                  gpointer user_data)
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
 
     if (error)
         info->error = g_error_copy (error);
@@ -2631,10 +2791,18 @@ get_reg_status_done (MMAtSerialPort *port,
                      gpointer user_data)
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
-    MMGenericGsm *self = MM_GENERIC_GSM (info->modem);
-    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (self);
+    MMGenericGsm *self;
+    MMGenericGsmPrivate *priv;
     guint id;
     MMModemGsmNetworkRegStatus status;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    self = MM_GENERIC_GSM (info->modem);
+    priv = MM_GENERIC_GSM_GET_PRIVATE (self);
 
     /* This function should only get called during the connect sequence when
      * polling for registration state, since explicit registration requests
@@ -2703,9 +2871,16 @@ register_done (MMAtSerialPort *port,
                gpointer user_data)
 {
     MMCallbackInfo *info = user_data;
-    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
+    MMGenericGsmPrivate *priv;
 
     mm_callback_info_unref (info);
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
 
     /* If the registration timed out (and thus pending_reg_info will be NULL)
      * and the modem eventually got around to sending the response for the
@@ -2883,6 +3058,11 @@ connect_report_done (MMAtSerialPort *port,
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
     GError *real_error;
 
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
     /* If the CEER command was successful, copy that error reason into the
      * callback's error.  If not, use the original error.
      */
@@ -2912,7 +3092,14 @@ connect_done (MMAtSerialPort *port,
               gpointer user_data)
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
-    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
+    MMGenericGsmPrivate *priv;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
 
     if (error) {
         info->error = g_error_copy (error);
@@ -2964,15 +3151,17 @@ disconnect_done (MMModem *modem,
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
     MMModemState prev_state;
 
-    info->error = mm_modem_check_removed (modem, error);
-    if (info->error) {
-        if (info->modem && modem) {
-            /* Reset old state since the operation failed */
-            prev_state = GPOINTER_TO_UINT (mm_callback_info_get_data (info, MM_GENERIC_GSM_PREV_STATE_TAG));
-            mm_modem_set_state (MM_MODEM (info->modem),
-                                prev_state,
-                                MM_MODEM_STATE_REASON_NONE);
-        }
+    /* Do nothing if modem removed */
+    if (!modem || mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error) {
+        info->error = g_error_copy (error);
+        /* Reset old state since the operation failed */
+        prev_state = GPOINTER_TO_UINT (mm_callback_info_get_data (info, MM_GENERIC_GSM_PREV_STATE_TAG));
+        mm_modem_set_state (MM_MODEM (info->modem),
+                            prev_state,
+                            MM_MODEM_STATE_REASON_NONE);
     } else {
         MMGenericGsm *self = MM_GENERIC_GSM (modem);
         MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (self);
@@ -2991,7 +3180,14 @@ disconnect_all_done (MMAtSerialPort *port,
                      GError *error,
                      gpointer user_data)
 {
-    mm_callback_info_schedule ((MMCallbackInfo *) user_data);
+    MMCallbackInfo *info = (MMCallbackInfo *)user_data;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    mm_callback_info_schedule (info);
 }
 
 static void
@@ -3023,17 +3219,21 @@ disconnect_flash_done (MMSerialPort *port,
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
     MMGenericGsmPrivate *priv;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->error) {
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error) {
         /* Ignore "NO CARRIER" response when modem disconnects and any flash
          * failures we might encounter.  Other errors are hard errors.
          */
-        if (   !g_error_matches (info->error, MM_MODEM_CONNECT_ERROR, MM_MODEM_CONNECT_ERROR_NO_CARRIER)
-            && !g_error_matches (info->error, MM_SERIAL_ERROR, MM_SERIAL_ERROR_FLASH_FAILED)) {
+        if (   !g_error_matches (error, MM_MODEM_CONNECT_ERROR, MM_MODEM_CONNECT_ERROR_NO_CARRIER)
+            && !g_error_matches (error, MM_SERIAL_ERROR, MM_SERIAL_ERROR_FLASH_FAILED)) {
+            info->error = g_error_copy (error);
             mm_callback_info_schedule (info);
             return;
         }
-        g_clear_error (&info->error);
     }
 
     priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
@@ -3060,11 +3260,10 @@ disconnect_secondary_cgact_done (MMAtSerialPort *port,
     MMGenericGsm *self;
     MMGenericGsmPrivate *priv;
 
-    if (!info->modem) {
-        info->error = mm_modem_check_removed (info->modem, error);
-        mm_callback_info_schedule (info);
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
         return;
-    }
 
     self = MM_GENERIC_GSM (info->modem);
     priv = MM_GENERIC_GSM_GET_PRIVATE (self);
@@ -3154,6 +3353,11 @@ scan_done (MMAtSerialPort *port,
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
     GPtrArray *results;
 
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
     if (error)
         info->error = g_error_copy (error);
     else {
@@ -3193,8 +3397,14 @@ set_apn_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (!info->error) {
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error)
+        info->error = g_error_copy (error);
+    else {
         MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
 
         priv->cid = GPOINTER_TO_INT (mm_callback_info_get_data (info, APN_CID_TAG));
@@ -3211,6 +3421,11 @@ cid_range_read (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
     guint32 cid = 0;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
 
     if (error)
         info->error = g_error_copy (error);
@@ -3278,10 +3493,14 @@ existing_apns_read (MMAtSerialPort *port,
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
     gboolean found = FALSE;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->error)
-        goto done;
-    else if (g_str_has_prefix (response->str, "+CGDCONT:")) {
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error) {
+        info->error = g_error_copy (error);
+    } else if (g_str_has_prefix (response->str, "+CGDCONT:")) {
         GRegex *r;
         GMatchInfo *match_info;
 
@@ -3332,7 +3551,6 @@ existing_apns_read (MMAtSerialPort *port,
                                            MM_MODEM_ERROR_GENERAL,
                                            "Could not parse the response");
 
-done:
     if (found || info->error)
         mm_callback_info_schedule (info);
     else {
@@ -3439,8 +3657,14 @@ get_cind_signal_done (MMAtSerialPort *port,
     GByteArray *indicators;
     guint quality;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (!info->error) {
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error)
+        info->error = g_error_copy (error);
+    else {
         priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
 
         indicators = mm_parse_cind_query_response (response->str, &info->error);
@@ -3468,9 +3692,15 @@ get_csq_done (MMAtSerialPort *port,
     char *reply = response->str;
     gboolean parsed = FALSE;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->error)
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error) {
+        info->error = g_error_copy (error);
         goto done;
+    }
 
     if (!strncmp (reply, "+CSQ: ", 6)) {
         /* Got valid reply */
@@ -3618,8 +3848,13 @@ set_allowed_mode_done (MMModem *modem, GError *error, gpointer user_data)
 {
     MMCallbackInfo *info = user_data;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (!info->error) {
+    /* Do nothing if modem removed */
+    if (!modem || mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error)
+        info->error = g_error_copy (error);
+    else {
         MMModemGsmAllowedMode mode = GPOINTER_TO_UINT (mm_callback_info_get_data (info, "mode"));
 
         mm_generic_gsm_update_allowed_mode (MM_GENERIC_GSM (info->modem), mode);
@@ -3674,8 +3909,13 @@ get_charsets_done (MMAtSerialPort *port,
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
     MMGenericGsmPrivate *priv;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->error) {
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error) {
+        info->error = g_error_copy (error);
         mm_callback_info_schedule (info);
         return;
     }
@@ -3733,8 +3973,13 @@ set_get_charset_done (MMAtSerialPort *port,
     MMModemCharset tried_charset;
     const char *p;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->error) {
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error) {
+        info->error = g_error_copy (error);
         mm_callback_info_schedule (info);
         return;
     }
@@ -3770,13 +4015,18 @@ set_charset_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->error) {
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error) {
         gboolean tried_no_quotes = !!mm_callback_info_get_data (info, TRIED_NO_QUOTES_TAG);
         MMModemCharset charset = GPOINTER_TO_UINT (mm_callback_info_get_data (info, "charset"));
         char *command;
 
-        if (!info->modem || tried_no_quotes) {
+        if (tried_no_quotes) {
+            info->error = g_error_copy (error);
             mm_callback_info_schedule (info);
             return;
         }
@@ -3856,6 +4106,14 @@ mm_generic_gsm_get_charset (MMGenericGsm *self)
 #define  SMS_TP_MTI_SMS_SUBMIT_REPORT 0x01
 #define  SMS_TP_MTI_SMS_STATUS_REPORT 0x02
 
+#define SMS_NUMBER_TYPE_MASK          0x70
+#define SMS_NUMBER_TYPE_UNKNOWN       0x00
+#define SMS_NUMBER_TYPE_INTL          0x10
+#define SMS_NUMBER_TYPE_ALPHA         0x50
+
+#define SMS_NUMBER_PLAN_MASK          0x0f
+#define SMS_NUMBER_PLAN_TELEPHONE     0x01
+
 #define SMS_TP_MMS                    0x04
 #define SMS_TP_SRI                    0x20
 #define SMS_TP_UDHI                   0x40
@@ -3880,6 +4138,11 @@ sms_send_done (MMAtSerialPort *port,
                gpointer user_data)
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
 
     if (error)
         info->error = g_error_copy (error);
@@ -3931,25 +4194,37 @@ sms_semi_octets_to_bcd_string (char *dest, const guint8 *octets, int num_octets)
     *dest++ = '\0';
 }
 
-/* len is in septets for gsm7 and in digits (semi-octets) for others */
+/* len is in semi-octets */
 static char *
 sms_decode_address (const guint8 *address, int len)
 {
-    guint8 addrtype;
+    guint8 addrtype, addrplan;
     char *utf8;
 
-    addrtype = address[0];
+    addrtype = address[0] & SMS_NUMBER_TYPE_MASK;
+    addrplan = address[0] & SMS_NUMBER_PLAN_MASK;
     address++;
 
-    if (addrtype == 0xd0) {
+    if (addrtype == SMS_NUMBER_TYPE_ALPHA) {
         guint8 *unpacked;
         guint32 unpacked_len;
-        unpacked = gsm_unpack (address + 1, len, 0, &unpacked_len);
+        unpacked = gsm_unpack (address, (len * 4) / 7, 0, &unpacked_len);
         utf8 = (char *)mm_charset_gsm_unpacked_to_utf8 (unpacked,
                                                         unpacked_len);
         g_free(unpacked);
+    } else if (addrtype == SMS_NUMBER_TYPE_INTL &&
+               addrplan == SMS_NUMBER_PLAN_TELEPHONE) {
+        /* International telphone number, format as "+1234567890" */
+        utf8 = g_malloc (len + 3); /* '+' + digits + possible trailing 0xf + NUL */
+        utf8[0] = '+';
+        sms_semi_octets_to_bcd_string (utf8 + 1, address, (len + 1) / 2);
     } else {
-        utf8 = g_malloc (len + 2); /* may need one extra for trailing 0xf */
+        /*
+         * All non-alphanumeric types and plans are just digits, but
+         * don't apply any special formatting if we don't know the
+         * format.
+         */
+        utf8 = g_malloc (len + 2); /* digits + possible trailing 0xf + NUL */
         sms_semi_octets_to_bcd_string (utf8, address, (len + 1) / 2);
     }
 
@@ -4071,14 +4346,6 @@ sms_parse_pdu (const char *hexpdu)
         return NULL;
     }
 
-    /* Only handle the basic protocol identifier */
-    if (pdu[tp_pid_offset] != 0) {
-        mm_err ("Unhandled protocol identifier: 0x%02x vs 0x00",
-                pdu[tp_pid_offset]);
-        g_free (pdu);
-        return NULL;
-    }
-
     smsc_addr = sms_decode_address (&pdu[1], 2 * (pdu[0] - 1));
     sender_addr = sms_decode_address (&pdu[msg_start_offset + 2],
                                       pdu[msg_start_offset + 1]);
@@ -4137,6 +4404,11 @@ sms_get_done (MMAtSerialPort *port,
     GHashTable *properties;
     int rv, status, tpdu_len, offset;
     char pdu[SMS_MAX_PDU_LEN + 1];
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
 
     if (error) {
         info->error = g_error_copy (error);
@@ -4212,6 +4484,11 @@ sms_delete_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
 
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
     if (error)
         info->error = g_error_copy (error);
 
@@ -4227,8 +4504,10 @@ sms_delete (MMModemGsmSms *modem,
     MMCallbackInfo *info;
     char *command;
     MMAtSerialPort *port;
+    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (MM_GENERIC_GSM (modem));
 
     info = mm_callback_info_new (MM_MODEM (modem), callback, user_data);
+    g_hash_table_remove (priv->sms_present, GINT_TO_POINTER (idx));
 
     port = mm_generic_gsm_get_best_at_port (MM_GENERIC_GSM (modem), &info->error);
     if (!port) {
@@ -4250,6 +4529,11 @@ sms_list_done (MMAtSerialPort *port,
     GPtrArray *results = NULL;
     int rv, status, tpdu_len, offset;
     char *rstr;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
 
     if (error)
         info->error = g_error_copy (error);
@@ -4389,6 +4673,11 @@ ussd_send_done (MMAtSerialPort *port,
     const char *str, *start = NULL, *end = NULL;
     char *reply = NULL, *converted;
 
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
     if (error) {
         info->error = g_error_copy (error);
         goto done;
@@ -4471,6 +4760,7 @@ ussd_send (MMModemGsmUssd *modem,
     GByteArray *ussd_command = g_byte_array_new();
     MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
     MMAtSerialPort *port;
+    gboolean success;
 
     info = mm_callback_info_string_new (MM_MODEM (modem), callback, user_data);
 
@@ -4481,7 +4771,9 @@ ussd_send (MMModemGsmUssd *modem,
     }
 
     /* encode to cur_charset */
-    g_warn_if_fail (mm_modem_charset_byte_array_append (ussd_command, command, FALSE, priv->cur_charset));
+    success = mm_modem_charset_byte_array_append (ussd_command, command, FALSE, priv->cur_charset);
+    g_warn_if_fail (success == TRUE);
+
     /* convert to hex representation */
     hex = utils_bin2hexstr (ussd_command->data, ussd_command->len);
     g_byte_array_free (ussd_command, TRUE);
@@ -4502,6 +4794,7 @@ ussd_initiate (MMModemGsmUssd *modem,
 {
     MMCallbackInfo *info;
     MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
+
     info = mm_callback_info_string_new (MM_MODEM (modem), callback, user_data);
 
     if (priv->ussd_state != MM_MODEM_GSM_USSD_STATE_IDLE) {
@@ -4509,11 +4802,9 @@ ussd_initiate (MMModemGsmUssd *modem,
                                    MM_MODEM_ERROR_GENERAL,
                                    "USSD session already active.");
         mm_callback_info_schedule (info);
-        return;
+    } else {
+        ussd_send (modem, command, callback, user_data);
     }
-
-    ussd_send (modem, command, callback, user_data);
-    return;
 }
 
 static void
@@ -4524,6 +4815,7 @@ ussd_respond (MMModemGsmUssd *modem,
 {
     MMCallbackInfo *info;
     MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
+
     info = mm_callback_info_string_new (MM_MODEM (modem), callback, user_data);
 
     if (priv->ussd_state != MM_MODEM_GSM_USSD_STATE_USER_RESPONSE) {
@@ -4531,11 +4823,9 @@ ussd_respond (MMModemGsmUssd *modem,
                                    MM_MODEM_ERROR_GENERAL,
                                    "No active USSD session, cannot respond.");
         mm_callback_info_schedule (info);
-        return;
+    } else {
+        ussd_send (modem, command, callback, user_data);
     }
-
-    ussd_send (modem, command, callback, user_data);
-    return;
 }
 
 static void
@@ -4546,13 +4836,17 @@ ussd_cancel_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
 
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
     if (error)
         info->error = g_error_copy (error);
 
     mm_callback_info_schedule (info);
 
-    if (info->modem)
-        ussd_update_state (MM_GENERIC_GSM (info->modem), MM_MODEM_GSM_USSD_STATE_IDLE);
+    ussd_update_state (MM_GENERIC_GSM (info->modem), MM_MODEM_GSM_USSD_STATE_IDLE);
 }
 
 static void
@@ -4710,9 +5004,14 @@ simple_state_machine (MMModem *modem, GError *error, gpointer user_data)
     gboolean home_only = FALSE;
     char *data_device;
 
-    info->error = mm_modem_check_removed (modem, error);
-    if (info->error)
+    /* Do nothing if modem removed */
+    if (!modem || mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error) {
+        info->error = g_error_copy (error);
         goto out;
+    }
 
     priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
 
@@ -4929,8 +5228,13 @@ simple_status_got_reg_info (MMModemGsmNetwork *modem,
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
     GHashTable *properties;
 
-    info->error = mm_modem_check_removed ((MMModem *) modem, error);
-    if (!info->error) {
+    /* Do nothing if modem removed */
+    if (!modem || mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error)
+        info->error = g_error_copy (error);
+    else {
         properties = (GHashTable *) mm_callback_info_get_data (info, SS_HASH_TAG);
 
         g_hash_table_insert (properties, "registration_status", simple_uint_value (status));
@@ -5188,6 +5492,7 @@ modem_gsm_card_init (MMModemGsmCard *class)
     class->get_imei = get_imei;
     class->get_imsi = get_imsi;
     class->get_operator_id = get_operator_id;
+    class->get_spn = get_spn;
     class->send_pin = send_pin;
     class->send_puk = send_puk;
     class->enable_pin = enable_pin;
@@ -5238,6 +5543,7 @@ mm_generic_gsm_init (MMGenericGsm *self)
     priv->act = MM_MODEM_GSM_ACCESS_TECH_UNKNOWN;
     priv->reg_regex = mm_gsm_creg_regex_get (TRUE);
     priv->roam_allowed = TRUE;
+    priv->sms_present = g_hash_table_new (g_direct_hash, g_direct_equal);
 
     mm_properties_changed_signal_register_property (G_OBJECT (self),
                                                     MM_MODEM_GSM_NETWORK_ALLOWED_MODE,
@@ -5455,6 +5761,7 @@ finalize (GObject *object)
     g_free (priv->oper_code);
     g_free (priv->oper_name);
     g_free (priv->simid);
+    g_hash_table_destroy (priv->sms_present);
 
     G_OBJECT_CLASS (mm_generic_gsm_parent_class)->finalize (object);
 }

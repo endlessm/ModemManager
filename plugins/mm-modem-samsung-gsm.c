@@ -144,6 +144,11 @@ set_band_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
 
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
     if (error)
         info->error = g_error_copy (error);
 
@@ -232,6 +237,11 @@ get_band_done (MMAtSerialPort *port,
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
     MMModemGsmBand mm_band = MM_MODEM_GSM_BAND_UNKNOWN;
 
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
     if (error)
         info->error = g_error_copy (error);
     else if (parse_ipbm (response->str, &mm_band))
@@ -289,6 +299,11 @@ send_samsung_pinnum_done (MMAtSerialPort *port,
     guint32 attempts_left = 0;
     char *str = NULL;
     guint32 num = 0;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
 
     if (error) {
         info->error = g_error_copy (error);
@@ -410,11 +425,7 @@ get_access_technology (MMGenericGsm *gsm,
     mm_modem_icera_get_access_technology (MM_MODEM_ICERA (gsm), callback, user_data);
 }
 
-typedef struct {
-    MMModem *modem;
-    MMModemFn callback;
-    gpointer user_data;
-} DisableInfo;
+/*****************************************************************************/
 
 static void
 disable_unsolicited_done (MMAtSerialPort *port,
@@ -423,12 +434,29 @@ disable_unsolicited_done (MMAtSerialPort *port,
                           gpointer user_data)
 
 {
-    MMModem *parent_modem_iface;
-    DisableInfo *info = user_data;
+    MMCallbackInfo *info = (MMCallbackInfo *) user_data;
 
-    parent_modem_iface = g_type_interface_peek_parent (MM_MODEM_GET_INTERFACE (info->modem));
-    parent_modem_iface->disable (info->modem, info->callback, info->user_data);
-    g_free (info);
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    /* Ignore all errors */
+    mm_callback_info_schedule (info);
+}
+
+static void
+invoke_call_parent_disable_fn (MMCallbackInfo *info)
+{
+    /* Note: we won't call the parent disable if info->modem is no longer
+     * valid. The invoke is called always once the info gets scheduled, which
+     * may happen during removed modem detection. */
+    if (info->modem) {
+        MMModem *parent_modem_iface;
+
+        parent_modem_iface = g_type_interface_peek_parent (MM_MODEM_GET_INTERFACE (info->modem));
+        parent_modem_iface->disable (info->modem, (MMModemFn)info->callback, info->user_data);
+    }
 }
 
 static void
@@ -437,15 +465,15 @@ disable (MMModem *modem,
          gpointer user_data)
 {
     MMAtSerialPort *primary;
-    DisableInfo *info;
+    MMCallbackInfo *info;
 
     mm_modem_icera_cleanup (MM_MODEM_ICERA (modem));
     mm_modem_icera_change_unsolicited_messages (MM_MODEM_ICERA (modem), FALSE);
 
-    info = g_malloc0 (sizeof (DisableInfo));
-    info->callback = callback;
-    info->user_data = user_data;
-    info->modem = modem;
+    info = mm_callback_info_new_full (modem,
+                                      invoke_call_parent_disable_fn,
+                                      (GCallback)callback,
+                                      user_data);
 
     primary = mm_generic_gsm_get_at_port (MM_GENERIC_GSM (modem), MM_PORT_TYPE_PRIMARY);
     g_assert (primary);
@@ -461,7 +489,14 @@ init_all_done (MMAtSerialPort *port,
                gpointer user_data)
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
-    MMModemSamsungGsm *self = MM_MODEM_SAMSUNG_GSM (info->modem);
+    MMModemSamsungGsm *self;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    self = MM_MODEM_SAMSUNG_GSM (info->modem);
 
     if (!error)
         mm_modem_icera_change_unsolicited_messages (MM_MODEM_ICERA (self), TRUE);
@@ -476,7 +511,14 @@ init2_done (MMAtSerialPort *port,
             gpointer user_data)
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
-    MMModemSamsungGsm *self = MM_MODEM_SAMSUNG_GSM (info->modem);
+    MMModemSamsungGsm *self;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    self = MM_MODEM_SAMSUNG_GSM (info->modem);
 
     if (error)
         mm_generic_gsm_enable_complete (MM_GENERIC_GSM (self), error, info);
@@ -493,7 +535,14 @@ init_done (MMAtSerialPort *port,
            gpointer user_data)
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
-    MMModemSamsungGsm *self = MM_MODEM_SAMSUNG_GSM (info->modem);
+    MMModemSamsungGsm *self;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    self = MM_MODEM_SAMSUNG_GSM (info->modem);
 
     if (error)
         mm_generic_gsm_enable_complete (MM_GENERIC_GSM (self), error, info);

@@ -67,9 +67,15 @@ get_mode_pref_done (MMAtSerialPort *port,
     guint32 acqord;
     MMModemGsmAllowedMode allowed = MM_MODEM_GSM_ALLOWED_MODE_ANY;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->error)
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error) {
+        info->error = g_error_copy (error);
         goto done;
+    }
 
     p = mm_strip_tag (response->str, "+CNMP:");
     if (!p) {
@@ -125,9 +131,15 @@ get_acq_order_done (MMAtSerialPort *port,
     const char *p;
     gint acqord = -1;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->error)
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error) {
+        info->error = g_error_copy (error);
         goto done;
+    }
 
     p = mm_strip_tag (response->str, "+CNAOP:");
     if (!p) {
@@ -182,6 +194,11 @@ set_acq_order_done (MMAtSerialPort *port,
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
 
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
     if (error)
         info->error = g_error_copy (error);
 
@@ -198,8 +215,13 @@ set_mode_pref_done (MMAtSerialPort *port,
     guint32 naop;
     char *command;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->error) {
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error) {
+        info->error = g_error_copy (error);
         mm_callback_info_schedule (info);
         return;
     }
@@ -286,8 +308,13 @@ get_act_tech_done (MMAtSerialPort *port,
     MMModemGsmAccessTech act = MM_MODEM_GSM_ACCESS_TECH_UNKNOWN;
     const char *p;
 
-    info->error = mm_modem_check_removed (info->modem, error);
-    if (info->error) {
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    if (error) {
+        info->error = g_error_copy (error);
         mm_callback_info_schedule (info);
         return;
     }
@@ -372,12 +399,6 @@ real_do_enable_power_up_done (MMGenericGsm *gsm,
 
 /*****************************************************************************/
 
-typedef struct {
-    MMModem *modem;
-    MMModemFn callback;
-    gpointer user_data;
-} DisableInfo;
-
 static void
 disable_unsolicited_done (MMAtSerialPort *port,
                           GString *response,
@@ -385,12 +406,29 @@ disable_unsolicited_done (MMAtSerialPort *port,
                           gpointer user_data)
 
 {
-    MMModem *parent_modem_iface;
-    DisableInfo *info = user_data;
+    MMCallbackInfo *info = (MMCallbackInfo *) user_data;
 
-    parent_modem_iface = g_type_interface_peek_parent (MM_MODEM_GET_INTERFACE (info->modem));
-    parent_modem_iface->disable (info->modem, info->callback, info->user_data);
-    g_free (info);
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (info))
+        return;
+
+    /* Ignore all errors */
+    mm_callback_info_schedule (info);
+}
+
+static void
+invoke_call_parent_disable_fn (MMCallbackInfo *info)
+{
+    /* Note: we won't call the parent disable if info->modem is no longer
+     * valid. The invoke is called always once the info gets scheduled, which
+     * may happen during removed modem detection. */
+    if (info->modem) {
+        MMModem *parent_modem_iface;
+
+        parent_modem_iface = g_type_interface_peek_parent (MM_MODEM_GET_INTERFACE (info->modem));
+        parent_modem_iface->disable (info->modem, (MMModemFn)info->callback, info->user_data);
+    }
 }
 
 static void
@@ -399,12 +437,12 @@ disable (MMModem *modem,
          gpointer user_data)
 {
     MMAtSerialPort *primary;
-    DisableInfo *info;
+    MMCallbackInfo *info;
 
-    info = g_malloc0 (sizeof (DisableInfo));
-    info->callback = callback;
-    info->user_data = user_data;
-    info->modem = modem;
+    info = mm_callback_info_new_full (modem,
+                                      invoke_call_parent_disable_fn,
+                                      (GCallback)callback,
+                                      user_data);
 
     primary = mm_generic_gsm_get_at_port (MM_GENERIC_GSM (modem), MM_PORT_TYPE_PRIMARY);
     g_assert (primary);

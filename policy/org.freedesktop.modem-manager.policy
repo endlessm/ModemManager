@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC
+ "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1.0/policyconfig.dtd">
+<policyconfig>
+
+  <vendor>ModemManager</vendor>
+  <vendor_url>http://www.freedesktop.org/wiki/ModemManager</vendor_url>
+  <icon_name>modem-manager</icon_name>
+
+  <action id="org.freedesktop.ModemManager.Device.Control">
+    <description>Unlock and control a mobile broadband device</description>
+    <message>System policy prevents unlocking or controlling the mobile broadband device.</message>
+    <defaults>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>auth_self_keep</allow_active>
+    </defaults>
+  </action>
+
+  <action id="org.freedesktop.ModemManager.Device.Info">
+    <description>Request mobile broadband device identifying information</description>
+    <message>System policy prevents requesting identifying information from the mobile broadband device.</message>
+    <defaults>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>yes</allow_active>
+    </defaults>
+  </action>
+
+  <action id="org.freedesktop.ModemManager.Contacts">
+    <description>Add, modify, and delete mobile broadband contacts</description>
+    <message>System policy prevents adding, modifying, or deleteing this device's contacts.</message>
+    <defaults>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>auth_self_keep</allow_active>
+    </defaults>
+  </action>
+
+  <action id="org.freedesktop.ModemManager.SMS">
+    <description>Send, save, modify, and delete text messages</description>
+    <message>System policy prevents sending or maniuplating this device's text messages.</message>
+    <defaults>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>auth_self_keep</allow_active>
+    </defaults>
+  </action>
+
+  <action id="org.freedesktop.ModemManager.Location">
+    <description>Enable and view geographic location and positioning information</description>
+    <message>System policy prevents enabling or viewing geographic location information.</message>
+    <defaults>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>auth_self_keep</allow_active>
+    </defaults>
+  </action>
+
+  <action id="org.freedesktop.ModemManager.USSD">
+    <description>Query and utilize network information and services</description>
+    <message>System policy prevents querying or utilizing network information and services.</message>
+    <defaults>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>yes</allow_active>
+    </defaults>
+  </action>
+
+</policyconfig>
