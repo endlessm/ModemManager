@@ -28,7 +28,11 @@ typedef struct {
     gpointer com_data;
 } TestData;
 
+#if GLIB_CHECK_VERSION(2,25,12)
+typedef GTestFixtureFunc TCFunc;
+#else
 typedef void (*TCFunc)(void);
+#endif
 
 #define TESTCASE(t, d) g_test_create_case (#t, 0, d, NULL, (TCFunc) t, NULL)
 
@@ -85,6 +89,7 @@ int main (int argc, char **argv)
     g_test_suite_add (suite, TESTCASE (test_escape_unescape, NULL));
     g_test_suite_add (suite, TESTCASE (test_utils_decapsulate_buffer, NULL));
     g_test_suite_add (suite, TESTCASE (test_utils_encapsulate_buffer, NULL));
+    g_test_suite_add (suite, TESTCASE (test_utils_decapsulate_sierra_cns, NULL));
     g_test_suite_add (suite, TESTCASE (test_result_string, NULL));
     g_test_suite_add (suite, TESTCASE (test_result_uint32, NULL));
     g_test_suite_add (suite, TESTCASE (test_result_uint8, NULL));
@@ -97,11 +102,15 @@ int main (int argc, char **argv)
         g_test_suite_add (suite, TESTCASE (test_com_mdn, data->com_data));
         g_test_suite_add (suite, TESTCASE (test_com_read_roam_pref, data->com_data));
         g_test_suite_add (suite, TESTCASE (test_com_read_mode_pref, data->com_data));
+        g_test_suite_add (suite, TESTCASE (test_com_read_hdr_rev_pref, data->com_data));
         g_test_suite_add (suite, TESTCASE (test_com_status, data->com_data));
         g_test_suite_add (suite, TESTCASE (test_com_sw_version, data->com_data));
+        g_test_suite_add (suite, TESTCASE (test_com_status_snapshot, data->com_data));
         g_test_suite_add (suite, TESTCASE (test_com_pilot_sets, data->com_data));
         g_test_suite_add (suite, TESTCASE (test_com_cm_subsys_state_info, data->com_data));
         g_test_suite_add (suite, TESTCASE (test_com_hdr_subsys_state_info, data->com_data));
+        g_test_suite_add (suite, TESTCASE (test_com_ext_logmask, data->com_data));
+        g_test_suite_add (suite, TESTCASE (test_com_event_report, data->com_data));
         g_test_suite_add (suite, TESTCASE (test_com_zte_subsys_status, data->com_data));
         g_test_suite_add (suite, TESTCASE (test_com_nw_subsys_modem_snapshot_cdma, data->com_data));
     }

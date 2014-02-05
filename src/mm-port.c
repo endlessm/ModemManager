@@ -19,7 +19,7 @@
 #include <string.h>
 
 #include "mm-port.h"
-#include "mm-options.h"
+#include "mm-log.h"
 
 G_DEFINE_TYPE (MMPort, mm_port, G_TYPE_OBJECT)
 
@@ -45,6 +45,20 @@ typedef struct {
 } MMPortPrivate;
 
 /*****************************************************************************/
+
+const char *
+mm_port_subsys_to_name (MMPortSubsys psubsys)
+{
+    switch (psubsys) {
+    case MM_PORT_SUBSYS_TTY:
+        return "tty";
+    case MM_PORT_SUBSYS_NET:
+        return "net";
+    default:
+        break;
+    }
+    return "(unknown)";
+}
 
 const char *
 mm_port_type_to_name (MMPortType ptype)
@@ -161,16 +175,10 @@ mm_port_set_connected (MMPort *self, gboolean connected)
     if (priv->connected != connected) {
         priv->connected = connected;
         g_object_notify (G_OBJECT (self), MM_PORT_CONNECTED);
-        if (mm_options_debug()) {
-            GTimeVal tv;
 
-            g_get_current_time (&tv);
-            g_debug ("<%ld.%ld> (%s): port now %s",
-                     tv.tv_sec,
-                     tv.tv_usec,
-                     priv->device,
-                     connected ? "connected" : "disconnected");
-        }
+        mm_dbg ("(%s): port now %s",
+                priv->device,
+                connected ? "connected" : "disconnected");
     }
 }
 

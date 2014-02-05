@@ -30,7 +30,9 @@ G_DEFINE_TYPE_EXTENDED (MMModemNokia, mm_modem_nokia, MM_TYPE_GENERIC_GSM, 0,
 MMModem *
 mm_modem_nokia_new (const char *device,
                     const char *driver,
-                    const char *plugin)
+                    const char *plugin,
+                    guint32 vendor,
+                    guint32 product)
 {
     g_return_val_if_fail (device != NULL, NULL);
     g_return_val_if_fail (driver != NULL, NULL);
@@ -40,6 +42,8 @@ mm_modem_nokia_new (const char *device,
                                    MM_MODEM_MASTER_DEVICE, device,
                                    MM_MODEM_DRIVER, driver,
                                    MM_MODEM_PLUGIN, plugin,
+                                   MM_MODEM_HW_VID, vendor,
+                                   MM_MODEM_HW_PID, product,
                                    NULL));
 }
 
@@ -54,6 +58,7 @@ grab_port (MMModem *modem,
     MMGenericGsm *gsm = MM_GENERIC_GSM (modem);
     MMPortType ptype = MM_PORT_TYPE_IGNORED;
     MMPort *port = NULL;
+    gulong send_delay = 5000;
 
     if (suggested_type == MM_PORT_TYPE_UNKNOWN) {
         if (!mm_generic_gsm_get_at_port (gsm, MM_PORT_TYPE_PRIMARY))
@@ -70,6 +75,9 @@ grab_port (MMModem *modem,
                                                mm_serial_parser_v1_e1_new (),
                                                mm_serial_parser_v1_e1_destroy);
     }
+
+    /* N900 appears to need longer delay between port bytes */
+    g_object_set (G_OBJECT (port), MM_SERIAL_PORT_SEND_DELAY, send_delay, NULL);
 
     return !!port;
 }

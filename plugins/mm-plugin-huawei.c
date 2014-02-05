@@ -27,6 +27,7 @@
 #include "mm-modem-huawei-cdma.h"
 #include "mm-serial-parsers.h"
 #include "mm-at-serial-port.h"
+#include "mm-log.h"
 
 G_DEFINE_TYPE (MMPluginHuawei, mm_plugin_huawei, MM_TYPE_PLUGIN_BASE)
 
@@ -239,18 +240,18 @@ supports_port (MMPluginBase *base,
 
         info->id = g_timeout_add_seconds (7, probe_secondary_timeout, task);
 
-        g_object_set_data_full (G_OBJECT (task), TAG_SUPPORTS_INFO,
-                                info, huawei_supports_info_destroy);
-
         if (!mm_serial_port_open (MM_SERIAL_PORT (info->serial), &error)) {
-            g_warning ("%s: (Huawei) %s: couldn't open serial port: (%d) %s",
-                       __func__, name,
-                       error ? error->code : -1,
-                       error && error->message ? error->message : "(unknown)");
+            mm_warn ("(Huawei) %s: couldn't open serial port: (%d) %s",
+                     name,
+                     error ? error->code : -1,
+                     error && error->message ? error->message : "(unknown)");
             g_clear_error (&error);
             huawei_supports_info_destroy (info);
             return MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
         }
+
+        g_object_set_data_full (G_OBJECT (task), TAG_SUPPORTS_INFO,
+                                info, huawei_supports_info_destroy);
 
         return MM_PLUGIN_SUPPORTS_PORT_IN_PROGRESS;
     }
@@ -268,7 +269,7 @@ grab_port (MMPluginBase *base,
     MMModem *modem = NULL;
     const char *name, *subsys, *devfile, *sysfs_path;
     guint32 caps;
-    guint16 product = 0;
+    guint16 vendor = 0, product = 0;
 
     port = mm_plugin_base_supports_task_get_port (task);
     g_assert (port);
@@ -282,7 +283,7 @@ grab_port (MMPluginBase *base,
     subsys = g_udev_device_get_subsystem (port);
     name = g_udev_device_get_name (port);
 
-    if (!mm_plugin_base_get_device_ids (base, subsys, name, NULL, &product)) {
+    if (!mm_plugin_base_get_device_ids (base, subsys, name, &vendor, &product)) {
         g_set_error (error, 0, 0, "Could not get modem product ID.");
         return NULL;
     }
@@ -292,14 +293,18 @@ grab_port (MMPluginBase *base,
     if (!existing) {
         if (caps & MM_PLUGIN_BASE_PORT_CAP_GSM) {
             modem = mm_modem_huawei_gsm_new (sysfs_path,
-                                                mm_plugin_base_supports_task_get_driver (task),
-                                                mm_plugin_get_name (MM_PLUGIN (base)));
+                                             mm_plugin_base_supports_task_get_driver (task),
+                                             mm_plugin_get_name (MM_PLUGIN (base)),
+                                             vendor,
+                                             product);
         } else if (caps & CAP_CDMA) {
             modem = mm_modem_huawei_cdma_new (sysfs_path,
                                               mm_plugin_base_supports_task_get_driver (task),
                                               mm_plugin_get_name (MM_PLUGIN (base)),
                                               !!(caps & MM_PLUGIN_BASE_PORT_CAP_IS856),
-                                              !!(caps & MM_PLUGIN_BASE_PORT_CAP_IS856_A));
+                                              !!(caps & MM_PLUGIN_BASE_PORT_CAP_IS856_A),
+                                              vendor,
+                                              product);
         }
 
         if (modem) {

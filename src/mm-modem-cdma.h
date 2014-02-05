@@ -35,6 +35,14 @@ typedef enum {
 
 #define MM_MODEM_CDMA_REGISTRATION_STATE_CHANGED "registration-state-changed"
 
+#define MM_MODEM_CDMA_MEID "meid"
+
+typedef enum {
+    MM_MODEM_CDMA_PROP_FIRST = 0x1200,
+
+    MM_MODEM_CDMA_PROP_MEID = MM_MODEM_CDMA_PROP_FIRST,
+} MMModemCdmaProp;
+
 typedef struct _MMModemCdma MMModemCdma;
 
 typedef void (*MMModemCdmaServingSystemFn) (MMModemCdma *modem,
@@ -70,6 +78,18 @@ struct _MMModemCdma {
                                     MMModemCdmaRegistrationStateFn callback,
                                     gpointer user_data);
 
+    void (*activate) (MMModemCdma *self,
+                      MMModemUIntFn callback,
+                      gpointer user_data);
+
+    void (*activate_manual) (MMModemCdma *self,
+                             MMModemUIntFn callback,
+                             gpointer user_data);
+
+    void (*activate_manual_debug) (MMModemCdma *self,
+                                   MMModemUIntFn callback,
+                                   gpointer user_data);
+
     /* Signals */
     void (*signal_quality) (MMModemCdma *self,
                             guint32 quality);
@@ -96,6 +116,12 @@ void mm_modem_cdma_get_serving_system (MMModemCdma *self,
 void mm_modem_cdma_get_registration_state (MMModemCdma *self,
                                            MMModemCdmaRegistrationStateFn callback,
                                            gpointer user_data);
+
+void mm_modem_cdma_activate (MMModemCdma *self, MMModemUIntFn callback,
+                             gpointer user_data);
+
+void mm_modem_cdma_activate_manual (MMModemCdma *self, MMModemUIntFn callback,
+                                    gpointer user_data);
 
 /* Protected */
 

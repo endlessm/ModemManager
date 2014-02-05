@@ -33,15 +33,23 @@ void test_com_read_roam_pref (void *f, void *data);
 
 void test_com_read_mode_pref (void *f, void *data);
 
+void test_com_read_hdr_rev_pref (void *f, void *data);
+
 void test_com_status (void *f, void *data);
 
 void test_com_sw_version (void *f, void *data);
+
+void test_com_status_snapshot (void *f, void *data);
 
 void test_com_pilot_sets (void *f, void *data);
 
 void test_com_cm_subsys_state_info (void *f, void *data);
 
 void test_com_hdr_subsys_state_info (void *f, void *data);
+
+void test_com_ext_logmask (void *f, void *data);
+
+void test_com_event_report (void *f, void *data);
 
 void test_com_zte_subsys_status (void *f, void *data);
 

@@ -1,7 +1,7 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*
  * Copyright (C) 2008 - 2010 Ericsson AB
- * Copyright (C) 2009 - 2010 Red Hat, Inc.
+ * Copyright (C) 2009 - 2011 Red Hat, Inc.
  *
  * Author: Per Hallsmark <per.hallsmark@ericsson.com>
  *         Bjorn Runaker <bjorn.runaker@ericsson.com>
@@ -31,6 +31,7 @@
 #include "mm-modem-gsm-card.h"
 #include "mm-errors.h"
 #include "mm-callback-info.h"
+#include "mm-log.h"
 
 static void modem_init (MMModem *modem_class);
 static void modem_gsm_network_init (MMModemGsmNetwork *gsm_network_class);
@@ -48,8 +49,6 @@ G_DEFINE_TYPE_EXTENDED (MMModemMbm, mm_modem_mbm, MM_TYPE_GENERIC_GSM, 0,
 #define MBM_E2NAP_DISCONNECTED 0
 #define MBM_E2NAP_CONNECTED    1
 #define MBM_E2NAP_CONNECTING   2
-
-#define MBM_SIGNAL_INDICATOR 2
 
 #define MBM_NETWORK_MODE_ANY  1
 #define MBM_NETWORK_MODE_2G   5
@@ -82,7 +81,9 @@ mbm_modem_authenticate (MMModemMbm *self,
 MMModem *
 mm_modem_mbm_new (const char *device,
                   const char *driver,
-                  const char *plugin)
+                  const char *plugin,
+                  guint32 vendor,
+                  guint32 product)
 {
     g_return_val_if_fail (device != NULL, NULL);
     g_return_val_if_fail (driver != NULL, NULL);
@@ -93,6 +94,8 @@ mm_modem_mbm_new (const char *device,
                                    MM_MODEM_DRIVER, driver,
                                    MM_MODEM_PLUGIN, plugin,
                                    MM_MODEM_IP_METHOD, MM_MODEM_IP_METHOD_DHCP,
+                                   MM_MODEM_HW_VID, vendor,
+                                   MM_MODEM_HW_PID, product,
                                    NULL));
 }
 
@@ -349,7 +352,6 @@ mbm_enable_done (MMAtSerialPort *port,
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
 
     /* Start unsolicited signal strength and access technology responses */
-    mm_at_serial_port_queue_command (port, "+CMER=3,0,0,1", 3, NULL, NULL);
     mm_at_serial_port_queue_command (port, "*ERINFO=1", 3, NULL, NULL);
 
     mm_generic_gsm_enable_complete (MM_GENERIC_GSM (info->modem), error, info);
@@ -409,7 +411,7 @@ mbm_emrdy_done (MMAtSerialPort *port,
     MMModemMbmPrivate *priv = MM_MODEM_MBM_GET_PRIVATE (info->modem);
 
     if (g_error_matches (error, MM_SERIAL_ERROR, MM_SERIAL_ERROR_RESPONSE_TIMEOUT))
-        g_warning ("%s: timed out waiting for EMRDY response.", __func__);
+        mm_warn ("timed out waiting for EMRDY response.");
     else
         priv->have_emrdy = TRUE;
 
@@ -473,7 +475,7 @@ disable (MMModem *modem,
     g_assert (primary);
 
     /* Turn off unsolicited responses */
-    mm_at_serial_port_queue_command (primary, "+CMER=0;*ERINFO=0", 5, disable_unsolicited_done, info);
+    mm_at_serial_port_queue_command (primary, "*ERINFO=0", 5, disable_unsolicited_done, info);
 }
 
 static void
@@ -506,6 +508,24 @@ do_disconnect (MMGenericGsm *gsm,
     mm_at_serial_port_queue_command (primary, "*ENAP=0", 3, NULL, NULL);
 
     MM_GENERIC_GSM_CLASS (mm_modem_mbm_parent_class)->do_disconnect (gsm, cid, callback, user_data);
+}
+
+static void
+reset (MMModem *modem,
+       MMModemFn callback,
+       gpointer user_data)
+{
+    MMCallbackInfo *info;
+    MMAtSerialPort *port;
+
+    info = mm_callback_info_new (MM_MODEM (modem), callback, user_data);
+
+    /* Ensure we have a usable port to use for the command */
+    port = mm_generic_gsm_get_best_at_port (MM_GENERIC_GSM (modem), &info->error);
+    if (port)
+        mm_at_serial_port_queue_command (port, "*E2RESET", 3, NULL, NULL);
+
+    mm_callback_info_schedule (info);
 }
 
 static void
@@ -580,29 +600,6 @@ mbm_pacsp_received (MMAtSerialPort *port,
 }
 
 static void
-mbm_ciev_received (MMAtSerialPort *port,
-                   GMatchInfo *info,
-                   gpointer user_data)
-{
-    int quality = 0, ind = 0;
-    char *str;
-
-    str = g_match_info_fetch (info, 1);
-    if (str)
-        ind = atoi (str);
-    g_free (str);
-
-    if (ind == MBM_SIGNAL_INDICATOR) {
-        str = g_match_info_fetch (info, 2);
-        if (str) {
-            quality = atoi (str);
-            mm_generic_gsm_update_signal_quality (MM_GENERIC_GSM (user_data), quality * 20);
-        }
-        g_free (str);
-    }
-}
-
-static void
 mbm_do_connect_done (MMModemMbm *self, gboolean success)
 {
     MMModemMbmPrivate *priv = MM_MODEM_MBM_GET_PRIVATE (self);
@@ -636,16 +633,16 @@ mbm_e2nap_received (MMAtSerialPort *port,
     g_free (str);
 
     if (MBM_E2NAP_DISCONNECTED == state) {
-        g_debug ("%s: disconnected", __func__);
+        mm_dbg ("disconnected");
         mbm_do_connect_done (MM_MODEM_MBM (user_data), FALSE);
     } else if (MBM_E2NAP_CONNECTED == state) {
-        g_debug ("%s: connected", __func__);
+        mm_dbg ("connected");
         mbm_do_connect_done (MM_MODEM_MBM (user_data), TRUE);
     } else if (MBM_E2NAP_CONNECTING == state)
-        g_debug("%s: connecting", __func__);
+        mm_dbg ("connecting");
     else {
         /* Should not happen */
-        g_debug("%s: unhandled E2NAP state %d", __func__, state);
+        mm_dbg ("unhandled E2NAP state %d", state);
         mbm_do_connect_done (MM_MODEM_MBM (user_data), FALSE);
     }
 }
@@ -724,18 +721,15 @@ mbm_auth_done (MMSerialPort *port,
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
     MMGenericGsm *modem = MM_GENERIC_GSM (info->modem);
     char *command;
-    guint32 cid;
 
     if (error) {
         mm_generic_gsm_connect_complete (modem, error, info);
         return;
     }
 
-    cid = mm_generic_gsm_get_cid (modem);
-
     mm_at_serial_port_queue_command (MM_AT_SERIAL_PORT (port), "AT*E2NAP=1", 3, NULL, NULL);
 
-    command = g_strdup_printf ("AT*ENAP=1,%d", cid);
+    command = g_strdup_printf ("AT*ENAP=1,%d", mm_generic_gsm_get_cid (modem));
     mm_at_serial_port_queue_command (MM_AT_SERIAL_PORT (port), command, 3, enap_done, user_data);
     g_free (command);
 }
@@ -818,7 +812,7 @@ send_epin_done (MMAtSerialPort *port,
     else if (strstr (pin_type, MM_MODEM_GSM_CARD_SIM_PUK2))
         sscanf (response->str, "*EPIN: %*d, %*d, %*d, %d", &attempts_left);
     else {
-        g_debug ("%s: unhandled pin type '%s'", __func__, pin_type);
+        mm_dbg ("unhandled pin type '%s'", pin_type);
 
         info->error = g_error_new_literal (MM_MODEM_ERROR, MM_MODEM_ERROR_GENERAL, "Unhandled PIN type");
     }
@@ -845,7 +839,7 @@ mbm_get_unlock_retries (MMModemGsmCard *modem,
     char *command;
     MMCallbackInfo *info = mm_callback_info_uint_new (MM_MODEM (modem), callback, user_data);
 
-    g_debug ("%s: pin type '%s'", __func__, pin_type);
+    mm_dbg ("pin type '%s'", pin_type);
 
     /* Ensure we have a usable port to use for the command */
     port = mm_generic_gsm_get_best_at_port (MM_GENERIC_GSM (modem), &info->error);
@@ -922,10 +916,6 @@ grab_port (MMModem *modem,
         mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (port), regex, mbm_pacsp_received, modem, NULL);
         g_regex_unref (regex);
 
-        regex = g_regex_new ("\\r\\n\\+CIEV: (\\d),(\\d)\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
-        mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (port), regex, mbm_ciev_received, modem, NULL);
-        g_regex_unref (regex);
-
         /* also consume unsolicited mbm messages we are not interested in them - see LP: #416418 */
         regex = g_regex_new ("\\R\\*ESTKSMENU:.*\\R", G_REGEX_RAW | G_REGEX_OPTIMIZE | G_REGEX_MULTILINE | G_REGEX_NEWLINE_CRLF, G_REGEX_MATCH_NEWLINE_CRLF, NULL);
         mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (port), regex, NULL, NULL, NULL);
@@ -969,6 +959,7 @@ modem_init (MMModem *modem_class)
     modem_class->grab_port = grab_port;
     modem_class->disable = disable;
     modem_class->connect = do_connect;
+    modem_class->reset = reset;
     modem_class->factory_reset = factory_reset;
 }
 

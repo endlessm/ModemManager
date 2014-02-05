@@ -18,6 +18,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <sys/stat.h>
 #include <unistd.h>
 
 #include <string.h>
@@ -34,6 +36,7 @@
 #include "mm-utils.h"
 #include "libqcdm/src/commands.h"
 #include "libqcdm/src/utils.h"
+#include "mm-log.h"
 
 static void plugin_init (MMPlugin *plugin_class);
 
@@ -48,6 +51,8 @@ G_DEFINE_TYPE_EXTENDED (MMPluginBase, mm_plugin_base, G_TYPE_OBJECT,
  */
 static GHashTable *cached_caps = NULL;
 
+/* Virtual port corresponding to the embeded modem */
+static gchar *virtual_port[] = {"smd0", NULL};
 
 typedef struct {
     char *name;
@@ -803,9 +808,9 @@ try_open (gpointer user_data)
         task_priv->full_id = g_signal_connect (task_priv->probe_port, "buffer-full",
                                                G_CALLBACK (port_buffer_full), task);
 
-        g_debug ("(%s): probe requested by plugin '%s'",
-                 g_udev_device_get_name (port),
-                 mm_plugin_get_name (MM_PLUGIN (task_priv->plugin)));
+        mm_dbg ("(%s): probe requested by plugin '%s'",
+                g_udev_device_get_name (port),
+                mm_plugin_get_name (MM_PLUGIN (task_priv->plugin)));
         mm_serial_port_flash (MM_SERIAL_PORT (task_priv->probe_port), 100, TRUE, flash_done, task);
     }
 
@@ -890,8 +895,8 @@ mm_plugin_base_get_device_ids (MMPluginBase *self,
                                guint16 *product)
 {
     MMPluginBasePrivate *priv;
-    GUdevDevice *device = NULL;
-    const char *vid, *pid;
+    GUdevDevice *device = NULL, *parent = NULL;
+    const char *vid = NULL, *pid = NULL, *parent_subsys;
     gboolean success = FALSE;
 
     g_return_val_if_fail (self != NULL, FALSE);
@@ -909,8 +914,37 @@ mm_plugin_base_get_device_ids (MMPluginBase *self,
     if (!device)
         goto out;
 
-    vid = g_udev_device_get_property (device, "ID_VENDOR_ID");
-    if (!vid || (strlen (vid) != 4))
+    parent = g_udev_device_get_parent (device);
+    if (parent) {
+        parent_subsys = g_udev_device_get_subsystem (parent);
+        if (parent_subsys) {
+            if (!strcmp (parent_subsys, "bluetooth")) {
+                /* Bluetooth devices report the VID/PID of the BT adapter here,
+                 * which isn't really what we want.  Just return null IDs instead.
+                 */
+                success = TRUE;
+                goto out;
+            } else if (!strcmp (parent_subsys, "pcmcia")) {
+                /* For PCMCIA devices we need to grab the PCMCIA subsystem's
+                 * manfid and cardid, since any IDs on the tty device itself
+                 * may be from PCMCIA controller or something else.
+                 */
+                vid = g_udev_device_get_sysfs_attr (parent, "manf_id");
+                pid = g_udev_device_get_sysfs_attr (parent, "card_id");
+                if (!vid || !pid)
+                    goto out;
+            }
+        }
+    }
+
+    if (!vid)
+        vid = g_udev_device_get_property (device, "ID_VENDOR_ID");
+    if (!vid)
+        goto out;
+
+    if (strncmp (vid, "0x", 2) == 0)
+        vid += 2;
+    if (strlen (vid) != 4)
         goto out;
 
     if (vendor) {
@@ -918,8 +952,16 @@ mm_plugin_base_get_device_ids (MMPluginBase *self,
         *vendor |= (guint16) ((utils_hex2byte (vid) & 0xFF) << 8);
     }
 
-    pid = g_udev_device_get_property (device, "ID_MODEL_ID");
-    if (!pid || (strlen (pid) != 4)) {
+    if (!pid)
+        pid = g_udev_device_get_property (device, "ID_MODEL_ID");
+    if (!pid) {
+        *vendor = 0;
+        goto out;
+    }
+
+    if (strncmp (pid, "0x", 2) == 0)
+        pid += 2;
+    if (strlen (pid) != 4) {
         *vendor = 0;
         goto out;
     }
@@ -934,6 +976,8 @@ mm_plugin_base_get_device_ids (MMPluginBase *self,
 out:
     if (device)
         g_object_unref (device);
+    if (parent)
+        g_object_unref (parent);
     return success;
 }
 
@@ -980,6 +1024,20 @@ get_driver_name (GUdevDevice *device)
     return ret;
 }
 
+static gboolean
+device_file_exists(const char *name)
+{
+    char *devfile;
+    struct stat s;
+    int result;
+
+    devfile = g_strdup_printf ("/dev/%s", name);
+    result = stat (devfile, &s);
+    g_free (devfile);
+
+    return (0 == result) ? TRUE : FALSE;
+}
+
 static MMPluginSupportsResult
 supports_port (MMPlugin *plugin,
                const char *subsys,
@@ -995,6 +1053,7 @@ supports_port (MMPlugin *plugin,
     char *driver = NULL, *key = NULL;
     MMPluginBaseSupportsTask *task;
     MMPluginSupportsResult result = MM_PLUGIN_SUPPORTS_PORT_UNSUPPORTED;
+    int idx;
 
     key = get_key (subsys, name);
     task = g_hash_table_lookup (priv->tasks, key);
@@ -1007,6 +1066,19 @@ supports_port (MMPlugin *plugin,
     if (!port)
         goto out;
 
+    // Detect any modems accessible through the list of virtual ports
+    for (idx = 0; virtual_port[idx]; idx++)  {
+        if (strcmp(name, virtual_port[idx]))
+            continue;
+        if (!device_file_exists(virtual_port[idx]))
+            continue;
+
+        task = supports_task_new (self, port, physdev_path, "virtual", callback, callback_data);
+        g_assert (task);
+        g_hash_table_insert (priv->tasks, g_strdup (key), g_object_ref (task));
+        goto find_plugin;
+    }
+
     driver = get_driver_name (port);
     if (!driver)
         goto out;
@@ -1015,6 +1087,7 @@ supports_port (MMPlugin *plugin,
     g_assert (task);
     g_hash_table_insert (priv->tasks, g_strdup (key), g_object_ref (task));
 
+find_plugin:
     result = MM_PLUGIN_BASE_GET_CLASS (self)->supports_port (self, existing, task);
     if (result != MM_PLUGIN_SUPPORTS_PORT_IN_PROGRESS) {
         /* If the plugin doesn't support the port at all, the supports task is

@@ -18,7 +18,7 @@
 #include <string.h>
 #include <dbus/dbus-glib.h>
 #include "mm-modem.h"
-#include "mm-options.h"
+#include "mm-log.h"
 #include "mm-errors.h"
 #include "mm-callback-info.h"
 #include "mm-marshal.h"
@@ -28,6 +28,7 @@ static void impl_modem_connect (MMModem *modem, const char *number, DBusGMethodI
 static void impl_modem_disconnect (MMModem *modem, DBusGMethodInvocation *context);
 static void impl_modem_get_ip4_config (MMModem *modem, DBusGMethodInvocation *context);
 static void impl_modem_get_info (MMModem *modem, DBusGMethodInvocation *context);
+static void impl_modem_reset (MMModem *modem, DBusGMethodInvocation *context);
 static void impl_modem_factory_reset (MMModem *modem, const char *code, DBusGMethodInvocation *context);
 
 #include "mm-modem-glue.h"
@@ -478,6 +479,56 @@ impl_modem_get_info (MMModem *modem,
 /*****************************************************************************/
 
 static void
+reset_auth_cb (MMAuthRequest *req,
+               GObject *owner,
+               DBusGMethodInvocation *context,
+               gpointer user_data)
+{
+    MMModem *self = MM_MODEM (owner);
+    GError *error = NULL;
+
+    /* Return any authorization error, otherwise try to reset the modem */
+    if (!mm_modem_auth_finish (self, req, &error)) {
+        dbus_g_method_return_error (context, error);
+        g_error_free (error);
+    } else
+        mm_modem_reset (self, async_call_done, context);
+}
+
+static void
+impl_modem_reset (MMModem *modem, DBusGMethodInvocation *context)
+{
+    GError *error = NULL;
+
+    /* Make sure the caller is authorized to reset the device */
+    if (!mm_modem_auth_request (MM_MODEM (modem),
+                                MM_AUTHORIZATION_DEVICE_CONTROL,
+                                context,
+                                reset_auth_cb,
+                                NULL, NULL,
+                                &error)) {
+        dbus_g_method_return_error (context, error);
+        g_error_free (error);
+    }
+}
+
+void
+mm_modem_reset (MMModem *self,
+                MMModemFn callback,
+                gpointer user_data)
+{
+    g_return_if_fail (MM_IS_MODEM (self));
+    g_return_if_fail (callback != NULL);
+
+    if (MM_MODEM_GET_INTERFACE (self)->reset)
+        MM_MODEM_GET_INTERFACE (self)->reset (self, callback, user_data);
+    else
+        async_op_not_supported (self, callback, user_data);
+}
+
+/*****************************************************************************/
+
+static void
 factory_reset_auth_cb (MMAuthRequest *req,
                        GObject *owner,
                        DBusGMethodInvocation *context,
@@ -704,22 +755,10 @@ mm_modem_set_state (MMModem *self,
 
         dbus_path = (const char *) g_object_get_data (G_OBJECT (self), DBUS_PATH_TAG);
         if (dbus_path) {
-            if (mm_options_debug ()) {
-                GTimeVal tv;
-
-                g_get_current_time (&tv);
-                g_debug ("<%ld.%ld> Modem %s: state changed (%s -> %s)",
-                         tv.tv_sec,
-                         tv.tv_usec,
-                         dbus_path,
-                         state_to_string (old_state),
-                         state_to_string (new_state));
-            } else {
-                g_message ("Modem %s: state changed (%s -> %s)",
-                           dbus_path,
-                           state_to_string (old_state),
-                           state_to_string (new_state));
-            }
+            mm_info ("Modem %s: state changed (%s -> %s)",
+                     dbus_path,
+                     state_to_string (old_state),
+                     state_to_string (new_state));
         }
     }
 }
@@ -832,7 +871,7 @@ mm_modem_init (gpointer g_iface)
                             MM_MODEM_IP_METHOD_PPP,
                             MM_MODEM_IP_METHOD_DHCP,
                             MM_MODEM_IP_METHOD_PPP,
-                            G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+                            G_PARAM_READWRITE));
 
     g_object_interface_install_property
         (g_iface,
@@ -870,6 +909,14 @@ mm_modem_init (gpointer g_iface)
 
     g_object_interface_install_property
         (g_iface,
+         g_param_spec_string (MM_MODEM_DEVICE_IDENTIFIER,
+                               "DeviceIdentifier",
+                               "A best-effort identifer of the device",
+                               NULL,
+                               G_PARAM_READABLE));
+
+    g_object_interface_install_property
+        (g_iface,
          g_param_spec_string (MM_MODEM_UNLOCK_REQUIRED,
                                "UnlockRequired",
                                "Whether or not the modem requires an unlock "
@@ -884,6 +931,22 @@ mm_modem_init (gpointer g_iface)
                                "The remaining number of unlock attempts",
                                0, G_MAXUINT32, 0,
                                G_PARAM_READABLE));
+
+    g_object_interface_install_property
+        (g_iface,
+         g_param_spec_uint (MM_MODEM_HW_VID,
+                            "Hardware vendor ID",
+                            "Hardware vendor ID",
+                            0, G_MAXUINT, 0,
+                            G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+
+    g_object_interface_install_property
+        (g_iface,
+         g_param_spec_uint (MM_MODEM_HW_PID,
+                            "Hardware product ID",
+                            "Hardware product ID",
+                            0, G_MAXUINT, 0,
+                            G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
     /* Signals */
     g_signal_new ("state-changed",

@@ -59,5 +59,23 @@ gboolean mm_gsm_parse_cscs_support_response (const char *reply,
 
 MMModemGsmAccessTech mm_gsm_string_to_access_tech (const char *string);
 
+char *mm_create_device_identifier (guint vid,
+                                   guint pid,
+                                   const char *ati,
+                                   const char *ati1,
+                                   const char *gsn,
+                                   const char *revision,
+                                   const char *model,
+                                   const char *manf);
+
+typedef struct CindResponse CindResponse;
+GHashTable *mm_parse_cind_test_response (const char *reply, GError **error);
+const char *cind_response_get_desc      (CindResponse *r);
+guint       cind_response_get_index     (CindResponse *r);
+gint        cind_response_get_min       (CindResponse *r);
+gint        cind_response_get_max       (CindResponse *r);
+
+GByteArray *mm_parse_cind_query_response(const char *reply, GError **error);
+
 #endif  /* MM_MODEM_HELPERS_H */
 

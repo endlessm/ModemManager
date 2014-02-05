@@ -30,6 +30,7 @@
 #include "mm-serial-parsers.h"
 #include "mm-modem-helpers.h"
 #include "libqcdm/src/commands.h"
+#include "mm-log.h"
 
 #define MM_GENERIC_CDMA_PREV_STATE_TAG "prev-state"
 
@@ -68,6 +69,8 @@ typedef struct {
 
     guint poll_id;
 
+    char *meid;
+
     MMModemCdmaRegistrationState cdma_1x_reg_state;
     MMModemCdmaRegistrationState evdo_reg_state;
 
@@ -95,7 +98,9 @@ mm_generic_cdma_new (const char *device,
                      const char *driver,
                      const char *plugin,
                      gboolean evdo_rev0,
-                     gboolean evdo_revA)
+                     gboolean evdo_revA,
+                     guint vendor,
+                     guint product)
 {
     g_return_val_if_fail (device != NULL, NULL);
     g_return_val_if_fail (driver != NULL, NULL);
@@ -107,6 +112,8 @@ mm_generic_cdma_new (const char *device,
                                    MM_MODEM_PLUGIN, plugin,
                                    MM_GENERIC_CDMA_EVDO_REV0, evdo_rev0,
                                    MM_GENERIC_CDMA_EVDO_REVA, evdo_revA,
+                                   MM_MODEM_HW_VID, vendor,
+                                   MM_MODEM_HW_PID, product,
                                    NULL));
 }
 
@@ -162,6 +169,47 @@ initial_esn_check (MMGenericCdma *self)
     }
 }
 
+static void
+get_info_cb (MMModem *modem,
+             const char *manufacturer,
+             const char *model,
+             const char *version,
+             GError *error,
+             gpointer user_data)
+{
+    /* Base class handles saving the info for us */
+    if (modem)
+        mm_serial_port_close (MM_SERIAL_PORT (MM_GENERIC_CDMA_GET_PRIVATE (modem)->primary));
+}
+
+static void
+initial_info_check (MMGenericCdma *self)
+{
+    GError *error = NULL;
+    MMGenericCdmaPrivate *priv;
+
+    g_return_if_fail (MM_IS_GENERIC_CDMA (self));
+    priv = MM_GENERIC_CDMA_GET_PRIVATE (self);
+
+    g_return_if_fail (priv->primary != NULL);
+
+    if (mm_serial_port_open (MM_SERIAL_PORT (priv->primary), &error)) {
+        /* Make sure echoing is off */
+        mm_at_serial_port_queue_command (priv->primary, "E0", 3, NULL, NULL);
+        mm_modem_base_get_card_info (MM_MODEM_BASE (self),
+                                     priv->primary,
+                                     NULL,
+                                     get_info_cb,
+                                     NULL);
+    } else {
+        g_warning ("%s: failed to open serial port: (%d) %s",
+                   __func__,
+                   error ? error->code : -1,
+                   error && error->message ? error->message : "(unknown)");
+        g_clear_error (&error);
+    }
+}
+
 static gboolean
 owns_port (MMModem *modem, const char *subsys, const char *name)
 {
@@ -214,6 +262,9 @@ mm_generic_cdma_grab_port (MMGenericCdma *self,
                 priv->data = port;
                 g_object_notify (G_OBJECT (self), MM_MODEM_DATA_DEVICE);
             }
+
+            /* Get the modem's general info */
+            initial_info_check (self);
 
             /* Get modem's ESN number */
             initial_esn_check (self);
@@ -313,6 +364,15 @@ mm_generic_cdma_get_best_at_port (MMGenericCdma *self, GError **error)
     }
 
     return priv->secondary;
+}
+
+MMQcdmSerialPort *
+mm_generic_cdma_get_best_qcdm_port (MMGenericCdma *self, GError **error)
+{
+    g_return_val_if_fail (self != NULL, NULL);
+    g_return_val_if_fail (MM_IS_GENERIC_CDMA (self), NULL);
+
+    return MM_GENERIC_CDMA_GET_PRIVATE (self)->qcdm;
 }
 
 /*****************************************************************************/
@@ -552,25 +612,6 @@ out:
 }
 
 static void
-enable_error_reporting_done (MMAtSerialPort *port,
-                             GString *response,
-                             GError *error,
-                             gpointer user_data)
-{
-    MMCallbackInfo *info = (MMCallbackInfo *) user_data;
-    MMGenericCdma *self = MM_GENERIC_CDMA (info->modem);
-
-    /* Just ignore errors, see comment in init_done() */
-    if (error)
-        g_warning ("Your CDMA modem does not support +CMEE command");
-
-    if (MM_GENERIC_CDMA_GET_CLASS (self)->post_enable)
-        MM_GENERIC_CDMA_GET_CLASS (self)->post_enable (self, enable_all_done, info);
-    else
-        enable_all_done (MM_MODEM (self), NULL, info);
-}
-
-static void
 init_done (MMAtSerialPort *port,
            GString *response,
            GError *error,
@@ -586,12 +627,17 @@ init_done (MMAtSerialPort *port,
         info->error = g_error_copy (error);
         mm_callback_info_schedule (info);
     } else {
-        /* Try to enable better error reporting. My experience so far indicates
-           there's some CDMA modems that does not support that.
-        FIXME: It's mandatory by spec, so it really shouldn't be optional. Figure
-        out which CDMA modems have problems with it and implement plugin for them.
-        */
-        mm_at_serial_port_queue_command (port, "+CMEE=1", 3, enable_error_reporting_done, user_data);
+        MMGenericCdma *self = MM_GENERIC_CDMA (info->modem);
+
+        /* Try enabling better error reporting on CDMA devices, but few
+         * actually support +CMEE as it's more of a GSM command.
+         */
+        mm_at_serial_port_queue_command (port, "+CMEE=1", 3, NULL, NULL);
+
+        if (MM_GENERIC_CDMA_GET_CLASS (self)->post_enable)
+            MM_GENERIC_CDMA_GET_CLASS (self)->post_enable (self, enable_all_done, info);
+        else
+            enable_all_done (MM_MODEM (self), NULL, info);
     }
 }
 
@@ -1002,7 +1048,7 @@ get_signal_quality (MMModemCdma *modem,
 
     at_port = mm_generic_cdma_get_best_at_port (MM_GENERIC_CDMA (modem), &info->error);
     if (!at_port && !priv->qcdm) {
-        g_message ("Returning saved signal quality %d", priv->cdma1x_quality);
+        mm_dbg ("Returning saved signal quality %d", priv->cdma1x_quality);
         mm_callback_info_set_result (info, GUINT_TO_POINTER (priv->cdma1x_quality), NULL);
         mm_callback_info_schedule (info);
         return;
@@ -1481,15 +1527,22 @@ reg_query_speri_done (MMAtSerialPort *port,
     if (!p || !mm_cdma_parse_eri (p, &roam, NULL, NULL))
         goto done;
 
-    /* Change the 1x and EVDO registration states to roaming if they were
-     * anything other than UNKNOWN.
-     */
     if (roam) {
+        /* Change the 1x and EVDO registration states to roaming if they were
+         * anything other than UNKNOWN.
+         */
         if (mm_generic_cdma_query_reg_state_get_callback_1x_state (info))
             mm_generic_cdma_query_reg_state_set_callback_1x_state (info, MM_MODEM_CDMA_REGISTRATION_STATE_ROAMING);
 
         if (mm_generic_cdma_query_reg_state_get_callback_evdo_state (info))
             mm_generic_cdma_query_reg_state_set_callback_evdo_state (info, MM_MODEM_CDMA_REGISTRATION_STATE_ROAMING);
+    } else {
+        /* Change 1x and/or EVDO registration state to home if home/roaming wasn't previously known */
+        if (mm_generic_cdma_query_reg_state_get_callback_1x_state (info) == MM_MODEM_CDMA_REGISTRATION_STATE_REGISTERED)
+            mm_generic_cdma_query_reg_state_set_callback_1x_state (info, MM_MODEM_CDMA_REGISTRATION_STATE_HOME);
+
+        if (mm_generic_cdma_query_reg_state_get_callback_evdo_state (info) == MM_MODEM_CDMA_REGISTRATION_STATE_REGISTERED)
+            mm_generic_cdma_query_reg_state_set_callback_evdo_state (info, MM_MODEM_CDMA_REGISTRATION_STATE_HOME);
     }
 
 done:
@@ -1541,6 +1594,12 @@ real_query_registration_state (MMGenericCdma *self,
 
     port = mm_generic_cdma_get_best_at_port (self, &info->error);
     if (!port) {
+        /* If we can't get an AT port, but less specific registration checks
+         * were successful, just use that and don't return an error.
+         */
+        if (   cur_cdma_state != MM_MODEM_CDMA_REGISTRATION_STATE_UNKNOWN
+            || cur_evdo_state != MM_MODEM_CDMA_REGISTRATION_STATE_UNKNOWN)
+            g_clear_error (&info->error);
         mm_callback_info_schedule (info);
         return;
     }
@@ -1658,58 +1717,79 @@ error:
 }
 
 static void
-reg_cmstate_cb (MMQcdmSerialPort *port,
-                GByteArray *response,
-                GError *error,
-                gpointer user_data)
+reg_hdrstate_cb (MMQcdmSerialPort *port,
+                 GByteArray *response,
+                 GError *error,
+                 gpointer user_data)
 {
     MMCallbackInfo *info = user_data;
-    MMAtSerialPort *at_port;
-    QCDMResult *result;
-    guint32 opmode = 0, sysmode = 0;
+    QCDMResult *result = NULL;
+    guint32 sysmode;
     MMModemCdmaRegistrationState cdma_state = MM_MODEM_CDMA_REGISTRATION_STATE_UNKNOWN;
     MMModemCdmaRegistrationState evdo_state = MM_MODEM_CDMA_REGISTRATION_STATE_UNKNOWN;
+    MMAtSerialPort *at_port;
+    gboolean evdo_registered = FALSE;
 
     if (error)
         goto error;
 
-    /* Parse the response */
-    result = qcdm_cmd_cm_subsys_state_info_result ((const char *) response->data, response->len, &info->error);
-    if (!result)
-        goto error;
+    sysmode = GPOINTER_TO_UINT (mm_callback_info_get_data (info, "sysmode"));
 
-    qcdm_result_get_uint32 (result, QCDM_CMD_CM_SUBSYS_STATE_INFO_ITEM_OPERATING_MODE, &opmode);
-    qcdm_result_get_uint32 (result, QCDM_CMD_CM_SUBSYS_STATE_INFO_ITEM_SYSTEM_MODE, &sysmode);
-    qcdm_result_unref (result);
+    /* Get HDR subsystem state to determine EVDO registration when in 1X mode */
+    result = qcdm_cmd_hdr_subsys_state_info_result ((const char *) response->data,
+                                                    response->len,
+                                                    NULL);
+    if (result) {
+        guint8 session_state = QCDM_CMD_HDR_SUBSYS_STATE_INFO_SESSION_STATE_CLOSED;
+        guint8 almp_state = QCDM_CMD_HDR_SUBSYS_STATE_INFO_ALMP_STATE_INACTIVE;
+        guint8 hybrid_mode = 0;
 
-    if (opmode == QCDM_CMD_CM_SUBSYS_STATE_INFO_OPERATING_MODE_ONLINE) {
-        switch (sysmode) {
-        case QCDM_CMD_CM_SUBSYS_STATE_INFO_SYSTEM_MODE_CDMA:
-            cdma_state = MM_MODEM_CDMA_REGISTRATION_STATE_REGISTERED;
-            break;
-        case QCDM_CMD_CM_SUBSYS_STATE_INFO_SYSTEM_MODE_HDR:
-            evdo_state = MM_MODEM_CDMA_REGISTRATION_STATE_REGISTERED;
-            break;
-        case QCDM_CMD_CM_SUBSYS_STATE_INFO_SYSTEM_MODE_AMPS:
-        case QCDM_CMD_CM_SUBSYS_STATE_INFO_SYSTEM_MODE_NO_SERVICE:
-        case QCDM_CMD_CM_SUBSYS_STATE_INFO_SYSTEM_MODE_WCDMA:
-        default:
-            break;
+        if (   qcdm_result_get_uint8 (result, QCDM_CMD_HDR_SUBSYS_STATE_INFO_ITEM_SESSION_STATE, &session_state)
+            && qcdm_result_get_uint8 (result, QCDM_CMD_HDR_SUBSYS_STATE_INFO_ITEM_ALMP_STATE, &almp_state)
+            && qcdm_result_get_uint8 (result, QCDM_CMD_HDR_SUBSYS_STATE_INFO_ITEM_HDR_HYBRID_MODE, &hybrid_mode)) {
+
+            /* EVDO state is registered if the HDR subsystem is registered, and
+             * we're in hybrid mode, and the Call Manager system mode is
+             * CDMA.
+             */
+            if (   hybrid_mode
+                && session_state == QCDM_CMD_HDR_SUBSYS_STATE_INFO_SESSION_STATE_OPEN
+                && (   almp_state == QCDM_CMD_HDR_SUBSYS_STATE_INFO_ALMP_STATE_IDLE
+                    || almp_state == QCDM_CMD_HDR_SUBSYS_STATE_INFO_ALMP_STATE_CONNECTED))
+                evdo_registered = TRUE;
         }
 
-        if (cdma_state || evdo_state) {
-            /* Device is registered to something; see if the subclass has a
-             * better idea of whether we're roaming or not and what the
-             * access technology is.
-             */
-            if (MM_GENERIC_CDMA_GET_CLASS (info->modem)->query_registration_state) {
-                MM_GENERIC_CDMA_GET_CLASS (info->modem)->query_registration_state (MM_GENERIC_CDMA (info->modem),
-                                                                                   cdma_state,
-                                                                                   evdo_state,
-                                                                                   subclass_reg_query_done,
-                                                                                   info);
-                return;
-            }
+        qcdm_result_unref (result);
+    }
+
+    switch (sysmode) {
+    case QCDM_CMD_CM_SUBSYS_STATE_INFO_SYSTEM_MODE_CDMA:
+        cdma_state = MM_MODEM_CDMA_REGISTRATION_STATE_REGISTERED;
+        if (evdo_registered)
+            evdo_state = MM_MODEM_CDMA_REGISTRATION_STATE_REGISTERED;
+        break;
+    case QCDM_CMD_CM_SUBSYS_STATE_INFO_SYSTEM_MODE_HDR:
+        evdo_state = MM_MODEM_CDMA_REGISTRATION_STATE_REGISTERED;
+        break;
+    case QCDM_CMD_CM_SUBSYS_STATE_INFO_SYSTEM_MODE_AMPS:
+    case QCDM_CMD_CM_SUBSYS_STATE_INFO_SYSTEM_MODE_NO_SERVICE:
+    case QCDM_CMD_CM_SUBSYS_STATE_INFO_SYSTEM_MODE_WCDMA:
+    default:
+        break;
+    }
+
+    if (cdma_state || evdo_state) {
+        /* Device is registered to something; see if the subclass has a
+         * better idea of whether we're roaming or not and what the
+         * access technology is.
+         */
+        if (MM_GENERIC_CDMA_GET_CLASS (info->modem)->query_registration_state) {
+            MM_GENERIC_CDMA_GET_CLASS (info->modem)->query_registration_state (MM_GENERIC_CDMA (info->modem),
+                                                                               cdma_state,
+                                                                               evdo_state,
+                                                                               subclass_reg_query_done,
+                                                                               info);
+            return;
         }
     }
 
@@ -1725,6 +1805,59 @@ error:
         mm_at_serial_port_queue_command (at_port, "+CAD?", 3, get_analog_digital_done, info);
     else
         mm_callback_info_schedule (info);
+}
+
+static void
+reg_cmstate_cb (MMQcdmSerialPort *port,
+                GByteArray *response,
+                GError *error,
+                gpointer user_data)
+{
+    MMCallbackInfo *info = user_data;
+    MMAtSerialPort *at_port = NULL;
+    QCDMResult *result = NULL;
+    guint32 opmode = 0, sysmode = 0;
+    GError *qcdm_error = NULL;
+
+    /* Parse the response */
+    if (!error)
+        result = qcdm_cmd_cm_subsys_state_info_result ((const char *) response->data, response->len, &qcdm_error);
+
+    if (!result) {
+        /* If there was some error, fall back to use +CAD like we did before QCDM */
+        if (info->modem)
+            at_port = mm_generic_cdma_get_best_at_port (MM_GENERIC_CDMA (info->modem), &info->error);
+        else
+            info->error = g_error_copy (qcdm_error);
+
+        if (at_port)
+            mm_at_serial_port_queue_command (at_port, "+CAD?", 3, get_analog_digital_done, info);
+        else
+            mm_callback_info_schedule (info);
+        g_clear_error (&qcdm_error);
+        return;
+    }
+
+    qcdm_result_get_uint32 (result, QCDM_CMD_CM_SUBSYS_STATE_INFO_ITEM_OPERATING_MODE, &opmode);
+    qcdm_result_get_uint32 (result, QCDM_CMD_CM_SUBSYS_STATE_INFO_ITEM_SYSTEM_MODE, &sysmode);
+    qcdm_result_unref (result);
+
+    if (opmode == QCDM_CMD_CM_SUBSYS_STATE_INFO_OPERATING_MODE_ONLINE) {
+        GByteArray *hdrstate;
+
+        mm_callback_info_set_data (info, "sysmode", GUINT_TO_POINTER (sysmode), NULL);
+
+        /* Get HDR subsystem state */
+        hdrstate = g_byte_array_sized_new (25);
+        hdrstate->len = qcdm_cmd_hdr_subsys_state_info_new ((char *) hdrstate->data, 25, NULL);
+        g_assert (hdrstate->len);
+        mm_qcdm_serial_port_queue_command (port, hdrstate, 3, reg_hdrstate_cb, info);
+    } else {
+        /* No service */
+        set_callback_1x_state_helper (info, MM_MODEM_CDMA_REGISTRATION_STATE_UNKNOWN);
+        set_callback_evdo_state_helper (info, MM_MODEM_CDMA_REGISTRATION_STATE_UNKNOWN);
+        mm_callback_info_schedule (info);
+    }
 }
 
 static void
@@ -1744,13 +1877,14 @@ get_registration_state (MMModemCdma *modem,
 
     port = mm_generic_cdma_get_best_at_port (MM_GENERIC_CDMA (modem), &info->error);
     if (!port && !priv->qcdm) {
-        g_message ("Returning saved registration states: 1x: %d  EVDO: %d",
-                   priv->cdma_1x_reg_state, priv->evdo_reg_state);
+        mm_dbg ("Returning saved registration states: 1x: %d  EVDO: %d",
+                priv->cdma_1x_reg_state, priv->evdo_reg_state);
         mm_generic_cdma_query_reg_state_set_callback_1x_state (info, priv->cdma_1x_reg_state);
         mm_generic_cdma_query_reg_state_set_callback_evdo_state (info, priv->evdo_reg_state);
         mm_callback_info_schedule (info);
         return;
     }
+    g_clear_error (&info->error);
 
     /* Use QCDM for Call Manager state or HDR state before trying CAD, since
      * CAD doesn't always reflect the state of the HDR radio's registration
@@ -2155,6 +2289,9 @@ get_property (GObject *object, guint prop_id,
     case MM_MODEM_PROP_TYPE:
         g_value_set_uint (value, MM_MODEM_TYPE_CDMA);
         break;
+    case MM_MODEM_CDMA_PROP_MEID:
+        g_value_set_string (value, priv->meid);
+        break;
     case PROP_EVDO_REV0:
         g_value_set_boolean (value, priv->evdo_rev0);
         break;
@@ -2206,6 +2343,10 @@ mm_generic_cdma_class_init (MMGenericCdmaClass *klass)
     g_object_class_override_property (object_class,
                                       MM_MODEM_PROP_TYPE,
                                       MM_MODEM_TYPE);
+
+    g_object_class_override_property (object_class,
+                                      MM_MODEM_CDMA_PROP_MEID,
+                                      MM_MODEM_CDMA_MEID);
 
     g_object_class_install_property (object_class, PROP_EVDO_REV0,
             g_param_spec_boolean (MM_GENERIC_CDMA_EVDO_REV0,

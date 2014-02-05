@@ -74,7 +74,9 @@ typedef struct {
 MMModem *
 mm_modem_hso_new (const char *device,
                   const char *driver,
-                  const char *plugin)
+                  const char *plugin,
+                  guint32 vendor,
+                  guint32 product)
 {
     g_return_val_if_fail (device != NULL, NULL);
     g_return_val_if_fail (driver != NULL, NULL);
@@ -85,6 +87,8 @@ mm_modem_hso_new (const char *device,
                                    MM_MODEM_DRIVER, driver,
                                    MM_MODEM_PLUGIN, plugin,
                                    MM_MODEM_IP_METHOD, MM_MODEM_IP_METHOD_STATIC,
+                                   MM_MODEM_HW_VID, vendor,
+                                   MM_MODEM_HW_PID, product,
                                    NULL));
 }
 
@@ -427,7 +431,7 @@ unsolicited_disable_done (MMModem *modem,
     }
 
     /* Otherwise, kill any existing connection */
-    if (mm_generic_gsm_get_cid (MM_GENERIC_GSM (modem)) >= 0)
+    if (hso_get_cid (MM_MODEM_HSO (modem)) >= 0)
         hso_call_control (MM_MODEM_HSO (modem), FALSE, TRUE, disable_done, info);
     else
         disable_done (modem, NULL, info);
