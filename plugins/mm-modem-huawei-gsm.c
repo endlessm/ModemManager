@@ -599,9 +599,9 @@ send_huawei_cpin_done (MMAtSerialPort *port,
 
     mm_callback_info_set_result (info, GUINT_TO_POINTER (attempts_left), NULL);
 
-    g_match_info_free (match_info);
-
 done:
+    if (match_info)
+        g_match_info_free (match_info);
     if (r)
         g_regex_unref (r);
     mm_serial_port_close (MM_SERIAL_PORT (port));
@@ -729,82 +729,6 @@ handle_status_change (MMAtSerialPort *port,
 
 /*****************************************************************************/
 
-static void
-do_enable_power_up_done (MMGenericGsm *gsm,
-                         GString *response,
-                         GError *error,
-                         MMCallbackInfo *info)
-{
-    if (!error) {
-        MMAtSerialPort *primary;
-
-        /* Enable unsolicited result codes */
-        primary = mm_generic_gsm_get_at_port (gsm, MM_PORT_TYPE_PRIMARY);
-        g_assert (primary);
-
-        mm_at_serial_port_queue_command (primary, "^CURC=1", 5, NULL, NULL);
-    }
-
-    /* Chain up to parent */
-    MM_GENERIC_GSM_CLASS (mm_modem_huawei_gsm_parent_class)->do_enable_power_up_done (gsm, NULL, error, info);
-}
-
-/*****************************************************************************/
-
-static void
-disable_unsolicited_done (MMAtSerialPort *port,
-                          GString *response,
-                          GError *error,
-                          gpointer user_data)
-
-{
-    MMCallbackInfo *info = (MMCallbackInfo *) user_data;
-
-    /* If the modem has already been removed, return without
-     * scheduling callback */
-    if (mm_callback_info_check_modem_removed (info))
-        return;
-
-    /* Ignore all errors */
-    mm_callback_info_schedule (info);
-}
-
-static void
-invoke_call_parent_disable_fn (MMCallbackInfo *info)
-{
-    /* Note: we won't call the parent disable if info->modem is no longer
-     * valid. The invoke is called always once the info gets scheduled, which
-     * may happen during removed modem detection. */
-    if (info->modem) {
-        MMModem *parent_modem_iface;
-
-        parent_modem_iface = g_type_interface_peek_parent (MM_MODEM_GET_INTERFACE (info->modem));
-        parent_modem_iface->disable (info->modem, (MMModemFn)info->callback, info->user_data);
-    }
-}
-
-static void
-disable (MMModem *modem,
-         MMModemFn callback,
-         gpointer user_data)
-{
-    MMAtSerialPort *primary;
-    MMCallbackInfo *info;
-
-    info = mm_callback_info_new_full (modem,
-                                      invoke_call_parent_disable_fn,
-                                      (GCallback)callback,
-                                      user_data);
-
-    primary = mm_generic_gsm_get_at_port (MM_GENERIC_GSM (modem), MM_PORT_TYPE_PRIMARY);
-    g_assert (primary);
-
-    /* Turn off unsolicited responses */
-    mm_at_serial_port_queue_command (primary, "^CURC=0", 5, disable_unsolicited_done, info);
-}
-
-/*****************************************************************************/
-
 static gboolean
 grab_port (MMModem *modem,
            const char *subsys,
@@ -888,6 +812,16 @@ ussd_encode (MMModemGsmUssd *self, const char* command, guint *scheme)
 
     *scheme = MM_MODEM_GSM_USSD_SCHEME_7BIT;
     gsm = mm_charset_utf8_to_unpacked_gsm (command, &len);
+
+    /* If command is a multiple of 7 characters long, Huawei firmwares
+     * apparently want that padded.  Maybe all modems?
+     */
+    if (len % 7 == 0) {
+        gsm = g_realloc (gsm, len + 1);
+        gsm[len] = 0x0d;
+        len++;
+    }
+
     packed = gsm_pack (gsm, len, 0, &packed_len);
     hex = utils_bin2hexstr (packed, packed_len);
     g_free (packed);
@@ -906,8 +840,11 @@ ussd_decode (MMModemGsmUssd *self, const char* reply, guint scheme)
     guint32 unpacked_len;
 
     bin = utils_hexstr2bin (reply, &bin_len);
-    unpacked = gsm_unpack ((guint8*)bin, bin_len, 0, &unpacked_len);
-    utf8 = (char*)mm_charset_gsm_unpacked_to_utf8 (unpacked, unpacked_len);
+    unpacked = gsm_unpack ((guint8*) bin, (bin_len * 8) / 7, 0, &unpacked_len);
+    /* if the last character in a 7-byte block is padding, then drop it */
+    if ((bin_len % 7 == 0) && (unpacked[unpacked_len - 1] == 0x0d))
+        unpacked_len--;
+    utf8 = (char*) mm_charset_gsm_unpacked_to_utf8 (unpacked, unpacked_len);
 
     g_free (bin);
     g_free (unpacked);
@@ -920,7 +857,6 @@ static void
 modem_init (MMModem *modem_class)
 {
     modem_class->grab_port = grab_port;
-    modem_class->disable = disable;
 }
 
 static void
@@ -960,6 +896,5 @@ mm_modem_huawei_gsm_class_init (MMModemHuaweiGsmClass *klass)
     gsm_class->set_allowed_mode = set_allowed_mode;
     gsm_class->get_allowed_mode = get_allowed_mode;
     gsm_class->get_access_technology = get_access_technology;
-    gsm_class->do_enable_power_up_done = do_enable_power_up_done;
 }
 

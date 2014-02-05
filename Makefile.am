@@ -32,10 +32,11 @@ dbusservice_DATA = org.freedesktop.ModemManager.conf
 dbusservice_file_polkit = org.freedesktop.ModemManager.conf.polkit
 dbusservice_file_nopolkit = org.freedesktop.ModemManager.conf.nopolkit
 
-org.freedesktop.ModemManager.conf:
 if WITH_POLKIT
+org.freedesktop.ModemManager.conf: $(top_srcdir)/$(dbusservice_file_polkit)
 	cp -f $(top_srcdir)/$(dbusservice_file_polkit) $(dbusservice_DATA)
 else
+org.freedesktop.ModemManager.conf: $(top_srcdir)/$(dbusservice_file_nopolkit)
 	cp -f $(top_srcdir)/$(dbusservice_file_nopolkit) $(dbusservice_DATA)
 endif
 
@@ -55,7 +56,7 @@ include/mm-modem.h: $(XMLS) introspection/all.xml header-generator.xsl
 	$(edit) $< >$@
 
 xmldir = $(datadir)/dbus-1/interfaces
-xml_DATA = $(filter-out introspection/all.xml, $(XMLS))
+xml_DATA = $(filter-out introspection/all.xml introspection/org.freedesktop.DBus.Properties.xml, $(XMLS))
 
 edit = @sed \
 	-e 's|@sbindir[@]|$(sbindir)|g' \

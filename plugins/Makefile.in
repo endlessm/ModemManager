@@ -46,7 +46,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/compiler_warnings.m4 \
 	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/libtool.m4 \
 	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
 	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -204,7 +204,7 @@ libmm_plugin_samsung_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(AM_CFLAGS) $(CFLAGS) $(libmm_plugin_samsung_la_LDFLAGS) \
 	$(LDFLAGS) -o $@
-libmm_plugin_sierra_la_LIBADD =
+libmm_plugin_sierra_la_DEPENDENCIES = $(builddir)/libicera-utils.la
 am_libmm_plugin_sierra_la_OBJECTS =  \
 	libmm_plugin_sierra_la-mm-plugin-sierra.lo \
 	libmm_plugin_sierra_la-mm-modem-sierra-gsm.lo \
@@ -648,6 +648,9 @@ libmm_plugin_sierra_la_LDFLAGS = \
 	-module \
 	-avoid-version
 
+libmm_plugin_sierra_la_LIBADD = \
+	$(builddir)/libicera-utils.la
+
 
 # Wavecom (Sierra Airlink)
 libmm_plugin_wavecom_la_SOURCES = \
@@ -843,7 +846,8 @@ udevrules_DATA = \
 	77-mm-zte-port-types.rules \
 	77-mm-longcheer-port-types.rules \
 	77-mm-simtech-port-types.rules \
-	77-mm-x22x-port-types.rules
+	77-mm-x22x-port-types.rules \
+	77-mm-nokia-port-types.rules
 
 BUILT_SOURCES = \
 	mm-modem-gsm-hso-glue.h

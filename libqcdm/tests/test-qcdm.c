@@ -93,6 +93,7 @@ int main (int argc, char **argv)
     g_test_suite_add (suite, TESTCASE (test_result_string, NULL));
     g_test_suite_add (suite, TESTCASE (test_result_uint32, NULL));
     g_test_suite_add (suite, TESTCASE (test_result_uint8, NULL));
+    g_test_suite_add (suite, TESTCASE (test_result_uint8_array, NULL));
 
     /* Live tests */
     if (port) {
@@ -111,8 +112,11 @@ int main (int argc, char **argv)
         g_test_suite_add (suite, TESTCASE (test_com_hdr_subsys_state_info, data->com_data));
         g_test_suite_add (suite, TESTCASE (test_com_ext_logmask, data->com_data));
         g_test_suite_add (suite, TESTCASE (test_com_event_report, data->com_data));
+        g_test_suite_add (suite, TESTCASE (test_com_log_config, data->com_data));
         g_test_suite_add (suite, TESTCASE (test_com_zte_subsys_status, data->com_data));
         g_test_suite_add (suite, TESTCASE (test_com_nw_subsys_modem_snapshot_cdma, data->com_data));
+        g_test_suite_add (suite, TESTCASE (test_com_wcdma_subsys_state_info, data->com_data));
+        g_test_suite_add (suite, TESTCASE (test_com_gsm_subsys_state_info, data->com_data));
     }
 
 	result = g_test_run ();

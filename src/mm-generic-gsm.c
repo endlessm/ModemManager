@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <errno.h>
 
 #include "mm-generic-gsm.h"
 #include "mm-modem-gsm-card.h"
@@ -129,6 +130,17 @@ typedef struct {
 
     /* SMS */
     GHashTable *sms_present;
+    /* Map from SMS index numbers to parsed PDUs (themselves as hash tables) */
+    GHashTable *sms_contents;
+    /*
+     * Map from multipart SMS reference numbers to SMSMultiPartMessage
+     * structures.
+     */
+    GHashTable *sms_parts;
+    gboolean sms_pdu_mode;
+    gboolean sms_pdu_supported;
+
+    guint sms_fetch_pending;
 } MMGenericGsmPrivate;
 
 static void get_registration_status (MMAtSerialPort *port, MMCallbackInfo *info);
@@ -145,11 +157,6 @@ static void read_operator_name_done (MMAtSerialPort *port,
 static void reg_state_changed (MMAtSerialPort *port,
                                GMatchInfo *match_info,
                                gpointer user_data);
-
-static void get_reg_status_done (MMAtSerialPort *port,
-                                 GString *response,
-                                 GError *error,
-                                 gpointer user_data);
 
 static gboolean handle_reg_status_response (MMGenericGsm *self,
                                             GString *response,
@@ -334,7 +341,7 @@ pin_check_done (MMAtSerialPort *port,
             info->error = g_error_new (MM_MODEM_ERROR,
                                        MM_MODEM_ERROR_GENERAL,
                                        "Could not parse PIN request response '%s'",
-                                       response->str);
+                                       response ? response->str : "(unknown)");
         }
     }
 
@@ -1329,6 +1336,242 @@ ciev_received (MMAtSerialPort *port,
     /* FIXME: handle roaming and service indicators */
 }
 
+typedef struct {
+    /*
+     * The key index number that refers to this multipart message -
+     * usually the index number of the first part received.
+     */
+    guint index;
+
+    /* Number of parts in the complete message */
+    guint numparts;
+
+    /* Number of parts missing from the message */
+    guint missing;
+
+    /* Array of (index numbers of) message parts, in order */
+    guint *parts;
+} SMSMultiPartMessage;
+
+static void
+sms_cache_insert (MMModem *modem, GHashTable *properties, guint idx)
+{
+    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
+    GHashTable *old_properties;
+    GValue *ref;
+
+    ref = g_hash_table_lookup (properties, "concat-reference");
+    if (ref != NULL) {
+        GValue *max, *seq;
+        guint refnum, maxnum, seqnum;
+        SMSMultiPartMessage *mpm;
+
+        max = g_hash_table_lookup (properties, "concat-max");
+        seq = g_hash_table_lookup (properties, "concat-sequence");
+        if (max == NULL || seq == NULL) {
+            /* Internal error - not all required data present */
+            return;
+        }
+
+        refnum = g_value_get_uint (ref);
+        maxnum = g_value_get_uint (max);
+        seqnum = g_value_get_uint (seq);
+
+        if (seqnum > maxnum) {
+            /* Error - SMS says "part N of M", but N > M */
+            return;
+        }
+
+        mpm = g_hash_table_lookup (priv->sms_parts, GUINT_TO_POINTER (refnum));
+        if (mpm == NULL) {
+            /* Create a new one */
+            if (maxnum > 255)
+                maxnum = 255;
+            mpm = g_malloc0 (sizeof (*mpm));
+            mpm->index = idx;
+            mpm->numparts = maxnum;
+            mpm->missing = maxnum;
+            mpm->parts = g_malloc0 (maxnum * sizeof(*mpm->parts));
+            g_hash_table_insert (priv->sms_parts, GUINT_TO_POINTER (refnum),
+                                 mpm);
+        }
+
+        if (maxnum != mpm->numparts) {
+            /* Error - other messages with this refnum claim a different number of parts */
+            return;
+        }
+
+        if (mpm->parts[seqnum - 1] != 0) {
+            /* Error - two SMS segments have claimed to be the same part of the same message. */
+            return;
+        }
+
+        mpm->parts[seqnum - 1] = idx;
+        mpm->missing--;
+    }
+
+    old_properties = g_hash_table_lookup (priv->sms_contents, GUINT_TO_POINTER (idx));
+    if (old_properties != NULL)
+        g_hash_table_unref (old_properties);
+
+    g_hash_table_insert (priv->sms_contents, GUINT_TO_POINTER (idx),
+                         g_hash_table_ref (properties));
+}
+
+/*
+ * Takes a hash table representing a (possibly partial) SMS and
+ * determines if it is the key part of a complete SMS. The complete
+ * SMS, if any, is returned. If there is no such SMS (for example, not
+ * all parts are present yet), NULL is returned. The passed-in hash
+ * table is dereferenced, and the returned hash table is referenced.
+ */
+static GHashTable *
+sms_cache_lookup_full (MMModem *modem,
+                       GHashTable *properties,
+                       GError **error)
+{
+    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (modem);
+    int i, refnum, indexnum;
+    SMSMultiPartMessage *mpm;
+    GHashTable *full, *part, *first;
+    GHashTableIter iter;
+    gpointer key, value;
+    char *fulltext;
+    char **textparts;
+    GValue *ref, *idx, *text;
+
+    ref = g_hash_table_lookup (properties, "concat-reference");
+    if (ref == NULL)
+        return properties;
+    refnum = g_value_get_uint (ref);
+
+    idx = g_hash_table_lookup (properties, "index");
+    if (idx == NULL) {
+        g_hash_table_unref (properties);
+        return NULL;
+    }
+
+    indexnum = g_value_get_uint (idx);
+    g_hash_table_unref (properties);
+
+    mpm = g_hash_table_lookup (priv->sms_parts,
+                                 GUINT_TO_POINTER (refnum));
+    if (mpm == NULL) {
+        g_set_error_literal (error, MM_MODEM_ERROR, MM_MODEM_ERROR_GENERAL,
+                             "Internal error - no multipart structure for multipart SMS");
+        return NULL;
+    }
+
+    /* Check that this is the key */
+    if (indexnum != mpm->index)
+        return NULL;
+
+    if (mpm->missing != 0)
+        return NULL;
+
+    /* Complete multipart message is present. Assemble it */
+    textparts = g_malloc0((1 + mpm->numparts) * sizeof (*textparts));
+    for (i = 0 ; i < mpm->numparts ; i++) {
+        part = g_hash_table_lookup (priv->sms_contents,
+                                    GUINT_TO_POINTER (mpm->parts[i]));
+        if (part == NULL) {
+            g_set_error (error, MM_MODEM_ERROR, MM_MODEM_ERROR_GENERAL,
+                         "Internal error - part %d (index %d) is missing",
+                         i, mpm->parts[i]);
+            g_free (textparts);
+            return NULL;
+        }
+        text = g_hash_table_lookup (part, "text");
+        if (text == NULL) {
+            g_set_error (error, MM_MODEM_ERROR, MM_MODEM_ERROR_GENERAL,
+                         "Internal error - part %d (index %d) has no text element",
+                         i, mpm->parts[i]);
+            g_free (textparts);
+            return NULL;
+        }
+        textparts[i] = g_value_dup_string (text);
+    }
+    textparts[i] = NULL;
+    fulltext = g_strjoinv (NULL, textparts);
+    g_strfreev (textparts);
+
+    first = g_hash_table_lookup (priv->sms_contents,
+                                 GUINT_TO_POINTER (mpm->parts[0]));
+    full = g_hash_table_new_full (g_str_hash, g_str_equal, NULL,
+                                  simple_free_gvalue);
+    g_hash_table_iter_init (&iter, first);
+    while (g_hash_table_iter_next (&iter, &key, &value)) {
+        const char *keystr = key;
+        if (strncmp (keystr, "concat-", 7) == 0)
+            continue;
+        if (strcmp (keystr, "text") == 0 ||
+            strcmp (keystr, "index") == 0)
+            continue;
+        if (strcmp (keystr, "class") == 0) {
+            GValue *val;
+            val = g_slice_new0 (GValue);
+            g_value_init (val, G_TYPE_UINT);
+            g_value_copy (value, val);
+            g_hash_table_insert (full, key, val);
+        } else {
+            GValue *val;
+            val = g_slice_new0 (GValue);
+            g_value_init (val, G_TYPE_STRING);
+            g_value_copy (value, val);
+            g_hash_table_insert (full, key, val);
+        }
+    }
+
+    g_hash_table_insert (full, "index", simple_uint_value (mpm->index));
+    g_hash_table_insert (full, "text", simple_string_value (fulltext));
+    g_free (fulltext);
+
+    return full;
+}
+
+static void
+cmti_received_has_sms (MMModemGsmSms *modem,
+                       GHashTable *properties,
+                       GError *error,
+                       gpointer user_data)
+{
+    MMGenericGsm *self = MM_GENERIC_GSM (user_data);
+    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (self);
+    guint idx;
+    gboolean complete;
+    GValue *ref;
+
+    if (properties == NULL)
+        return;
+
+    ref = g_hash_table_lookup (properties, "concat-reference");
+    if (ref == NULL) {
+        /* single-part message */
+        GValue *idxval = g_hash_table_lookup (properties, "index");
+        if (idxval == NULL)
+            return;
+        idx = g_value_get_uint (idxval);
+        complete = TRUE;
+    } else {
+        SMSMultiPartMessage *mpm;
+        mpm = g_hash_table_lookup (priv->sms_parts,
+                                     GUINT_TO_POINTER (g_value_get_uint (ref)));
+        if (mpm == NULL)
+            return;
+        idx = mpm->index;
+        complete = (mpm->missing == 0);
+    }
+
+    if (complete)
+        mm_modem_gsm_sms_completed (MM_MODEM_GSM_SMS (self), idx, TRUE);
+
+    mm_modem_gsm_sms_received (MM_MODEM_GSM_SMS (self), idx, complete);
+}
+
+static void sms_get_invoke (MMCallbackInfo *info);
+static void sms_get_done (MMAtSerialPort *port, GString *response,
+                          GError *error, gpointer user_data);
+
 static void
 cmti_received (MMAtSerialPort *port,
                GMatchInfo *info,
@@ -1336,8 +1579,9 @@ cmti_received (MMAtSerialPort *port,
 {
     MMGenericGsm *self = MM_GENERIC_GSM (user_data);
     MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (self);
+    MMCallbackInfo *cbinfo;
     guint idx = 0;
-    char *str;
+    char *str, *command;
 
     str = g_match_info_fetch (info, 2);
     if (str)
@@ -1351,12 +1595,24 @@ cmti_received (MMAtSerialPort *port,
     /* Nothing is currently stored in the hash table - presence is all that matters. */
     g_hash_table_insert (priv->sms_present, GINT_TO_POINTER (idx), NULL);
 
-    /* todo: parse pdu to know if the sms is complete */
-    mm_modem_gsm_sms_received (MM_MODEM_GSM_SMS (self),
-                               idx,
-                               TRUE);
+    /* Retrieve the message */
+    cbinfo = mm_callback_info_new_full (MM_MODEM (user_data),
+                                        sms_get_invoke,
+                                        G_CALLBACK (cmti_received_has_sms),
+                                        user_data);
+    mm_callback_info_set_data (cbinfo,
+                               "complete-sms-only",
+                               GUINT_TO_POINTER (FALSE),
+                               NULL);
 
-    /* todo: send mm_modem_gsm_sms_completed if complete */
+    if (priv->sms_fetch_pending != 0) {
+        mm_err("sms_fetch_pending is %d, not 0", priv->sms_fetch_pending);
+    }
+    priv->sms_fetch_pending = idx;
+
+    command = g_strdup_printf ("+CMGR=%d", idx);
+    mm_at_serial_port_queue_command (port, command, 10, sms_get_done, cbinfo);
+    /* Don't want to signal received here before we have the contents */
 }
 
 static void
@@ -1428,6 +1684,96 @@ cusd_enable_cb (MMAtSerialPort *port,
     MM_GENERIC_GSM_GET_PRIVATE (user_data)->ussd_enabled = TRUE;
 }
 
+static void
+sms_set_format_cb (MMAtSerialPort *port,
+                   GString *response,
+                   GError *error,
+                   gpointer user_data)
+{
+    MMGenericGsm *self = MM_GENERIC_GSM (user_data);
+    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (self);
+
+    if (error) {
+        mm_warn ("(%s): failed to set SMS mode, assuming text mode",
+                 mm_port_get_device (MM_PORT (port)));
+        priv->sms_pdu_mode = FALSE;
+        priv->sms_pdu_supported = FALSE;
+    } else {
+        mm_info ("(%s): using %s mode for SMS",
+                 mm_port_get_device (MM_PORT (port)),
+                 priv->sms_pdu_mode ? "PDU" : "text");
+    }
+}
+
+
+#define CMGF_TAG "+CMGF:"
+
+static void
+sms_get_format_cb (MMAtSerialPort *port,
+                   GString *response,
+                   GError *error,
+                   gpointer user_data)
+{
+    MMGenericGsm *self;
+    MMGenericGsmPrivate *priv;
+    const char *reply;
+    GRegex *r;
+    GMatchInfo *match_info;
+    char *s;
+    int min = -1, max = -1;
+
+    if (error) {
+        mm_warn ("(%s): failed to query SMS mode, assuming text mode",
+                 mm_port_get_device (MM_PORT (port)));
+        return;
+    }
+
+    /* Strip whitespace and response tag */
+    reply = response->str;
+    if (g_str_has_prefix (reply, CMGF_TAG))
+        reply += strlen (CMGF_TAG);
+    while (isspace (*reply))
+        reply++;
+
+    r = g_regex_new ("\\(?\\s*(\\d+)\\s*[-,]?\\s*(\\d+)?\\s*\\)?", 0, 0, NULL);
+    if (!r) {
+        mm_warn ("(%s): failed to parse CMGF query result", mm_port_get_device (MM_PORT (port)));
+        return;
+    }
+
+    self = MM_GENERIC_GSM (user_data);
+    priv = MM_GENERIC_GSM_GET_PRIVATE (self);
+    if (g_regex_match_full (r, reply, strlen (reply), 0, 0, &match_info, NULL)) {
+        s = g_match_info_fetch (match_info, 1);
+        if (s)
+            min = atoi (s);
+        g_free (s);
+
+        s = g_match_info_fetch (match_info, 2);
+        if (s)
+            max = atoi (s);
+        g_free (s);
+
+        /* If the modem only supports PDU mode, use PDUs.
+         * FIXME: when the PDU code is more robust, default to PDU if the
+         * modem supports it.
+         */
+        if (min == 0 && max < 1) {
+            /* Will get reset to FALSE on receipt of error */
+            priv->sms_pdu_mode = TRUE;
+            mm_at_serial_port_queue_command (priv->primary, "AT+CMGF=0", 3, sms_set_format_cb, self);
+        } else
+            mm_at_serial_port_queue_command (priv->primary, "AT+CMGF=1", 3, sms_set_format_cb, self);
+
+        /* Save whether PDU mode is supported so we can fall back to it if text fails */
+        if (min == 0)
+            priv->sms_pdu_supported = TRUE;
+    }
+    g_match_info_free (match_info);
+
+    g_regex_unref (r);
+}
+
 void
 mm_generic_gsm_enable_complete (MMGenericGsm *self,
                                 GError *error,
@@ -1471,6 +1817,9 @@ mm_generic_gsm_enable_complete (MMGenericGsm *self,
 
     /* Enable SMS notifications */
     mm_at_serial_port_queue_command (priv->primary, "+CNMI=2,1,2,1,0", 3, NULL, NULL);
+
+    /* Check and enable the right SMS mode */
+    mm_at_serial_port_queue_command (priv->primary, "AT+CMGF=?", 3, sms_get_format_cb, self);
 
     /* Enable USSD notifications */
     mm_at_serial_port_queue_command (priv->primary, "+CUSD=1", 3, cusd_enable_cb, self);
@@ -1524,6 +1873,27 @@ enable_done (MMAtSerialPort *port,
 }
 
 static void
+enable_power_up_check_needed_done (MMModem *self,
+                                   guint32 needed,
+                                   GError *error,
+                                   gpointer user_data)
+{
+    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (self);
+    char *cmd = NULL;
+
+    if (needed)
+        g_object_get (G_OBJECT (self), MM_GENERIC_GSM_POWER_UP_CMD, &cmd, NULL);
+    else
+        mm_dbg ("Power-up not needed, skipping...");
+
+    if (cmd && strlen (cmd))
+        mm_at_serial_port_queue_command (MM_AT_SERIAL_PORT (priv->primary), cmd, 5, enable_done, user_data);
+    else
+        enable_done (MM_AT_SERIAL_PORT (priv->primary), NULL, NULL, user_data);
+    g_free (cmd);
+}
+
+static void
 init_done (MMAtSerialPort *port,
            GString *response,
            GError *error,
@@ -1556,12 +1926,13 @@ init_done (MMAtSerialPort *port,
     mm_at_serial_port_queue_command (port, cmd, 2, NULL, NULL);
     g_free (cmd);
 
-    g_object_get (G_OBJECT (info->modem), MM_GENERIC_GSM_POWER_UP_CMD, &cmd, NULL);
-    if (cmd && strlen (cmd))
-        mm_at_serial_port_queue_command (port, cmd, 5, enable_done, user_data);
+    /* Plugins can now check if they need the power up command or not */
+    if (MM_GENERIC_GSM_GET_CLASS (info->modem)->do_enable_power_up_check_needed)
+        MM_GENERIC_GSM_GET_CLASS (info->modem)->do_enable_power_up_check_needed (MM_GENERIC_GSM (info->modem),
+                                                                                 enable_power_up_check_needed_done,
+                                                                                 info);
     else
-        enable_done (port, NULL, NULL, user_data);
-    g_free (cmd);
+        enable_power_up_check_needed_done (info->modem, TRUE, NULL, info);
 }
 
 static void
@@ -1734,12 +2105,29 @@ disable_flash_done (MMSerialPort *port,
 }
 
 static void
+mark_disabled (gpointer user_data)
+{
+    MMCallbackInfo *info = user_data;
+    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
+
+    mm_modem_set_state (MM_MODEM (info->modem),
+                        MM_MODEM_STATE_DISABLING,
+                        MM_MODEM_STATE_REASON_NONE);
+
+    if (mm_port_get_connected (MM_PORT (priv->primary)))
+        mm_serial_port_flash (MM_SERIAL_PORT (priv->primary), 1000, TRUE, disable_flash_done, info);
+    else
+        disable_flash_done (MM_SERIAL_PORT (priv->primary), NULL, info);
+}
+
+static void
 secondary_unsolicited_done (MMAtSerialPort *port,
                             GString *response,
                             GError *error,
                             gpointer user_data)
 {
     mm_serial_port_close_force (MM_SERIAL_PORT (port));
+    mark_disabled (user_data);
 }
 
 static void
@@ -1779,13 +2167,6 @@ disable (MMModem *modem,
     update_lac_ci (self, 0, 0, 1);
     _internal_update_access_technology (self, MM_MODEM_GSM_ACCESS_TECH_UNKNOWN);
 
-    /* Clean up the secondary port if it's open */
-    if (priv->secondary && mm_serial_port_is_open (MM_SERIAL_PORT (priv->secondary))) {
-        mm_at_serial_port_queue_command (priv->secondary, "+CREG=0", 3, NULL, NULL);
-        mm_at_serial_port_queue_command (priv->secondary, "+CGREG=0", 3, NULL, NULL);
-        mm_at_serial_port_queue_command (priv->secondary, "+CMER=0", 3, secondary_unsolicited_done, NULL);
-    }
-
     info = mm_callback_info_new (modem, callback, user_data);
 
     /* Cache the previous state so we can reset it if the operation fails */
@@ -1795,14 +2176,14 @@ disable (MMModem *modem,
                                GUINT_TO_POINTER (state),
                                NULL);
 
-    mm_modem_set_state (MM_MODEM (info->modem),
-                        MM_MODEM_STATE_DISABLING,
-                        MM_MODEM_STATE_REASON_NONE);
-
-    if (mm_port_get_connected (MM_PORT (priv->primary)))
-        mm_serial_port_flash (MM_SERIAL_PORT (priv->primary), 1000, TRUE, disable_flash_done, info);
-    else
-        disable_flash_done (MM_SERIAL_PORT (priv->primary), NULL, info);
+    /* Clean up the secondary port if it's open */
+    if (priv->secondary && mm_serial_port_is_open (MM_SERIAL_PORT (priv->secondary))) {
+        mm_dbg("Shutting down secondary port");
+        mm_at_serial_port_queue_command (priv->secondary, "+CREG=0", 3, NULL, NULL);
+        mm_at_serial_port_queue_command (priv->secondary, "+CGREG=0", 3, NULL, NULL);
+        mm_at_serial_port_queue_command (priv->secondary, "+CMER=0", 3, secondary_unsolicited_done, info);
+    } else
+        mark_disabled (info);
 }
 
 static void
@@ -2470,35 +2851,6 @@ reg_info_updated (MMGenericGsm *self,
     }
 }
 
-static void
-convert_operator_from_ucs2 (char **operator)
-{
-    const char *p;
-    char *converted;
-    size_t len;
-
-    g_return_if_fail (operator != NULL);
-    g_return_if_fail (*operator != NULL);
-
-    p = *operator;
-    len = strlen (p);
-
-    /* Len needs to be a multiple of 4 for UCS2 */
-    if ((len < 4) || ((len % 4) != 0))
-        return;
-
-    while (*p) {
-        if (!isxdigit (*p++))
-            return;
-    }
-
-    converted = mm_modem_charset_hex_to_utf8 (*operator, MM_MODEM_CHARSET_UCS2);
-    if (converted) {
-        g_free (*operator);
-        *operator = converted;
-    }
-}
-
 static char *
 parse_operator (const char *reply, MMModemCharset cur_charset)
 {
@@ -2528,7 +2880,7 @@ parse_operator (const char *reply, MMModemCharset cur_charset)
          * character set.
          */
         if (cur_charset == MM_MODEM_CHARSET_UCS2)
-            convert_operator_from_ucs2 (&operator);
+            operator = mm_charset_take_and_convert_to_utf8 (operator, MM_MODEM_CHARSET_UCS2);
 
         /* Ensure the operator name is valid UTF-8 so that we can send it
          * through D-Bus and such.
@@ -2828,7 +3180,7 @@ handle_reg_status_response (MMGenericGsm *self,
     guint32 status = 0;
     gulong lac = 0, ci = 0;
     gint act = -1;
-    gboolean cgreg = FALSE;
+    gboolean cgreg = FALSE, parsed;
     guint i;
 
     /* Try to match the response */
@@ -2848,47 +3200,38 @@ handle_reg_status_response (MMGenericGsm *self,
     }
 
     /* And parse it */
-    if (!mm_gsm_parse_creg_response (match_info, &status, &lac, &ci, &act, &cgreg, error)) {
-        g_match_info_free (match_info);
-        return FALSE;
+    parsed = mm_gsm_parse_creg_response (match_info, &status, &lac, &ci, &act, &cgreg, error);
+    g_match_info_free (match_info);
+    if (parsed) {
+        /* Success; update cached location information */
+        update_lac_ci (self, lac, ci, cgreg ? 1 : 0);
+
+        /* Only update access technology if it appeared in the CREG/CGREG response */
+        if (act != -1)
+            mm_generic_gsm_update_access_technology (self, etsi_act_to_mm_act (act));
+
+        if (status >= 0) {
+            /* Update cached registration status */
+            reg_status_updated (self, cgreg_to_reg_type (cgreg), status, NULL);
+        }
     }
 
-    /* Success; update cached location information */
-    update_lac_ci (self, lac, ci, cgreg ? 1 : 0);
-
-    /* Only update access technology if it appeared in the CREG/CGREG response */
-    if (act != -1)
-        mm_generic_gsm_update_access_technology (self, etsi_act_to_mm_act (act));
-
-    if (status >= 0) {
-        /* Update cached registration status */
-        reg_status_updated (self, cgreg_to_reg_type (cgreg), status, NULL);
-    }
-
-    return TRUE;
+    return parsed;
 }
 
-#define CGREG_TRIED_TAG "cgreg-tried"
+#define CS_ERROR_TAG "cs-error"
+#define CS_DONE_TAG "cs-complete"
+#define PS_ERROR_TAG "ps-error"
+#define PS_DONE_TAG "ps-complete"
 
 static void
-get_reg_status_done (MMAtSerialPort *port,
-                     GString *response,
-                     GError *error,
-                     gpointer user_data)
+check_reg_status_done (MMCallbackInfo *info)
 {
-    MMCallbackInfo *info = (MMCallbackInfo *) user_data;
-    MMGenericGsm *self;
-    MMGenericGsmPrivate *priv;
-    guint id;
+    MMGenericGsm *self = MM_GENERIC_GSM (info->modem);
+    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (self);
+    GError *cs_error, *ps_error;
     MMModemGsmNetworkRegStatus status;
-
-    /* If the modem has already been removed, return without
-     * scheduling callback */
-    if (mm_callback_info_check_modem_removed (info))
-        return;
-
-    self = MM_GENERIC_GSM (info->modem);
-    priv = MM_GENERIC_GSM_GET_PRIVATE (self);
+    guint id;
 
     /* This function should only get called during the connect sequence when
      * polling for registration state, since explicit registration requests
@@ -2896,46 +3239,38 @@ get_reg_status_done (MMAtSerialPort *port,
      */
     g_return_if_fail (info == priv->pending_reg_info);
 
-    if (error) {
-        gboolean cgreg_tried = !!mm_callback_info_get_data (info, CGREG_TRIED_TAG);
+    /* Only process when both CS and PS checks are both done */
+    if (   !mm_callback_info_get_data (info, CS_DONE_TAG)
+        || !mm_callback_info_get_data (info, PS_DONE_TAG))
+        return;
 
-        /* If this was a +CREG error, try +CGREG.  Some devices (blackberries)
-         * respond to +CREG with an error but return a valid +CGREG response.
-         * So try both.  If we get an error from both +CREG and +CGREG, that's
-         * obviously a hard fail.
-         */
-        if (cgreg_tried == FALSE) {
-            mm_callback_info_set_data (info, CGREG_TRIED_TAG, GUINT_TO_POINTER (TRUE), NULL);
-            mm_at_serial_port_queue_command (port, "+CGREG?", 10, get_reg_status_done, info);
-            return;
-        } else {
-            info->error = g_error_copy (error);
-            goto reg_done;
-        }
-    }
-
-    /* The unsolicited registration state handlers will intercept the CREG
-     * response and update the cached registration state for us, so we usually
-     * just need to check the cached state here.
-     */
-
-    if (strlen (response->str)) {
-        /* But just in case the unsolicited handlers doesn't do it... */
-        if (!handle_reg_status_response (self, response, &info->error))
-            goto reg_done;
+    /* If both CS and PS registration checks returned errors we fail */
+    cs_error = mm_callback_info_get_data (info, CS_ERROR_TAG);
+    ps_error = mm_callback_info_get_data (info, PS_ERROR_TAG);
+    if (cs_error && ps_error) {
+        /* Prefer the PS error */
+        info->error = g_error_copy (ps_error);
+        goto reg_done;
     }
 
     status = gsm_reg_status (self, NULL);
     if (   status != MM_MODEM_GSM_NETWORK_REG_STATUS_HOME
         && status != MM_MODEM_GSM_NETWORK_REG_STATUS_ROAMING
         && status != MM_MODEM_GSM_NETWORK_REG_STATUS_DENIED) {
+
+        /* Clear state that should be reset every poll */
+        mm_callback_info_set_data (info, CS_DONE_TAG, NULL, NULL);
+        mm_callback_info_set_data (info, CS_ERROR_TAG, NULL, NULL);
+        mm_callback_info_set_data (info, PS_DONE_TAG, NULL, NULL);
+        mm_callback_info_set_data (info, PS_ERROR_TAG, NULL, NULL);
+
         /* If we're still waiting for automatic registration to complete or
          * fail, check again in a few seconds.
          */
         id = g_timeout_add_seconds (1, reg_status_again, info);
         mm_callback_info_set_data (info, REG_STATUS_AGAIN_TAG,
-                                    GUINT_TO_POINTER (id),
-                                    reg_status_again_remove);
+                                   GUINT_TO_POINTER (id),
+                                   reg_status_again_remove);
         return;
     }
 
@@ -2945,9 +3280,63 @@ reg_done:
 }
 
 static void
+generic_reg_status_done (MMCallbackInfo *info,
+                         GString *response,
+                         GError *error,
+                         const char *error_tag,
+                         const char *done_tag)
+{
+    MMGenericGsm *self = MM_GENERIC_GSM (info->modem);
+    GError *local = NULL;
+
+    if (error)
+        local = g_error_copy (error);
+    else if (strlen (response->str)) {
+        /* Unsolicited registration status handlers will usually process the
+         * response for us, but just in case they don't, do that here.
+         */
+        if (handle_reg_status_response (self, response, &local) == TRUE)
+            g_assert_no_error (local);
+    }
+
+    if (local)
+        mm_callback_info_set_data (info, error_tag, local, (GDestroyNotify) g_error_free);
+    mm_callback_info_set_data (info, done_tag, GUINT_TO_POINTER (1), NULL);
+}
+
+static void
+get_ps_reg_status_done (MMAtSerialPort *port,
+                        GString *response,
+                        GError *error,
+                        gpointer user_data)
+{
+    MMCallbackInfo *info = (MMCallbackInfo *) user_data;
+
+    if (mm_callback_info_check_modem_removed (info) == FALSE) {
+        generic_reg_status_done (info, response, error, PS_ERROR_TAG, PS_DONE_TAG);
+        check_reg_status_done (info);
+    }
+}
+
+static void
+get_cs_reg_status_done (MMAtSerialPort *port,
+                        GString *response,
+                        GError *error,
+                        gpointer user_data)
+{
+    MMCallbackInfo *info = (MMCallbackInfo *) user_data;
+
+    if (mm_callback_info_check_modem_removed (info) == FALSE) {
+        generic_reg_status_done (info, response, error, CS_ERROR_TAG, CS_DONE_TAG);
+        check_reg_status_done (info);
+    }
+}
+
+static void
 get_registration_status (MMAtSerialPort *port, MMCallbackInfo *info)
 {
-    mm_at_serial_port_queue_command (port, "+CREG?", 10, get_reg_status_done, info);
+    mm_at_serial_port_queue_command (port, "+CREG?", 10, get_cs_reg_status_done, info);
+    mm_at_serial_port_queue_command (port, "+CGREG?", 10, get_ps_reg_status_done, info);
 }
 
 static void
@@ -2976,6 +3365,10 @@ register_done (MMAtSerialPort *port,
 
     if (priv->pending_reg_info) {
         g_warn_if_fail (info == priv->pending_reg_info);
+        if (error) {
+            g_clear_error (&info->error);
+            info->error = g_error_copy (error);
+        }
 
         /* Don't use cached registration state here since it could be up to
          * 30 seconds old.  Get fresh registration state.
@@ -3064,9 +3457,9 @@ do_register (MMModemGsmNetwork *modem,
      * complete.  For those devices that delay the +COPS response (hso) the
      * callback will be called from register_done().  For those devices that
      * return the +COPS response immediately, we'll poll the registration state
-     * and call the callback from get_reg_status_done() in response to the
-     * polled response.  The registration timeout will only be triggered when
-     * the +COPS response is never received.
+     * and call the callback from get_[cs|ps]_reg_status_done() in response to
+     * the polled response.  The registration timeout will only be triggered
+     * when the +COPS response is never received.
      */
     mm_callback_info_ref (info);
 
@@ -3547,9 +3940,13 @@ cid_range_read (MMAtSerialPort *port,
                 g_match_info_next (match_info, NULL);
             }
 
-            if (cid == 0)
+            if (cid == 0) {
                 /* Choose something */
                 cid = 1;
+            }
+
+            g_match_info_free (match_info);
+            g_regex_unref (r);
         }
     } else
         info->error = g_error_new_literal (MM_MODEM_ERROR,
@@ -3780,7 +4177,7 @@ get_csq_done (MMAtSerialPort *port,
               gpointer user_data)
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
-    char *reply = response->str;
+    char *reply;
     gboolean parsed = FALSE;
 
     /* If the modem has already been removed, return without
@@ -3793,6 +4190,7 @@ get_csq_done (MMAtSerialPort *port,
         goto done;
     }
 
+    reply = response->str;
     if (!strncmp (reply, "+CSQ: ", 6)) {
         /* Got valid reply */
         int quality;
@@ -4191,7 +4589,22 @@ mm_generic_gsm_get_charset (MMGenericGsm *self)
 /*****************************************************************************/
 /* MMModemGsmSms interface */
 
+static void
+sms_send_invoke (MMCallbackInfo *info)
+{
+    MMModemGsmSmsSendFn callback = (MMModemGsmSmsSendFn) info->callback;
 
+    callback (MM_MODEM_GSM_SMS (info->modem),
+              mm_callback_info_get_data (info, "indexes"),
+              info->error,
+              info->user_data);
+}
+
+static void
+free_indexes (gpointer data)
+{
+    g_array_free ((GArray *) data, TRUE);
+}
 
 static void
 sms_send_done (MMAtSerialPort *port,
@@ -4200,15 +4613,59 @@ sms_send_done (MMAtSerialPort *port,
                gpointer user_data)
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
+    const char *p, *pdu;
+    unsigned long num;
+    GArray *indexes = NULL;
+    guint32 idx = 0;
+    guint cmgs_pdu_size;
+    char *command;
 
     /* If the modem has already been removed, return without
      * scheduling callback */
     if (mm_callback_info_check_modem_removed (info))
         return;
 
-    if (error)
-        info->error = g_error_copy (error);
+    if (error) {
+        MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
 
+        /* If there was an error sending in text mode the retry with the PDU;
+         * text mode is pretty dumb on most devices and often fails.  Later we'll
+         * just use text mode exclusively.
+         */
+        pdu = mm_callback_info_get_data (info, "pdu");
+        if (priv->sms_pdu_mode == FALSE && priv->sms_pdu_supported && pdu) {
+            cmgs_pdu_size = GPOINTER_TO_UINT (mm_callback_info_get_data (info, "cmgs-pdu-size"));
+            g_assert (cmgs_pdu_size);
+            command = g_strdup_printf ("+CMGS=%d\r%s\x1a", cmgs_pdu_size, pdu);
+            mm_at_serial_port_queue_command (port, command, 10, sms_send_done, info);
+            g_free (command);
+
+            /* Clear the PDU data so we don't keep getting here */
+            mm_callback_info_set_data (info, "pdu", NULL, NULL);
+            return;
+        }
+
+        /* Otherwise it's a hard error */
+        info->error = g_error_copy (error);
+    } else {
+        /* If the response happens to have a ">" in it from the interactive
+         * handling of the CMGS command, skip it.
+         */
+        p = strchr (response->str, '+');
+        if (p && *p) {
+            /* Check for the message index */
+            p = mm_strip_tag (p, "+CMGS:");
+            if (p && *p) {
+                errno = 0;
+                num = strtoul (p, NULL, 10);
+                if ((num < G_MAXUINT32) && (errno == 0))
+                    idx = (guint32) num;
+            }
+        }
+        indexes = g_array_sized_new (FALSE, TRUE, sizeof (guint32), 1);
+        g_array_append_val (indexes, idx);
+        mm_callback_info_set_data (info, "indexes", indexes, free_indexes);
+    }
     mm_callback_info_schedule (info);
 }
 
@@ -4219,30 +4676,58 @@ sms_send (MMModemGsmSms *modem,
           const char *smsc,
           guint validity,
           guint class,
-          MMModemFn callback,
+          MMModemGsmSmsSendFn callback,
           gpointer user_data)
 {
     MMCallbackInfo *info;
+    MMGenericGsm *self = MM_GENERIC_GSM (modem);
+    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (self);
     char *command;
     MMAtSerialPort *port;
+    guint8 *pdu;
+    guint pdulen = 0, msgstart = 0;
+    char *hex;
 
-    info = mm_callback_info_new (MM_MODEM (modem), callback, user_data);
+    info = mm_callback_info_new_full (MM_MODEM (modem),
+                                      sms_send_invoke,
+                                      G_CALLBACK (callback),
+                                      user_data);
 
-    port = mm_generic_gsm_get_best_at_port (MM_GENERIC_GSM (modem), &info->error);
+    port = mm_generic_gsm_get_best_at_port (self, &info->error);
     if (!port) {
         mm_callback_info_schedule (info);
         return;
     }
 
-    /* FIXME: use the PDU mode instead */
-    mm_at_serial_port_queue_command (port, "AT+CMGF=1", 3, NULL, NULL);
+    /* Always create a PDU since we might need it for fallback from text mode */
+    pdu = sms_create_submit_pdu (number, text, smsc, validity, class, &pdulen, &msgstart, &info->error);
+    if (!pdu) {
+        mm_callback_info_schedule (info);
+        return;
+    }
 
-    command = g_strdup_printf ("+CMGS=\"%s\"\r%s\x1a", number, text);
+    hex = utils_bin2hexstr (pdu, pdulen);
+    g_free (pdu);
+    if (hex == NULL) {
+        g_set_error_literal (&info->error,
+                             MM_MODEM_ERROR,
+                             MM_MODEM_ERROR_GENERAL,
+                             "Not enough memory to send SMS PDU");
+        mm_callback_info_schedule (info);
+        return;
+    }
+
+    mm_callback_info_set_data (info, "pdu", hex, g_free);
+    mm_callback_info_set_data (info, "cmgs-pdu-size", GUINT_TO_POINTER (pdulen - msgstart), NULL);
+    if (priv->sms_pdu_mode) {
+        /* CMGS length is the size of the PDU without SMSC information */
+        command = g_strdup_printf ("+CMGS=%d\r%s\x1a", pdulen - msgstart, hex);
+    } else
+        command = g_strdup_printf ("+CMGS=\"%s\"\r%s\x1a", number, text);
+
     mm_at_serial_port_queue_command (port, command, 10, sms_send_done, info);
     g_free (command);
 }
-
-
 
 static void
 sms_get_done (MMAtSerialPort *port,
@@ -4251,9 +4736,15 @@ sms_get_done (MMAtSerialPort *port,
               gpointer user_data)
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
+    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (info->modem);
     GHashTable *properties;
-    int rv, status, tpdu_len, offset;
+    int rv, status, tpdu_len;
+    guint idx;
     char pdu[SMS_MAX_PDU_LEN + 1];
+    gboolean look_for_complete;
+
+    idx = priv->sms_fetch_pending;
+    priv->sms_fetch_pending = 0;
 
     /* If the modem has already been removed, return without
      * scheduling callback */
@@ -4266,9 +4757,9 @@ sms_get_done (MMAtSerialPort *port,
     }
 
     /* 344 == SMS_MAX_PDU_LEN */
-    rv = sscanf (response->str, "+CMGR: %d,,%d %344s %n",
-                 &status, &tpdu_len, pdu, &offset);
-    if (rv != 4) {
+    rv = sscanf (response->str, "+CMGR: %d,,%d %344s",
+                 &status, &tpdu_len, pdu);
+    if (rv != 3) {
         info->error = g_error_new (MM_MODEM_ERROR,
                                    MM_MODEM_ERROR_GENERAL,
                                    "Failed to parse CMGR response (parsed %d items)",
@@ -4281,8 +4772,24 @@ sms_get_done (MMAtSerialPort *port,
         goto out;
     }
 
-    mm_callback_info_set_data (info, GS_HASH_TAG, properties,
-                               (GDestroyNotify) g_hash_table_unref);
+    g_hash_table_insert (properties, "index", simple_uint_value (idx));
+    sms_cache_insert (info->modem, properties, idx);
+
+    look_for_complete = GPOINTER_TO_UINT (mm_callback_info_get_data(info,
+                                                           "complete-sms-only"));
+
+    if (look_for_complete == TRUE) {
+        /*
+         * If this is a standalone message, or the key part of a
+         * multipart message, pass it along, otherwise report that there's
+         * no such message.
+         */
+        properties = sms_cache_lookup_full (info->modem, properties,
+                                            &info->error);
+    }
+    if (properties)
+        mm_callback_info_set_data (info, GS_HASH_TAG, properties,
+                                   (GDestroyNotify) g_hash_table_unref);
 
 out:
     mm_callback_info_schedule (info);
@@ -4307,11 +4814,35 @@ sms_get (MMModemGsmSms *modem,
     MMCallbackInfo *info;
     char *command;
     MMAtSerialPort *port;
+    MMGenericGsmPrivate *priv =
+            MM_GENERIC_GSM_GET_PRIVATE (MM_GENERIC_GSM (modem));
+    GHashTable *properties;
+    GError *error = NULL;
+
+    properties = g_hash_table_lookup (priv->sms_contents, GUINT_TO_POINTER (idx));
+    if (properties != NULL) {
+        g_hash_table_ref (properties);
+        properties = sms_cache_lookup_full (MM_MODEM (modem), properties, &error);
+        if (properties == NULL) {
+            error = g_error_new (MM_MODEM_ERROR,
+                                 MM_MODEM_ERROR_GENERAL,
+                                 "No SMS found");
+        }
+        callback (modem, properties, error, user_data);
+        if (properties != NULL)
+            g_hash_table_unref (properties);
+        g_error_free (error);
+        return;
+    }
 
     info = mm_callback_info_new_full (MM_MODEM (modem),
                                       sms_get_invoke,
                                       G_CALLBACK (callback),
                                       user_data);
+    mm_callback_info_set_data (info,
+                               "complete-sms-only",
+                               GUINT_TO_POINTER (TRUE),
+                               NULL);
 
     port = mm_generic_gsm_get_best_at_port (MM_GENERIC_GSM (modem), &info->error);
     if (!port) {
@@ -4319,9 +4850,17 @@ sms_get (MMModemGsmSms *modem,
         return;
     }
 
-    command = g_strdup_printf ("+CMGR=%d\r\n", idx);
+    command = g_strdup_printf ("+CMGR=%d", idx);
+    priv->sms_fetch_pending = idx;
     mm_at_serial_port_queue_command (port, command, 10, sms_get_done, info);
 }
+
+typedef struct {
+    MMGenericGsmPrivate *priv;
+    MMCallbackInfo *info;
+    SMSMultiPartMessage *mpm;
+    int deleting;
+} SMSDeleteProgress;
 
 static void
 sms_delete_done (MMAtSerialPort *port,
@@ -4343,6 +4882,50 @@ sms_delete_done (MMAtSerialPort *port,
 }
 
 static void
+sms_delete_multi_next (MMAtSerialPort *port,
+                       GString *response,
+                       GError *error,
+                       gpointer user_data)
+{
+    SMSDeleteProgress *progress = (SMSDeleteProgress *)user_data;
+
+    /* If the modem has already been removed, return without
+     * scheduling callback */
+    if (mm_callback_info_check_modem_removed (progress->info))
+        goto done;
+
+    if (error)
+        progress->info->error = g_error_copy (error);
+
+    for (progress->deleting++ ;
+         progress->deleting < progress->mpm->numparts ;
+         progress->deleting++)
+        if (progress->mpm->parts[progress->deleting] != 0)
+            break;
+    if (progress->deleting < progress->mpm->numparts) {
+        GHashTable *properties;
+        char *command;
+        guint idx;
+
+        idx = progress->mpm->parts[progress->deleting];
+        command = g_strdup_printf ("+CMGD=%d", idx);
+        mm_at_serial_port_queue_command (port, command, 10,
+                                         sms_delete_multi_next, progress);
+        properties = g_hash_table_lookup (progress->priv->sms_contents, GUINT_TO_POINTER (idx));
+        g_hash_table_remove (progress->priv->sms_contents, GUINT_TO_POINTER (idx));
+        g_hash_table_remove (progress->priv->sms_present, GUINT_TO_POINTER (idx));
+        g_hash_table_unref (properties);
+        return;
+    }
+
+    mm_callback_info_schedule (progress->info);
+done:
+    g_free (progress->mpm->parts);
+    g_free (progress->mpm);
+    g_free (progress);
+}
+
+static void
 sms_delete (MMModemGsmSms *modem,
             guint idx,
             MMModemFn callback,
@@ -4352,18 +4935,262 @@ sms_delete (MMModemGsmSms *modem,
     char *command;
     MMAtSerialPort *port;
     MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (MM_GENERIC_GSM (modem));
+    GHashTable *properties;
+    MMAtSerialResponseFn next_callback;
+    GValue *ref;
 
     info = mm_callback_info_new (MM_MODEM (modem), callback, user_data);
-    g_hash_table_remove (priv->sms_present, GINT_TO_POINTER (idx));
 
-    port = mm_generic_gsm_get_best_at_port (MM_GENERIC_GSM (modem), &info->error);
-    if (!port) {
+    properties = g_hash_table_lookup (priv->sms_contents, GINT_TO_POINTER (idx));
+    if (properties == NULL) {
+        /*
+         * TODO(njw): This assumes our cache is valid. If we doubt this, we should just
+         * run the delete anyway and let that return the nonexistent-message error.
+         */
+        info->error = g_error_new (MM_MODEM_ERROR,
+                                   MM_MODEM_ERROR_GENERAL,
+                                   "No SMS to delete");
         mm_callback_info_schedule (info);
         return;
     }
 
-    command = g_strdup_printf ("+CMGD=%d\r\n", idx);
-    mm_at_serial_port_queue_command (port, command, 10, sms_delete_done, info);
+    port = mm_generic_gsm_get_best_at_port (MM_GENERIC_GSM (modem), &info->error);
+    if (!port) {
+        mm_callback_info_schedule (info);
+        g_hash_table_remove (priv->sms_contents, GINT_TO_POINTER (idx));
+        g_hash_table_unref (properties);
+        return;
+    }
+
+    user_data = info;
+    next_callback = sms_delete_done;
+    ref = g_hash_table_lookup (properties, "concat-reference");
+    if (ref != NULL) {
+        SMSMultiPartMessage *mpm;
+        SMSDeleteProgress *progress;
+        guint refnum;
+
+        refnum = g_value_get_uint (ref);
+        mpm = g_hash_table_lookup (priv->sms_parts, GUINT_TO_POINTER (refnum));
+        if (mpm == NULL) {
+            info->error = g_error_new (MM_MODEM_ERROR,
+                                       MM_MODEM_ERROR_GENERAL,
+                                       "Internal error - no part array for multipart SMS");
+            mm_callback_info_schedule (info);
+            g_hash_table_remove (priv->sms_contents, GINT_TO_POINTER (idx));
+            g_hash_table_unref (properties);
+            return;
+        }
+        /* Only allow the delete operation on the main index number. */
+        if (idx != mpm->index) {
+            info->error = g_error_new (MM_MODEM_ERROR,
+                                       MM_MODEM_ERROR_GENERAL,
+                                       "No SMS to delete");
+            mm_callback_info_schedule (info);
+            return;
+        }
+
+        g_hash_table_remove (priv->sms_parts, GUINT_TO_POINTER (refnum));
+        progress = g_malloc0 (sizeof(*progress));
+        progress->priv = priv;
+        progress->info = info;
+        progress->mpm = mpm;
+        for (progress->deleting = 0 ;
+             progress->deleting < mpm->numparts ;
+             progress->deleting++)
+            if (mpm->parts[progress->deleting] != 0)
+                break;
+        user_data = progress;
+        next_callback = sms_delete_multi_next;
+        idx = progress->mpm->parts[progress->deleting];
+        properties = g_hash_table_lookup (priv->sms_contents, GINT_TO_POINTER (idx));
+    }
+    g_hash_table_remove (priv->sms_contents, GUINT_TO_POINTER (idx));
+    g_hash_table_remove (priv->sms_present, GUINT_TO_POINTER (idx));
+    g_hash_table_unref (properties);
+
+    command = g_strdup_printf ("+CMGD=%d", idx);
+    mm_at_serial_port_queue_command (port, command, 10, next_callback,
+                                     user_data);
+}
+
+static gboolean
+pdu_parse_cmgl (MMGenericGsm *self, const char *response, GError **error)
+{
+    int rv, status, tpdu_len, offset;
+    GHashTable *properties;
+
+    while (*response) {
+        int idx;
+        char pdu[SMS_MAX_PDU_LEN + 1];
+
+        rv = sscanf (response, "+CMGL: %d,%d,,%d %344s %n",
+                     &idx, &status, &tpdu_len, pdu, &offset);
+        if (4 != rv) {
+            g_set_error (error,
+                         MM_MODEM_ERROR,
+                         MM_MODEM_ERROR_GENERAL,
+                         "Failed to parse CMGL response: expected 4 results got %d", rv);
+            mm_err("Couldn't parse response to SMS LIST (%d)", rv);
+            return FALSE;
+        }
+        response += offset;
+
+        properties = sms_parse_pdu (pdu, NULL);
+        if (properties) {
+            g_hash_table_insert (properties, "index", simple_uint_value (idx));
+            sms_cache_insert (MM_MODEM (self), properties, idx);
+            /* The cache holds a reference, so we don't need it anymore */
+            g_hash_table_unref (properties);
+        }
+    }
+
+    return TRUE;
+}
+
+static gboolean
+get_match_uint (GMatchInfo *m, guint match_index, guint *out_val)
+{
+    char *s;
+    unsigned long num;
+
+    g_return_val_if_fail (out_val != NULL, FALSE);
+
+    s = g_match_info_fetch (m, match_index);
+    g_return_val_if_fail (s != NULL, FALSE);
+
+    errno = 0;
+    num = strtoul (s, NULL, 10);
+    g_free (s);
+
+    if (num <= 1000 && errno == 0) {
+        *out_val = (guint) num;
+        return TRUE;
+    }
+    return FALSE;
+}
+
+static char *
+get_match_string_unquoted (GMatchInfo *m, guint match_index)
+{
+    char *s, *p, *q, *ret = NULL;
+
+    q = s = g_match_info_fetch (m, match_index);
+    g_return_val_if_fail (s != NULL, FALSE);
+
+    /* remove quotes */
+    if (*q == '"')
+        q++;
+    p = strchr (q, '"');
+    if (p)
+        *p = '\0';
+    if (*q)
+        ret = g_strdup (q);
+    g_free (s);
+    return ret;
+}
+
+static gboolean
+text_parse_cmgl (MMGenericGsm *self, const char *response, GError **error)
+{
+    MMGenericGsmPrivate *priv;
+    GRegex *r;
+    GMatchInfo *match_info = NULL;
+
+    priv = MM_GENERIC_GSM_GET_PRIVATE (self);
+
+    /* +CMGL: <index>,<stat>,<oa/da>,[alpha],<scts><CR><LF><data><CR><LF> */
+    r = g_regex_new ("\\+CMGL:\\s*(\\d+)\\s*,\\s*([^,]*),\\s*([^,]*),\\s*([^,]*),\\s*([^\\r\\n]*)\\r\\n([^\\r\\n]*)", 0, 0, NULL);
+    g_assert (r);
+
+    if (!g_regex_match_full (r, response, strlen (response), 0, 0, &match_info, NULL)) {
+        g_set_error_literal (error, MM_MODEM_ERROR, MM_MODEM_ERROR_GENERAL,
+                             "Failed to parse CMGL response");
+        mm_err("Couldn't parse response to SMS LIST");
+        g_regex_unref (r);
+        return FALSE;
+    }
+
+    while (g_match_info_matches (match_info)) {
+        GHashTable *properties;
+        guint matches, idx;
+        char *number = NULL, *timestamp, *text, *ucs2_text;
+        gsize ucs2_len = 0;
+        GByteArray *data;
+
+        matches = g_match_info_get_match_count (match_info);
+        if (matches != 7) {
+            mm_dbg ("Failed to match entire CMGL response (count %d)", matches);
+            goto next;
+        }
+
+        if (!get_match_uint (match_info, 1, &idx)) {
+            mm_dbg ("Failed to convert message index");
+            goto next;
+        }
+
+        /* <stat is ignored for now> */
+
+        /* Get and parse number */
+        number = get_match_string_unquoted (match_info, 3);
+        if (!number) {
+            mm_dbg ("Failed to get message sender number");
+            goto next;
+        }
+        number = mm_charset_take_and_convert_to_utf8 (number,
+                                                      priv->cur_charset);
+
+        /* Get and parse timestamp (always expected in ASCII) */
+        timestamp = get_match_string_unquoted (match_info, 5);
+
+        /* Get and parse text */
+        text = mm_charset_take_and_convert_to_utf8 (g_match_info_fetch (match_info, 6),
+                                                    priv->cur_charset);
+
+        /* The raw SMS data can only be GSM, UCS2, or unknown (8-bit), so we
+         * need to convert to UCS2 here.
+         */
+        ucs2_text = g_convert (text, -1, "UCS-2BE//TRANSLIT", "UTF-8", NULL, &ucs2_len, NULL);
+        g_assert (ucs2_text);
+        data = g_byte_array_sized_new (ucs2_len);
+        g_byte_array_append (data, (const guint8 *) ucs2_text, ucs2_len);
+        g_free (ucs2_text);
+
+        properties = sms_properties_hash_new (NULL,
+                                              number,
+                                              timestamp,
+                                              text,
+                                              data,
+                                              2,   /* DCS = UCS2 */
+                                              0);  /* class */
+        g_assert (properties);
+
+        g_free (number);
+        g_free (timestamp);
+        g_free (text);
+        g_byte_array_free (data, TRUE);
+
+        g_hash_table_insert (properties, "index", simple_uint_value (idx));
+        sms_cache_insert (MM_MODEM (self), properties, idx);
+        /* The cache holds a reference, so we don't need it anymore */
+        g_hash_table_unref (properties);
+
+next:
+        g_match_info_next (match_info, NULL);
+    }
+    g_match_info_free (match_info);
+
+    g_regex_unref (r);
+    return TRUE;
+}
+
+static void
+free_list_results (gpointer data)
+{
+    GPtrArray *results = (GPtrArray *) data;
+
+    g_ptr_array_foreach (results, (GFunc) g_hash_table_unref, NULL);
+    g_ptr_array_free (results, TRUE);
 }
 
 static void
@@ -4373,54 +5200,44 @@ sms_list_done (MMAtSerialPort *port,
                gpointer user_data)
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
+    MMGenericGsm *self = MM_GENERIC_GSM (info->modem);
+    MMGenericGsmPrivate *priv = MM_GENERIC_GSM_GET_PRIVATE (self);
+    GHashTableIter iter;
+    GHashTable *properties = NULL;
     GPtrArray *results = NULL;
-    int rv, status, tpdu_len, offset;
-    char *rstr;
+    gboolean success;
 
     /* If the modem has already been removed, return without
      * scheduling callback */
     if (mm_callback_info_check_modem_removed (info))
         return;
 
-    if (error)
+    if (error) {
         info->error = g_error_copy (error);
-    else {
+        mm_callback_info_schedule (info);
+        return;
+    }
+
+    if (priv->sms_pdu_mode)
+        success = pdu_parse_cmgl (self, response->str, &info->error);
+    else
+        success = text_parse_cmgl (self, response->str, &info->error);
+
+    if (success) {
         results = g_ptr_array_new ();
-        rstr = response->str;
 
-        while (*rstr) {
-            GHashTable *properties;
-            GError *local;
-            int idx;
-            char pdu[SMS_MAX_PDU_LEN + 1];
-
-            rv = sscanf (rstr, "+CMGL: %d,%d,,%d %344s %n",
-                         &idx, &status, &tpdu_len, pdu, &offset);
-            if (4 != rv) {
-                mm_err("Couldn't parse response to SMS LIST (%d)", rv);
-                break;
-            }
-            rstr += offset;
-
-            properties = sms_parse_pdu (pdu, &local);
-            if (properties) {
-                g_hash_table_insert (properties, "index",
-                                     simple_uint_value (idx));
+        /* Add all the complete messages to the results */
+        g_hash_table_iter_init (&iter, priv->sms_contents);
+        while (g_hash_table_iter_next (&iter, NULL, (gpointer) &properties)) {
+            g_hash_table_ref (properties);
+            g_clear_error (&info->error);
+            properties = sms_cache_lookup_full (info->modem, properties, NULL);
+            if (properties)
                 g_ptr_array_add (results, properties);
-            } else {
-                /* Ignore the error */
-                g_clear_error(&local);
-            }
         }
-        /*
-         * todo(njw): mm_gsm_destroy_scan_data does what we want
-         * (destroys a GPtrArray of g_hash_tables), but it should be
-         * renamed to describe that or there should be a function
-         * named for what we're doing here.
-         */
+
         if (results)
-            mm_callback_info_set_data (info, "list-sms", results,
-                                       mm_gsm_destroy_scan_data);
+            mm_callback_info_set_data (info, "list-sms", results, free_list_results);
     }
 
     mm_callback_info_schedule (info);
@@ -4456,7 +5273,10 @@ sms_list (MMModemGsmSms *modem,
         return;
     }
 
-    command = g_strdup_printf ("+CMGL=4\r\n");
+    if (MM_GENERIC_GSM_GET_PRIVATE (modem)->sms_pdu_mode)
+        command = g_strdup_printf ("+CMGL=4");
+    else
+        command = g_strdup_printf ("+CMGL=\"ALL\"");
     mm_at_serial_port_queue_command (port, command, 10, sms_list_done, info);
 }
 
@@ -4544,6 +5364,7 @@ decode_ussd_response (MMGenericGsm *self,
     char **items, **iter, *p;
     char *str = NULL;
     gint encoding = -1;
+    char *decoded;
 
     /* Look for the first ',' */
     p = strchr (reply, ',');
@@ -4563,6 +5384,9 @@ decode_ussd_response (MMGenericGsm *self,
         }
     }
 
+    if (!str)
+        return NULL;
+
     /* Strip quotes */
     if (str[0] == '"')
         str++;
@@ -4570,8 +5394,9 @@ decode_ussd_response (MMGenericGsm *self,
     if (p)
         *p = '\0';
 
-    return mm_modem_gsm_ussd_decode (MM_MODEM_GSM_USSD (self), str,
-                                     cur_charset);
+    decoded = mm_modem_gsm_ussd_decode (MM_MODEM_GSM_USSD (self), str, cur_charset);
+    g_strfreev (items);
+    return decoded;
 }
 
 static char*
@@ -4708,7 +5533,7 @@ ussd_send_done (MMAtSerialPort *port,
         ussd_update_state (MM_GENERIC_GSM (info->modem), MM_MODEM_GSM_USSD_STATE_IDLE);
     }
 
-    /* Otherwise if no error wait for the response to show up via the 
+    /* Otherwise if no error wait for the response to show up via the
      * unsolicited response code.
      */
 }
@@ -5150,10 +5975,20 @@ simple_status_got_signal_quality (MMModem *modem,
 {
     MMCallbackInfo *info = (MMCallbackInfo *) user_data;
     GHashTable *properties;
+    gboolean error_no_network = FALSE;
 
-    if (!error) {
+    /* Treat "no network" as zero strength */
+    if (g_error_matches (error, MM_MOBILE_ERROR, MM_MOBILE_ERROR_NO_NETWORK)) {
+        error_no_network = TRUE;
+        result = 0;
+    }
+
+    if (!error || error_no_network) {
         properties = (GHashTable *) mm_callback_info_get_data (info, SS_HASH_TAG);
         g_hash_table_insert (properties, "signal_quality", simple_uint_value (result));
+    } else {
+        g_clear_error (&info->error);
+        info->error = g_error_copy (error);
     }
     mm_callback_info_chain_complete_one (info);
 }
@@ -5170,6 +6005,9 @@ simple_status_got_band (MMModem *modem,
     if (!error) {
         properties = (GHashTable *) mm_callback_info_get_data (info, SS_HASH_TAG);
         g_hash_table_insert (properties, "band", simple_uint_value (result));
+    } else {
+        g_clear_error (&info->error);
+        info->error = g_error_copy (error);
     }
     mm_callback_info_chain_complete_one (info);
 }
@@ -5189,9 +6027,10 @@ simple_status_got_reg_info (MMModemGsmNetwork *modem,
     if (!modem || mm_callback_info_check_modem_removed (info))
         return;
 
-    if (error)
+    if (error) {
+        g_clear_error (&info->error);
         info->error = g_error_copy (error);
-    else {
+    } else {
         properties = (GHashTable *) mm_callback_info_get_data (info, SS_HASH_TAG);
 
         g_hash_table_insert (properties, "registration_status", simple_uint_value (status));
@@ -5503,6 +6342,8 @@ mm_generic_gsm_init (MMGenericGsm *self)
     priv->reg_regex = mm_gsm_creg_regex_get (TRUE);
     priv->roam_allowed = TRUE;
     priv->sms_present = g_hash_table_new (g_direct_hash, g_direct_equal);
+    priv->sms_contents = g_hash_table_new (g_direct_hash, g_direct_equal);
+    priv->sms_parts = g_hash_table_new (g_direct_hash, g_direct_equal);
 
     mm_properties_changed_signal_register_property (G_OBJECT (self),
                                                     MM_MODEM_GSM_NETWORK_ALLOWED_MODE,
@@ -5722,6 +6563,8 @@ finalize (GObject *object)
     g_free (priv->oper_name);
     g_free (priv->simid);
     g_hash_table_destroy (priv->sms_present);
+    g_hash_table_destroy (priv->sms_contents);
+    g_hash_table_destroy (priv->sms_parts);
 
     G_OBJECT_CLASS (mm_generic_gsm_parent_class)->finalize (object);
 }
@@ -5841,4 +6684,3 @@ mm_generic_gsm_class_init (MMGenericGsmClass *klass)
                               "+IFC=1,1",
                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 }
-

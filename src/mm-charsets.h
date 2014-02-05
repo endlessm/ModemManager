@@ -52,6 +52,11 @@ guint8 *mm_charset_utf8_to_unpacked_gsm (const char *utf8, guint32 *out_len);
 
 guint8 *mm_charset_gsm_unpacked_to_utf8 (const guint8 *gsm, guint32 len);
 
+/* Returns the size in bytes required to hold the UTF-8 string in the given charset */
+guint mm_charset_get_encoded_len (const char *utf8,
+                                  MMModemCharset charset,
+                                  guint *out_unsupported);
+
 guint8 *gsm_unpack (const guint8 *gsm,
                     guint32 num_septets,
                     guint8 start_offset,  /* in bits */
@@ -62,5 +67,7 @@ guint8 *gsm_pack (const guint8 *src,
                   guint8 start_offset,  /* in bits */
                   guint32 *out_packed_len);
 
-#endif /* MM_CHARSETS_H */
+gchar *mm_charset_take_and_convert_to_utf8 (gchar *str,
+                                            MMModemCharset charset);
 
+#endif /* MM_CHARSETS_H */

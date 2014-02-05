@@ -491,8 +491,9 @@ test_creg_match (const char *test,
     g_assert (data);
     g_assert (result);
 
-    g_print ("\nTesting %s +CREG %s response...\n",
+    g_print ("\nTesting %s +C%sREG %s response...\n",
              test,
+             result->cgreg ? "G" : "",
              solicited ? "solicited" : "unsolicited");
 
     array = solicited ? data->solicited_creg : data->unsolicited_creg;
@@ -740,6 +741,16 @@ test_creg2_gobi_weird_solicited (void *f, gpointer d)
     const CregResult result = { 1, 0x0000, 0x2715, -1, 4, FALSE};
 
     test_creg_match ("Qualcomm Gobi 1000 CREG=2", TRUE, reply, data, &result);
+}
+
+static void
+test_cgreg2_unsolicited_with_rac (void *f, gpointer d)
+{
+    TestData *data = (TestData *) d;
+    const char *reply = "\r\n+CGREG: 1,\"1422\",\"00000142\",3,\"00\"\r\n";
+    const CregResult result = { 1, 0x1422, 0x0142, 3, 8, TRUE };
+
+    test_creg_match ("CGREG=2 with RAC", FALSE, reply, data, &result);
 }
 
 static void
@@ -1269,6 +1280,7 @@ int main (int argc, char **argv)
     g_test_suite_add (suite, TESTCASE (test_cgreg2_f3607gw_unsolicited, data));
     g_test_suite_add (suite, TESTCASE (test_cgreg2_md400_unsolicited, data));
     g_test_suite_add (suite, TESTCASE (test_cgreg2_x220_unsolicited, data));
+    g_test_suite_add (suite, TESTCASE (test_cgreg2_unsolicited_with_rac, data));
 
     g_test_suite_add (suite, TESTCASE (test_creg_cgreg_multi_unsolicited, data));
     g_test_suite_add (suite, TESTCASE (test_creg_cgreg_multi2_unsolicited, data));
