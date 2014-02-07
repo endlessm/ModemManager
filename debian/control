@@ -18,6 +18,7 @@ Build-Depends: debhelper (>= 9),
 Standards-Version: 3.9.4
 Vcs-Git: git://git.debian.org/git/collab-maint/modemmanager.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/modemmanager.git
+Homepage: http://www.freedesktop.org/wiki/Software/ModemManager/
 
 Package: modemmanager
 Architecture: any
