@@ -16,7 +16,8 @@ Build-Depends: debhelper (>= 9),
                libmbim-glib-dev (>= 1.4),
                libglib2.0-doc,
 Standards-Version: 3.9.4
-Vcs-Bzr: https://code.launchpad.net/~modemmanager/modemmanager/ubuntu
+Vcs-Git: git://git.debian.org/git/collab-maint/modemmanager.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/modemmanager.git
 
 Package: modemmanager
 Architecture: any
