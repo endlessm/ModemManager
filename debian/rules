@@ -29,6 +29,7 @@ override_dh_auto_configure:
 
 override_dh_makeshlibs:
 	dh_makeshlibs -X/usr/lib/$(DEB_HOST_MULTIARCH)/ModemManager/
+	dh_girepository
 
 override_dh_strip:
 	dh_strip --dbg-package=modemmanager-dbg
