@@ -13,6 +13,7 @@ Build-Depends: debhelper (>= 9),
                libglib2.0-dev (>= 2.30.2),
                libgudev-1.0-dev (>= 147),
                libqmi-glib-dev (>= 1.4),
+               libpolkit-gobject-1-dev (>= 0.97),
                libmbim-glib-dev (>= 1.4),
                libglib2.0-doc,
 Standards-Version: 3.9.5
