@@ -1,7 +1,25 @@
 modemmanager (1.0.0-3) UNRELEASED; urgency=medium
 
+  [ Michael Biebl ]
   * Upload to unstable.
   * Refresh patches to apply cleanly.
+
+  [ Guido Günther ]
+  * Update VCS- URLs
+  * Add homepage URL
+  * Enable PolicyKit support (Closes: #736475, #736900)
+
+  [ Michael Biebl ]
+  * Update Standards Version to 3.9.5
+  * Drop link to Git repository from package descriptions
+  * Build-Depend on the latest automake version
+  * Fix D-Bus service file generation (Closes: #733752)
+  * Add gbp.conf and enable pristine-tar
+  * Install systemd service file
+  * Use dh-systemd to enable the systemd service and restart it on upgrades
+  * Set pkg-utopia-maintainers@lists.alioth.debian.org as Maintainer
+  * Remove obsolete D-Bus policy conffile on upgrades (Closes: #733305)
+  * Update debian/copyright using machine-readable copyright format 1.0
 
  -- Michael Biebl <biebl@debian.org>  Thu, 27 Mar 2014 13:20:14 +0100
 
