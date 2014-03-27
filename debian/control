@@ -15,7 +15,7 @@ Build-Depends: debhelper (>= 9),
                libqmi-glib-dev (>= 1.4),
                libmbim-glib-dev (>= 1.4),
                libglib2.0-doc,
-Standards-Version: 3.9.4
+Standards-Version: 3.9.5
 Vcs-Git: git://git.debian.org/git/collab-maint/modemmanager.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/modemmanager.git
 Homepage: http://www.freedesktop.org/wiki/Software/ModemManager/
