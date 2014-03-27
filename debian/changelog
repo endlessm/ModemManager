@@ -1,3 +1,9 @@
+modemmanager (1.0.0-3) UNRELEASED; urgency=medium
+
+  * Upload to unstable.
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 27 Mar 2014 13:20:14 +0100
+
 modemmanager (1.0.0-2) experimental; urgency=medium
 
   * Sync more changes from Ubuntu:
