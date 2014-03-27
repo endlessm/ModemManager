@@ -1,4 +1,4 @@
-modemmanager (1.0.0-3) UNRELEASED; urgency=medium
+modemmanager (1.0.0-3) unstable; urgency=medium
 
   [ Michael Biebl ]
   * Upload to unstable.
@@ -21,7 +21,7 @@ modemmanager (1.0.0-3) UNRELEASED; urgency=medium
   * Remove obsolete D-Bus policy conffile on upgrades (Closes: #733305)
   * Update debian/copyright using machine-readable copyright format 1.0
 
- -- Michael Biebl <biebl@debian.org>  Thu, 27 Mar 2014 13:20:14 +0100
+ -- Michael Biebl <biebl@debian.org>  Thu, 27 Mar 2014 15:46:44 +0100
 
 modemmanager (1.0.0-2) experimental; urgency=medium
 
