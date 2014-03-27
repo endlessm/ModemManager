@@ -1,6 +1,7 @@
 modemmanager (1.0.0-3) UNRELEASED; urgency=medium
 
   * Upload to unstable.
+  * Refresh patches to apply cleanly.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 27 Mar 2014 13:20:14 +0100
 

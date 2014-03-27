@@ -2,11 +2,11 @@
  src/77-mm-usb-device-blacklist.rules |    3 +++
  1 file changed, 3 insertions(+)
 
-Index: modemmanager-0.7.990/src/77-mm-usb-device-blacklist.rules
+Index: modemmanager/src/77-mm-usb-device-blacklist.rules
 ===================================================================
---- modemmanager-0.7.990.orig/src/77-mm-usb-device-blacklist.rules	2013-03-14 23:37:34.282210727 +0100
-+++ modemmanager-0.7.990/src/77-mm-usb-device-blacklist.rules	2013-03-14 23:37:34.226210727 +0100
-@@ -93,4 +93,7 @@
+--- modemmanager.orig/src/77-mm-usb-device-blacklist.rules	2014-03-27 13:19:56.183482158 +0100
++++ modemmanager/src/77-mm-usb-device-blacklist.rules	2014-03-27 13:19:56.183482158 +0100
+@@ -101,4 +101,7 @@
  ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="204b", ENV{ID_MM_DEVICE_IGNORE}="1"
  ATTRS{idVendor}=="2341", ENV{ID_MM_DEVICE_IGNORE}="1"
  
