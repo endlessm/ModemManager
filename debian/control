@@ -31,8 +31,6 @@ Description: D-Bus service for managing modems
  UMTS, ...) cards. Implements a loadable plugin interface to add work-arounds
  for non standard devices. Also provides patches to use networkmanager (and
  the applet) with modem manager.
- .
- Git Repository: http://cgit.freedesktop.org/ModemManager/ModemManager/
 
 Package: modemmanager-dbg
 Architecture: any
@@ -45,8 +43,6 @@ Description: D-Bus service for managing modems - debugging symbols
  UMTS, ...) cards. Implements a loadable plugin interface to add work-arounds
  for non standard devices. Also provides patches to use networkmanager (and
  the applet) with modem manager.
- .
- Git Repository: http://cgit.freedesktop.org/ModemManager/ModemManager/
  .
  This package contains debugging symbols for ModemManager.
 
@@ -63,8 +59,6 @@ Description: D-Bus service for managing modems - development files
  for non standard devices. Also provides patches to use networkmanager (and
  the applet) with modem manager.
  .
- Git Repository: http://cgit.freedesktop.org/ModemManager/ModemManager/
- .
  This package contains header files for ModemManager.
 
 Package: modemmanager-doc
@@ -77,8 +71,6 @@ Description: D-Bus service for managing modems - documentation files
  UMTS, ...) cards. Implements a loadable plugin interface to add work-arounds
  for non standard devices. Also provides patches to use networkmanager (and
  the applet) with modem manager.
- .
- Git Repository: http://cgit.freedesktop.org/ModemManager/ModemManager/
  .
  This package contains documenation of the d-bus protocol to interface
  ModemManager.
@@ -97,8 +89,6 @@ Description: D-Bus service for managing modems - shared libraries
  for non standard devices. Also provides patches to use networkmanager (and
  the applet) with modem manager.
  .
- Git Repository: http://cgit.freedesktop.org/ModemManager/ModemManager/
- .
  This package contains shared libraries for applications interfacing with
  ModemManager.
 
@@ -116,8 +106,6 @@ Description: D-Bus service for managing modems - library development files
  for non standard devices. Also provides patches to use networkmanager (and
  the applet) with modem manager.
  .
- Git Repository: http://cgit.freedesktop.org/ModemManager/ModemManager/
- .
  This package contains development files to use when writing applications that
  interface with ModemManager.
 
@@ -131,8 +119,6 @@ Description: D-Bus service for managing modems - library documentation
  UMTS, ...) cards. Implements a loadable plugin interface to add work-arounds
  for non standard devices. Also provides patches to use networkmanager (and
  the applet) with modem manager.
- .
- Git Repository: http://cgit.freedesktop.org/ModemManager/ModemManager/
  .
  This package contains documentation of libmm-glib to use when writing
  applications that interface with ModemManager.
