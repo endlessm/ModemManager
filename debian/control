@@ -5,6 +5,7 @@ Maintainer: Alexander Sack <asac@ubuntu.com>
 Uploaders: Alexander Sack <asac@debian.org>, Michael Biebl <biebl@debian.org>, Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>
 Build-Depends: debhelper (>= 9),
                dh-autoreconf,
+               dh-systemd,
                automake,
                libtool,
                intltool,

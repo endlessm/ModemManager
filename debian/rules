@@ -11,7 +11,7 @@ DH_ALWAYS_EXCLUDE=.svn:.git:.bzr
 export NOCONFIGURE=true
 
 %:
-	dh $@ --with autoreconf
+	dh $@ --with autoreconf,systemd
 
 override_dh_autoreconf:
 	dh_autoreconf -- ./autogen.sh
@@ -43,3 +43,6 @@ override_dh_install:
 	find $(CURDIR)/debian/tmp/ -name \*.la -exec rm {} \;
 	rm -f $(CURDIR)/debian/tmp/usr/lib/*/pppd/*/mm-test-pppd-plugin.*
 	dh_install --fail-missing
+
+override_dh_systemd_start:
+	dh_systemd_start --restart-after-upgrade
