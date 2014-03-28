@@ -1,3 +1,9 @@
+modemmanager (1.0.0-4) UNRELEASED; urgency=medium
+
+  * Kill old modem-manager process when upgrading from pre 1.0.0 versions.
+
+ -- Michael Biebl <biebl@debian.org>  Sat, 29 Mar 2014 00:33:40 +0100
+
 modemmanager (1.0.0-3) unstable; urgency=medium
 
   [ Michael Biebl ]
