@@ -74,7 +74,7 @@ Description: D-Bus service for managing modems - documentation files
  for non standard devices. Also provides patches to use networkmanager (and
  the applet) with modem manager.
  .
- This package contains documenation of the d-bus protocol to interface
+ This package contains documentation of the D-Bus protocol to interface
  ModemManager.
 
 Package: libmm-glib0
