@@ -5,3 +5,4 @@ linux-default-usb-id.patch
 glib_fixes.patch
 lp1229748_bluegiga_blacklist.patch
 dbus-service-file-fixes.path
+initialize_result_array.patch
