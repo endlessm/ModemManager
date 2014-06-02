@@ -38,6 +38,7 @@ override_dh_install:
 		 $(CURDIR)/debian/tmp/lib/udev/rules.d
 	if dpkg-vendor --is ubuntu; then \
 		cp $(CURDIR)/debian/ubuntu/modemmanager.upstart $(CURDIR)/debian; \
+		dh_link lib/systemd/system/ModemManager.service lib/systemd/system/modemmanager.service; \
 	fi
 	find $(CURDIR)/debian/tmp/ -name \*.a -exec rm {} \;
 	find $(CURDIR)/debian/tmp/ -name \*.la -exec rm {} \;
