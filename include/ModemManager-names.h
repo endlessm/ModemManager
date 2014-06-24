@@ -56,6 +56,8 @@
 #define MM_DBUS_INTERFACE_MODEM_LOCATION "org.freedesktop.ModemManager1.Modem.Location"
 #define MM_DBUS_INTERFACE_MODEM_TIME "org.freedesktop.ModemManager1.Modem.Time"
 #define MM_DBUS_INTERFACE_MODEM_FIRMWARE "org.freedesktop.ModemManager1.Modem.Firmware"
+#define MM_DBUS_INTERFACE_MODEM_SIGNAL "org.freedesktop.ModemManager1.Modem.Signal"
+#define MM_DBUS_INTERFACE_MODEM_OMA "org.freedesktop.ModemManager1.Modem.Oma"
 
 /******************************
  * Methods/Signals/Properties *
@@ -106,6 +108,8 @@
 #define MM_SMS_PROPERTY_SMSC "SMSC"
 #define MM_SMS_PROPERTY_VALIDITY "Validity"
 #define MM_SMS_PROPERTY_CLASS "Class"
+#define MM_SMS_PROPERTY_TELESERVICEID "TeleserviceId"
+#define MM_SMS_PROPERTY_SERVICECATEGORY "ServiceCategory"
 #define MM_SMS_PROPERTY_DELIVERYREPORTREQUEST "DeliveryReportRequest"
 #define MM_SMS_PROPERTY_MESSAGEREFERENCE "MessageReference"
 #define MM_SMS_PROPERTY_TIMESTAMP "Timestamp"
@@ -129,6 +133,7 @@
 #define MM_MODEM_METHOD_COMMAND "Command"
 #define MM_MODEM_SIGNAL_STATECHANGED "StateChanged"
 #define MM_MODEM_PROPERTY_SIM "Sim"
+#define MM_MODEM_PROPERTY_BEARERS "Bearers"
 #define MM_MODEM_PROPERTY_SUPPORTEDCAPABILITIES "SupportedCapabilities"
 #define MM_MODEM_PROPERTY_CURRENTCAPABILITIES "CurrentCapabilities"
 #define MM_MODEM_PROPERTY_MAXBEARERS "MaxBearers"
@@ -167,6 +172,7 @@
 #define MM_MODEM_MODEM3GPP_PROPERTY_OPERATORCODE "OperatorCode"
 #define MM_MODEM_MODEM3GPP_PROPERTY_OPERATORNAME "OperatorName"
 #define MM_MODEM_MODEM3GPP_PROPERTY_ENABLEDFACILITYLOCKS "EnabledFacilityLocks"
+#define MM_MODEM_MODEM3GPP_PROPERTY_SUBSCRIPTIONSTATE "SubscriptionState"
 /*
  * Interface 'org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd'
  */
@@ -200,6 +206,7 @@
 #define MM_MODEM_MESSAGING_METHOD_CREATE "Create"
 #define MM_MODEM_MESSAGING_SIGNAL_ADDED "Added"
 #define MM_MODEM_MESSAGING_SIGNAL_DELETED "Deleted"
+#define MM_MODEM_MESSAGING_PROPERTY_MESSAGES "Messages"
 #define MM_MODEM_MESSAGING_PROPERTY_SUPPORTEDSTORAGES "SupportedStorages"
 #define MM_MODEM_MESSAGING_PROPERTY_DEFAULTSTORAGE "DefaultStorage"
 /*
@@ -225,6 +232,30 @@
  
 #define MM_MODEM_FIRMWARE_METHOD_LIST "List"
 #define MM_MODEM_FIRMWARE_METHOD_SELECT "Select"
+/*
+ * Interface 'org.freedesktop.ModemManager1.Modem.Signal'
+ */
+ 
+#define MM_MODEM_SIGNAL_METHOD_SETUP "Setup"
+#define MM_MODEM_SIGNAL_PROPERTY_RATE "Rate"
+#define MM_MODEM_SIGNAL_PROPERTY_CDMA "Cdma"
+#define MM_MODEM_SIGNAL_PROPERTY_EVDO "Evdo"
+#define MM_MODEM_SIGNAL_PROPERTY_GSM "Gsm"
+#define MM_MODEM_SIGNAL_PROPERTY_UMTS "Umts"
+#define MM_MODEM_SIGNAL_PROPERTY_LTE "Lte"
+/*
+ * Interface 'org.freedesktop.ModemManager1.Modem.Oma'
+ */
+ 
+#define MM_MODEM_OMA_METHOD_SETUP "Setup"
+#define MM_MODEM_OMA_METHOD_STARTCLIENTINITIATEDSESSION "StartClientInitiatedSession"
+#define MM_MODEM_OMA_METHOD_ACCEPTNETWORKINITIATEDSESSION "AcceptNetworkInitiatedSession"
+#define MM_MODEM_OMA_METHOD_CANCELSESSION "CancelSession"
+#define MM_MODEM_OMA_SIGNAL_SESSIONSTATECHANGED "SessionStateChanged"
+#define MM_MODEM_OMA_PROPERTY_FEATURES "Features"
+#define MM_MODEM_OMA_PROPERTY_PENDINGNETWORKINITIATEDSESSIONS "PendingNetworkInitiatedSessions"
+#define MM_MODEM_OMA_PROPERTY_SESSIONTYPE "SessionType"
+#define MM_MODEM_OMA_PROPERTY_SESSIONSTATE "SessionState"
 
 #endif /*  _MODEM_MANAGER_NAMES_H_ */
 

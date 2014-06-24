@@ -8,7 +8,7 @@
 <link rel="up" href="ch06.html" title="The SMS object">
 <link rel="prev" href="MMSms.html" title="MMSms">
 <link rel="next" href="pt02.html" title="Part II. Low level API">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -64,7 +64,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSmsProperties.html#mm-sms-properties-get-smsc" title="mm_sms_properties_get_smsc ()">mm_sms_properties_get_smsc</a>          (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="MMSmsProperties.html#mm-sms-properties-set-smsc" title="mm_sms_properties_set_smsc ()">mm_sms_properties_set_smsc</a>          (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *smsc</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsValidityType"><span class="returnvalue">MMSmsValidityType</span></a>   <a class="link" href="MMSmsProperties.html#mm-sms-properties-get-validity-type" title="mm_sms_properties_get_validity_type ()">mm_sms_properties_get_validity_type</a> (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);
+<span class="returnvalue">MMSmsValidityType</span>   <a class="link" href="MMSmsProperties.html#mm-sms-properties-get-validity-type" title="mm_sms_properties_get_validity_type ()">mm_sms_properties_get_validity_type</a> (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMSmsProperties.html#mm-sms-properties-get-validity-relative" title="mm_sms_properties_get_validity_relative ()">mm_sms_properties_get_validity_relative</a>
                                                         (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="MMSmsProperties.html#mm-sms-properties-set-validity-relative" title="mm_sms_properties_set_validity_relative ()">mm_sms_properties_set_validity_relative</a>
@@ -78,6 +78,16 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <span class="returnvalue">void</span>                <a class="link" href="MMSmsProperties.html#mm-sms-properties-set-delivery-report-request" title="mm_sms_properties_set_delivery_report_request ()">mm_sms_properties_set_delivery_report_request</a>
                                                         (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> request</code></em>);
+<span class="returnvalue">MMSmsCdmaTeleserviceId</span> <a class="link" href="MMSmsProperties.html#mm-sms-properties-get-teleservice-id" title="mm_sms_properties_get_teleservice_id ()">mm_sms_properties_get_teleservice_id</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MMSmsProperties.html#mm-sms-properties-set-teleservice-id" title="mm_sms_properties_set_teleservice_id ()">mm_sms_properties_set_teleservice_id</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMSmsCdmaTeleserviceId</span> teleservice_id</code></em>);
+<span class="returnvalue">MMSmsCdmaServiceCategory</span> <a class="link" href="MMSmsProperties.html#mm-sms-properties-get-service-category" title="mm_sms_properties_get_service_category ()">mm_sms_properties_get_service_category</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="MMSmsProperties.html#mm-sms-properties-set-service-category" title="mm_sms_properties_set_service_category ()">mm_sms_properties_set_service_category</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMSmsCdmaServiceCategory</span> service_category</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -419,7 +429,7 @@ Sets the SMS service center number.
 <hr>
 <div class="refsect2">
 <a name="mm-sms-properties-get-validity-type"></a><h3>mm_sms_properties_get_validity_type ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsValidityType"><span class="returnvalue">MMSmsValidityType</span></a>   mm_sms_properties_get_validity_type (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">MMSmsValidityType</span>   mm_sms_properties_get_validity_type (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
 <p>
 Gets the relative validity type the SMS.
 </p>
@@ -435,7 +445,7 @@ Gets the relative validity type the SMS.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsValidityType"><span class="type">MMSmsValidityType</span></a>.</td>
+<td>a <span class="type">MMSmsValidityType</span>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -486,7 +496,7 @@ Sets the relative validity time of the SMS.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>validity</code></em> :</span></p></td>
-<td>The validity of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-SMS-VALIDITY-TYPE-RELATIVE:CAPS"><code class="literal">MM_SMS_VALIDITY_TYPE_RELATIVE</code></a> type.</td>
+<td>The validity of <code class="literal">MM_SMS_VALIDITY_TYPE_RELATIVE</code> type.</td>
 </tr>
 </tbody>
 </table></div>
@@ -593,10 +603,112 @@ Sets whether delivery report is requested for the SMS.
 </tbody>
 </table></div>
 </div>
+<hr>
+<div class="refsect2">
+<a name="mm-sms-properties-get-teleservice-id"></a><h3>mm_sms_properties_get_teleservice_id ()</h3>
+<pre class="programlisting"><span class="returnvalue">MMSmsCdmaTeleserviceId</span> mm_sms_properties_get_teleservice_id
+                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
+<p>
+Gets the CDMA teleservice ID of the SMS.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the CDMA teleservice ID.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sms-properties-set-teleservice-id"></a><h3>mm_sms_properties_set_teleservice_id ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_sms_properties_set_teleservice_id
+                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMSmsCdmaTeleserviceId</span> teleservice_id</code></em>);</pre>
+<p>
+Sets the CDMA teleservice ID of the SMS.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>teleservice_id</code></em> :</span></p></td>
+<td>The CDMA teleservice ID.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sms-properties-get-service-category"></a><h3>mm_sms_properties_get_service_category ()</h3>
+<pre class="programlisting"><span class="returnvalue">MMSmsCdmaServiceCategory</span> mm_sms_properties_get_service_category
+                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
+<p>
+Gets the CDMA message service category of the SMS.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the CDMA service category.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sms-properties-set-service-category"></a><h3>mm_sms_properties_set_service_category ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                mm_sms_properties_set_service_category
+                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMSmsCdmaServiceCategory</span> service_category</code></em>);</pre>
+<p>
+Sets the CDMA service category of the SMS.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>service_category</code></em> :</span></p></td>
+<td>The CDMA service category.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

@@ -8,7 +8,7 @@
 <link rel="up" href="ch04.html" title="The Bearer object">
 <link rel="prev" href="MMBearerProperties.html" title="MMBearerProperties">
 <link rel="next" href="ch05.html" title="The SIM object">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -41,7 +41,7 @@
 <a name="MMBearerIpConfig.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">struct              <a class="link" href="MMBearerIpConfig.html#MMBearerIpConfig-struct" title="struct MMBearerIpConfig">MMBearerIpConfig</a>;
 
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpMethod"><span class="returnvalue">MMBearerIpMethod</span></a>    <a class="link" href="MMBearerIpConfig.html#mm-bearer-ip-config-get-method" title="mm_bearer_ip_config_get_method ()">mm_bearer_ip_config_get_method</a>      (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);
+<span class="returnvalue">MMBearerIpMethod</span>    <a class="link" href="MMBearerIpConfig.html#mm-bearer-ip-config-get-method" title="mm_bearer_ip_config_get_method ()">mm_bearer_ip_config_get_method</a>      (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMBearerIpConfig.html#mm-bearer-ip-config-get-address" title="mm_bearer_ip_config_get_address ()">mm_bearer_ip_config_get_address</a>     (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMBearerIpConfig.html#mm-bearer-ip-config-get-prefix" title="mm_bearer_ip_config_get_prefix ()">mm_bearer_ip_config_get_prefix</a>      (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **      <a class="link" href="MMBearerIpConfig.html#mm-bearer-ip-config-get-dns" title="mm_bearer_ip_config_get_dns ()">mm_bearer_ip_config_get_dns</a>         (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);
@@ -80,7 +80,7 @@ only be accessed using the provided API.
 <hr>
 <div class="refsect2">
 <a name="mm-bearer-ip-config-get-method"></a><h3>mm_bearer_ip_config_get_method ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpMethod"><span class="returnvalue">MMBearerIpMethod</span></a>    mm_bearer_ip_config_get_method      (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">MMBearerIpMethod</span>    mm_bearer_ip_config_get_method      (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);</pre>
 <p>
 Gets the IP method to be used with this bearer.
 </p>
@@ -96,7 +96,7 @@ Gets the IP method to be used with this bearer.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpMethod"><span class="type">MMBearerIpMethod</span></a>.</td>
+<td>a <span class="type">MMBearerIpMethod</span>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -168,7 +168,8 @@ Gets the list of IP addresses of DNS servers to be used with this bearer.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a NULL-terminated array of strings. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>.</td>
+<td>a NULL-terminated array of strings. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> zero-terminated=1]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -201,6 +202,6 @@ Gets the IP address of the gateway to be used with this bearer.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

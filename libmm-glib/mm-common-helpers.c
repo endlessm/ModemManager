@@ -745,6 +745,86 @@ mm_common_build_mode_combinations_default (void)
     return g_variant_builder_end (&builder);
 }
 
+GArray *
+mm_common_oma_pending_network_initiated_sessions_variant_to_garray (GVariant *variant)
+{
+    GArray *array = NULL;
+
+    if (variant) {
+        GVariantIter iter;
+        guint n;
+
+        g_variant_iter_init (&iter, variant);
+        n = g_variant_iter_n_children (&iter);
+
+        if (n > 0) {
+            MMOmaPendingNetworkInitiatedSession session;
+
+            array = g_array_sized_new (FALSE, FALSE, sizeof (MMOmaPendingNetworkInitiatedSession), n);
+            while (g_variant_iter_loop (&iter, "(uu)", &session.session_type, &session.session_id))
+                g_array_append_val (array, session);
+        }
+    }
+
+    /* If nothing set, fallback to empty */
+    if (!array)
+        array = g_array_new (FALSE, FALSE, sizeof (MMOmaPendingNetworkInitiatedSession));
+
+    return array;
+}
+
+MMOmaPendingNetworkInitiatedSession *
+mm_common_oma_pending_network_initiated_sessions_variant_to_array (GVariant *variant,
+                                                                   guint *n_sessions)
+{
+    GArray *array;
+
+    array = mm_common_oma_pending_network_initiated_sessions_variant_to_garray (variant);
+    if (n_sessions)
+        *n_sessions = array->len;
+    return (MMOmaPendingNetworkInitiatedSession *) g_array_free (array, FALSE);
+}
+
+GVariant *
+mm_common_oma_pending_network_initiated_sessions_array_to_variant (const MMOmaPendingNetworkInitiatedSession *sessions,
+                                                                   guint n_sessions)
+{
+    if (n_sessions > 0) {
+        GVariantBuilder builder;
+        guint i;
+
+        g_variant_builder_init (&builder, G_VARIANT_TYPE ("a(uu)"));
+
+        for (i = 0; i < n_sessions; i++)
+            g_variant_builder_add_value (&builder,
+                                         g_variant_new ("(uu)",
+                                                        ((guint32)sessions[i].session_type),
+                                                        ((guint32)sessions[i].session_id)));
+        return g_variant_builder_end (&builder);
+    }
+
+    return mm_common_build_oma_pending_network_initiated_sessions_default ();
+}
+
+GVariant *
+mm_common_oma_pending_network_initiated_sessions_garray_to_variant (GArray *array)
+{
+    if (array)
+        return mm_common_oma_pending_network_initiated_sessions_array_to_variant ((const MMOmaPendingNetworkInitiatedSession *)array->data,
+                                                                                  array->len);
+
+    return mm_common_oma_pending_network_initiated_sessions_array_to_variant (NULL, 0);
+}
+
+GVariant *
+mm_common_build_oma_pending_network_initiated_sessions_default (void)
+{
+    GVariantBuilder builder;
+
+    g_variant_builder_init (&builder, G_VARIANT_TYPE ("a(uu)"));
+    return g_variant_builder_end (&builder);
+}
+
 gboolean
 mm_common_get_boolean_from_string (const gchar *value,
                                    GError **error)
@@ -875,6 +955,122 @@ mm_common_get_sms_storage_from_string (const gchar *str,
                  "Couldn't match '%s' with a valid MMSmsStorage value",
                  str);
     return MM_SMS_STORAGE_UNKNOWN;
+}
+
+MMSmsCdmaTeleserviceId
+mm_common_get_sms_cdma_teleservice_id_from_string (const gchar *str,
+                                                   GError **error)
+{
+	GEnumClass *enum_class;
+    guint i;
+
+    enum_class = G_ENUM_CLASS (g_type_class_ref (MM_TYPE_SMS_CDMA_TELESERVICE_ID));
+
+    for (i = 0; enum_class->values[i].value_nick; i++) {
+        if (!g_ascii_strcasecmp (str, enum_class->values[i].value_nick))
+            return enum_class->values[i].value;
+    }
+
+    g_set_error (error,
+                 MM_CORE_ERROR,
+                 MM_CORE_ERROR_INVALID_ARGS,
+                 "Couldn't match '%s' with a valid MMSmsCdmaTeleserviceId value",
+                 str);
+    return MM_SMS_CDMA_TELESERVICE_ID_UNKNOWN;
+}
+
+MMSmsCdmaServiceCategory
+mm_common_get_sms_cdma_service_category_from_string (const gchar *str,
+                                                     GError **error)
+{
+	GEnumClass *enum_class;
+    guint i;
+
+    enum_class = G_ENUM_CLASS (g_type_class_ref (MM_TYPE_SMS_CDMA_SERVICE_CATEGORY));
+
+    for (i = 0; enum_class->values[i].value_nick; i++) {
+        if (!g_ascii_strcasecmp (str, enum_class->values[i].value_nick))
+            return enum_class->values[i].value;
+    }
+
+    g_set_error (error,
+                 MM_CORE_ERROR,
+                 MM_CORE_ERROR_INVALID_ARGS,
+                 "Couldn't match '%s' with a valid MMSmsCdmaServiceCategory value",
+                 str);
+    return MM_SMS_CDMA_SERVICE_CATEGORY_UNKNOWN;
+}
+
+MMOmaFeature
+mm_common_get_oma_features_from_string (const gchar *str,
+                                        GError **error)
+{
+    GError *inner_error = NULL;
+    MMOmaFeature features;
+    gchar **feature_strings;
+	GFlagsClass *flags_class;
+
+    features = MM_OMA_FEATURE_NONE;
+
+    flags_class = G_FLAGS_CLASS (g_type_class_ref (MM_TYPE_OMA_FEATURE));
+    feature_strings = g_strsplit (str, "|", -1);
+
+    if (feature_strings) {
+        guint i;
+
+        for (i = 0; feature_strings[i]; i++) {
+            guint j;
+            gboolean found = FALSE;
+
+            for (j = 0; flags_class->values[j].value_nick; j++) {
+                if (!g_ascii_strcasecmp (feature_strings[i], flags_class->values[j].value_nick)) {
+                    features |= flags_class->values[j].value;
+                    found = TRUE;
+                    break;
+                }
+            }
+
+            if (!found) {
+                inner_error = g_error_new (
+                    MM_CORE_ERROR,
+                    MM_CORE_ERROR_INVALID_ARGS,
+                    "Couldn't match '%s' with a valid MMOmaFeature value",
+                    feature_strings[i]);
+                break;
+            }
+        }
+    }
+
+    if (inner_error) {
+        g_propagate_error (error, inner_error);
+        features = MM_OMA_FEATURE_NONE;
+    }
+
+    g_type_class_unref (flags_class);
+    g_strfreev (feature_strings);
+    return features;
+}
+
+MMOmaSessionType
+mm_common_get_oma_session_type_from_string (const gchar *str,
+                                            GError **error)
+{
+	GEnumClass *enum_class;
+    guint i;
+
+    enum_class = G_ENUM_CLASS (g_type_class_ref (MM_TYPE_OMA_SESSION_TYPE));
+
+    for (i = 0; enum_class->values[i].value_nick; i++) {
+        if (!g_ascii_strcasecmp (str, enum_class->values[i].value_nick))
+            return enum_class->values[i].value;
+    }
+
+    g_set_error (error,
+                 MM_CORE_ERROR,
+                 MM_CORE_ERROR_INVALID_ARGS,
+                 "Couldn't match '%s' with a valid MMOmaSessionType value",
+                 str);
+    return MM_OMA_SESSION_TYPE_UNKNOWN;
 }
 
 GVariant *

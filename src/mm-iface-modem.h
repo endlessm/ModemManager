@@ -344,6 +344,9 @@ gboolean mm_iface_modem_is_3g_only (MMIfaceModem *self);
 gboolean mm_iface_modem_is_4g      (MMIfaceModem *self);
 gboolean mm_iface_modem_is_4g_only (MMIfaceModem *self);
 
+/* Helper to query model */
+const gchar *mm_iface_modem_get_model (MMIfaceModem *self);
+
 /* Initialize Modem interface (async) */
 void     mm_iface_modem_initialize        (MMIfaceModem *self,
                                            GCancellable *cancellable,
@@ -415,6 +418,10 @@ void mm_iface_modem_update_state (MMIfaceModem *self,
                                   MMModemStateChangeReason reason);
 void mm_iface_modem_update_failed_state (MMIfaceModem *self,
                                          MMModemStateFailedReason failed_reason);
+
+/* Allow update own numbers */
+void mm_iface_modem_update_own_numbers (MMIfaceModem *self,
+                                        const GStrv own_numbers);
 
 /* Allow reporting new access tech */
 void mm_iface_modem_update_access_technologies (MMIfaceModem *self,

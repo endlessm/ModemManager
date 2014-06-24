@@ -177,6 +177,15 @@ MMModem3gpp
 @Returns: 
 
 
+<!-- ##### FUNCTION mm_modem_3gpp_get_subscription_state ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
 <!-- ##### FUNCTION mm_modem_3gpp_register ##### -->
 <para>
 

@@ -15,16 +15,19 @@ PLUGIN_COMMON_COMPILER_FLAGS = \
 	-I$(top_builddir)/libmm-glib/generated
 
 PLUGIN_COMMON_LINKER_FLAGS = \
-	$(GUDEV_LDFLAGS) \
+	$(GUDEV_LIBS) \
+	$(MM_LIBS) \
 	-module \
 	-avoid-version
 
 if WITH_QMI
 PLUGIN_COMMON_COMPILER_FLAGS += $(QMI_CFLAGS)
+PLUGIN_COMMON_LINKER_FLAGS += $(QMI_LIBS)
 endif
 
 if WITH_MBIM
 PLUGIN_COMMON_COMPILER_FLAGS += $(MBIM_CFLAGS)
+PLUGIN_COMMON_LINKER_FLAGS += $(MBIM_LIBS)
 endif
 
 # UDev rules
@@ -44,7 +47,7 @@ libmm_utils_icera_la_SOURCES = \
 	icera/mm-broadband-bearer-icera.h \
 	icera/mm-broadband-bearer-icera.c
 libmm_utils_icera_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
-libmm_utils_icera_la_LIBADD = $(GUDEV_LDFLAGS)
+libmm_utils_icera_la_LIBADD = $(GUDEV_LIBS) $(MM_LIBS)
 
 ICERA_COMMON_COMPILER_FLAGS = -I$(top_srcdir)/plugins/icera
 ICERA_COMMON_LIBADD_FLAGS = $(builddir)/libmm-utils-icera.la
@@ -77,7 +80,8 @@ pkglib_LTLIBRARIES = \
 	libmm-plugin-sierra.la \
 	libmm-plugin-mbm.la \
 	libmm-plugin-via.la \
-	libmm-plugin-telit.la
+	libmm-plugin-telit.la \
+	libmm-plugin-mtk.la
 
 # Generic
 libmm_plugin_generic_la_SOURCES = \
@@ -110,6 +114,8 @@ libmm_plugin_huawei_la_SOURCES = \
 	huawei/mm-plugin-huawei.h \
 	huawei/mm-modem-helpers-huawei.c \
 	huawei/mm-modem-helpers-huawei.h \
+	huawei/mm-sim-huawei.c \
+	huawei/mm-sim-huawei.h \
 	huawei/mm-broadband-modem-huawei.c \
 	huawei/mm-broadband-modem-huawei.h \
 	huawei/mm-broadband-bearer-huawei.c \
@@ -127,8 +133,10 @@ test_modem_helpers_huawei_SOURCES = \
 test_modem_helpers_huawei_CPPFLAGS = \
 	-I$(top_srcdir)/plugins/huawei \
 	$(PLUGIN_COMMON_COMPILER_FLAGS)
-test_modem_helpers_huawei_LDFLAGS = $(top_builddir)/libmm-glib/libmm-glib.la
-
+test_modem_helpers_huawei_LDADD = \
+       $(top_builddir)/libmm-glib/libmm-glib.la \
+       $(top_builddir)/src/libmodem-helpers.la
+test_modem_helpers_huawei_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
 # MBM
 libmm_plugin_mbm_la_SOURCES = \
@@ -343,6 +351,8 @@ libmm_plugin_novatel_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
 # Altair LTE modem
 libmm_plugin_altair_lte_la_SOURCES = \
+	altair/mm-modem-helpers-altair-lte.c \
+	altair/mm-modem-helpers-altair-lte.h \
 	altair/mm-plugin-altair-lte.c \
 	altair/mm-plugin-altair-lte.h \
 	altair/mm-broadband-modem-altair-lte.c \
@@ -351,6 +361,18 @@ libmm_plugin_altair_lte_la_SOURCES = \
 	altair/mm-broadband-bearer-altair-lte.h
 libmm_plugin_altair_lte_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
 libmm_plugin_altair_lte_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
+
+noinst_PROGRAMS += test-modem-helpers-altair-lte
+test_modem_helpers_altair_lte_SOURCES = \
+	altair/mm-modem-helpers-altair-lte.c \
+	altair/mm-modem-helpers-altair-lte.h \
+	altair/tests/test-modem-helpers-altair-lte.c
+test_modem_helpers_altair_lte_CPPFLAGS = \
+	-I$(top_srcdir)/plugins/altair \
+	$(PLUGIN_COMMON_COMPILER_FLAGS)
+test_modem_helpers_altair_lte_LDADD = $(top_builddir)/libmm-glib/libmm-glib.la
+test_modem_helpers_altair_lte_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
+
 
 # VIA modem
 libmm_plugin_via_la_SOURCES = \
@@ -369,6 +391,17 @@ libmm_plugin_telit_la_SOURCES = \
 	telit/mm-broadband-modem-telit.h
 libmm_plugin_telit_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
 libmm_plugin_telit_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
+udevrules_DATA += telit/77-mm-telit-port-types.rules
+
+# MTK
+libmm_plugin_mtk_la_SOURCES = \
+	mtk/mm-plugin-mtk.c \
+	mtk/mm-plugin-mtk.h \
+	mtk/mm-broadband-modem-mtk.h \
+	mtk/mm-broadband-modem-mtk.c
+libmm_plugin_mtk_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
+libmm_plugin_mtk_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
+udevrules_DATA += mtk/77-mm-mtk-port-types.rules
 
 
 # Additional files to include in the distribution

@@ -8,7 +8,7 @@
 <link rel="up" href="pt02.html" title="Part II. Low level API">
 <link rel="prev" href="MmGdbusObjectManagerClient.html" title="MmGdbusObjectManagerClient">
 <link rel="next" href="MmGdbusObjectProxy.html" title="MmGdbusObjectProxy">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -72,8 +72,12 @@ struct              <a class="link" href="MmGdbusObject.html#MmGdbusObjectIface"
                                                         (<em class="parameter"><code><a class="link" href="MmGdbusObject.html" title="MmGdbusObject"><span class="type">MmGdbusObject</span></a> *object</code></em>);
 <a class="link" href="MmGdbusModemFirmware.html" title="MmGdbusModemFirmware"><span class="returnvalue">MmGdbusModemFirmware</span></a> * <a class="link" href="MmGdbusObject.html#mm-gdbus-object-get-modem-firmware" title="mm_gdbus_object_get_modem_firmware ()">mm_gdbus_object_get_modem_firmware</a>
                                                         (<em class="parameter"><code><a class="link" href="MmGdbusObject.html" title="MmGdbusObject"><span class="type">MmGdbusObject</span></a> *object</code></em>);
+<a class="link" href="MmGdbusModemOma.html" title="MmGdbusModemOma"><span class="returnvalue">MmGdbusModemOma</span></a> *   <a class="link" href="MmGdbusObject.html#mm-gdbus-object-peek-modem-oma" title="mm_gdbus_object_peek_modem_oma ()">mm_gdbus_object_peek_modem_oma</a>      (<em class="parameter"><code><a class="link" href="MmGdbusObject.html" title="MmGdbusObject"><span class="type">MmGdbusObject</span></a> *object</code></em>);
+<a class="link" href="MmGdbusModemOma.html" title="MmGdbusModemOma"><span class="returnvalue">MmGdbusModemOma</span></a> *   <a class="link" href="MmGdbusObject.html#mm-gdbus-object-get-modem-oma" title="mm_gdbus_object_get_modem_oma ()">mm_gdbus_object_get_modem_oma</a>       (<em class="parameter"><code><a class="link" href="MmGdbusObject.html" title="MmGdbusObject"><span class="type">MmGdbusObject</span></a> *object</code></em>);
 <a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="returnvalue">MmGdbusModemSimple</span></a> * <a class="link" href="MmGdbusObject.html#mm-gdbus-object-peek-modem-simple" title="mm_gdbus_object_peek_modem_simple ()">mm_gdbus_object_peek_modem_simple</a>  (<em class="parameter"><code><a class="link" href="MmGdbusObject.html" title="MmGdbusObject"><span class="type">MmGdbusObject</span></a> *object</code></em>);
 <a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="returnvalue">MmGdbusModemSimple</span></a> * <a class="link" href="MmGdbusObject.html#mm-gdbus-object-get-modem-simple" title="mm_gdbus_object_get_modem_simple ()">mm_gdbus_object_get_modem_simple</a>   (<em class="parameter"><code><a class="link" href="MmGdbusObject.html" title="MmGdbusObject"><span class="type">MmGdbusObject</span></a> *object</code></em>);
+<a class="link" href="MmGdbusModemSignal.html" title="MmGdbusModemSignal"><span class="returnvalue">MmGdbusModemSignal</span></a> * <a class="link" href="MmGdbusObject.html#mm-gdbus-object-peek-modem-signal" title="mm_gdbus_object_peek_modem_signal ()">mm_gdbus_object_peek_modem_signal</a>  (<em class="parameter"><code><a class="link" href="MmGdbusObject.html" title="MmGdbusObject"><span class="type">MmGdbusObject</span></a> *object</code></em>);
+<a class="link" href="MmGdbusModemSignal.html" title="MmGdbusModemSignal"><span class="returnvalue">MmGdbusModemSignal</span></a> * <a class="link" href="MmGdbusObject.html#mm-gdbus-object-get-modem-signal" title="mm_gdbus_object_get_modem_signal ()">mm_gdbus_object_get_modem_signal</a>   (<em class="parameter"><code><a class="link" href="MmGdbusObject.html" title="MmGdbusObject"><span class="type">MmGdbusObject</span></a> *object</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -103,6 +107,8 @@ MmGdbusObject is implemented by
   "<a class="link" href="MmGdbusObject.html#MmGdbusObject--modem-firmware" title='The "modem-firmware" property'>modem-firmware</a>"           <a class="link" href="MmGdbusModemFirmware.html" title="MmGdbusModemFirmware"><span class="type">MmGdbusModemFirmware</span></a>*  : Read / Write
   "<a class="link" href="MmGdbusObject.html#MmGdbusObject--modem-location" title='The "modem-location" property'>modem-location</a>"           <a class="link" href="MmGdbusModemLocation.html" title="MmGdbusModemLocation"><span class="type">MmGdbusModemLocation</span></a>*  : Read / Write
   "<a class="link" href="MmGdbusObject.html#MmGdbusObject--modem-messaging" title='The "modem-messaging" property'>modem-messaging</a>"          <a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging"><span class="type">MmGdbusModemMessaging</span></a>*  : Read / Write
+  "<a class="link" href="MmGdbusObject.html#MmGdbusObject--modem-oma" title='The "modem-oma" property'>modem-oma</a>"                <a class="link" href="MmGdbusModemOma.html" title="MmGdbusModemOma"><span class="type">MmGdbusModemOma</span></a>*      : Read / Write
+  "<a class="link" href="MmGdbusObject.html#MmGdbusObject--modem-signal" title='The "modem-signal" property'>modem-signal</a>"             <a class="link" href="MmGdbusModemSignal.html" title="MmGdbusModemSignal"><span class="type">MmGdbusModemSignal</span></a>*   : Read / Write
   "<a class="link" href="MmGdbusObject.html#MmGdbusObject--modem-simple" title='The "modem-simple" property'>modem-simple</a>"             <a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a>*   : Read / Write
   "<a class="link" href="MmGdbusObject.html#MmGdbusObject--modem-time" title='The "modem-time" property'>modem-time</a>"               <a class="link" href="MmGdbusModemTime.html" title="MmGdbusModemTime"><span class="type">MmGdbusModemTime</span></a>*     : Read / Write
   "<a class="link" href="MmGdbusObject.html#MmGdbusObject--modem3gpp" title='The "modem3gpp" property'>modem3gpp</a>"                <a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a>*     : Read / Write
@@ -603,6 +609,62 @@ Gets the <a class="link" href="MmGdbusModemFirmware.html" title="MmGdbusModemFir
 </div>
 <hr>
 <div class="refsect2">
+<a name="mm-gdbus-object-peek-modem-oma"></a><h3>mm_gdbus_object_peek_modem_oma ()</h3>
+<pre class="programlisting"><a class="link" href="MmGdbusModemOma.html" title="MmGdbusModemOma"><span class="returnvalue">MmGdbusModemOma</span></a> *   mm_gdbus_object_peek_modem_oma      (<em class="parameter"><code><a class="link" href="MmGdbusObject.html" title="MmGdbusObject"><span class="type">MmGdbusObject</span></a> *object</code></em>);</pre>
+<p>
+Like <a class="link" href="MmGdbusObject.html#mm-gdbus-object-get-modem-oma" title="mm_gdbus_object_get_modem_oma ()"><code class="function">mm_gdbus_object_get_modem_oma()</code></a> but doesn't increase the reference count on the returned object.
+</p>
+<p>
+</p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>It is not safe to use the returned object if you are on another thread than the one where the <a href="http://library.gnome.org/devel/gio/unstable/GDBusObjectManagerClient.html"><span class="type">GDBusObjectManagerClient</span></a> or <a href="http://library.gnome.org/devel/gio/unstable/GDBusObjectManagerServer.html"><span class="type">GDBusObjectManagerServer</span></a> for <em class="parameter"><code>object</code></em> is running.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusObject.html" title="MmGdbusObject"><span class="type">MmGdbusObject</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemOma.html" title="MmGdbusModemOma"><span class="type">MmGdbusModemOma</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>object</code></em> does not implement the interface. Do not free the returned object, it is owned by <em class="parameter"><code>object</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-object-get-modem-oma"></a><h3>mm_gdbus_object_get_modem_oma ()</h3>
+<pre class="programlisting"><a class="link" href="MmGdbusModemOma.html" title="MmGdbusModemOma"><span class="returnvalue">MmGdbusModemOma</span></a> *   mm_gdbus_object_get_modem_oma       (<em class="parameter"><code><a class="link" href="MmGdbusObject.html" title="MmGdbusObject"><span class="type">MmGdbusObject</span></a> *object</code></em>);</pre>
+<p>
+Gets the <a class="link" href="MmGdbusModemOma.html" title="MmGdbusModemOma"><span class="type">MmGdbusModemOma</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Oma on <em class="parameter"><code>object</code></em>, if any.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusObject.html" title="MmGdbusObject"><span class="type">MmGdbusObject</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemOma.html" title="MmGdbusModemOma"><span class="type">MmGdbusModemOma</span></a> that must be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>object</code></em> does not implement the interface. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="mm-gdbus-object-peek-modem-simple"></a><h3>mm_gdbus_object_peek_modem_simple ()</h3>
 <pre class="programlisting"><a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="returnvalue">MmGdbusModemSimple</span></a> * mm_gdbus_object_peek_modem_simple  (<em class="parameter"><code><a class="link" href="MmGdbusObject.html" title="MmGdbusObject"><span class="type">MmGdbusObject</span></a> *object</code></em>);</pre>
 <p>
@@ -652,6 +714,62 @@ Gets the <a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimpl
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>A <a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a> that must be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>object</code></em> does not implement the interface. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-object-peek-modem-signal"></a><h3>mm_gdbus_object_peek_modem_signal ()</h3>
+<pre class="programlisting"><a class="link" href="MmGdbusModemSignal.html" title="MmGdbusModemSignal"><span class="returnvalue">MmGdbusModemSignal</span></a> * mm_gdbus_object_peek_modem_signal  (<em class="parameter"><code><a class="link" href="MmGdbusObject.html" title="MmGdbusObject"><span class="type">MmGdbusObject</span></a> *object</code></em>);</pre>
+<p>
+Like <a class="link" href="MmGdbusObject.html#mm-gdbus-object-get-modem-signal" title="mm_gdbus_object_get_modem_signal ()"><code class="function">mm_gdbus_object_get_modem_signal()</code></a> but doesn't increase the reference count on the returned object.
+</p>
+<p>
+</p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>It is not safe to use the returned object if you are on another thread than the one where the <a href="http://library.gnome.org/devel/gio/unstable/GDBusObjectManagerClient.html"><span class="type">GDBusObjectManagerClient</span></a> or <a href="http://library.gnome.org/devel/gio/unstable/GDBusObjectManagerServer.html"><span class="type">GDBusObjectManagerServer</span></a> for <em class="parameter"><code>object</code></em> is running.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusObject.html" title="MmGdbusObject"><span class="type">MmGdbusObject</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemSignal.html" title="MmGdbusModemSignal"><span class="type">MmGdbusModemSignal</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>object</code></em> does not implement the interface. Do not free the returned object, it is owned by <em class="parameter"><code>object</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-object-get-modem-signal"></a><h3>mm_gdbus_object_get_modem_signal ()</h3>
+<pre class="programlisting"><a class="link" href="MmGdbusModemSignal.html" title="MmGdbusModemSignal"><span class="returnvalue">MmGdbusModemSignal</span></a> * mm_gdbus_object_get_modem_signal   (<em class="parameter"><code><a class="link" href="MmGdbusObject.html" title="MmGdbusObject"><span class="type">MmGdbusObject</span></a> *object</code></em>);</pre>
+<p>
+Gets the <a class="link" href="MmGdbusModemSignal.html" title="MmGdbusModemSignal"><span class="type">MmGdbusModemSignal</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Signal on <em class="parameter"><code>object</code></em>, if any.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="MmGdbusObject.html" title="MmGdbusObject"><span class="type">MmGdbusObject</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A <a class="link" href="MmGdbusModemSignal.html" title="MmGdbusModemSignal"><span class="type">MmGdbusModemSignal</span></a> that must be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>object</code></em> does not implement the interface. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
 </td>
 </tr>
 </tbody>
@@ -716,6 +834,28 @@ Connect to the <a href="http://library.gnome.org/devel/gobject/unstable/gobject-
 </div>
 <hr>
 <div class="refsect2">
+<a name="MmGdbusObject--modem-oma"></a><h3>The <code class="literal">"modem-oma"</code> property</h3>
+<pre class="programlisting">  "modem-oma"                <a class="link" href="MmGdbusModemOma.html" title="MmGdbusModemOma"><span class="type">MmGdbusModemOma</span></a>*      : Read / Write</pre>
+<p>
+The <a class="link" href="MmGdbusModemOma.html" title="MmGdbusModemOma"><span class="type">MmGdbusModemOma</span></a> instance corresponding to the D-Bus interface org.freedesktop.ModemManager1.Modem.Oma, if any.
+</p>
+<p>
+Connect to the <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-notify"><span class="type">"notify"</span></a> signal to get informed of property changes.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MmGdbusObject--modem-signal"></a><h3>The <code class="literal">"modem-signal"</code> property</h3>
+<pre class="programlisting">  "modem-signal"             <a class="link" href="MmGdbusModemSignal.html" title="MmGdbusModemSignal"><span class="type">MmGdbusModemSignal</span></a>*   : Read / Write</pre>
+<p>
+The <a class="link" href="MmGdbusModemSignal.html" title="MmGdbusModemSignal"><span class="type">MmGdbusModemSignal</span></a> instance corresponding to the D-Bus interface org.freedesktop.ModemManager1.Modem.Signal, if any.
+</p>
+<p>
+Connect to the <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-notify"><span class="type">"notify"</span></a> signal to get informed of property changes.
+</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="MmGdbusObject--modem-simple"></a><h3>The <code class="literal">"modem-simple"</code> property</h3>
 <pre class="programlisting">  "modem-simple"             <a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a>*   : Read / Write</pre>
 <p>
@@ -762,6 +902,6 @@ Connect to the <a href="http://library.gnome.org/devel/gobject/unstable/gobject-
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

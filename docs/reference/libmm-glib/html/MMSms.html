@@ -8,7 +8,7 @@
 <link rel="up" href="ch06.html" title="The SMS object">
 <link rel="prev" href="ch06.html" title="The SMS object">
 <link rel="next" href="MMSmsProperties.html" title="MMSmsProperties">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -45,9 +45,9 @@
 
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSms.html#mm-sms-get-path" title="mm_sms_get_path ()">mm_sms_get_path</a>                     (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMSms.html#mm-sms-dup-path" title="mm_sms_dup_path ()">mm_sms_dup_path</a>                     (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsState"><span class="returnvalue">MMSmsState</span></a>          <a class="link" href="MMSms.html#mm-sms-get-state" title="mm_sms_get_state ()">mm_sms_get_state</a>                    (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsPduType"><span class="returnvalue">MMSmsPduType</span></a>        <a class="link" href="MMSms.html#mm-sms-get-pdu-type" title="mm_sms_get_pdu_type ()">mm_sms_get_pdu_type</a>                 (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="returnvalue">MMSmsStorage</span></a>        <a class="link" href="MMSms.html#mm-sms-get-storage" title="mm_sms_get_storage ()">mm_sms_get_storage</a>                  (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
+<span class="returnvalue">MMSmsState</span>          <a class="link" href="MMSms.html#mm-sms-get-state" title="mm_sms_get_state ()">mm_sms_get_state</a>                    (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
+<span class="returnvalue">MMSmsPduType</span>        <a class="link" href="MMSms.html#mm-sms-get-pdu-type" title="mm_sms_get_pdu_type ()">mm_sms_get_pdu_type</a>                 (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
+<span class="returnvalue">MMSmsStorage</span>        <a class="link" href="MMSms.html#mm-sms-get-storage" title="mm_sms_get_storage ()">mm_sms_get_storage</a>                  (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSms.html#mm-sms-get-text" title="mm_sms_get_text ()">mm_sms_get_text</a>                     (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMSms.html#mm-sms-dup-text" title="mm_sms_dup_text ()">mm_sms_dup_text</a>                     (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a> *      <a class="link" href="MMSms.html#mm-sms-get-data" title="mm_sms_get_data ()">mm_sms_get_data</a>                     (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>,
@@ -60,7 +60,9 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMSms.html#mm-sms-dup-smsc" title="mm_sms_dup_smsc ()">mm_sms_dup_smsc</a>                     (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMSms.html#mm-sms-get-message-reference" title="mm_sms_get_message_reference ()">mm_sms_get_message_reference</a>        (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                <a class="link" href="MMSms.html#mm-sms-get-class" title="mm_sms_get_class ()">mm_sms_get_class</a>                    (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsValidityType"><span class="returnvalue">MMSmsValidityType</span></a>   <a class="link" href="MMSms.html#mm-sms-get-validity-type" title="mm_sms_get_validity_type ()">mm_sms_get_validity_type</a>            (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
+<span class="returnvalue">MMSmsCdmaTeleserviceId</span> <a class="link" href="MMSms.html#mm-sms-get-teleservice-id" title="mm_sms_get_teleservice_id ()">mm_sms_get_teleservice_id</a>        (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
+<span class="returnvalue">MMSmsCdmaServiceCategory</span> <a class="link" href="MMSms.html#mm-sms-get-service-category" title="mm_sms_get_service_category ()">mm_sms_get_service_category</a>    (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
+<span class="returnvalue">MMSmsValidityType</span>   <a class="link" href="MMSms.html#mm-sms-get-validity-type" title="mm_sms_get_validity_type ()">mm_sms_get_validity_type</a>            (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMSms.html#mm-sms-get-validity-relative" title="mm_sms_get_validity_relative ()">mm_sms_get_validity_relative</a>        (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSms.html#mm-sms-get-timestamp" title="mm_sms_get_timestamp ()">mm_sms_get_timestamp</a>                (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMSms.html#mm-sms-dup-timestamp" title="mm_sms_dup_timestamp ()">mm_sms_dup_timestamp</a>                (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);
@@ -80,7 +82,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="MMSms.html#mm-sms-store" title="mm_sms_store ()">mm_sms_store</a>                        (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a> storage</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMSmsStorage</span> storage</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
@@ -88,7 +90,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMSms.html#mm-sms-store-sync" title="mm_sms_store_sync ()">mm_sms_store_sync</a>                   (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a> storage</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMSmsStorage</span> storage</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 </pre>
@@ -182,7 +184,7 @@ Gets a copy of the DBus path of the <a class="link" href="MMSms.html" title="MMS
 <hr>
 <div class="refsect2">
 <a name="mm-sms-get-state"></a><h3>mm_sms_get_state ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsState"><span class="returnvalue">MMSmsState</span></a>          mm_sms_get_state                    (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">MMSmsState</span>          mm_sms_get_state                    (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);</pre>
 <p>
 Gets the state of this SMS.
 </p>
@@ -198,7 +200,7 @@ Gets the state of this SMS.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsState"><span class="type">MMSmsState</span></a> specifying the state.</td>
+<td>A <span class="type">MMSmsState</span> specifying the state.</td>
 </tr>
 </tbody>
 </table></div>
@@ -206,7 +208,7 @@ Gets the state of this SMS.
 <hr>
 <div class="refsect2">
 <a name="mm-sms-get-pdu-type"></a><h3>mm_sms_get_pdu_type ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsPduType"><span class="returnvalue">MMSmsPduType</span></a>        mm_sms_get_pdu_type                 (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">MMSmsPduType</span>        mm_sms_get_pdu_type                 (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);</pre>
 <p>
 Gets the PDU type on which this SMS is based.
 </p>
@@ -222,7 +224,7 @@ Gets the PDU type on which this SMS is based.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsPduType"><span class="type">MMSmsPduType</span></a> specifying the PDU type.</td>
+<td>A <span class="type">MMSmsPduType</span> specifying the PDU type.</td>
 </tr>
 </tbody>
 </table></div>
@@ -230,7 +232,7 @@ Gets the PDU type on which this SMS is based.
 <hr>
 <div class="refsect2">
 <a name="mm-sms-get-storage"></a><h3>mm_sms_get_storage ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="returnvalue">MMSmsStorage</span></a>        mm_sms_get_storage                  (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">MMSmsStorage</span>        mm_sms_get_storage                  (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);</pre>
 <p>
 Gets the storage in which this SMS is kept.
 </p>
@@ -246,7 +248,7 @@ Gets the storage in which this SMS is kept.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a> specifying the storage.</td>
+<td>A <span class="type">MMSmsStorage</span> specifying the storage.</td>
 </tr>
 </tbody>
 </table></div>
@@ -361,7 +363,8 @@ Gets the message data.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data_len</code></em> :</span></p></td>
-<td>(out) Size of the output data, if any given.</td>
+<td>Size of the output data, if any given. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -497,7 +500,7 @@ Gets the SMS service center number.
 Gets the message reference of the last PDU sent/received within this SMS.
 </p>
 <p>
-If the PDU type is <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-STATUS-REPORT:CAPS"><code class="literal">MM_SMS_PDU_TYPE_STATUS_REPORT</code></a>, this field identifies the
+If the PDU type is <code class="literal">MM_SMS_PDU_TYPE_STATUS_REPORT</code>, this field identifies the
 message reference of the PDU associated to the status report.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
@@ -543,8 +546,56 @@ Gets the 3GPP message class of the SMS.
 </div>
 <hr>
 <div class="refsect2">
+<a name="mm-sms-get-teleservice-id"></a><h3>mm_sms_get_teleservice_id ()</h3>
+<pre class="programlisting"><span class="returnvalue">MMSmsCdmaTeleserviceId</span> mm_sms_get_teleservice_id        (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);</pre>
+<p>
+Gets the 3GPP2 Teleservice ID.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a <span class="type">MMSmsCdmaTeleserviceId</span>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sms-get-service-category"></a><h3>mm_sms_get_service_category ()</h3>
+<pre class="programlisting"><span class="returnvalue">MMSmsCdmaServiceCategory</span> mm_sms_get_service_category    (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);</pre>
+<p>
+Gets the 3GPP2 Service Category.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a <span class="type">MMSmsCdmaServiceCategory</span>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="mm-sms-get-validity-type"></a><h3>mm_sms_get_validity_type ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsValidityType"><span class="returnvalue">MMSmsValidityType</span></a>   mm_sms_get_validity_type            (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">MMSmsValidityType</span>   mm_sms_get_validity_type            (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>);</pre>
 <p>
 Gets the type of validity information in the SMS.
 </p>
@@ -560,7 +611,7 @@ Gets the type of validity information in the SMS.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the validity type or <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-SMS-VALIDITY-TYPE-UNKNOWN:CAPS"><span class="type">MM_SMS_VALIDITY_TYPE_UNKNOWN</span></a>.</td>
+<td>the validity type or <span class="type">MM_SMS_VALIDITY_TYPE_UNKNOWN</span>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -573,7 +624,7 @@ Gets the type of validity information in the SMS.
 Gets the length of the validity period, in minutes.
 </p>
 <p>
-Only applicable if the type of validity is <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-SMS-VALIDITY-TYPE-RELATIVE:CAPS"><span class="type">MM_SMS_VALIDITY_TYPE_RELATIVE</span></a>.
+Only applicable if the type of validity is <span class="type">MM_SMS_VALIDITY_TYPE_RELATIVE</span>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -602,8 +653,8 @@ Gets the time when the first PDU of the SMS message arrived the SMSC, in
 format.
 </p>
 <p>
-This field is only applicable if the PDU type is <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-DELIVER:CAPS"><code class="literal">MM_SMS_PDU_TYPE_DELIVER</code></a> or
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-STATUS-REPORT:CAPS"><code class="literal">MM_SMS_PDU_TYPE_STATUS_REPORT</code></a>.
+This field is only applicable if the PDU type is <code class="literal">MM_SMS_PDU_TYPE_DELIVER</code> or
+<code class="literal">MM_SMS_PDU_TYPE_STATUS_REPORT</code>.
 </p>
 <p>
 </p>
@@ -642,8 +693,8 @@ Gets the time when the first PDU of the SMS message arrived the SMSC, in
 format.
 </p>
 <p>
-This field is only applicable if the PDU type is <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-DELIVER:CAPS"><code class="literal">MM_SMS_PDU_TYPE_DELIVER</code></a> or
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-STATUS-REPORT:CAPS"><code class="literal">MM_SMS_PDU_TYPE_STATUS_REPORT</code></a>.
+This field is only applicable if the PDU type is <code class="literal">MM_SMS_PDU_TYPE_DELIVER</code> or
+<code class="literal">MM_SMS_PDU_TYPE_STATUS_REPORT</code>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -673,7 +724,7 @@ Gets the time when the first PDU of the SMS message left the SMSC, in
 format.
 </p>
 <p>
-This field is only applicable if the PDU type is <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-STATUS-REPORT:CAPS"><code class="literal">MM_SMS_PDU_TYPE_STATUS_REPORT</code></a>.
+This field is only applicable if the PDU type is <code class="literal">MM_SMS_PDU_TYPE_STATUS_REPORT</code>.
 </p>
 <p>
 </p>
@@ -712,7 +763,7 @@ Gets the time when the first PDU of the SMS message left the SMSC, in
 format.
 </p>
 <p>
-This field is only applicable if the PDU type is <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-STATUS-REPORT:CAPS"><code class="literal">MM_SMS_PDU_TYPE_STATUS_REPORT</code></a>.
+This field is only applicable if the PDU type is <code class="literal">MM_SMS_PDU_TYPE_STATUS_REPORT</code>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -740,7 +791,7 @@ This field is only applicable if the PDU type is <a href="/usr/share/gtk-doc/htm
 Gets the delivery state of this SMS.
 </p>
 <p>
-This field is only applicable if the PDU type is <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-SMS-PDU-TYPE-STATUS-REPORT:CAPS"><code class="literal">MM_SMS_PDU_TYPE_STATUS_REPORT</code></a>.
+This field is only applicable if the PDU type is <code class="literal">MM_SMS_PDU_TYPE_STATUS_REPORT</code>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -754,7 +805,7 @@ This field is only applicable if the PDU type is <a href="/usr/share/gtk-doc/htm
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsDeliveryState"><span class="type">MMSmsDeliveryState</span></a> specifying the delivery state.</td>
+<td>A <span class="type">MMSmsDeliveryState</span> specifying the delivery state.</td>
 </tr>
 </tbody>
 </table></div>
@@ -912,7 +963,7 @@ See <a class="link" href="MMSms.html#mm-sms-send" title="mm_sms_send ()"><code c
 <div class="refsect2">
 <a name="mm-sms-store"></a><h3>mm_sms_store ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                mm_sms_store                        (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a> storage</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMSmsStorage</span> storage</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
@@ -941,7 +992,7 @@ See <a class="link" href="MMSms.html#mm-sms-store-sync" title="mm_sms_store_sync
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>storage</code></em> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a> specifying where to store the SMS, or <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-SMS-STORAGE-UNKNOWN:CAPS"><span class="type">MM_SMS_STORAGE_UNKNOWN</span></a> to use the default.</td>
+<td>A <span class="type">MMSmsStorage</span> specifying where to store the SMS, or <span class="type">MM_SMS_STORAGE_UNKNOWN</span> to use the default.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
@@ -998,7 +1049,7 @@ Finishes an operation started with <a class="link" href="MMSms.html#mm-sms-store
 <div class="refsect2">
 <a name="mm-sms-store-sync"></a><h3>mm_sms_store_sync ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_sms_store_sync                   (<em class="parameter"><code><a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a> storage</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMSmsStorage</span> storage</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
@@ -1023,7 +1074,7 @@ See <a class="link" href="MMSms.html#mm-sms-store" title="mm_sms_store ()"><code
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>storage</code></em> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a> specifying where to store the SMS, or <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-SMS-STORAGE-UNKNOWN:CAPS"><span class="type">MM_SMS_STORAGE_UNKNOWN</span></a> to use the default.</td>
+<td>A <span class="type">MMSmsStorage</span> specifying where to store the SMS, or <span class="type">MM_SMS_STORAGE_UNKNOWN</span> to use the default.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
@@ -1046,6 +1097,6 @@ See <a class="link" href="MMSms.html#mm-sms-store" title="mm_sms_store ()"><code
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

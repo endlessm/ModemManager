@@ -8,7 +8,7 @@
 <link rel="up" href="ch03s04.html" title="Messaging support">
 <link rel="prev" href="ch03s04.html" title="Messaging support">
 <link rel="next" href="ch03s05.html" title="Time support">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -47,13 +47,13 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModemMessaging.html#mm-modem-messaging-dup-path" title="mm_modem_messaging_dup_path ()">mm_modem_messaging_dup_path</a>         (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModemMessaging.html#mm-modem-messaging-peek-supported-storages" title="mm_modem_messaging_peek_supported_storages ()">mm_modem_messaging_peek_supported_storages</a>
                                                         (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a> **storages</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">MMSmsStorage</span> **storages</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_storages</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModemMessaging.html#mm-modem-messaging-get-supported-storages" title="mm_modem_messaging_get_supported_storages ()">mm_modem_messaging_get_supported_storages</a>
                                                         (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a> **storages</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMSmsStorage</span> **storages</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_storages</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="returnvalue">MMSmsStorage</span></a>        <a class="link" href="MMModemMessaging.html#mm-modem-messaging-get-default-storage" title="mm_modem_messaging_get_default_storage ()">mm_modem_messaging_get_default_storage</a>
+<span class="returnvalue">MMSmsStorage</span>        <a class="link" href="MMModemMessaging.html#mm-modem-messaging-get-default-storage" title="mm_modem_messaging_get_default_storage ()">mm_modem_messaging_get_default_storage</a>
                                                         (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>);
 
 <span class="returnvalue">void</span>                <a class="link" href="MMModemMessaging.html#mm-modem-messaging-create" title="mm_modem_messaging_create ()">mm_modem_messaging_create</a>           (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>,
@@ -182,7 +182,7 @@ Gets a copy of the DBus path of the <a class="link" href="MMObject.html" title="
 <a name="mm-modem-messaging-peek-supported-storages"></a><h3>mm_modem_messaging_peek_supported_storages ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_messaging_peek_supported_storages
                                                         (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a> **storages</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">MMSmsStorage</span> **storages</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_storages</code></em>);</pre>
 <p>
 Gets the list of SMS storages supported by the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.
@@ -199,7 +199,7 @@ Gets the list of SMS storages supported by the <a class="link" href="MMModem.htm
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>storages</code></em> :</span></p></td>
-<td>Return location for the array of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a> values. Do not free the returned array, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+<td>Return location for the array of <span class="type">MMSmsStorage</span> values. Do not free the returned array, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
 </td>
 </tr>
 <tr>
@@ -220,7 +220,7 @@ Gets the list of SMS storages supported by the <a class="link" href="MMModem.htm
 <a name="mm-modem-messaging-get-supported-storages"></a><h3>mm_modem_messaging_get_supported_storages ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_messaging_get_supported_storages
                                                         (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a> **storages</code></em>,
+                                                         <em class="parameter"><code><span class="type">MMSmsStorage</span> **storages</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_storages</code></em>);</pre>
 <p>
 Gets the list of SMS storages supported by the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.
@@ -237,7 +237,7 @@ Gets the list of SMS storages supported by the <a class="link" href="MMModem.htm
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>storages</code></em> :</span></p></td>
-<td>Return location for the array of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a> values. The returned array should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_storages]</span>
+<td>Return location for the array of <span class="type">MMSmsStorage</span> values. The returned array should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when no longer needed. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_storages]</span>
 </td>
 </tr>
 <tr>
@@ -256,7 +256,7 @@ Gets the list of SMS storages supported by the <a class="link" href="MMModem.htm
 <hr>
 <div class="refsect2">
 <a name="mm-modem-messaging-get-default-storage"></a><h3>mm_modem_messaging_get_default_storage ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="returnvalue">MMSmsStorage</span></a>        mm_modem_messaging_get_default_storage
+<pre class="programlisting"><span class="returnvalue">MMSmsStorage</span>        mm_modem_messaging_get_default_storage
                                                         (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>);</pre>
 <p>
 Gets the default SMS storage used when storing or receiving SMS messages.
@@ -273,7 +273,7 @@ Gets the default SMS storage used when storing or receiving SMS messages.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the default <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a>.</td>
+<td>the default <span class="type">MMSmsStorage</span>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -332,7 +332,42 @@ Finishes an operation started with <a class="link" href="MMModemMessaging.html#m
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
+Synchronously creates a new <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> in the modem.
 </p>
+<p>
+The calling thread is blocked until a reply is received. See <a class="link" href="MMModemMessaging.html#mm-modem-messaging-create" title="mm_modem_messaging_create ()"><code class="function">mm_modem_messaging_create()</code></a>
+for the asynchronous version of this method.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>properties</code></em> :</span></p></td>
+<td>A #<a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> object with the properties to use.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly created <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -534,7 +569,7 @@ Finishes an operation started with <a class="link" href="MMModemMessaging.html#m
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A list of <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> objects, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if either not found or <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free-full"><code class="function">g_list_free_full()</code></a> using <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> as <a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> function. <span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> MM.Sms][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+<td>A list of <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> objects, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if either not found or <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free-full"><code class="function">g_list_free_full()</code></a> using <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> as <a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> function. <span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> ModemManager.Sms][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
 </td>
 </tr>
 </tbody>
@@ -574,7 +609,7 @@ for the asynchronous version of this method.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A list of <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> objects, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if either not found or <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free-full"><code class="function">g_list_free_full()</code></a> using <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> as <a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> function. <span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> MM.Sms][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+<td>A list of <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> objects, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if either not found or <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free-full"><code class="function">g_list_free_full()</code></a> using <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> as <a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> function. <span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> MMSms][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
 </td>
 </tr>
 </tbody>
@@ -584,6 +619,6 @@ for the asynchronous version of this method.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

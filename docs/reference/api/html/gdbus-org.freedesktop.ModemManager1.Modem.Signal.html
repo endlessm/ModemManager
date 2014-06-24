@@ -1,0 +1,309 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>org.freedesktop.ModemManager1.Modem.Signal</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="ModemManager Reference Manual">
+<link rel="up" href="ref-dbus-object-modem.html" title="The /org/freedesktop/ModemManager/Modems objects">
+<link rel="prev" href="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html" title="org.freedesktop.ModemManager1.Modem.Firmware">
+<link rel="next" href="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html" title="org.freedesktop.ModemManager1.Modem.Oma">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ref-dbus-object-modem.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">ModemManager Reference Manual</th>
+<td><a accesskey="n" href="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#gdbus-org.freedesktop.ModemManager1.Modem.Signal.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Signal.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Signal.properties" class="shortcut">Properties</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="gdbus-org.freedesktop.ModemManager1.Modem.Signal"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Signal.top_of_page"></a>org.freedesktop.ModemManager1.Modem.Signal</span></h2>
+<p>org.freedesktop.ModemManager1.Modem.Signal — The ModemManager Signal interface.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Methods</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Signal.Setup" title="The Setup() method">Setup</a> (IN  u rate);
+</pre>
+</div>
+<div class="refsect1">
+<a name="id-1.4.5.15.4"></a><h2>Properties</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Rate" title='The "Rate" property'>Rate</a>  readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Cdma" title='The "Cdma" property'>Cdma</a>  readable   a{sv}
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Evdo" title='The "Evdo" property'>Evdo</a>  readable   a{sv}
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Gsm" title='The "Gsm" property'>Gsm</a>   readable   a{sv}
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Umts" title='The "Umts" property'>Umts</a>  readable   a{sv}
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Lte" title='The "Lte" property'>Lte</a>   readable   a{sv}
+</pre>
+</div>
+<div class="refsect1">
+<a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Signal"></a><h2>Description</h2>
+<p>      This interface provides access to extended signal quality information.
+</p>
+</div>
+<div class="refsect1">
+<a name="gdbus-methods-org.freedesktop.ModemManager1.Modem.Signal"></a><h2>Method Details</h2>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Signal.Setup"></a><h3>The Setup() method</h3>
+<pre class="programlisting">
+Setup (IN  u rate);
+</pre>
+<p>        Setup extended signal quality information retrieval.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN u <em class="parameter"><code>rate</code></em></code>:</span></p></td>
+<td><p>refresh rate to set, in seconds. 0 to disable retrieval.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-properties-org.freedesktop.ModemManager1.Modem.Signal"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Rate"></a><h3>The "Rate" property</h3>
+<pre class="programlisting">
+Rate  readable   u
+</pre>
+<p>        Refresh rate for the extended signal quality information updates,
+        in seconds. A value of 0 disables the retrieval of the values.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Cdma"></a><h3>The "Cdma" property</h3>
+<pre class="programlisting">
+Cdma  readable   a{sv}
+</pre>
+<p>        Dictionary of available signal information for the CDMA1x access
+        technology.
+</p>
+<p>        This dictionary is composed of a string key, with an associated data
+        which contains type-specific information.
+</p>
+<p>        </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">"rssi"</code></span></p></td>
+<td><p>
+              The CDMA1x RSSI (Received Signal Strength Indication), in dBm,
+              given as a floating point value (signature <code class="literal">"d"</code>).
+            </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"ecio"</code></span></p></td>
+<td><p>
+              The CDMA1x Ec/Io, in dBm, given as a floating point value
+              (signature <code class="literal">"d"</code>).
+            </p></td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Evdo"></a><h3>The "Evdo" property</h3>
+<pre class="programlisting">
+Evdo  readable   a{sv}
+</pre>
+<p>        Dictionary of available signal information for the CDMA EV-DO access
+        technology.
+</p>
+<p>        This dictionary is composed of a string key, with an associated data
+        which contains type-specific information.
+</p>
+<p>        </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">"rssi"</code></span></p></td>
+<td><p>
+              The CDMA EV-DO RSSI (Received Signal Strength Indication), in dBm,
+              given as a floating point value (signature <code class="literal">"d"</code>).
+            </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"ecio"</code></span></p></td>
+<td><p>
+              The CDMA EV-DO Ec/Io, in dBm, given as a floating point value
+              (signature <code class="literal">"d"</code>).
+            </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"sinr"</code></span></p></td>
+<td><p>
+              CDMA EV-DO SINR level, in dB, given as a floating point value
+              (signature <code class="literal">"d"</code>).
+            </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"io"</code></span></p></td>
+<td><p>
+              The CDMA EV-DO Io, in dBm, given as a floating point value
+              (signature <code class="literal">"d"</code>).
+            </p></td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Gsm"></a><h3>The "Gsm" property</h3>
+<pre class="programlisting">
+Gsm  readable   a{sv}
+</pre>
+<p>        Dictionary of available signal information for the GSM/GPRS access
+        technology.
+</p>
+<p>        This dictionary is composed of a string key, with an associated data
+        which contains type-specific information.
+</p>
+<p>        </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">"rssi"</code></span></p></td>
+<td><p>
+              The GSM RSSI (Received Signal Strength Indication), in dBm,
+              given as a floating point value (signature <code class="literal">"d"</code>).
+            </p></td>
+</tr></tbody>
+</table></div>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Umts"></a><h3>The "Umts" property</h3>
+<pre class="programlisting">
+Umts  readable   a{sv}
+</pre>
+<p>        Dictionary of available signal information for the UMTS (WCDMA) access
+        technology.
+</p>
+<p>        This dictionary is composed of a string key, with an associated data
+        which contains type-specific information.
+</p>
+<p>        </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">"rssi"</code></span></p></td>
+<td><p>
+              The UMTS RSSI (Received Signal Strength Indication), in dBm,
+              given as a floating point value (signature <code class="literal">"d"</code>).
+            </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"ecio"</code></span></p></td>
+<td><p>
+              The UMTS Ec/Io, in dBm, given as a floating point value
+              (signature <code class="literal">"d"</code>).
+            </p></td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Lte"></a><h3>The "Lte" property</h3>
+<pre class="programlisting">
+Lte  readable   a{sv}
+</pre>
+<p>        Dictionary of available signal information for the UMTS (WCDMA) access
+        technology.
+</p>
+<p>        This dictionary is composed of a string key, with an associated data
+        which contains type-specific information.
+</p>
+<p>        </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">"rssi"</code></span></p></td>
+<td><p>
+              The LTE RSSI (Received Signal Strength Indication), in dBm,
+              given as a floating point value (signature <code class="literal">"d"</code>).
+            </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"rsrq"</code></span></p></td>
+<td><p>
+              The LTE RSRQ (Reference Signal Received Quality), in dB, given as
+              a floating point value (signature <code class="literal">"d"</code>).
+            </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"rsrp"</code></span></p></td>
+<td><p>
+              The LTE RSRP (Reference Signal Received Power), in dBm, given as
+              a floating point value (signature <code class="literal">"d"</code>).
+            </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">"snr"</code></span></p></td>
+<td><p>
+              The LTE S/R ratio, in dB, given as
+              a floating point value (signature <code class="literal">"d"</code>).
+            </p></td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.19</div>
+</body>
+</html>

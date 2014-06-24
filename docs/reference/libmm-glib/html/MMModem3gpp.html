@@ -5,17 +5,17 @@
 <title>MMModem3gpp</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
-<link rel="up" href="ch03.html#idm211869297872" title="Generic interfaces">
+<link rel="up" href="ch03.html#id-1.2.4.3" title="Generic interfaces">
 <link rel="prev" href="MMModem.html" title="MMModem">
 <link rel="next" href="MMModem3gppUssd.html" title="MMModem3gppUssd">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
 <td><a accesskey="p" href="MMModem.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="ch03.html#idm211869297872"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="u" href="ch03.html#id-1.2.4.3"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">libmm-glib Reference Manual</th>
 <td><a accesskey="n" href="MMModem3gppUssd.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
@@ -50,9 +50,9 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
                                                         (<em class="parameter"><code>const <a class="link" href="MMModem3gpp.html#MMModem3gppNetwork" title="MMModem3gppNetwork"><span class="type">MMModem3gppNetwork</span></a> *network</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-network-get-operator-long" title="mm_modem_3gpp_network_get_operator_long ()">mm_modem_3gpp_network_get_operator_long</a>
                                                         (<em class="parameter"><code>const <a class="link" href="MMModem3gpp.html#MMModem3gppNetwork" title="MMModem3gppNetwork"><span class="type">MMModem3gppNetwork</span></a> *network</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"><span class="returnvalue">MMModemAccessTechnology</span></a> <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-network-get-access-technology" title="mm_modem_3gpp_network_get_access_technology ()">mm_modem_3gpp_network_get_access_technology</a>
+<span class="returnvalue">MMModemAccessTechnology</span> <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-network-get-access-technology" title="mm_modem_3gpp_network_get_access_technology ()">mm_modem_3gpp_network_get_access_technology</a>
                                                         (<em class="parameter"><code>const <a class="link" href="MMModem3gpp.html#MMModem3gppNetwork" title="MMModem3gppNetwork"><span class="type">MMModem3gppNetwork</span></a> *network</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppNetworkAvailability"><span class="returnvalue">MMModem3gppNetworkAvailability</span></a> <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-network-get-availability" title="mm_modem_3gpp_network_get_availability ()">mm_modem_3gpp_network_get_availability</a>
+<span class="returnvalue">MMModem3gppNetworkAvailability</span> <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-network-get-availability" title="mm_modem_3gpp_network_get_availability ()">mm_modem_3gpp_network_get_availability</a>
                                                         (<em class="parameter"><code>const <a class="link" href="MMModem3gpp.html#MMModem3gppNetwork" title="MMModem3gppNetwork"><span class="type">MMModem3gppNetwork</span></a> *network</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-network-free" title="mm_modem_3gpp_network_free ()">mm_modem_3gpp_network_free</a>          (<em class="parameter"><code><a class="link" href="MMModem3gpp.html#MMModem3gppNetwork" title="MMModem3gppNetwork"><span class="type">MMModem3gppNetwork</span></a> *network</code></em>);
 
@@ -64,9 +64,11 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-dup-operator-code" title="mm_modem_3gpp_dup_operator_code ()">mm_modem_3gpp_dup_operator_code</a>     (<em class="parameter"><code><a class="link" href="MMModem3gpp.html" title="MMModem3gpp"><span class="type">MMModem3gpp</span></a> *self</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-get-operator-name" title="mm_modem_3gpp_get_operator_name ()">mm_modem_3gpp_get_operator_name</a>     (<em class="parameter"><code><a class="link" href="MMModem3gpp.html" title="MMModem3gpp"><span class="type">MMModem3gpp</span></a> *self</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-dup-operator-name" title="mm_modem_3gpp_dup_operator_name ()">mm_modem_3gpp_dup_operator_name</a>     (<em class="parameter"><code><a class="link" href="MMModem3gpp.html" title="MMModem3gpp"><span class="type">MMModem3gpp</span></a> *self</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppFacility"><span class="returnvalue">MMModem3gppFacility</span></a> <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-get-enabled-facility-locks" title="mm_modem_3gpp_get_enabled_facility_locks ()">mm_modem_3gpp_get_enabled_facility_locks</a>
+<span class="returnvalue">MMModem3gppFacility</span> <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-get-enabled-facility-locks" title="mm_modem_3gpp_get_enabled_facility_locks ()">mm_modem_3gpp_get_enabled_facility_locks</a>
                                                         (<em class="parameter"><code><a class="link" href="MMModem3gpp.html" title="MMModem3gpp"><span class="type">MMModem3gpp</span></a> *self</code></em>);
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState"><span class="returnvalue">MMModem3gppRegistrationState</span></a> <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-get-registration-state" title="mm_modem_3gpp_get_registration_state ()">mm_modem_3gpp_get_registration_state</a>
+<span class="returnvalue">MMModem3gppRegistrationState</span> <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-get-registration-state" title="mm_modem_3gpp_get_registration_state ()">mm_modem_3gpp_get_registration_state</a>
+                                                        (<em class="parameter"><code><a class="link" href="MMModem3gpp.html" title="MMModem3gpp"><span class="type">MMModem3gpp</span></a> *self</code></em>);
+<span class="returnvalue">MMModem3gppSubscriptionState</span> <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-get-subscription-state" title="mm_modem_3gpp_get_subscription_state ()">mm_modem_3gpp_get_subscription_state</a>
                                                         (<em class="parameter"><code><a class="link" href="MMModem3gpp.html" title="MMModem3gpp"><span class="type">MMModem3gpp</span></a> *self</code></em>);
 
 <span class="returnvalue">void</span>                <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-register" title="mm_modem_3gpp_register ()">mm_modem_3gpp_register</a>              (<em class="parameter"><code><a class="link" href="MMModem3gpp.html" title="MMModem3gpp"><span class="type">MMModem3gpp</span></a> *self</code></em>,
@@ -116,7 +118,7 @@ properties of the 3GPP interface.
 </p>
 <p>
 The 3GPP interface is exposed whenever a modem has any of the 3GPP
-capabilities (<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-CAPABILITY-GSM-UMTS:CAPS"><code class="literal">MM_MODEM_CAPABILITY_GSM_UMTS</code></a>, <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-CAPABILITY-LTE:CAPS"><code class="literal">MM_MODEM_CAPABILITY_LTE</code></a> or <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-CAPABILITY-LTE-ADVANCED:CAPS"><code class="literal">MM_MODEM_CAPABILITY_LTE_ADVANCED</code></a>).
+capabilities (<code class="literal">MM_MODEM_CAPABILITY_GSM_UMTS</code>, <code class="literal">MM_MODEM_CAPABILITY_LTE</code> or <code class="literal">MM_MODEM_CAPABILITY_LTE_ADVANCED</code>).
 </p>
 </div>
 <div class="refsect1">
@@ -219,7 +221,7 @@ Get the long operator name of the 3GPP network.
 <hr>
 <div class="refsect2">
 <a name="mm-modem-3gpp-network-get-access-technology"></a><h3>mm_modem_3gpp_network_get_access_technology ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"><span class="returnvalue">MMModemAccessTechnology</span></a> mm_modem_3gpp_network_get_access_technology
+<pre class="programlisting"><span class="returnvalue">MMModemAccessTechnology</span> mm_modem_3gpp_network_get_access_technology
                                                         (<em class="parameter"><code>const <a class="link" href="MMModem3gpp.html#MMModem3gppNetwork" title="MMModem3gppNetwork"><span class="type">MMModem3gppNetwork</span></a> *network</code></em>);</pre>
 <p>
 Get the technology used to access the 3GPP network.
@@ -236,7 +238,7 @@ Get the technology used to access the 3GPP network.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"><span class="type">MMModemAccessTechnology</span></a>.</td>
+<td>A <span class="type">MMModemAccessTechnology</span>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -244,7 +246,7 @@ Get the technology used to access the 3GPP network.
 <hr>
 <div class="refsect2">
 <a name="mm-modem-3gpp-network-get-availability"></a><h3>mm_modem_3gpp_network_get_availability ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppNetworkAvailability"><span class="returnvalue">MMModem3gppNetworkAvailability</span></a> mm_modem_3gpp_network_get_availability
+<pre class="programlisting"><span class="returnvalue">MMModem3gppNetworkAvailability</span> mm_modem_3gpp_network_get_availability
                                                         (<em class="parameter"><code>const <a class="link" href="MMModem3gpp.html#MMModem3gppNetwork" title="MMModem3gppNetwork"><span class="type">MMModem3gppNetwork</span></a> *network</code></em>);</pre>
 <p>
 Get availability of the 3GPP network.
@@ -261,7 +263,7 @@ Get availability of the 3GPP network.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppNetworkAvailability"><span class="type">MMModem3gppNetworkAvailability</span></a>.</td>
+<td>A <span class="type">MMModem3gppNetworkAvailability</span>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -537,7 +539,7 @@ currently registered.
 <hr>
 <div class="refsect2">
 <a name="mm-modem-3gpp-get-enabled-facility-locks"></a><h3>mm_modem_3gpp_get_enabled_facility_locks ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppFacility"><span class="returnvalue">MMModem3gppFacility</span></a> mm_modem_3gpp_get_enabled_facility_locks
+<pre class="programlisting"><span class="returnvalue">MMModem3gppFacility</span> mm_modem_3gpp_get_enabled_facility_locks
                                                         (<em class="parameter"><code><a class="link" href="MMModem3gpp.html" title="MMModem3gpp"><span class="type">MMModem3gpp</span></a> *self</code></em>);</pre>
 <p>
 Get the list of facilities for which PIN locking is enabled.
@@ -554,7 +556,7 @@ Get the list of facilities for which PIN locking is enabled.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A bitmask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppFacility"><span class="type">MMModem3gppFacility</span></a> flags, specifying which facilities have locks enabled.</td>
+<td>A bitmask of <span class="type">MMModem3gppFacility</span> flags, specifying which facilities have locks enabled.</td>
 </tr>
 </tbody>
 </table></div>
@@ -562,7 +564,7 @@ Get the list of facilities for which PIN locking is enabled.
 <hr>
 <div class="refsect2">
 <a name="mm-modem-3gpp-get-registration-state"></a><h3>mm_modem_3gpp_get_registration_state ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState"><span class="returnvalue">MMModem3gppRegistrationState</span></a> mm_modem_3gpp_get_registration_state
+<pre class="programlisting"><span class="returnvalue">MMModem3gppRegistrationState</span> mm_modem_3gpp_get_registration_state
                                                         (<em class="parameter"><code><a class="link" href="MMModem3gpp.html" title="MMModem3gpp"><span class="type">MMModem3gpp</span></a> *self</code></em>);</pre>
 <p>
 Get the the mobile registration status as defined in 3GPP TS 27.007
@@ -580,7 +582,33 @@ section 10.1.19.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState"><span class="type">MMModem3gppRegistrationState</span></a> value, specifying the current registration state.</td>
+<td>A <span class="type">MMModem3gppRegistrationState</span> value, specifying the current registration state.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-3gpp-get-subscription-state"></a><h3>mm_modem_3gpp_get_subscription_state ()</h3>
+<pre class="programlisting"><span class="returnvalue">MMModem3gppSubscriptionState</span> mm_modem_3gpp_get_subscription_state
+                                                        (<em class="parameter"><code><a class="link" href="MMModem3gpp.html" title="MMModem3gpp"><span class="type">MMModem3gpp</span></a> *self</code></em>);</pre>
+<p>
+Get the current subscription status of the account. This value is only
+available after the modem attempts to register with the network.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A <span class="type">MMModem3gppSubscriptionState</span> value, specifying the current subscription state.</td>
 </tr>
 </tbody>
 </table></div>
@@ -785,7 +813,8 @@ Finishes an operation started with <a class="link" href="MMModem3gpp.html#mm-mod
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a list of <a class="link" href="MMModem3gpp.html#MMModem3gppNetwork" title="MMModem3gppNetwork"><span class="type">MMModem3gppNetwork</span></a> structs, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free-full"><code class="function">g_list_free_full()</code></a> using <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-network-free" title="mm_modem_3gpp_network_free ()"><code class="function">mm_modem_3gpp_network_free()</code></a> as <a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> function.</td>
+<td>a list of <a class="link" href="MMModem3gpp.html#MMModem3gppNetwork" title="MMModem3gppNetwork"><span class="type">MMModem3gppNetwork</span></a> structs, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free-full"><code class="function">g_list_free_full()</code></a> using <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-network-free" title="mm_modem_3gpp_network_free ()"><code class="function">mm_modem_3gpp_network_free()</code></a> as <a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> function. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> ModemManager.Modem3gppNetwork]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -824,7 +853,8 @@ for the asynchronous version of this method.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a list of <a class="link" href="MMModem3gpp.html#MMModem3gppNetwork" title="MMModem3gppNetwork"><span class="type">MMModem3gppNetwork</span></a> structs, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free-full"><code class="function">g_list_free_full()</code></a> using <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-network-free" title="mm_modem_3gpp_network_free ()"><code class="function">mm_modem_3gpp_network_free()</code></a> as <a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> function.</td>
+<td>a list of <a class="link" href="MMModem3gpp.html#MMModem3gppNetwork" title="MMModem3gppNetwork"><span class="type">MMModem3gppNetwork</span></a> structs, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free-full"><code class="function">g_list_free_full()</code></a> using <a class="link" href="MMModem3gpp.html#mm-modem-3gpp-network-free" title="mm_modem_3gpp_network_free ()"><code class="function">mm_modem_3gpp_network_free()</code></a> as <a href="http://library.gnome.org/devel/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> function. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> ModemManager.Modem3gppNetwork]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -833,6 +863,6 @@ for the asynchronous version of this method.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

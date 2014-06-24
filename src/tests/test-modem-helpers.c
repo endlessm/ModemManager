@@ -840,9 +840,49 @@ test_creg2_iridium_solicited (void *f, gpointer d)
 {
     RegTestData *data = (RegTestData *) d;
     const char *reply = "+CREG:002,001,\"18d8\",\"ffff\"";
-    const CregResult result = { 1, 0x18D8, 0xFFFF, MM_MODEM_ACCESS_TECHNOLOGY_UNKNOWN, 4, FALSE, FALSE };
+    const CregResult result = { 1, 0x18D8, 0xFFFF, MM_MODEM_ACCESS_TECHNOLOGY_UNKNOWN, 5, FALSE, FALSE };
 
     test_creg_match ("Iridium, CREG=2", TRUE, reply, data, &result);
+}
+
+static void
+test_creg2_no_leading_zeros_solicited (void *f, gpointer d)
+{
+    RegTestData *data = (RegTestData *) d;
+    const char *reply = "+CREG:2,1,0001,0010";
+    const CregResult result = { 1, 0x0001, 0x0010, MM_MODEM_ACCESS_TECHNOLOGY_UNKNOWN, 4, FALSE, FALSE };
+
+    test_creg_match ("solicited CREG=2 with no leading zeros in integer fields", TRUE, reply, data, &result);
+}
+
+static void
+test_creg2_leading_zeros_solicited (void *f, gpointer d)
+{
+    RegTestData *data = (RegTestData *) d;
+    const char *reply = "+CREG:002,001,\"0001\",\"0010\"";
+    const CregResult result = { 1, 0x0001, 0x0010, MM_MODEM_ACCESS_TECHNOLOGY_UNKNOWN, 5, FALSE, FALSE };
+
+    test_creg_match ("solicited CREG=2 with leading zeros in integer fields", TRUE, reply, data, &result);
+}
+
+static void
+test_creg2_no_leading_zeros_unsolicited (void *f, gpointer d)
+{
+    RegTestData *data = (RegTestData *) d;
+    const char *reply = "\r\n+CREG: 1,0001,0010,0\r\n";
+    const CregResult result = { 1, 0x0001, 0x0010, MM_MODEM_ACCESS_TECHNOLOGY_GSM, 6, FALSE, FALSE };
+
+    test_creg_match ("unsolicited CREG=2 with no leading zeros in integer fields", FALSE, reply, data, &result);
+}
+
+static void
+test_creg2_leading_zeros_unsolicited (void *f, gpointer d)
+{
+    RegTestData *data = (RegTestData *) d;
+    const char *reply = "\r\n+CREG: 001,\"0001\",\"0010\",000\r\n";
+    const CregResult result = { 1, 0x0001, 0x0010, MM_MODEM_ACCESS_TECHNOLOGY_GSM, 7, FALSE, FALSE };
+
+    test_creg_match ("unsolicited CREG=2 with leading zeros in integer fields", FALSE, reply, data, &result);
 }
 
 static void
@@ -870,7 +910,7 @@ test_cgreg2_f3607gw_solicited (void *f, gpointer d)
 {
     RegTestData *data = (RegTestData *) d;
     const char *reply = "+CGREG: 2,1,\"8BE3\",\"00002B5D\",3";
-    const CregResult result = { 1, 0x8BE3, 0x2B5D, MM_MODEM_ACCESS_TECHNOLOGY_EDGE , 6, TRUE, FALSE };
+    const CregResult result = { 1, 0x8BE3, 0x2B5D, MM_MODEM_ACCESS_TECHNOLOGY_EDGE, 8, TRUE, FALSE };
 
     test_creg_match ("Ericsson F3607gw CGREG=2", TRUE, reply, data, &result);
 }
@@ -880,7 +920,7 @@ test_cgreg2_f3607gw_unsolicited (void *f, gpointer d)
 {
     RegTestData *data = (RegTestData *) d;
     const char *reply = "\r\n+CGREG: 1,\"8BE3\",\"00002B5D\",3\r\n";
-    const CregResult result = { 1, 0x8BE3, 0x2B5D, MM_MODEM_ACCESS_TECHNOLOGY_EDGE , 5, TRUE, FALSE };
+    const CregResult result = { 1, 0x8BE3, 0x2B5D, MM_MODEM_ACCESS_TECHNOLOGY_EDGE, 6, TRUE, FALSE };
 
     test_creg_match ("Ericsson F3607gw CGREG=2", FALSE, reply, data, &result);
 }
@@ -900,7 +940,7 @@ test_cgreg2_md400_unsolicited (void *f, gpointer d)
 {
     RegTestData *data = (RegTestData *) d;
     const char *reply = "\r\n+CGREG: 5,\"0502\",\"0404736D\",2\r\n";
-    const CregResult result = { 5, 0x0502, 0x0404736D, MM_MODEM_ACCESS_TECHNOLOGY_UMTS, 5, TRUE, FALSE };
+    const CregResult result = { 5, 0x0502, 0x0404736D, MM_MODEM_ACCESS_TECHNOLOGY_UMTS, 6, TRUE, FALSE };
 
     test_creg_match ("Sony-Ericsson MD400 CGREG=2", FALSE, reply, data, &result);
 }
@@ -941,7 +981,7 @@ test_creg2_s8500_wave_unsolicited (void *f, gpointer d)
 {
     RegTestData *data = (RegTestData *) d;
     const char *reply = "\r\n+CREG: 2,1,000B,2816, B, C2816\r\n";
-    const CregResult result = { 1, 0x000B, 0x2816, MM_MODEM_ACCESS_TECHNOLOGY_GSM, 7, FALSE, FALSE };
+    const CregResult result = { 1, 0x000B, 0x2816, MM_MODEM_ACCESS_TECHNOLOGY_GSM, 9, FALSE, FALSE };
 
     test_creg_match ("Samsung Wave S8500 CREG=2", FALSE, reply, data, &result);
 }
@@ -961,7 +1001,7 @@ test_cgreg2_unsolicited_with_rac (void *f, gpointer d)
 {
     RegTestData *data = (RegTestData *) d;
     const char *reply = "\r\n+CGREG: 1,\"1422\",\"00000142\",3,\"00\"\r\n";
-    const CregResult result = { 1, 0x1422, 0x0142, MM_MODEM_ACCESS_TECHNOLOGY_EDGE, 8, TRUE, FALSE };
+    const CregResult result = { 1, 0x1422, 0x0142, MM_MODEM_ACCESS_TECHNOLOGY_EDGE, 10, TRUE, FALSE };
 
     test_creg_match ("CGREG=2 with RAC", FALSE, reply, data, &result);
 }
@@ -991,7 +1031,7 @@ test_cereg2_solicited (void *f, gpointer d)
 {
     RegTestData *data = (RegTestData *) d;
     const char *reply = "\r\n+CEREG: 2,1, 1F00, 79D903 ,7\r\n";
-    const CregResult result = { 1, 0x1F00, 0x79D903, MM_MODEM_ACCESS_TECHNOLOGY_LTE, 6, FALSE, TRUE };
+    const CregResult result = { 1, 0x1F00, 0x79D903, MM_MODEM_ACCESS_TECHNOLOGY_LTE, 8, FALSE, TRUE };
 
     test_creg_match ("CEREG=2", TRUE, reply, data, &result);
 }
@@ -1001,9 +1041,29 @@ test_cereg2_unsolicited (void *f, gpointer d)
 {
     RegTestData *data = (RegTestData *) d;
     const char *reply = "\r\n+CEREG: 1, 1F00, 79D903 ,7\r\n";
-    const CregResult result = { 1, 0x1F00, 0x79D903, MM_MODEM_ACCESS_TECHNOLOGY_LTE, 5, FALSE, TRUE };
+    const CregResult result = { 1, 0x1F00, 0x79D903, MM_MODEM_ACCESS_TECHNOLOGY_LTE, 6, FALSE, TRUE };
 
     test_creg_match ("CEREG=2", FALSE, reply, data, &result);
+}
+
+static void
+test_cereg2_altair_lte_solicited (void *f, gpointer d)
+{
+    RegTestData *data = (RegTestData *) d;
+    const char *reply = "\r\n+CEREG: 1, 2, 0001, 00000100, 7\r\n";
+    const CregResult result = { 2, 0x0001, 0x00000100, MM_MODEM_ACCESS_TECHNOLOGY_LTE, 8, FALSE, TRUE };
+
+    test_creg_match ("Altair LTE CEREG=2", FALSE, reply, data, &result);
+}
+
+static void
+test_cereg2_altair_lte_unsolicited (void *f, gpointer d)
+{
+    RegTestData *data = (RegTestData *) d;
+    const char *reply = "\r\n+CEREG: 2, 0001, 00000100, 7\r\n";
+    const CregResult result = { 2, 0x0001, 0x00000100, MM_MODEM_ACCESS_TECHNOLOGY_LTE, 6, FALSE, TRUE };
+
+    test_creg_match ("Altair LTE CEREG=2", FALSE, reply, data, &result);
 }
 
 static void
@@ -1011,7 +1071,7 @@ test_cereg2_novatel_lte_solicited (void *f, gpointer d)
 {
     RegTestData *data = (RegTestData *) d;
     const char *reply = "\r\n+CEREG: 2,1, 1F00, 20 ,79D903 ,7\r\n";
-    const CregResult result = { 1, 0x1F00, 0x79D903, MM_MODEM_ACCESS_TECHNOLOGY_LTE, 10, FALSE, TRUE };
+    const CregResult result = { 1, 0x1F00, 0x79D903, MM_MODEM_ACCESS_TECHNOLOGY_LTE, 12, FALSE, TRUE };
 
     test_creg_match ("Novatel LTE E362 CEREG=2", TRUE, reply, data, &result);
 }
@@ -1021,7 +1081,7 @@ test_cereg2_novatel_lte_unsolicited (void *f, gpointer d)
 {
     RegTestData *data = (RegTestData *) d;
     const char *reply = "\r\n+CEREG: 1, 1F00, 20 ,79D903 ,7\r\n";
-    const CregResult result = { 1, 0x1F00, 0x79D903, MM_MODEM_ACCESS_TECHNOLOGY_LTE, 9, FALSE, TRUE };
+    const CregResult result = { 1, 0x1F00, 0x79D903, MM_MODEM_ACCESS_TECHNOLOGY_LTE, 11, FALSE, TRUE };
 
     test_creg_match ("Novatel LTE E362 CEREG=2", FALSE, reply, data, &result);
 }
@@ -1463,6 +1523,105 @@ test_cind_response_moto_v3m (void *f, gpointer d)
 }
 
 /*****************************************************************************/
+/* Test ICCID parsing */
+
+static void
+test_iccid_parse_quoted_swap_19_digit (void *f, gpointer d)
+{
+    const char *raw_iccid = "\"984402003576012594F9\"";
+    const char *expected = "8944200053671052499";
+    char *parsed;
+    GError *error = NULL;
+
+    parsed = mm_3gpp_parse_iccid (raw_iccid, &error);
+    g_assert_no_error (error);
+    g_assert_cmpstr (parsed, ==, expected);
+}
+
+static void
+test_iccid_parse_unquoted_swap_20_digit (void *f, gpointer d)
+{
+    const char *raw_iccid = "98231420326409614067";
+    const char *expected = "89324102234690160476";
+    char *parsed;
+    GError *error = NULL;
+
+    parsed = mm_3gpp_parse_iccid (raw_iccid, &error);
+    g_assert_no_error (error);
+    g_assert_cmpstr (parsed, ==, expected);
+}
+
+static void
+test_iccid_parse_unquoted_unswapped_19_digit (void *f, gpointer d)
+{
+    const char *raw_iccid = "8944200053671052499F";
+    const char *expected = "8944200053671052499";
+    char *parsed;
+    GError *error = NULL;
+
+    parsed = mm_3gpp_parse_iccid (raw_iccid, &error);
+    g_assert_no_error (error);
+    g_assert_cmpstr (parsed, ==, expected);
+}
+
+static void
+test_iccid_parse_quoted_unswapped_20_digit (void *f, gpointer d)
+{
+    const char *raw_iccid = "\"89324102234690160476\"";
+    const char *expected = "89324102234690160476";
+    char *parsed;
+    GError *error = NULL;
+
+    parsed = mm_3gpp_parse_iccid (raw_iccid, &error);
+    g_assert_no_error (error);
+    g_assert_cmpstr (parsed, ==, expected);
+}
+
+static void
+test_iccid_parse_short (void *f, gpointer d)
+{
+    const char *raw_iccid = "982314203264096";
+    char *parsed;
+    GError *error = NULL;
+
+    parsed = mm_3gpp_parse_iccid (raw_iccid, &error);
+    g_assert_error (error, MM_CORE_ERROR, MM_CORE_ERROR_FAILED);
+}
+
+static void
+test_iccid_parse_invalid_chars (void *f, gpointer d)
+{
+    const char *raw_iccid = "98231420326ab9614067";
+    char *parsed;
+    GError *error = NULL;
+
+    parsed = mm_3gpp_parse_iccid (raw_iccid, &error);
+    g_assert_error (error, MM_CORE_ERROR, MM_CORE_ERROR_FAILED);
+}
+
+static void
+test_iccid_parse_quoted_invalid_mii (void *f, gpointer d)
+{
+    const char *raw_iccid = "\"0044200053671052499\"";
+    char *parsed;
+    GError *error = NULL;
+
+    parsed = mm_3gpp_parse_iccid (raw_iccid, &error);
+    g_assert_error (error, MM_CORE_ERROR, MM_CORE_ERROR_FAILED);
+}
+
+static void
+test_iccid_parse_unquoted_invalid_mii (void *f, gpointer d)
+{
+    const char *raw_iccid = "0044200053671052499";
+    char *parsed;
+    GError *error = NULL;
+
+    parsed = mm_3gpp_parse_iccid (raw_iccid, &error);
+    g_assert_error (error, MM_CORE_ERROR, MM_CORE_ERROR_FAILED);
+}
+
+/*****************************************************************************/
 /* Test CGDCONT test responses */
 
 static void
@@ -1546,6 +1705,20 @@ test_cgdcont_test_response_multiple_and_ignore (void *f, gpointer d)
     };
 
     test_cgdcont_test_results ("Multiple and Ignore", reply, &expected[0], G_N_ELEMENTS (expected));
+}
+
+static void
+test_cgdcont_test_response_single_context (void *f, gpointer d)
+{
+    const gchar *reply =
+        "+CGDCONT: (1),\"IP\",,,(0),(0)\r\n"
+        "+CGDCONT: (1),\"IPV6\",,,(0),(0)\r\n";
+    static MM3gppPdpContextFormat expected[] = {
+        { 1, 1, MM_BEARER_IP_FAMILY_IPV4 },
+        { 1, 1, MM_BEARER_IP_FAMILY_IPV6 }
+    };
+
+    test_cgdcont_test_results ("Single Context", reply, &expected[0], G_N_ELEMENTS (expected));
 }
 
 /*****************************************************************************/
@@ -2158,7 +2331,17 @@ _mm_log (const char *loc,
          const char *fmt,
          ...)
 {
+#if defined ENABLE_TEST_MESSAGE_TRACES
     /* Dummy log function */
+    va_list args;
+    gchar *msg;
+
+    va_start (args, fmt);
+    msg = g_strdup_vprintf (fmt, args);
+    va_end (args);
+    g_print ("%s\n", msg);
+    g_free (msg);
+#endif
 }
 
 #define TESTCASE(t, d) g_test_create_case (#t, 0, d, NULL, (GTestFixtureFunc) t, NULL)
@@ -2222,6 +2405,10 @@ int main (int argc, char **argv)
     g_test_suite_add (suite, TESTCASE (test_creg2_s8500_wave_unsolicited, reg_data));
     g_test_suite_add (suite, TESTCASE (test_creg2_gobi_weird_solicited, reg_data));
     g_test_suite_add (suite, TESTCASE (test_creg2_iridium_solicited, reg_data));
+    g_test_suite_add (suite, TESTCASE (test_creg2_no_leading_zeros_solicited, reg_data));
+    g_test_suite_add (suite, TESTCASE (test_creg2_leading_zeros_solicited, reg_data));
+    g_test_suite_add (suite, TESTCASE (test_creg2_no_leading_zeros_unsolicited, reg_data));
+    g_test_suite_add (suite, TESTCASE (test_creg2_leading_zeros_unsolicited, reg_data));
 
     g_test_suite_add (suite, TESTCASE (test_cgreg1_solicited, reg_data));
     g_test_suite_add (suite, TESTCASE (test_cgreg1_unsolicited, reg_data));
@@ -2235,6 +2422,8 @@ int main (int argc, char **argv)
     g_test_suite_add (suite, TESTCASE (test_cereg1_unsolicited, reg_data));
     g_test_suite_add (suite, TESTCASE (test_cereg2_solicited, reg_data));
     g_test_suite_add (suite, TESTCASE (test_cereg2_unsolicited, reg_data));
+    g_test_suite_add (suite, TESTCASE (test_cereg2_altair_lte_solicited, reg_data));
+    g_test_suite_add (suite, TESTCASE (test_cereg2_altair_lte_unsolicited, reg_data));
     g_test_suite_add (suite, TESTCASE (test_cereg2_novatel_lte_solicited, reg_data));
     g_test_suite_add (suite, TESTCASE (test_cereg2_novatel_lte_unsolicited, reg_data));
 
@@ -2249,6 +2438,15 @@ int main (int argc, char **argv)
     g_test_suite_add (suite, TESTCASE (test_cind_response_linktop_lw273, NULL));
     g_test_suite_add (suite, TESTCASE (test_cind_response_moto_v3m, NULL));
 
+    g_test_suite_add (suite, TESTCASE (test_iccid_parse_quoted_swap_19_digit, NULL));
+    g_test_suite_add (suite, TESTCASE (test_iccid_parse_unquoted_swap_20_digit, NULL));
+    g_test_suite_add (suite, TESTCASE (test_iccid_parse_unquoted_unswapped_19_digit, NULL));
+    g_test_suite_add (suite, TESTCASE (test_iccid_parse_quoted_unswapped_20_digit, NULL));
+    g_test_suite_add (suite, TESTCASE (test_iccid_parse_short, NULL));
+    g_test_suite_add (suite, TESTCASE (test_iccid_parse_invalid_chars, NULL));
+    g_test_suite_add (suite, TESTCASE (test_iccid_parse_quoted_invalid_mii, NULL));
+    g_test_suite_add (suite, TESTCASE (test_iccid_parse_unquoted_invalid_mii, NULL));
+
     while (item->devid) {
         g_test_suite_add (suite, TESTCASE (test_devid_item, (gconstpointer) item));
         item++;
@@ -2259,6 +2457,7 @@ int main (int argc, char **argv)
     g_test_suite_add (suite, TESTCASE (test_cgdcont_test_response_single, NULL));
     g_test_suite_add (suite, TESTCASE (test_cgdcont_test_response_multiple, NULL));
     g_test_suite_add (suite, TESTCASE (test_cgdcont_test_response_multiple_and_ignore, NULL));
+    g_test_suite_add (suite, TESTCASE (test_cgdcont_test_response_single_context, NULL));
 
 	g_test_suite_add (suite, TESTCASE (test_cgdcont_read_response_nokia, NULL));
 	g_test_suite_add (suite, TESTCASE (test_cgdcont_read_response_samsung, NULL));

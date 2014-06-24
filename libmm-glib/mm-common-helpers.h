@@ -59,6 +59,14 @@ MMBearerAllowedAuth   mm_common_get_allowed_auth_from_string (const gchar *str,
                                                               GError **error);
 MMSmsStorage          mm_common_get_sms_storage_from_string  (const gchar *str,
                                                               GError **error);
+MMSmsCdmaTeleserviceId   mm_common_get_sms_cdma_teleservice_id_from_string   (const gchar *str,
+                                                                              GError **error);
+MMSmsCdmaServiceCategory mm_common_get_sms_cdma_service_category_from_string (const gchar *str,
+                                                                              GError **error);
+MMOmaFeature          mm_common_get_oma_features_from_string (const gchar *str,
+                                                              GError **error);
+MMOmaSessionType      mm_common_get_oma_session_type_from_string (const gchar *str,
+                                                                  GError **error);
 
 GArray          *mm_common_ports_variant_to_garray (GVariant *variant);
 MMModemPortInfo *mm_common_ports_variant_to_array  (GVariant *variant,
@@ -102,6 +110,14 @@ GVariant          *mm_common_capability_combinations_array_to_variant  (const MM
 GVariant          *mm_common_capability_combinations_garray_to_variant (GArray *array);
 GVariant          *mm_common_build_capability_combinations_any         (void);
 GVariant          *mm_common_build_capability_combinations_none        (void);
+
+GArray                              *mm_common_oma_pending_network_initiated_sessions_variant_to_garray (GVariant *variant);
+MMOmaPendingNetworkInitiatedSession *mm_common_oma_pending_network_initiated_sessions_variant_to_array  (GVariant *variant,
+                                                                                                         guint *n_modes);
+GVariant                            *mm_common_oma_pending_network_initiated_sessions_array_to_variant  (const MMOmaPendingNetworkInitiatedSession *modes,
+                                                                                                         guint n_modes);
+GVariant                            *mm_common_oma_pending_network_initiated_sessions_garray_to_variant (GArray *array);
+GVariant                            *mm_common_build_oma_pending_network_initiated_sessions_default     (void);
 
 typedef gboolean (*MMParseKeyValueForeachFn) (const gchar *key,
                                               const gchar *value,

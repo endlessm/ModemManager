@@ -8,7 +8,7 @@
 <link rel="up" href="ref-common-types.html" title="Part II. Common types and definitions">
 <link rel="prev" href="ModemManager-Flags-and-Enumerations.html" title="Flags and Enumerations">
 <link rel="next" href="ref-dbus.html" title="Part III. D-Bus Reference">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -408,23 +408,23 @@ Enumeration of message errors, as defined in 3GPP TS 27.005 version 10 section 3
     MM_MOBILE_EQUIPMENT_ERROR_CORP_PUK             = 47,  /*&lt; nick=CorpPuk &gt;*/
     MM_MOBILE_EQUIPMENT_ERROR_UNKNOWN              = 100, /*&lt; nick=Unknown &gt;*/
     /* GPRS related errors */
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_IMSI_UNKNOWN_IN_HLR           = 102, /*&lt; nick=Gprs.ImsiUnknownInHlr           &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_ILLEGAL_MS                    = 103, /*&lt; nick=Gprs.IllegalMs                  &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_IMSI_UNKNOWN_IN_VLR           = 104, /*&lt; nick=Gprs.ImsiUnknownInVlr           &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_ILLEGAL_ME                    = 106, /*&lt; nick=Gprs.IllegalMe                  &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_NOT_ALLOWED           = 107, /*&lt; nick=Gprs.ServiceNotAllowed          &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_PLMN_NOT_ALLOWED              = 111, /*&lt; nick=Gprs.PlmnNotAllowed             &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_LOCATION_NOT_ALLOWED          = 112, /*&lt; nick=Gprs.LocationNotAllowed         &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_ROAMING_NOT_ALLOWED           = 113, /*&lt; nick=Gprs.RomaingNotAllowed          &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_NO_CELLS_IN_LOCATION_AREA     = 115, /*&lt; nick=Gprs.NoCellsInLocationArea      &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_NETWORK_FAILURE               = 117, /*&lt; nick=Gprs.NetworkFailure             &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_CONGESTION                    = 122, /*&lt; nick=Gprs.Congestion                 &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_OPTION_NOT_SUPPORTED  = 132, /*&lt; nick=Gprs.ServiceOptionNotSupported  &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_OPTION_NOT_SUBSCRIBED = 133, /*&lt; nick=Gprs.ServiceOptionNotSubscribed &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_OPTION_OUT_OF_ORDER   = 134, /*&lt; nick=Gprs.ServiceOptionOutOfOrder    &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_UNKNOWN                       = 148, /*&lt; nick=Gprs.Unknown                    &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_PDP_AUTH_FAILURE              = 149, /*&lt; nick=Gprs.PdpAuthFailure             &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_INVALID_MOBILE_CLASS          = 150, /*&lt; nick=Gprs.InvalidMobileClass         &gt;*/
+    MM_MOBILE_EQUIPMENT_ERROR_GPRS_IMSI_UNKNOWN_IN_HLR           = 102, /*&lt; nick=GprsImsiUnknownInHlr           &gt;*/
+    MM_MOBILE_EQUIPMENT_ERROR_GPRS_ILLEGAL_MS                    = 103, /*&lt; nick=GprsIllegalMs                  &gt;*/
+    MM_MOBILE_EQUIPMENT_ERROR_GPRS_IMSI_UNKNOWN_IN_VLR           = 104, /*&lt; nick=GprsImsiUnknownInVlr           &gt;*/
+    MM_MOBILE_EQUIPMENT_ERROR_GPRS_ILLEGAL_ME                    = 106, /*&lt; nick=GprsIllegalMe                  &gt;*/
+    MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_NOT_ALLOWED           = 107, /*&lt; nick=GprsServiceNotAllowed          &gt;*/
+    MM_MOBILE_EQUIPMENT_ERROR_GPRS_PLMN_NOT_ALLOWED              = 111, /*&lt; nick=GprsPlmnNotAllowed             &gt;*/
+    MM_MOBILE_EQUIPMENT_ERROR_GPRS_LOCATION_NOT_ALLOWED          = 112, /*&lt; nick=GprsLocationNotAllowed         &gt;*/
+    MM_MOBILE_EQUIPMENT_ERROR_GPRS_ROAMING_NOT_ALLOWED           = 113, /*&lt; nick=GprsRomaingNotAllowed          &gt;*/
+    MM_MOBILE_EQUIPMENT_ERROR_GPRS_NO_CELLS_IN_LOCATION_AREA     = 115, /*&lt; nick=GprsNoCellsInLocationArea      &gt;*/
+    MM_MOBILE_EQUIPMENT_ERROR_GPRS_NETWORK_FAILURE               = 117, /*&lt; nick=GprsNetworkFailure             &gt;*/
+    MM_MOBILE_EQUIPMENT_ERROR_GPRS_CONGESTION                    = 122, /*&lt; nick=GprsCongestion                 &gt;*/
+    MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_OPTION_NOT_SUPPORTED  = 132, /*&lt; nick=GprsServiceOptionNotSupported  &gt;*/
+    MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_OPTION_NOT_SUBSCRIBED = 133, /*&lt; nick=GprsServiceOptionNotSubscribed &gt;*/
+    MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_OPTION_OUT_OF_ORDER   = 134, /*&lt; nick=GprsServiceOptionOutOfOrder    &gt;*/
+    MM_MOBILE_EQUIPMENT_ERROR_GPRS_UNKNOWN                       = 148, /*&lt; nick=GprsUnknown                    &gt;*/
+    MM_MOBILE_EQUIPMENT_ERROR_GPRS_PDP_AUTH_FAILURE              = 149, /*&lt; nick=GprsPdpAuthFailure             &gt;*/
+    MM_MOBILE_EQUIPMENT_ERROR_GPRS_INVALID_MOBILE_CLASS          = 150, /*&lt; nick=GprsInvalidMobileClass         &gt;*/
 } MMMobileEquipmentError;
 </pre>
 <p>
@@ -859,6 +859,6 @@ CDMA Activation errors.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

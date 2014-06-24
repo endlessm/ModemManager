@@ -8,7 +8,7 @@
 <link rel="up" href="ch01.html" title="Common enums and flags helpers">
 <link rel="prev" href="ch01.html" title="Common enums and flags helpers">
 <link rel="next" href="ch02.html" title="The Manager object">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -37,49 +37,61 @@
 </tr></table></div>
 <div class="refsynopsisdiv">
 <a name="libmm-glib-Flags-and-Enumerations.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-bearer-ip-method-get-string" title="mm_bearer_ip_method_get_string ()">mm_bearer_ip_method_get_string</a>      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpMethod"><span class="type">MMBearerIpMethod</span></a> val</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-bearer-ip-family-get-string" title="mm_bearer_ip_family_get_string ()">mm_bearer_ip_family_get_string</a>      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="type">MMBearerIpFamily</span></a> val</code></em>);
+<pre class="synopsis">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-bearer-ip-method-get-string" title="mm_bearer_ip_method_get_string ()">mm_bearer_ip_method_get_string</a>      (<em class="parameter"><code><span class="type">MMBearerIpMethod</span> val</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-bearer-ip-family-get-string" title="mm_bearer_ip_family_get_string ()">mm_bearer_ip_family_get_string</a>      (<em class="parameter"><code><span class="type">MMBearerIpFamily</span> val</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-bearer-allowed-auth-build-string-from-mask" title="mm_bearer_allowed_auth_build_string_from_mask ()">mm_bearer_allowed_auth_build_string_from_mask</a>
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth"><span class="type">MMBearerAllowedAuth</span></a> mask</code></em>);
+                                                        (<em class="parameter"><code><span class="type">MMBearerAllowedAuth</span> mask</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-capability-build-string-from-mask" title="mm_modem_capability_build_string_from_mask ()">mm_modem_capability_build_string_from_mask</a>
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> mask</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-state-get-string" title="mm_modem_state_get_string ()">mm_modem_state_get_string</a>           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemState"><span class="type">MMModemState</span></a> val</code></em>);
+                                                        (<em class="parameter"><code><span class="type">MMModemCapability</span> mask</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-state-get-string" title="mm_modem_state_get_string ()">mm_modem_state_get_string</a>           (<em class="parameter"><code><span class="type">MMModemState</span> val</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-state-failed-reason-get-string" title="mm_modem_state_failed_reason_get_string ()">mm_modem_state_failed_reason_get_string</a>
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemStateFailedReason"><span class="type">MMModemStateFailedReason</span></a> val</code></em>);
+                                                        (<em class="parameter"><code><span class="type">MMModemStateFailedReason</span> val</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-state-change-reason-get-string" title="mm_modem_state_change_reason_get_string ()">mm_modem_state_change_reason_get_string</a>
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemStateChangeReason"><span class="type">MMModemStateChangeReason</span></a> val</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-power-state-get-string" title="mm_modem_power_state_get_string ()">mm_modem_power_state_get_string</a>     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="type">MMModemPowerState</span></a> val</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-lock-get-string" title="mm_modem_lock_get_string ()">mm_modem_lock_get_string</a>            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a> val</code></em>);
+                                                        (<em class="parameter"><code><span class="type">MMModemStateChangeReason</span> val</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-power-state-get-string" title="mm_modem_power_state_get_string ()">mm_modem_power_state_get_string</a>     (<em class="parameter"><code><span class="type">MMModemPowerState</span> val</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-lock-get-string" title="mm_modem_lock_get_string ()">mm_modem_lock_get_string</a>            (<em class="parameter"><code><span class="type">MMModemLock</span> val</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-access-technology-build-string-from-mask" title="mm_modem_access_technology_build_string_from_mask ()">mm_modem_access_technology_build_string_from_mask</a>
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"><span class="type">MMModemAccessTechnology</span></a> mask</code></em>);
+                                                        (<em class="parameter"><code><span class="type">MMModemAccessTechnology</span> mask</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-mode-build-string-from-mask" title="mm_modem_mode_build_string_from_mask ()">mm_modem_mode_build_string_from_mask</a>
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> mask</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-band-get-string" title="mm_modem_band_get_string ()">mm_modem_band_get_string</a>            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> val</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-port-type-get-string" title="mm_modem_port_type_get_string ()">mm_modem_port_type_get_string</a>       (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPortType"><span class="type">MMModemPortType</span></a> val</code></em>);
+                                                        (<em class="parameter"><code><span class="type">MMModemMode</span> mask</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-band-get-string" title="mm_modem_band_get_string ()">mm_modem_band_get_string</a>            (<em class="parameter"><code><span class="type">MMModemBand</span> val</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-port-type-get-string" title="mm_modem_port_type_get_string ()">mm_modem_port_type_get_string</a>       (<em class="parameter"><code><span class="type">MMModemPortType</span> val</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-3gpp-registration-state-get-string" title="mm_modem_3gpp_registration_state_get_string ()">mm_modem_3gpp_registration_state_get_string</a>
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState"><span class="type">MMModem3gppRegistrationState</span></a> val</code></em>);
+                                                        (<em class="parameter"><code><span class="type">MMModem3gppRegistrationState</span> val</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-3gpp-subscription-state-get-string" title="mm_modem_3gpp_subscription_state_get_string ()">mm_modem_3gpp_subscription_state_get_string</a>
+                                                        (<em class="parameter"><code><span class="type">MMModem3gppSubscriptionState</span> val</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-3gpp-facility-build-string-from-mask" title="mm_modem_3gpp_facility_build_string_from_mask ()">mm_modem_3gpp_facility_build_string_from_mask</a>
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppFacility"><span class="type">MMModem3gppFacility</span></a> mask</code></em>);
+                                                        (<em class="parameter"><code><span class="type">MMModem3gppFacility</span> mask</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-3gpp-network-availability-get-string" title="mm_modem_3gpp_network_availability_get_string ()">mm_modem_3gpp_network_availability_get_string</a>
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppNetworkAvailability"><span class="type">MMModem3gppNetworkAvailability</span></a> val</code></em>);
+                                                        (<em class="parameter"><code><span class="type">MMModem3gppNetworkAvailability</span> val</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-3gpp-ussd-session-state-get-string" title="mm_modem_3gpp_ussd_session_state_get_string ()">mm_modem_3gpp_ussd_session_state_get_string</a>
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppUssdSessionState"><span class="type">MMModem3gppUssdSessionState</span></a> val</code></em>);
+                                                        (<em class="parameter"><code><span class="type">MMModem3gppUssdSessionState</span> val</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-cdma-registration-state-get-string" title="mm_modem_cdma_registration_state_get_string ()">mm_modem_cdma_registration_state_get_string</a>
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a> val</code></em>);
+                                                        (<em class="parameter"><code><span class="type">MMModemCdmaRegistrationState</span> val</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-cdma-activation-state-get-string" title="mm_modem_cdma_activation_state_get_string ()">mm_modem_cdma_activation_state_get_string</a>
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaActivationState"><span class="type">MMModemCdmaActivationState</span></a> val</code></em>);
+                                                        (<em class="parameter"><code><span class="type">MMModemCdmaActivationState</span> val</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-cdma-rm-protocol-get-string" title="mm_modem_cdma_rm_protocol_get_string ()">mm_modem_cdma_rm_protocol_get_string</a>
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRmProtocol"><span class="type">MMModemCdmaRmProtocol</span></a> val</code></em>);
+                                                        (<em class="parameter"><code><span class="type">MMModemCdmaRmProtocol</span> val</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-location-source-build-string-from-mask" title="mm_modem_location_source_build_string_from_mask ()">mm_modem_location_source_build_string_from_mask</a>
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLocationSource"><span class="type">MMModemLocationSource</span></a> mask</code></em>);
+                                                        (<em class="parameter"><code><span class="type">MMModemLocationSource</span> mask</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-modem-contacts-storage-get-string" title="mm_modem_contacts_storage_get_string ()">mm_modem_contacts_storage_get_string</a>
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemContactsStorage"><span class="type">MMModemContactsStorage</span></a> val</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-sms-pdu-type-get-string" title="mm_sms_pdu_type_get_string ()">mm_sms_pdu_type_get_string</a>          (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsPduType"><span class="type">MMSmsPduType</span></a> val</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-sms-state-get-string" title="mm_sms_state_get_string ()">mm_sms_state_get_string</a>             (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsState"><span class="type">MMSmsState</span></a> val</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-sms-delivery-state-get-string" title="mm_sms_delivery_state_get_string ()">mm_sms_delivery_state_get_string</a>    (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsDeliveryState"><span class="type">MMSmsDeliveryState</span></a> val</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-sms-storage-get-string" title="mm_sms_storage_get_string ()">mm_sms_storage_get_string</a>           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a> val</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-sms-validity-type-get-string" title="mm_sms_validity_type_get_string ()">mm_sms_validity_type_get_string</a>     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsValidityType"><span class="type">MMSmsValidityType</span></a> val</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-firmware-image-type-get-string" title="mm_firmware_image_type_get_string ()">mm_firmware_image_type_get_string</a>   (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMFirmwareImageType"><span class="type">MMFirmwareImageType</span></a> val</code></em>);
+                                                        (<em class="parameter"><code><span class="type">MMModemContactsStorage</span> val</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-sms-pdu-type-get-string" title="mm_sms_pdu_type_get_string ()">mm_sms_pdu_type_get_string</a>          (<em class="parameter"><code><span class="type">MMSmsPduType</span> val</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-sms-state-get-string" title="mm_sms_state_get_string ()">mm_sms_state_get_string</a>             (<em class="parameter"><code><span class="type">MMSmsState</span> val</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-sms-delivery-state-get-string" title="mm_sms_delivery_state_get_string ()">mm_sms_delivery_state_get_string</a>    (<em class="parameter"><code><span class="type">MMSmsDeliveryState</span> val</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-sms-storage-get-string" title="mm_sms_storage_get_string ()">mm_sms_storage_get_string</a>           (<em class="parameter"><code><span class="type">MMSmsStorage</span> val</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-sms-validity-type-get-string" title="mm_sms_validity_type_get_string ()">mm_sms_validity_type_get_string</a>     (<em class="parameter"><code><span class="type">MMSmsValidityType</span> val</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-sms-cdma-teleservice-id-get-string" title="mm_sms_cdma_teleservice_id_get_string ()">mm_sms_cdma_teleservice_id_get_string</a>
+                                                        (<em class="parameter"><code><span class="type">MMSmsCdmaTeleserviceId</span> val</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-sms-cdma-service-category-get-string" title="mm_sms_cdma_service_category_get_string ()">mm_sms_cdma_service_category_get_string</a>
+                                                        (<em class="parameter"><code><span class="type">MMSmsCdmaServiceCategory</span> val</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-firmware-image-type-get-string" title="mm_firmware_image_type_get_string ()">mm_firmware_image_type_get_string</a>   (<em class="parameter"><code><span class="type">MMFirmwareImageType</span> val</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-oma-feature-build-string-from-mask" title="mm_oma_feature_build_string_from_mask ()">mm_oma_feature_build_string_from_mask</a>
+                                                        (<em class="parameter"><code><span class="type">MMOmaFeature</span> mask</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-oma-session-type-get-string" title="mm_oma_session_type_get_string ()">mm_oma_session_type_get_string</a>      (<em class="parameter"><code><span class="type">MMOmaSessionType</span> val</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-oma-session-state-get-string" title="mm_oma_session_state_get_string ()">mm_oma_session_state_get_string</a>     (<em class="parameter"><code><span class="type">MMOmaSessionState</span> val</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-oma-session-state-failed-reason-get-string" title="mm_oma_session_state_failed_reason_get_string ()">mm_oma_session_state_failed_reason_get_string</a>
+                                                        (<em class="parameter"><code><span class="type">MMOmaSessionStateFailedReason</span> val</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -91,9 +103,9 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <a name="libmm-glib-Flags-and-Enumerations.details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="mm-bearer-ip-method-get-string"></a><h3>mm_bearer_ip_method_get_string ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_bearer_ip_method_get_string      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpMethod"><span class="type">MMBearerIpMethod</span></a> val</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_bearer_ip_method_get_string      (<em class="parameter"><code><span class="type">MMBearerIpMethod</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpMethod"><span class="type">MMBearerIpMethod</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMBearerIpMethod</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -116,9 +128,9 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <hr>
 <div class="refsect2">
 <a name="mm-bearer-ip-family-get-string"></a><h3>mm_bearer_ip_family_get_string ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_bearer_ip_family_get_string      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="type">MMBearerIpFamily</span></a> val</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_bearer_ip_family_get_string      (<em class="parameter"><code><span class="type">MMBearerIpFamily</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="type">MMBearerIpFamily</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMBearerIpFamily</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -142,10 +154,10 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <div class="refsect2">
 <a name="mm-bearer-allowed-auth-build-string-from-mask"></a><h3>mm_bearer_allowed_auth_build_string_from_mask ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_bearer_allowed_auth_build_string_from_mask
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth"><span class="type">MMBearerAllowedAuth</span></a> mask</code></em>);</pre>
+                                                        (<em class="parameter"><code><span class="type">MMBearerAllowedAuth</span> mask</code></em>);</pre>
 <p>
 Builds a string containing a comma-separated list of nicknames for
-each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth"><span class="type">MMBearerAllowedAuth</span></a> in <em class="parameter"><code>mask</code></em>.
+each <span class="type">MMBearerAllowedAuth</span> in <em class="parameter"><code>mask</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -169,10 +181,10 @@ each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumer
 <div class="refsect2">
 <a name="mm-modem-capability-build-string-from-mask"></a><h3>mm_modem_capability_build_string_from_mask ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_modem_capability_build_string_from_mask
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> mask</code></em>);</pre>
+                                                        (<em class="parameter"><code><span class="type">MMModemCapability</span> mask</code></em>);</pre>
 <p>
 Builds a string containing a comma-separated list of nicknames for
-each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> in <em class="parameter"><code>mask</code></em>.
+each <span class="type">MMModemCapability</span> in <em class="parameter"><code>mask</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -195,9 +207,9 @@ each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumer
 <hr>
 <div class="refsect2">
 <a name="mm-modem-state-get-string"></a><h3>mm_modem_state_get_string ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_state_get_string           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemState"><span class="type">MMModemState</span></a> val</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_state_get_string           (<em class="parameter"><code><span class="type">MMModemState</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemState"><span class="type">MMModemState</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMModemState</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -221,9 +233,9 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <div class="refsect2">
 <a name="mm-modem-state-failed-reason-get-string"></a><h3>mm_modem_state_failed_reason_get_string ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_state_failed_reason_get_string
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemStateFailedReason"><span class="type">MMModemStateFailedReason</span></a> val</code></em>);</pre>
+                                                        (<em class="parameter"><code><span class="type">MMModemStateFailedReason</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemStateFailedReason"><span class="type">MMModemStateFailedReason</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMModemStateFailedReason</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -247,9 +259,9 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <div class="refsect2">
 <a name="mm-modem-state-change-reason-get-string"></a><h3>mm_modem_state_change_reason_get_string ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_state_change_reason_get_string
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemStateChangeReason"><span class="type">MMModemStateChangeReason</span></a> val</code></em>);</pre>
+                                                        (<em class="parameter"><code><span class="type">MMModemStateChangeReason</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemStateChangeReason"><span class="type">MMModemStateChangeReason</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMModemStateChangeReason</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -272,9 +284,9 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <hr>
 <div class="refsect2">
 <a name="mm-modem-power-state-get-string"></a><h3>mm_modem_power_state_get_string ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_power_state_get_string     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="type">MMModemPowerState</span></a> val</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_power_state_get_string     (<em class="parameter"><code><span class="type">MMModemPowerState</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="type">MMModemPowerState</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMModemPowerState</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -297,9 +309,9 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <hr>
 <div class="refsect2">
 <a name="mm-modem-lock-get-string"></a><h3>mm_modem_lock_get_string ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_lock_get_string            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a> val</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_lock_get_string            (<em class="parameter"><code><span class="type">MMModemLock</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMModemLock</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -323,10 +335,10 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <div class="refsect2">
 <a name="mm-modem-access-technology-build-string-from-mask"></a><h3>mm_modem_access_technology_build_string_from_mask ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_modem_access_technology_build_string_from_mask
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"><span class="type">MMModemAccessTechnology</span></a> mask</code></em>);</pre>
+                                                        (<em class="parameter"><code><span class="type">MMModemAccessTechnology</span> mask</code></em>);</pre>
 <p>
 Builds a string containing a comma-separated list of nicknames for
-each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"><span class="type">MMModemAccessTechnology</span></a> in <em class="parameter"><code>mask</code></em>.
+each <span class="type">MMModemAccessTechnology</span> in <em class="parameter"><code>mask</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -350,10 +362,10 @@ each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumer
 <div class="refsect2">
 <a name="mm-modem-mode-build-string-from-mask"></a><h3>mm_modem_mode_build_string_from_mask ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_modem_mode_build_string_from_mask
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> mask</code></em>);</pre>
+                                                        (<em class="parameter"><code><span class="type">MMModemMode</span> mask</code></em>);</pre>
 <p>
 Builds a string containing a comma-separated list of nicknames for
-each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> in <em class="parameter"><code>mask</code></em>.
+each <span class="type">MMModemMode</span> in <em class="parameter"><code>mask</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -376,9 +388,9 @@ each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumer
 <hr>
 <div class="refsect2">
 <a name="mm-modem-band-get-string"></a><h3>mm_modem_band_get_string ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_band_get_string            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> val</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_band_get_string            (<em class="parameter"><code><span class="type">MMModemBand</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMModemBand</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -401,9 +413,9 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <hr>
 <div class="refsect2">
 <a name="mm-modem-port-type-get-string"></a><h3>mm_modem_port_type_get_string ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_port_type_get_string       (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPortType"><span class="type">MMModemPortType</span></a> val</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_port_type_get_string       (<em class="parameter"><code><span class="type">MMModemPortType</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPortType"><span class="type">MMModemPortType</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMModemPortType</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -427,9 +439,9 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <div class="refsect2">
 <a name="mm-modem-3gpp-registration-state-get-string"></a><h3>mm_modem_3gpp_registration_state_get_string ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_3gpp_registration_state_get_string
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState"><span class="type">MMModem3gppRegistrationState</span></a> val</code></em>);</pre>
+                                                        (<em class="parameter"><code><span class="type">MMModem3gppRegistrationState</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState"><span class="type">MMModem3gppRegistrationState</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMModem3gppRegistrationState</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -451,12 +463,38 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 </div>
 <hr>
 <div class="refsect2">
+<a name="mm-modem-3gpp-subscription-state-get-string"></a><h3>mm_modem_3gpp_subscription_state_get_string ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_3gpp_subscription_state_get_string
+                                                        (<em class="parameter"><code><span class="type">MMModem3gppSubscriptionState</span> val</code></em>);</pre>
+<p>
+Gets the nickname string for the <span class="type">MMModem3gppSubscriptionState</span> specified at <em class="parameter"><code>val</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
+<td>a MMModem3gppSubscriptionState.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a string with the nickname, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="mm-modem-3gpp-facility-build-string-from-mask"></a><h3>mm_modem_3gpp_facility_build_string_from_mask ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_modem_3gpp_facility_build_string_from_mask
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppFacility"><span class="type">MMModem3gppFacility</span></a> mask</code></em>);</pre>
+                                                        (<em class="parameter"><code><span class="type">MMModem3gppFacility</span> mask</code></em>);</pre>
 <p>
 Builds a string containing a comma-separated list of nicknames for
-each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppFacility"><span class="type">MMModem3gppFacility</span></a> in <em class="parameter"><code>mask</code></em>.
+each <span class="type">MMModem3gppFacility</span> in <em class="parameter"><code>mask</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -480,9 +518,9 @@ each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumer
 <div class="refsect2">
 <a name="mm-modem-3gpp-network-availability-get-string"></a><h3>mm_modem_3gpp_network_availability_get_string ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_3gpp_network_availability_get_string
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppNetworkAvailability"><span class="type">MMModem3gppNetworkAvailability</span></a> val</code></em>);</pre>
+                                                        (<em class="parameter"><code><span class="type">MMModem3gppNetworkAvailability</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppNetworkAvailability"><span class="type">MMModem3gppNetworkAvailability</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMModem3gppNetworkAvailability</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -506,9 +544,9 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <div class="refsect2">
 <a name="mm-modem-3gpp-ussd-session-state-get-string"></a><h3>mm_modem_3gpp_ussd_session_state_get_string ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_3gpp_ussd_session_state_get_string
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppUssdSessionState"><span class="type">MMModem3gppUssdSessionState</span></a> val</code></em>);</pre>
+                                                        (<em class="parameter"><code><span class="type">MMModem3gppUssdSessionState</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppUssdSessionState"><span class="type">MMModem3gppUssdSessionState</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMModem3gppUssdSessionState</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -532,9 +570,9 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <div class="refsect2">
 <a name="mm-modem-cdma-registration-state-get-string"></a><h3>mm_modem_cdma_registration_state_get_string ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_cdma_registration_state_get_string
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a> val</code></em>);</pre>
+                                                        (<em class="parameter"><code><span class="type">MMModemCdmaRegistrationState</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMModemCdmaRegistrationState</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -558,9 +596,9 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <div class="refsect2">
 <a name="mm-modem-cdma-activation-state-get-string"></a><h3>mm_modem_cdma_activation_state_get_string ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_cdma_activation_state_get_string
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaActivationState"><span class="type">MMModemCdmaActivationState</span></a> val</code></em>);</pre>
+                                                        (<em class="parameter"><code><span class="type">MMModemCdmaActivationState</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaActivationState"><span class="type">MMModemCdmaActivationState</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMModemCdmaActivationState</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -584,9 +622,9 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <div class="refsect2">
 <a name="mm-modem-cdma-rm-protocol-get-string"></a><h3>mm_modem_cdma_rm_protocol_get_string ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_cdma_rm_protocol_get_string
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRmProtocol"><span class="type">MMModemCdmaRmProtocol</span></a> val</code></em>);</pre>
+                                                        (<em class="parameter"><code><span class="type">MMModemCdmaRmProtocol</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRmProtocol"><span class="type">MMModemCdmaRmProtocol</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMModemCdmaRmProtocol</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -610,10 +648,10 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <div class="refsect2">
 <a name="mm-modem-location-source-build-string-from-mask"></a><h3>mm_modem_location_source_build_string_from_mask ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_modem_location_source_build_string_from_mask
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLocationSource"><span class="type">MMModemLocationSource</span></a> mask</code></em>);</pre>
+                                                        (<em class="parameter"><code><span class="type">MMModemLocationSource</span> mask</code></em>);</pre>
 <p>
 Builds a string containing a comma-separated list of nicknames for
-each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLocationSource"><span class="type">MMModemLocationSource</span></a> in <em class="parameter"><code>mask</code></em>.
+each <span class="type">MMModemLocationSource</span> in <em class="parameter"><code>mask</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -637,9 +675,9 @@ each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumer
 <div class="refsect2">
 <a name="mm-modem-contacts-storage-get-string"></a><h3>mm_modem_contacts_storage_get_string ()</h3>
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_contacts_storage_get_string
-                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemContactsStorage"><span class="type">MMModemContactsStorage</span></a> val</code></em>);</pre>
+                                                        (<em class="parameter"><code><span class="type">MMModemContactsStorage</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemContactsStorage"><span class="type">MMModemContactsStorage</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMModemContactsStorage</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -662,9 +700,9 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <hr>
 <div class="refsect2">
 <a name="mm-sms-pdu-type-get-string"></a><h3>mm_sms_pdu_type_get_string ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sms_pdu_type_get_string          (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsPduType"><span class="type">MMSmsPduType</span></a> val</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sms_pdu_type_get_string          (<em class="parameter"><code><span class="type">MMSmsPduType</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsPduType"><span class="type">MMSmsPduType</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMSmsPduType</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -687,9 +725,9 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <hr>
 <div class="refsect2">
 <a name="mm-sms-state-get-string"></a><h3>mm_sms_state_get_string ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sms_state_get_string             (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsState"><span class="type">MMSmsState</span></a> val</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sms_state_get_string             (<em class="parameter"><code><span class="type">MMSmsState</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsState"><span class="type">MMSmsState</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMSmsState</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -712,9 +750,9 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <hr>
 <div class="refsect2">
 <a name="mm-sms-delivery-state-get-string"></a><h3>mm_sms_delivery_state_get_string ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sms_delivery_state_get_string    (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsDeliveryState"><span class="type">MMSmsDeliveryState</span></a> val</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sms_delivery_state_get_string    (<em class="parameter"><code><span class="type">MMSmsDeliveryState</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsDeliveryState"><span class="type">MMSmsDeliveryState</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMSmsDeliveryState</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -737,9 +775,9 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <hr>
 <div class="refsect2">
 <a name="mm-sms-storage-get-string"></a><h3>mm_sms_storage_get_string ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sms_storage_get_string           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a> val</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sms_storage_get_string           (<em class="parameter"><code><span class="type">MMSmsStorage</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMSmsStorage</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -762,9 +800,9 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 <hr>
 <div class="refsect2">
 <a name="mm-sms-validity-type-get-string"></a><h3>mm_sms_validity_type_get_string ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sms_validity_type_get_string     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsValidityType"><span class="type">MMSmsValidityType</span></a> val</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sms_validity_type_get_string     (<em class="parameter"><code><span class="type">MMSmsValidityType</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsValidityType"><span class="type">MMSmsValidityType</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMSmsValidityType</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -786,10 +824,62 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 </div>
 <hr>
 <div class="refsect2">
-<a name="mm-firmware-image-type-get-string"></a><h3>mm_firmware_image_type_get_string ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_firmware_image_type_get_string   (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMFirmwareImageType"><span class="type">MMFirmwareImageType</span></a> val</code></em>);</pre>
+<a name="mm-sms-cdma-teleservice-id-get-string"></a><h3>mm_sms_cdma_teleservice_id_get_string ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sms_cdma_teleservice_id_get_string
+                                                        (<em class="parameter"><code><span class="type">MMSmsCdmaTeleserviceId</span> val</code></em>);</pre>
 <p>
-Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMFirmwareImageType"><span class="type">MMFirmwareImageType</span></a> specified at <em class="parameter"><code>val</code></em>.
+Gets the nickname string for the <span class="type">MMSmsCdmaTeleserviceId</span> specified at <em class="parameter"><code>val</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
+<td>a MMSmsCdmaTeleserviceId.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a string with the nickname, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sms-cdma-service-category-get-string"></a><h3>mm_sms_cdma_service_category_get_string ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sms_cdma_service_category_get_string
+                                                        (<em class="parameter"><code><span class="type">MMSmsCdmaServiceCategory</span> val</code></em>);</pre>
+<p>
+Gets the nickname string for the <span class="type">MMSmsCdmaServiceCategory</span> specified at <em class="parameter"><code>val</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
+<td>a MMSmsCdmaServiceCategory.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a string with the nickname, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-firmware-image-type-get-string"></a><h3>mm_firmware_image_type_get_string ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_firmware_image_type_get_string   (<em class="parameter"><code><span class="type">MMFirmwareImageType</span> val</code></em>);</pre>
+<p>
+Gets the nickname string for the <span class="type">MMFirmwareImageType</span> specified at <em class="parameter"><code>val</code></em>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -809,10 +899,113 @@ Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/M
 </tbody>
 </table></div>
 </div>
+<hr>
+<div class="refsect2">
+<a name="mm-oma-feature-build-string-from-mask"></a><h3>mm_oma_feature_build_string_from_mask ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_oma_feature_build_string_from_mask
+                                                        (<em class="parameter"><code><span class="type">MMOmaFeature</span> mask</code></em>);</pre>
+<p>
+Builds a string containing a comma-separated list of nicknames for
+each <span class="type">MMOmaFeature</span> in <em class="parameter"><code>mask</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mask</code></em> :</span></p></td>
+<td>bitmask of MMOmaFeature values.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a string with the list of nicknames, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none given. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-oma-session-type-get-string"></a><h3>mm_oma_session_type_get_string ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_oma_session_type_get_string      (<em class="parameter"><code><span class="type">MMOmaSessionType</span> val</code></em>);</pre>
+<p>
+Gets the nickname string for the <span class="type">MMOmaSessionType</span> specified at <em class="parameter"><code>val</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
+<td>a MMOmaSessionType.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a string with the nickname, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-oma-session-state-get-string"></a><h3>mm_oma_session_state_get_string ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_oma_session_state_get_string     (<em class="parameter"><code><span class="type">MMOmaSessionState</span> val</code></em>);</pre>
+<p>
+Gets the nickname string for the <span class="type">MMOmaSessionState</span> specified at <em class="parameter"><code>val</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
+<td>a MMOmaSessionState.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a string with the nickname, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-oma-session-state-failed-reason-get-string"></a><h3>mm_oma_session_state_failed_reason_get_string ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_oma_session_state_failed_reason_get_string
+                                                        (<em class="parameter"><code><span class="type">MMOmaSessionStateFailedReason</span> val</code></em>);</pre>
+<p>
+Gets the nickname string for the <span class="type">MMOmaSessionStateFailedReason</span> specified at <em class="parameter"><code>val</code></em>.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
+<td>a MMOmaSessionStateFailedReason.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a string with the nickname, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

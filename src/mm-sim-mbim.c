@@ -73,7 +73,7 @@ load_sim_identifier_finish (MMSim *self,
 {
     if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
         return NULL;
-    return (gchar *)g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res));
+    return g_strdup ((gchar *)g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res)));
 }
 
 static void
@@ -97,7 +97,7 @@ simid_subscriber_ready_state_ready (MbimDevice *device,
             NULL, /* telephone_numbers_count */
             NULL, /* telephone_numbers */
             &error))
-        g_simple_async_result_set_op_res_gpointer (simple, sim_iccid, NULL);
+        g_simple_async_result_set_op_res_gpointer (simple, sim_iccid, (GDestroyNotify)g_free);
     else
         g_simple_async_result_take_error (simple, error);
 
@@ -141,7 +141,7 @@ load_imsi_finish (MMSim *self,
 {
     if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
         return NULL;
-    return (gchar *)g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res));
+    return g_strdup ((gchar *)g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res)));
 }
 
 static void
@@ -165,7 +165,7 @@ imsi_subscriber_ready_state_ready (MbimDevice *device,
             NULL, /* telephone_numbers_count */
             NULL, /* telephone_numbers */
             &error))
-        g_simple_async_result_set_op_res_gpointer (simple, subscriber_id, NULL);
+        g_simple_async_result_set_op_res_gpointer (simple, subscriber_id, (GDestroyNotify)g_free);
     else
         g_simple_async_result_take_error (simple, error);
 
@@ -195,6 +195,140 @@ load_imsi (MMSim *self,
                          10,
                          NULL,
                          (GAsyncReadyCallback)imsi_subscriber_ready_state_ready,
+                         result);
+    mbim_message_unref (message);
+}
+
+/*****************************************************************************/
+/* Load operator identifier */
+
+static gchar *
+load_operator_identifier_finish (MMSim *self,
+                                 GAsyncResult *res,
+                                 GError **error)
+{
+    MbimProvider *provider;
+
+    if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
+        return NULL;
+
+    provider = (MbimProvider *)g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res));
+    return g_strdup (provider->provider_id);
+}
+
+static void
+load_operator_identifier_ready (MbimDevice *device,
+                                GAsyncResult *res,
+                                GSimpleAsyncResult *simple)
+{
+    MbimMessage *response;
+    GError *error = NULL;
+    MbimProvider *provider;
+
+    response = mbim_device_command_finish (device, res, &error);
+    if (response &&
+        mbim_message_command_done_get_result (response, &error) &&
+        mbim_message_home_provider_response_parse (
+            response,
+            &provider,
+            &error))
+        g_simple_async_result_set_op_res_gpointer (simple, provider, (GDestroyNotify)mbim_provider_free);
+    else
+        g_simple_async_result_take_error (simple, error);
+
+    if (response)
+        mbim_message_unref (response);
+    g_simple_async_result_complete (simple);
+    g_object_unref (simple);
+}
+
+static void
+load_operator_identifier (MMSim *self,
+                          GAsyncReadyCallback callback,
+                          gpointer user_data)
+{
+    MbimDevice *device;
+    MbimMessage *message;
+    GSimpleAsyncResult *result;
+
+    if (!peek_device (self, &device, callback, user_data))
+        return;
+
+    result = g_simple_async_result_new (G_OBJECT (self), callback, user_data, load_operator_identifier);
+
+    message = mbim_message_home_provider_query_new (NULL);
+    mbim_device_command (device,
+                         message,
+                         10,
+                         NULL,
+                         (GAsyncReadyCallback)load_operator_identifier_ready,
+                         result);
+    mbim_message_unref (message);
+}
+
+/*****************************************************************************/
+/* Load operator name */
+
+static gchar *
+load_operator_name_finish (MMSim *self,
+                           GAsyncResult *res,
+                           GError **error)
+{
+    MbimProvider *provider;
+
+    if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
+        return NULL;
+
+    provider = (MbimProvider *)g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res));
+    return g_strdup (provider->provider_name);
+}
+
+static void
+load_operator_name_ready (MbimDevice *device,
+                          GAsyncResult *res,
+                          GSimpleAsyncResult *simple)
+{
+    MbimMessage *response;
+    GError *error = NULL;
+    MbimProvider *provider;
+
+    response = mbim_device_command_finish (device, res, &error);
+    if (response &&
+        mbim_message_command_done_get_result (response, &error) &&
+        mbim_message_home_provider_response_parse (
+            response,
+            &provider,
+            &error))
+        g_simple_async_result_set_op_res_gpointer (simple, provider, (GDestroyNotify)mbim_provider_free);
+    else
+        g_simple_async_result_take_error (simple, error);
+
+    if (response)
+        mbim_message_unref (response);
+    g_simple_async_result_complete (simple);
+    g_object_unref (simple);
+}
+
+static void
+load_operator_name (MMSim *self,
+                    GAsyncReadyCallback callback,
+                    gpointer user_data)
+{
+    MbimDevice *device;
+    MbimMessage *message;
+    GSimpleAsyncResult *result;
+
+    if (!peek_device (self, &device, callback, user_data))
+        return;
+
+    result = g_simple_async_result_new (G_OBJECT (self), callback, user_data, load_operator_name);
+
+    message = mbim_message_home_provider_query_new (NULL);
+    mbim_device_command (device,
+                         message,
+                         10,
+                         NULL,
+                         (GAsyncReadyCallback)load_operator_name_ready,
                          result);
     mbim_message_unref (message);
 }
@@ -594,6 +728,10 @@ mm_sim_mbim_class_init (MMSimMbimClass *klass)
     sim_class->load_sim_identifier_finish = load_sim_identifier_finish;
     sim_class->load_imsi = load_imsi;
     sim_class->load_imsi_finish = load_imsi_finish;
+    sim_class->load_operator_identifier = load_operator_identifier;
+    sim_class->load_operator_identifier_finish = load_operator_identifier_finish;
+    sim_class->load_operator_name = load_operator_name;
+    sim_class->load_operator_name_finish = load_operator_name_finish;
     sim_class->send_pin = send_pin;
     sim_class->send_pin_finish = send_pin_finish;
     sim_class->send_puk = send_puk;
@@ -602,10 +740,4 @@ mm_sim_mbim_class_init (MMSimMbimClass *klass)
     sim_class->enable_pin_finish = enable_pin_finish;
     sim_class->change_pin = change_pin;
     sim_class->change_pin_finish = change_pin_finish;
-
-    /* TODO: use MBIM_CID_HOME_PROVIDER */
-    sim_class->load_operator_identifier = NULL;
-    sim_class->load_operator_identifier_finish = NULL;
-    sim_class->load_operator_name = NULL;
-    sim_class->load_operator_name_finish = NULL;
 }

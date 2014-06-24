@@ -2,7 +2,7 @@ AC_PREREQ([2.63])
 
 dnl The MM version number
 m4_define([mm_major_version], [1])
-m4_define([mm_minor_version], [0])
+m4_define([mm_minor_version], [2])
 m4_define([mm_micro_version], [0])
 m4_define([mm_version],
           [mm_major_version.mm_minor_version.mm_micro_version])
@@ -15,9 +15,9 @@ dnl        If the interface has grown (that is, the new library is compatible
 dnl            with old code), increment a.
 dnl        If the interface has changed in an incompatible way (that is,
 dnl            functions have changed or been removed), then zero a.
-m4_define([mm_glib_lt_current],  [0])
+m4_define([mm_glib_lt_current],  [1])
 m4_define([mm_glib_lt_revision], [0])
-m4_define([mm_glib_lt_age],      [0])
+m4_define([mm_glib_lt_age],      [1])
 
 
 AC_INIT([ModemManager],[mm_version],[modemmanager-devel@lists.freedesktop.org],[ModemManager])
@@ -109,6 +109,17 @@ GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
 AC_SUBST(GLIB_GENMARSHAL)
 GLIB_MKENUMS=`$PKG_CONFIG --variable=glib_mkenums glib-2.0`
 AC_SUBST(GLIB_MKENUMS)
+
+# GObject Introspection
+GOBJECT_INTROSPECTION_CHECK([0.9.6])
+
+# Vala bindings
+VAPIGEN_CHECK(0.18)
+
+# Sanity check
+if test "x$enable_vala" = "xyes" -a ! -f "$VAPIGEN_MAKEFILE"; then
+  AC_MSG_ERROR([Vala bindings enabled but Makefile.vapigen not found. Install vala-devel, or pass --disable-vala])
+fi
 
 # DBus system directory
 AC_ARG_WITH(dbus-sys-dir, AS_HELP_STRING([--with-dbus-sys-dir=DIR], [where D-BUS system.d directory is]))
@@ -211,7 +222,7 @@ AC_ARG_WITH(qmi, AS_HELP_STRING([--without-qmi], [Build without QMI support]), [
 AM_CONDITIONAL(WITH_QMI, test "x$with_qmi" = "xyes")
 case $with_qmi in
     yes)
-        PKG_CHECK_MODULES(QMI, [qmi-glib >= 1.4], [have_qmi=yes],[have_qmi=no])
+        PKG_CHECK_MODULES(QMI, [qmi-glib >= 1.6], [have_qmi=yes],[have_qmi=no])
         if test "x$have_qmi" = "xno"; then
             AC_MSG_ERROR([Couldn't find libqmi-glib. Install it, or otherwise configure using --without-qmi to disable QMI support.])
         else
@@ -265,7 +276,6 @@ data/Makefile
 data/ModemManager.pc
 data/mm-glib.pc
 data/org.freedesktop.ModemManager1.policy.in
-data/org.freedesktop.ModemManager1.service
 include/Makefile
 include/ModemManager-version.h
 build-aux/Makefile
@@ -292,6 +302,7 @@ docs/reference/libmm-glib/version.xml
 libmm-glib/Makefile
 libmm-glib/generated/Makefile
 libmm-glib/tests/Makefile
+vapi/Makefile
 cli/Makefile
 ])
 AC_OUTPUT
@@ -309,6 +320,8 @@ echo "
     systemd unit directory:  ${with_systemdsystemunitdir}
 
     PolicyKit support:       ${with_polkit}
+    GObject Introspection:   ${found_introspection}
+    Vala Bindings:           ${enable_vala}
     Documentation:           ${enable_gtk_doc}
     MBIM support:            ${with_mbim}
     QMI support:             ${with_qmi}

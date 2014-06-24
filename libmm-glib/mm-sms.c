@@ -154,7 +154,7 @@ mm_sms_get_data (MMSms *self,
 /**
  * mm_sms_dup_data:
  * @self: A #MMSms.
- * @data_len: (out) Size of the output data, if any given.
+ * @data_len: (out): Size of the output data, if any given.
  *
  * Gets the message data.
  *
@@ -566,6 +566,42 @@ mm_sms_get_pdu_type (MMSms *self)
     g_return_val_if_fail (MM_IS_SMS (self), MM_SMS_PDU_TYPE_UNKNOWN);
 
     return (MMSmsPduType)mm_gdbus_sms_get_pdu_type (MM_GDBUS_SMS (self));
+}
+
+/*****************************************************************************/
+
+/**
+ * mm_sms_get_teleservice_id:
+ * @self: A #MMSms.
+ *
+ * Gets the 3GPP2 Teleservice ID.
+ *
+ * Returns: a #MMSmsCdmaTeleserviceId.
+ */
+MMSmsCdmaTeleserviceId
+mm_sms_get_teleservice_id (MMSms *self)
+{
+    g_return_val_if_fail (MM_IS_SMS (self), MM_SMS_CDMA_TELESERVICE_ID_UNKNOWN);
+
+    return (MMSmsCdmaTeleserviceId) mm_gdbus_sms_get_teleservice_id (MM_GDBUS_SMS (self));
+}
+
+/*****************************************************************************/
+
+/**
+ * mm_sms_get_service_category:
+ * @self: A #MMSms.
+ *
+ * Gets the 3GPP2 Service Category.
+ *
+ * Returns: a #MMSmsCdmaServiceCategory.
+ */
+MMSmsCdmaServiceCategory
+mm_sms_get_service_category (MMSms *self)
+{
+    g_return_val_if_fail (MM_IS_SMS (self), MM_SMS_CDMA_SERVICE_CATEGORY_UNKNOWN);
+
+    return (MMSmsCdmaServiceCategory) mm_gdbus_sms_get_service_category (MM_GDBUS_SMS (self));
 }
 
 /*****************************************************************************/

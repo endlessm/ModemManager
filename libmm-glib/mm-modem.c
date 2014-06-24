@@ -341,6 +341,45 @@ mm_modem_get_max_active_bearers (MMModem *self)
 /*****************************************************************************/
 
 /**
+ * mm_modem_get_bearer_paths:
+ * @self: A #MMModem.
+ *
+ * Gets the DBus paths of the #MMBearer handled in this #MMModem.
+ *
+ * <warning>The returned value is only valid until the property changes so
+ * it is only safe to use this function on the thread where
+ * @self was constructed. Use mm_modem_dup_bearer_paths() if on another
+ * thread.</warning>
+ *
+ * Returns: (transfer none): The DBus paths of the #MMBearer handled in this #MMModem, or %NULL if none available. Do not free the returned value, it belongs to @self.
+ */
+const gchar * const *
+mm_modem_get_bearer_paths (MMModem *self)
+{
+    g_return_val_if_fail (MM_IS_MODEM (self), NULL);
+
+    return mm_gdbus_modem_get_bearers (MM_GDBUS_MODEM (self));
+}
+
+/**
+ * mm_modem_dup_bearer_paths:
+ * @self: A #MMModem.
+ *
+ * Gets a copy of the DBus paths of the #MMBearer handled in this #MMModem.
+ *
+ * Returns: (transfer full): The DBus paths of the #MMBearer handled in this #MMModem, or %NULL if none available. The returned value should be freed with g_strfreev().
+ */
+gchar **
+mm_modem_dup_bearer_paths (MMModem *self)
+{
+    g_return_val_if_fail (MM_IS_MODEM (self), NULL);
+
+    return mm_gdbus_modem_dup_bearers (MM_GDBUS_MODEM (self));
+}
+
+/*****************************************************************************/
+
+/**
  * mm_modem_get_manufacturer:
  * @self: A #MMModem.
  *
@@ -758,7 +797,7 @@ ensure_internal_ports (MMModem *self,
 /**
  * mm_modem_peek_current_ports:
  * @self: A #MMModem.
- * @ports: (out) (array length=n_ports): Return location for the array of #MMModemPortInfo values. Do not free the returned value, it is owned by @self.
+ * @ports: (out) (array length=n_ports) (transfer none): Return location for the array of #MMModemPortInfo values. Do not free the returned value, it is owned by @self.
  * @n_ports: (out): Return location for the number of values in @ports.
  *
  * Gets the list of ports in the modem.
@@ -986,7 +1025,7 @@ ensure_internal_unlock_retries (MMModem *self,
  * mm_modem_get_unlock_retries() again to get a new #MMUnlockRetries with the
  * new values.</warning>
  *
- * Returns: (transfer full) A #MMUnlockRetries that must be freed with g_object_unref() or %NULL if unknown.
+ * Returns: (transfer full): A #MMUnlockRetries that must be freed with g_object_unref() or %NULL if unknown.
  */
 MMUnlockRetries *
 mm_modem_get_unlock_retries (MMModem *self)
@@ -1013,7 +1052,7 @@ mm_modem_get_unlock_retries (MMModem *self)
  * @self was constructed. Use mm_modem_get_unlock_retries() if on another
  * thread.</warning>
  *
- * Returns: (transfer none) A #MMUnlockRetries. Do not free the returned value, it belongs to @self.
+ * Returns: (transfer none): A #MMUnlockRetries. Do not free the returned value, it belongs to @self.
  */
 MMUnlockRetries *
 mm_modem_peek_unlock_retries (MMModem *self)
@@ -1510,7 +1549,7 @@ mm_modem_get_current_bands (MMModem *self,
 /**
  * mm_modem_peek_current_bands:
  * @self: A #MMModem.
- * @bands: (out) (array length=n_storages): Return location for the array of #MMModemBand values. Do not free the returned value, it is owned by @self.
+ * @bands: (out) (array length=n_bands): Return location for the array of #MMModemBand values. Do not free the returned value, it is owned by @self.
  * @n_bands: (out): Return location for the number of values in @bands.
  *
  * Gets the list of radio frequency and technology bands the #MMModem is currently
@@ -1721,7 +1760,7 @@ bearer_object_list_free (GList *list)
 static void
 list_bearers_context_complete_and_free (ListBearersContext *ctx)
 {
-    g_simple_async_result_complete (ctx->result);
+    g_simple_async_result_complete_in_idle (ctx->result);
 
     g_strfreev (ctx->bearer_paths);
     bearer_object_list_free (ctx->bearer_objects);
@@ -1740,7 +1779,7 @@ list_bearers_context_complete_and_free (ListBearersContext *ctx)
  *
  * Finishes an operation started with mm_modem_list_bearers().
  *
- * Returns: (transfer full): The list of #MMBearer objects, or %NULL if either none found or if @error is set.
+ * Returns: (transfer full) (element-type ModemManager.Modem): The list of #MMBearer objects, or %NULL if either none found or if @error is set.
  */
 GList *
 mm_modem_list_bearers_finish (MMModem *self,
@@ -1816,32 +1855,6 @@ create_next_bearer (ListBearersContext *ctx)
                                 NULL);
 }
 
-static void
-modem_list_bearers_ready (MMModem *self,
-                          GAsyncResult *res,
-                          ListBearersContext *ctx)
-{
-    GError *error = NULL;
-
-    mm_gdbus_modem_call_list_bearers_finish (MM_GDBUS_MODEM (self), &ctx->bearer_paths, res, &error);
-    if (error) {
-        g_simple_async_result_take_error (ctx->result, error);
-        list_bearers_context_complete_and_free (ctx);
-        return;
-    }
-
-    /* If no bearers, just end here. */
-    if (!ctx->bearer_paths || !ctx->bearer_paths[0]) {
-        g_simple_async_result_set_op_res_gpointer (ctx->result, NULL, NULL);
-        list_bearers_context_complete_and_free (ctx);
-        return;
-    }
-
-    /* Got list of paths. If at least one found, start creating objects for each */
-    ctx->i = 0;
-    create_next_bearer (ctx);
-}
-
 /**
  * mm_modem_list_bearers:
  * @self: A #MMModem.
@@ -1875,10 +1888,19 @@ mm_modem_list_bearers (MMModem *self,
     if (cancellable)
         ctx->cancellable = g_object_ref (cancellable);
 
-    mm_gdbus_modem_call_list_bearers (MM_GDBUS_MODEM (self),
-                                      cancellable,
-                                      (GAsyncReadyCallback)modem_list_bearers_ready,
-                                      ctx);
+    /* Read from the property, skip List() */
+    ctx->bearer_paths = mm_gdbus_modem_dup_bearers (MM_GDBUS_MODEM (self));
+
+    /* If no bearers, just end here. */
+    if (!ctx->bearer_paths || !ctx->bearer_paths[0]) {
+        g_simple_async_result_set_op_res_gpointer (ctx->result, NULL, NULL);
+        list_bearers_context_complete_and_free (ctx);
+        return;
+    }
+
+    /* Got list of paths. If at least one found, start creating objects for each */
+    ctx->i = 0;
+    create_next_bearer (ctx);
 }
 
 /**
@@ -1892,7 +1914,7 @@ mm_modem_list_bearers (MMModem *self,
  * The calling thread is blocked until a reply is received. See mm_modem_list_bearers()
  * for the asynchronous version of this method.
  *
- * Returns: (transfer full): The list of #MMBearer objects, or %NULL if either none found or if @error is set.
+ * Returns: (transfer full) (element-type ModemManager.Modem): The list of #MMBearer objects, or %NULL if either none found or if @error is set.
  */
 GList *
 mm_modem_list_bearers_sync (MMModem *self,
@@ -1905,11 +1927,8 @@ mm_modem_list_bearers_sync (MMModem *self,
 
     g_return_val_if_fail (MM_IS_MODEM (self), NULL);
 
-    if (!mm_gdbus_modem_call_list_bearers_sync (MM_GDBUS_MODEM (self),
-                                                &bearer_paths,
-                                                cancellable,
-                                                error))
-        return NULL;
+    /* Read from the property, skip List() */
+    bearer_paths = mm_gdbus_modem_dup_bearers (MM_GDBUS_MODEM (self));
 
     /* Only non-empty lists are returned */
     if (!bearer_paths)
@@ -2375,7 +2394,7 @@ mm_modem_factory_reset_sync (MMModem *self,
  *
  * Finishes an operation started with mm_modem_command().
  *
- * Returns: (transfer full) A newly allocated string with the reply to the command, or #NULL if @error is set. The returned value should be freed with g_free().
+ * Returns: (transfer full): A newly allocated string with the reply to the command, or #NULL if @error is set. The returned value should be freed with g_free().
  */
 gchar *
 mm_modem_command_finish (MMModem *self,
@@ -2437,7 +2456,7 @@ mm_modem_command (MMModem *self,
  * The calling thread is blocked until a reply is received. See mm_modem_command()
  * for the asynchronous version of this method.
  *
- * Returns: (transfer full) A newly allocated string with the reply to the command, or #NULL if @error is set. The returned value should be freed with g_free().
+ * Returns: (transfer full): A newly allocated string with the reply to the command, or #NULL if @error is set. The returned value should be freed with g_free().
  */
 gchar *
 mm_modem_command_sync (MMModem *self,
@@ -2802,7 +2821,7 @@ mm_modem_set_current_bands_sync (MMModem *self,
  *
  * Finishes an operation started with mm_modem_get_sim().
  *
- * Returns: a #MMSim or #NULL if none available. The returned value should be freed with g_object_unref().
+ * Returns: (transfer full): a #MMSim or #NULL if none available. The returned value should be freed with g_object_unref().
  */
 MMSim *
 mm_modem_get_sim_finish (MMModem *self,
@@ -2906,7 +2925,7 @@ mm_modem_get_sim (MMModem *self,
  * The calling thread is blocked until a reply is received. See mm_modem_get_sim()
  * for the asynchronous version of this method.
  *
- * Returns: a #MMSim or #NULL if none available. The returned value should be freed with g_object_unref().
+ * Returns: (transfer full): a #MMSim or #NULL if none available. The returned value should be freed with g_object_unref().
  */
 MMSim *
 mm_modem_get_sim_sync (MMModem *self,

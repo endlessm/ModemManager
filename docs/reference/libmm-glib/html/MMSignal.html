@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MMSignal</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="libmm-glib Reference Manual">
+<link rel="up" href="ch03s07.html" title="Extended signal information">
+<link rel="prev" href="MMModemSignal.html" title="MMModemSignal">
+<link rel="next" href="ch03s08.html" title="OMA support">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="MMModemSignal.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03s07.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">libmm-glib Reference Manual</th>
+<td><a accesskey="n" href="ch03s08.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#MMSignal.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#MMSignal.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#MMSignal.object-hierarchy" class="shortcut">Object Hierarchy</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="MMSignal"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="MMSignal.top_of_page"></a>MMSignal</span></h2>
+<p>MMSignal — Helper object to handle extended Signal information.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="MMSignal.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">struct              <a class="link" href="MMSignal.html#MMSignal-struct" title="struct MMSignal">MMSignal</a>;
+#define             <a class="link" href="MMSignal.html#MM-SIGNAL-UNKNOWN:CAPS" title="MM_SIGNAL_UNKNOWN">MM_SIGNAL_UNKNOWN</a>
+
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="MMSignal.html#mm-signal-get-rssi" title="mm_signal_get_rssi ()">mm_signal_get_rssi</a>                  (<em class="parameter"><code><a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="MMSignal.html#mm-signal-get-ecio" title="mm_signal_get_ecio ()">mm_signal_get_ecio</a>                  (<em class="parameter"><code><a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="MMSignal.html#mm-signal-get-sinr" title="mm_signal_get_sinr ()">mm_signal_get_sinr</a>                  (<em class="parameter"><code><a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="MMSignal.html#mm-signal-get-io" title="mm_signal_get_io ()">mm_signal_get_io</a>                    (<em class="parameter"><code><a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="MMSignal.html#mm-signal-get-rsrp" title="mm_signal_get_rsrp ()">mm_signal_get_rsrp</a>                  (<em class="parameter"><code><a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="MMSignal.html#mm-signal-get-rsrq" title="mm_signal_get_rsrq ()">mm_signal_get_rsrq</a>                  (<em class="parameter"><code><a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> *self</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="MMSignal.html#mm-signal-get-snr" title="mm_signal_get_snr ()">mm_signal_get_snr</a>                   (<em class="parameter"><code><a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> *self</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMSignal.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----MMSignal
+</pre>
+</div>
+<div class="refsect1">
+<a name="MMSignal.description"></a><h2>Description</h2>
+<p>
+The <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> is an object handling the signal information of the
+modem.
+</p>
+</div>
+<div class="refsect1">
+<a name="MMSignal.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="MMSignal-struct"></a><h3>struct MMSignal</h3>
+<pre class="programlisting">struct MMSignal;</pre>
+<p>
+The <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> structure contains private data and should
+only be accessed using the provided API.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MM-SIGNAL-UNKNOWN:CAPS"></a><h3>MM_SIGNAL_UNKNOWN</h3>
+<pre class="programlisting">#define MM_SIGNAL_UNKNOWN G_MINDOUBLE
+</pre>
+<p>
+Identifier for an unknown signal value.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-signal-get-rssi"></a><h3>mm_signal_get_rssi ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             mm_signal_get_rssi                  (<em class="parameter"><code><a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> *self</code></em>);</pre>
+<p>
+Gets the RSSI (Received Signal Strength Indication), in dBm.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the RSSI, or <a class="link" href="MMSignal.html#MM-SIGNAL-UNKNOWN:CAPS" title="MM_SIGNAL_UNKNOWN"><code class="literal">MM_SIGNAL_UNKNOWN</code></a> if unknown.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-signal-get-ecio"></a><h3>mm_signal_get_ecio ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             mm_signal_get_ecio                  (<em class="parameter"><code><a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> *self</code></em>);</pre>
+<p>
+Gets the Ec/Io, in dBm.
+</p>
+<p>
+Only applicable to CDMA1x, CDMA EV-DO and UMTS (WCDMA).
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the ECIO, or <a class="link" href="MMSignal.html#MM-SIGNAL-UNKNOWN:CAPS" title="MM_SIGNAL_UNKNOWN"><code class="literal">MM_SIGNAL_UNKNOWN</code></a> if unknown.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-signal-get-sinr"></a><h3>mm_signal_get_sinr ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             mm_signal_get_sinr                  (<em class="parameter"><code><a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> *self</code></em>);</pre>
+<p>
+Gets the SINR level, in dB.
+</p>
+<p>
+Only applicable to CDMA EV-DO.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the SINR, or <a class="link" href="MMSignal.html#MM-SIGNAL-UNKNOWN:CAPS" title="MM_SIGNAL_UNKNOWN"><code class="literal">MM_SIGNAL_UNKNOWN</code></a> if unknown.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-signal-get-io"></a><h3>mm_signal_get_io ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             mm_signal_get_io                    (<em class="parameter"><code><a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> *self</code></em>);</pre>
+<p>
+Gets the Io, in dBm.
+</p>
+<p>
+Only applicable to CDMA EV-DO.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the Io, or <a class="link" href="MMSignal.html#MM-SIGNAL-UNKNOWN:CAPS" title="MM_SIGNAL_UNKNOWN"><code class="literal">MM_SIGNAL_UNKNOWN</code></a> if unknown.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-signal-get-rsrp"></a><h3>mm_signal_get_rsrp ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             mm_signal_get_rsrp                  (<em class="parameter"><code><a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> *self</code></em>);</pre>
+<p>
+Gets the RSRP (Reference Signal Received Power), in dBm.
+</p>
+<p>
+Only applicable to LTE.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the RSRP, or <a class="link" href="MMSignal.html#MM-SIGNAL-UNKNOWN:CAPS" title="MM_SIGNAL_UNKNOWN"><code class="literal">MM_SIGNAL_UNKNOWN</code></a> if unknown.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-signal-get-rsrq"></a><h3>mm_signal_get_rsrq ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             mm_signal_get_rsrq                  (<em class="parameter"><code><a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> *self</code></em>);</pre>
+<p>
+Gets the RSRQ (Reference Signal Received Quality), in dB.
+</p>
+<p>
+Only applicable to LTE.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the RSRQ, or <a class="link" href="MMSignal.html#MM-SIGNAL-UNKNOWN:CAPS" title="MM_SIGNAL_UNKNOWN"><code class="literal">MM_SIGNAL_UNKNOWN</code></a> if unknown.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-signal-get-snr"></a><h3>mm_signal_get_snr ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             mm_signal_get_snr                   (<em class="parameter"><code><a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> *self</code></em>);</pre>
+<p>
+Gets the S/R ration, in dB.
+</p>
+<p>
+Only applicable to LTE.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>a <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the S/R ratio, or <a class="link" href="MMSignal.html#MM-SIGNAL-UNKNOWN:CAPS" title="MM_SIGNAL_UNKNOWN"><code class="literal">MM_SIGNAL_UNKNOWN</code></a> if unknown.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.19</div>
+</body>
+</html>

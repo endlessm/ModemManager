@@ -8,7 +8,7 @@
 <link rel="up" href="ref-dbus-object-sms.html" title="The /org/freedesktop/ModemManager/SMSs objects">
 <link rel="prev" href="ref-dbus-object-sms.html" title="The /org/freedesktop/ModemManager/SMSs objects">
 <link rel="next" href="ref-migrating.html" title="Part IV. Migrating from ModemManager 0.6 to ModemManager 1.0">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -45,7 +45,7 @@
 </pre>
 </div>
 <div class="refsect1">
-<a name="idm211852063152"></a><h2>Properties</h2>
+<a name="id-1.4.8.3.4"></a><h2>Properties</h2>
 <pre class="synopsis">
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.State" title='The "State" property'>State</a>                  readable   u
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.PduType" title='The "PduType" property'>PduType</a>                readable   u
@@ -55,6 +55,8 @@
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.SMSC" title='The "SMSC" property'>SMSC</a>                   readable   s
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Validity" title='The "Validity" property'>Validity</a>               readable   (uv)
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Class" title='The "Class" property'>Class</a>                  readable   i
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.TeleserviceId" title='The "TeleserviceId" property'>TeleserviceId</a>          readable   u
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.ServiceCategory" title='The "ServiceCategory" property'>ServiceCategory</a>        readable   u
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.DeliveryReportRequest" title='The "DeliveryReportRequest" property'>DeliveryReportRequest</a>  readable   b
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.MessageReference" title='The "MessageReference" property'>MessageReference</a>       readable   u
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Timestamp" title='The "Timestamp" property'>Timestamp</a>              readable   s
@@ -181,11 +183,11 @@ Validity  readable   (uv)
 <p>        Indicates when the SMS expires in the SMSC.
 </p>
 <p>        This value is composed of a
-	<a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsValidityType" title="enum MMSmsValidityType">MMSmsValidityType</a>
-	key, with an associated data which contains type-specific validity
-	information:
+	    <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsValidityType" title="enum MMSmsValidityType">MMSmsValidityType</a>
+	    key, with an associated data which contains type-specific validity
+	    information:
 </p>
-<p>	</p>
+<p>	    </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -194,8 +196,8 @@ Validity  readable   (uv)
 <tbody><tr>
 <td><p><span class="term"><a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-SMS-VALIDITY-TYPE-RELATIVE:CAPS">MM_SMS_VALIDITY_TYPE_RELATIVE</a></span></p></td>
 <td><p>
-	      The value is the length of the validity period in minutes, given
-	      as an unsigned integer (D-Bus signature <code class="literal">'u'</code>).
+	        The value is the length of the validity period in minutes, given
+	        as an unsigned integer (D-Bus signature <code class="literal">'u'</code>).
             </p></td>
 </tr></tbody>
 </table></div>
@@ -212,6 +214,28 @@ Class  readable   i
         is not used for this message, otherwise the 3GPP SMS message class.
 </p>
 <p>        Always -1 for 3GPP2/CDMA.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sms.TeleserviceId"></a><h3>The "TeleserviceId" property</h3>
+<pre class="programlisting">
+TeleserviceId  readable   u
+</pre>
+<p>        A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsCdmaTeleserviceId" title="enum MMSmsCdmaTeleserviceId">MMSmsCdmaTeleserviceId</a> value.
+</p>
+<p>        Always <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-TELESERVICE-ID-UNKNOWN:CAPS">MM_SMS_CDMA_TELESERVICE_ID_UNKNOWN</a> for 3GPP.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Sms.ServiceCategory"></a><h3>The "ServiceCategory" property</h3>
+<pre class="programlisting">
+ServiceCategory  readable   u
+</pre>
+<p>        A <a class="link" href="ModemManager-Flags-and-Enumerations.html#MMSmsCdmaServiceCategory" title="enum MMSmsCdmaServiceCategory">MMSmsCdmaServiceCategory</a> value.
+</p>
+<p>        Always <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-SMS-CDMA-SERVICE-CATEGORY-UNKNOWN:CAPS">MM_SMS_CDMA_SERVICE_CATEGORY_UNKNOWN</a> for 3GPP.
 </p>
 </div>
 <hr>
@@ -292,6 +316,6 @@ Storage  readable   u
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

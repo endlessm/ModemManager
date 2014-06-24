@@ -333,20 +333,22 @@ mm_filter_supported_capabilities (MMModemCapability all,
 #define CREG3 "\\+(CREG|CGREG|CEREG):\\s*0*([0-9]),\\s*([^,\\s]*)\\s*,\\s*([^,\\s]*)"
 
 /* +CREG: <n>,<stat>,<lac>,<ci>       (GSM 07.07 solicited and some CREG=2 unsolicited) */
-#define CREG4 "\\+(CREG|CGREG|CEREG):\\s*0*([0-9]),\\s*0*([0-9])\\s*,\\s*([^,]*)\\s*,\\s*([^,\\s]*)"
+#define CREG4 "\\+(CREG|CGREG|CEREG):\\s*([0-9]),\\s*([0-9])\\s*,\\s*([^,]*)\\s*,\\s*([^,\\s]*)"
+#define CREG5 "\\+(CREG|CGREG|CEREG):\\s*0*([0-9]),\\s*0*([0-9])\\s*,\\s*(\"[^,]*\")\\s*,\\s*(\"[^,\\s]*\")"
 
 /* +CREG: <stat>,<lac>,<ci>,<AcT>     (ETSI 27.007 CREG=2 unsolicited) */
-#define CREG5 "\\+(CREG|CGREG|CEREG):\\s*0*([0-9])\\s*,\\s*([^,\\s]*)\\s*,\\s*([^,\\s]*)\\s*,\\s*0*([0-9])"
+#define CREG6 "\\+(CREG|CGREG|CEREG):\\s*([0-9])\\s*,\\s*([^,\\s]*)\\s*,\\s*([^,\\s]*)\\s*,\\s*([0-9])"
+#define CREG7 "\\+(CREG|CGREG|CEREG):\\s*0*([0-9])\\s*,\\s*(\"[^,\\s]*\")\\s*,\\s*(\"[^,\\s]*\")\\s*,\\s*0*([0-9])"
 
 /* +CREG: <n>,<stat>,<lac>,<ci>,<AcT> (ETSI 27.007 solicited and some CREG=2 unsolicited) */
-#define CREG6 "\\+(CREG|CGREG|CEREG):\\s*0*([0-9]),\\s*0*([0-9])\\s*,\\s*([^,\\s]*)\\s*,\\s*([^,\\s]*)\\s*,\\s*0*([0-9])"
+#define CREG8 "\\+(CREG|CGREG|CEREG):\\s*0*([0-9]),\\s*0*([0-9])\\s*,\\s*([^,\\s]*)\\s*,\\s*([^,\\s]*)\\s*,\\s*0*([0-9])"
 
 /* +CREG: <n>,<stat>,<lac>,<ci>,<AcT?>,<something> (Samsung Wave S8500) */
 /* '<CR><LF>+CREG: 2,1,000B,2816, B, C2816<CR><LF><CR><LF>OK<CR><LF>' */
-#define CREG7 "\\+(CREG|CGREG):\\s*0*([0-9]),\\s*0*([0-9])\\s*,\\s*([^,\\s]*)\\s*,\\s*([^,\\s]*)\\s*,\\s*([^,\\s]*)\\s*,\\s*[^,\\s]*"
+#define CREG9 "\\+(CREG|CGREG):\\s*0*([0-9]),\\s*0*([0-9])\\s*,\\s*([^,\\s]*)\\s*,\\s*([^,\\s]*)\\s*,\\s*([^,\\s]*)\\s*,\\s*[^,\\s]*"
 
 /* +CREG: <stat>,<lac>,<ci>,<AcT>,<RAC> (ETSI 27.007 v9.20 CREG=2 unsolicited with RAC) */
-#define CREG8 "\\+(CREG|CGREG):\\s*0*([0-9])\\s*,\\s*([^,\\s]*)\\s*,\\s*([^,\\s]*)\\s*,\\s*0*([0-9])\\s*,\\s*([^,\\s]*)"
+#define CREG10 "\\+(CREG|CGREG):\\s*0*([0-9])\\s*,\\s*([^,\\s]*)\\s*,\\s*([^,\\s]*)\\s*,\\s*0*([0-9])\\s*,\\s*([^,\\s]*)"
 
 /* +CEREG: <stat>,<lac>,<rac>,<ci>,<AcT>     (ETSI 27.007 v8.6 CREG=2 unsolicited with RAC) */
 #define CEREG1 "\\+(CEREG):\\s*0*([0-9])\\s*,\\s*([^,\\s]*)\\s*,\\s*([^,\\s]*)\\s*,\\s*([^,\\s]*)\\s*,\\s*0*([0-9])"
@@ -357,7 +359,7 @@ mm_filter_supported_capabilities (MMModemCapability all,
 GPtrArray *
 mm_3gpp_creg_regex_get (gboolean solicited)
 {
-    GPtrArray *array = g_ptr_array_sized_new (10);
+    GPtrArray *array = g_ptr_array_sized_new (12);
     GRegex *regex;
 
     /* #1 */
@@ -421,6 +423,22 @@ mm_3gpp_creg_regex_get (gboolean solicited)
         regex = g_regex_new (CREG8 "$", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
     else
         regex = g_regex_new ("\\r\\n" CREG8 "\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
+    g_assert (regex);
+    g_ptr_array_add (array, regex);
+
+    /* #9 */
+    if (solicited)
+        regex = g_regex_new (CREG9 "$", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
+    else
+        regex = g_regex_new ("\\r\\n" CREG9 "\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
+    g_assert (regex);
+    g_ptr_array_add (array, regex);
+
+    /* #10 */
+    if (solicited)
+        regex = g_regex_new (CREG10 "$", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
+    else
+        regex = g_regex_new ("\\r\\n" CREG10 "\\r\\n", G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
     g_assert (regex);
     g_ptr_array_add (array, regex);
 
@@ -746,7 +764,7 @@ mm_3gpp_parse_cgdcont_test_response (const gchar *response,
         return NULL;
     }
 
-    r = g_regex_new ("\\+CGDCONT:\\s*\\((\\d+)-(\\d+)\\),\\(?\"(\\S+)\"",
+    r = g_regex_new ("\\+CGDCONT:\\s*\\((\\d+)-?(\\d+)?\\),\\(?\"(\\S+)\"",
                      G_REGEX_DOLLAR_ENDONLY | G_REGEX_RAW,
                      0, &inner_error);
     g_assert (r != NULL);
@@ -768,19 +786,18 @@ mm_3gpp_parse_cgdcont_test_response (const gchar *response,
             if (!mm_get_uint_from_match_info (match_info, 1, &min_cid))
                 mm_warn ("Invalid min CID in CGDCONT=? reply for PDP type '%s'", pdp_type_str);
             else {
-                /* Read max CID */
+                MM3gppPdpContextFormat *format;
+
+                /* Read max CID: Optional! If no value given, we default to min CID */
                 if (!mm_get_uint_from_match_info (match_info, 2, &max_cid))
-                    mm_warn ("Invalid max CID in CGDCONT=? reply for PDP type '%s'", pdp_type_str);
-                else {
-                    MM3gppPdpContextFormat *format;
+                    max_cid = min_cid;
 
-                    format = g_slice_new (MM3gppPdpContextFormat);
-                    format->pdp_type = pdp_type;
-                    format->min_cid = min_cid;
-                    format->max_cid = max_cid;
+                format = g_slice_new (MM3gppPdpContextFormat);
+                format->pdp_type = pdp_type;
+                format->min_cid = min_cid;
+                format->max_cid = max_cid;
 
-                    list = g_list_prepend (list, format);
-                }
+                list = g_list_prepend (list, format);
             }
         }
 
@@ -1760,7 +1777,7 @@ mm_string_to_access_tech (const gchar *string)
     if (strcasestr (string, "HSDPA"))
         act |= MM_MODEM_ACCESS_TECHNOLOGY_HSDPA;
 
-    if (strcasestr (string, "UMTS"))
+    if (strcasestr (string, "UMTS") || strcasestr (string, "3G"))
         act |= MM_MODEM_ACCESS_TECHNOLOGY_UMTS;
 
     if (strcasestr (string, "EDGE"))
@@ -1869,6 +1886,105 @@ mm_3gpp_get_ip_family_from_pdp_type (const gchar *pdp_type)
     if (g_str_equal (pdp_type, "IPV4V6"))
         return MM_BEARER_IP_FAMILY_IPV4V6;
     return MM_BEARER_IP_FAMILY_NONE;
+}
+
+/*************************************************************************/
+
+char *
+mm_3gpp_parse_iccid (const char *raw_iccid, GError **error)
+{
+    gboolean swap;
+    char *buf, *swapped = NULL;
+    gsize len = 0;
+    int f_pos = -1, i;
+
+    g_return_val_if_fail (raw_iccid != NULL, NULL);
+
+    /* Skip spaces and quotes */
+    while (raw_iccid && *raw_iccid && (isspace (*raw_iccid) || *raw_iccid == '"'))
+        raw_iccid++;
+
+    /* Make sure the buffer is only digits or 'F' */
+    buf = g_strdup (raw_iccid);
+    for (len = 0; buf[len]; len++) {
+        if (isdigit (buf[len]))
+            continue;
+        if (buf[len] == 'F' || buf[len] == 'f') {
+            buf[len] = 'F';  /* canonicalize the F */
+            f_pos = len;
+            continue;
+        }
+        if (buf[len] == '\"') {
+            buf[len] = 0;
+            break;
+        }
+
+        /* Invalid character */
+        g_set_error (error, MM_CORE_ERROR, MM_CORE_ERROR_FAILED,
+                     "ICCID response contained invalid character '%c'",
+                     buf[len]);
+        goto error;
+    }
+
+    /* BCD encoded ICCIDs are 20 digits long */
+    if (len != 20) {
+        g_set_error (error, MM_CORE_ERROR, MM_CORE_ERROR_FAILED,
+                     "Invalid ICCID response size (was %zd, expected 20)",
+                     len);
+        goto error;
+    }
+
+    /* The leading two digits of an ICCID is the major industry identifier and
+     * should be '89' for telecommunication purposes according to ISO/IEC 7812.
+     */
+    if (buf[0] == '8' && buf[1] == '9') {
+      swap = FALSE;
+    } else if (buf[0] == '9' && buf[1] == '8') {
+      swap = TRUE;
+    } else {
+      /* FIXME: Instead of erroring out, revisit this solution if we find any SIM
+       * that doesn't use '89' as the major industry identifier of the ICCID.
+       */
+      g_set_error (error, MM_CORE_ERROR, MM_CORE_ERROR_FAILED,
+                   "Invalid ICCID response (leading two digits are not 89)");
+      goto error;
+    }
+
+    /* Ensure if there's an 'F' that it's second-to-last if swap = TRUE,
+     * otherwise last if swap = FALSE */
+    if (f_pos >= 0) {
+        if ((swap && (f_pos != len - 2)) || (!swap && (f_pos != len - 1))) {
+            g_set_error_literal (error, MM_CORE_ERROR, MM_CORE_ERROR_FAILED,
+                                 "Invalid ICCID length (unexpected F position)");
+            goto error;
+        }
+    }
+
+    if (swap) {
+        /* Swap digits in the ICCID response to get the actual ICCID, each
+         * group of 2 digits is reversed.
+         *
+         *    21436587 -> 12345678
+         */
+        swapped = g_malloc0 (25);
+        for (i = 0; i < 10; i++) {
+            swapped[i * 2] = buf[(i * 2) + 1];
+            swapped[(i * 2) + 1] = buf[i * 2];
+        }
+    } else
+        swapped = g_strdup (buf);
+
+    /* Zero out the F for 19 digit ICCIDs */
+    if (swapped[len - 1] == 'F')
+        swapped[len - 1] = 0;
+
+    g_free (buf);
+    return swapped;
+
+error:
+    g_free (buf);
+    g_free (swapped);
+    return NULL;
 }
 
 /*************************************************************************/

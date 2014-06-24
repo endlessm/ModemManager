@@ -176,3 +176,38 @@ MMModemCdma
 @Returns: 
 
 
+<!-- ##### FUNCTION mm_modem_cdma_activate_manual ##### -->
+<para>
+
+</para>
+
+@self: 
+@properties: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION mm_modem_cdma_activate_manual_finish ##### -->
+<para>
+
+</para>
+
+@self: 
+@res: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_modem_cdma_activate_manual_sync ##### -->
+<para>
+
+</para>
+
+@self: 
+@properties: 
+@cancellable: 
+@error: 
+@Returns: 
+
+

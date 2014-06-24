@@ -7,8 +7,8 @@
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
 <link rel="up" href="ch03s06.html" title="Firmware support">
 <link rel="prev" href="MMModemFirmware.html" title="MMModemFirmware">
-<link rel="next" href="ch04.html" title="The Bearer object">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="next" href="ch03s07.html" title="Extended signal information">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -18,7 +18,7 @@
 <td><a accesskey="u" href="ch03s06.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">libmm-glib Reference Manual</th>
-<td><a accesskey="n" href="ch04.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="ch03s07.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#MMFirmwareProperties.synopsis" class="shortcut">Top</a>
@@ -41,7 +41,7 @@
 <a name="MMFirmwareProperties.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">struct              <a class="link" href="MMFirmwareProperties.html#MMFirmwareProperties-struct" title="struct MMFirmwareProperties">MMFirmwareProperties</a>;
 
-<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMFirmwareImageType"><span class="returnvalue">MMFirmwareImageType</span></a> <a class="link" href="MMFirmwareProperties.html#mm-firmware-properties-get-image-type" title="mm_firmware_properties_get_image_type ()">mm_firmware_properties_get_image_type</a>
+<span class="returnvalue">MMFirmwareImageType</span> <a class="link" href="MMFirmwareProperties.html#mm-firmware-properties-get-image-type" title="mm_firmware_properties_get_image_type ()">mm_firmware_properties_get_image_type</a>
                                                         (<em class="parameter"><code><a class="link" href="MMFirmwareProperties.html" title="MMFirmwareProperties"><span class="type">MMFirmwareProperties</span></a> *self</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMFirmwareProperties.html#mm-firmware-properties-get-unique-id" title="mm_firmware_properties_get_unique_id ()">mm_firmware_properties_get_unique_id</a>
                                                         (<em class="parameter"><code><a class="link" href="MMFirmwareProperties.html" title="MMFirmwareProperties"><span class="type">MMFirmwareProperties</span></a> *self</code></em>);
@@ -88,7 +88,7 @@ using the provided API.
 <hr>
 <div class="refsect2">
 <a name="mm-firmware-properties-get-image-type"></a><h3>mm_firmware_properties_get_image_type ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMFirmwareImageType"><span class="returnvalue">MMFirmwareImageType</span></a> mm_firmware_properties_get_image_type
+<pre class="programlisting"><span class="returnvalue">MMFirmwareImageType</span> mm_firmware_properties_get_image_type
                                                         (<em class="parameter"><code><a class="link" href="MMFirmwareProperties.html" title="MMFirmwareProperties"><span class="type">MMFirmwareProperties</span></a> *self</code></em>);</pre>
 <p>
 Gets the type of the firmare image.
@@ -105,7 +105,7 @@ Gets the type of the firmare image.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMFirmwareImageType"><span class="type">MMFirmwareImageType</span></a> specifying The type of the image.</td>
+<td>A <span class="type">MMFirmwareImageType</span> specifying The type of the image.</td>
 </tr>
 </tbody>
 </table></div>
@@ -142,7 +142,7 @@ Gets the unique ID of the firmare image.
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_firmware_properties_get_gobi_pri_version
                                                         (<em class="parameter"><code><a class="link" href="MMFirmwareProperties.html" title="MMFirmwareProperties"><span class="type">MMFirmwareProperties</span></a> *self</code></em>);</pre>
 <p>
-Gets the PRI version of a firmware image of type <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-FIRMWARE-IMAGE-TYPE-GOBI:CAPS"><code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code></a>.
+Gets the PRI version of a firmware image of type <code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -167,7 +167,7 @@ Gets the PRI version of a firmware image of type <a href="/usr/share/gtk-doc/htm
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_firmware_properties_get_gobi_pri_info
                                                         (<em class="parameter"><code><a class="link" href="MMFirmwareProperties.html" title="MMFirmwareProperties"><span class="type">MMFirmwareProperties</span></a> *self</code></em>);</pre>
 <p>
-Gets the PRI info of a firmware image of type <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-FIRMWARE-IMAGE-TYPE-GOBI:CAPS"><code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code></a>.
+Gets the PRI info of a firmware image of type <code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -192,7 +192,7 @@ Gets the PRI info of a firmware image of type <a href="/usr/share/gtk-doc/html/M
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_firmware_properties_get_gobi_boot_version
                                                         (<em class="parameter"><code><a class="link" href="MMFirmwareProperties.html" title="MMFirmwareProperties"><span class="type">MMFirmwareProperties</span></a> *self</code></em>);</pre>
 <p>
-Gets the boot version of a firmware image of type <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-FIRMWARE-IMAGE-TYPE-GOBI:CAPS"><code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code></a>.
+Gets the boot version of a firmware image of type <code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -217,7 +217,7 @@ Gets the boot version of a firmware image of type <a href="/usr/share/gtk-doc/ht
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_firmware_properties_get_gobi_pri_unique_id
                                                         (<em class="parameter"><code><a class="link" href="MMFirmwareProperties.html" title="MMFirmwareProperties"><span class="type">MMFirmwareProperties</span></a> *self</code></em>);</pre>
 <p>
-Gets the PRI unique ID of a firmware image of type <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-FIRMWARE-IMAGE-TYPE-GOBI:CAPS"><code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code></a>.
+Gets the PRI unique ID of a firmware image of type <code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -242,7 +242,7 @@ Gets the PRI unique ID of a firmware image of type <a href="/usr/share/gtk-doc/h
 <pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_firmware_properties_get_gobi_modem_unique_id
                                                         (<em class="parameter"><code><a class="link" href="MMFirmwareProperties.html" title="MMFirmwareProperties"><span class="type">MMFirmwareProperties</span></a> *self</code></em>);</pre>
 <p>
-Gets the MODEM unique ID of a firmware image of type <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-FIRMWARE-IMAGE-TYPE-GOBI:CAPS"><code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code></a>.
+Gets the MODEM unique ID of a firmware image of type <code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -265,6 +265,6 @@ Gets the MODEM unique ID of a firmware image of type <a href="/usr/share/gtk-doc
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

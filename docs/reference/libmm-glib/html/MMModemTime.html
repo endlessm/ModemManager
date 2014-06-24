@@ -8,7 +8,7 @@
 <link rel="up" href="ch03s05.html" title="Time support">
 <link rel="prev" href="ch03s05.html" title="Time support">
 <link rel="next" href="MMNetworkTimezone.html" title="MMNetworkTimezone">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -151,14 +151,68 @@ Gets a copy of the DBus path of the <a class="link" href="MMObject.html" title="
 <a name="mm-modem-time-peek-network-timezone"></a><h3>mm_modem_time_peek_network_timezone ()</h3>
 <pre class="programlisting"><a class="link" href="MMNetworkTimezone.html" title="MMNetworkTimezone"><span class="returnvalue">MMNetworkTimezone</span></a> * mm_modem_time_peek_network_timezone (<em class="parameter"><code><a class="link" href="MMModemTime.html" title="MMModemTime"><span class="type">MMModemTime</span></a> *self</code></em>);</pre>
 <p>
+Gets the network timezone information.
 </p>
+<p>
+</p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>The returned value is only valid until the property changes so
+it is only safe to use this function on the thread where
+<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMModemTime.html#mm-modem-time-get-network-timezone" title="mm_modem_time_get_network_timezone ()"><code class="function">mm_modem_time_get_network_timezone()</code></a> if on another
+thread.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMModemTime.html" title="MMModemTime"><span class="type">MMModemTime</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A <a class="link" href="MMNetworkTimezone.html" title="MMNetworkTimezone"><span class="type">MMNetworkTimezone</span></a>. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="mm-modem-time-get-network-timezone"></a><h3>mm_modem_time_get_network_timezone ()</h3>
 <pre class="programlisting"><a class="link" href="MMNetworkTimezone.html" title="MMNetworkTimezone"><span class="returnvalue">MMNetworkTimezone</span></a> * mm_modem_time_get_network_timezone  (<em class="parameter"><code><a class="link" href="MMModemTime.html" title="MMModemTime"><span class="type">MMModemTime</span></a> *self</code></em>);</pre>
 <p>
+Gets the network timezone information.
 </p>
+<p>
+</p>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>The values reported by <em class="parameter"><code>self</code></em> are not updated when the values in the
+interface change. Instead, the client is expected to call
+<a class="link" href="MMModemTime.html#mm-modem-time-get-network-timezone" title="mm_modem_time_get_network_timezone ()"><code class="function">mm_modem_time_get_network_timezone()</code></a> again to get a new <a class="link" href="MMNetworkTimezone.html" title="MMNetworkTimezone"><span class="type">MMNetworkTimezone</span></a> with the
+new values.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
+<td>A <a class="link" href="MMModemTime.html" title="MMModemTime"><span class="type">MMModemTime</span></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A <a class="link" href="MMNetworkTimezone.html" title="MMNetworkTimezone"><span class="type">MMNetworkTimezone</span></a> that must be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -233,7 +287,8 @@ Finishes an operation started with <a class="link" href="MMModemTime.html#mm-mod
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A string containing the network time, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>.</td>
+<td>A string containing the network time, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -272,7 +327,8 @@ for the asynchronous version of this method.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A string containing the network time, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>.</td>
+<td>A string containing the network time, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>error</code></em> is set. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
 </tr>
 </tbody>
 </table></div>
@@ -281,6 +337,6 @@ for the asynchronous version of this method.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

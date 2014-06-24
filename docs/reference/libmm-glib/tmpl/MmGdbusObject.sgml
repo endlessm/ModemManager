@@ -53,6 +53,16 @@ MmGdbusObject
 
 </para>
 
+<!-- ##### ARG MmGdbusObject:modem-oma ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG MmGdbusObject:modem-signal ##### -->
+<para>
+
+</para>
+
 <!-- ##### ARG MmGdbusObject:modem-simple ##### -->
 <para>
 
@@ -224,6 +234,24 @@ MmGdbusObject
 @Returns: 
 
 
+<!-- ##### FUNCTION mm_gdbus_object_peek_modem_oma ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_object_get_modem_oma ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
 <!-- ##### FUNCTION mm_gdbus_object_peek_modem_simple ##### -->
 <para>
 
@@ -234,6 +262,24 @@ MmGdbusObject
 
 
 <!-- ##### FUNCTION mm_gdbus_object_get_modem_simple ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_object_peek_modem_signal ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_gdbus_object_get_modem_signal ##### -->
 <para>
 
 </para>

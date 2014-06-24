@@ -148,6 +148,15 @@ Flags and Enumerations
 @Returns: 
 
 
+<!-- ##### FUNCTION mm_modem_3gpp_subscription_state_get_string ##### -->
+<para>
+
+</para>
+
+@val: 
+@Returns: 
+
+
 <!-- ##### FUNCTION mm_modem_3gpp_facility_build_string_from_mask ##### -->
 <para>
 
@@ -265,7 +274,61 @@ Flags and Enumerations
 @Returns: 
 
 
+<!-- ##### FUNCTION mm_sms_cdma_teleservice_id_get_string ##### -->
+<para>
+
+</para>
+
+@val: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_sms_cdma_service_category_get_string ##### -->
+<para>
+
+</para>
+
+@val: 
+@Returns: 
+
+
 <!-- ##### FUNCTION mm_firmware_image_type_get_string ##### -->
+<para>
+
+</para>
+
+@val: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_oma_feature_build_string_from_mask ##### -->
+<para>
+
+</para>
+
+@mask: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_oma_session_type_get_string ##### -->
+<para>
+
+</para>
+
+@val: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_oma_session_state_get_string ##### -->
+<para>
+
+</para>
+
+@val: 
+@Returns: 
+
+
+<!-- ##### FUNCTION mm_oma_session_state_failed_reason_get_string ##### -->
 <para>
 
 </para>

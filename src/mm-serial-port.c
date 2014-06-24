@@ -868,11 +868,21 @@ mm_serial_port_open (MMSerialPort *self, GError **error)
     const char *device;
     struct serial_struct sinfo = { 0 };
     GTimeVal tv_start, tv_end;
+    int errno_save = 0;
 
     g_return_val_if_fail (MM_IS_SERIAL_PORT (self), FALSE);
 
     priv = MM_SERIAL_PORT_GET_PRIVATE (self);
     device = mm_port_get_device (MM_PORT (self));
+
+    if (priv->forced_close) {
+        g_set_error (error,
+                     MM_SERIAL_ERROR,
+                     MM_SERIAL_ERROR_OPEN_FAILED,
+                     "Could not open serial device %s: it has been forced close",
+                     device);
+        return FALSE;
+    }
 
     if (priv->reopen_id) {
         g_set_error (error,
@@ -897,6 +907,7 @@ mm_serial_port_open (MMSerialPort *self, GError **error)
         devfile = g_strdup_printf ("/dev/%s", device);
         errno = 0;
         priv->fd = open (devfile, O_RDWR | O_EXCL | O_NONBLOCK | O_NOCTTY);
+        errno_save = errno;
         g_free (devfile);
     }
 
@@ -908,13 +919,16 @@ mm_serial_port_open (MMSerialPort *self, GError **error)
         g_set_error (error,
                      MM_SERIAL_ERROR,
                      (errno == ENODEV) ? MM_SERIAL_ERROR_OPEN_FAILED_NO_DEVICE : MM_SERIAL_ERROR_OPEN_FAILED,
-                     "Could not open serial device %s: %s", device, strerror (errno));
+                     "Could not open serial device %s: %s", device, strerror (errno_save));
+        mm_warn ("(%s) could not open serial device (%d)", device, errno_save);
         return FALSE;
     }
 
     if (ioctl (priv->fd, TIOCEXCL) < 0) {
+        errno_save = errno;
         g_set_error (error, MM_SERIAL_ERROR, MM_SERIAL_ERROR_OPEN_FAILED,
-                     "Could not lock serial device %s: %s", device, strerror (errno));
+                     "Could not lock serial device %s: %s", device, strerror (errno_save));
+        mm_warn ("(%s) could not lock serial device (%d)", device, errno_save);
         goto error;
     }
 
@@ -922,14 +936,18 @@ mm_serial_port_open (MMSerialPort *self, GError **error)
     tcflush (priv->fd, TCIOFLUSH);
 
     if (tcgetattr (priv->fd, &priv->old_t) < 0) {
+        errno_save = errno;
         g_set_error (error, MM_SERIAL_ERROR, MM_SERIAL_ERROR_OPEN_FAILED,
-                     "Could not open serial device %s: %s", device, strerror (errno));
+                     "Could not set attributes on serial device %s: %s", device, strerror (errno_save));
+        mm_warn ("(%s) could not set attributes on serial device (%d)", device, errno_save);
         goto error;
     }
 
     g_warn_if_fail (MM_SERIAL_PORT_GET_CLASS (self)->config_fd);
-    if (!MM_SERIAL_PORT_GET_CLASS (self)->config_fd (self, priv->fd, error))
+    if (!MM_SERIAL_PORT_GET_CLASS (self)->config_fd (self, priv->fd, error)) {
+        mm_dbg ("(%s) failed to configure serial device", device);
         goto error;
+    }
 
     /* Don't wait for pending data when closing the port; this can cause some
      * stupid devices that don't respond to URBs on a particular port to hang
@@ -966,6 +984,7 @@ success:
     return TRUE;
 
 error:
+    mm_warn ("(%s) failed to open serial device", device);
     close (priv->fd);
     priv->fd = -1;
     return FALSE;
@@ -1100,6 +1119,13 @@ mm_serial_port_close (MMSerialPort *self)
     if (priv->queue_id) {
         g_source_remove (priv->queue_id);
         priv->queue_id = 0;
+    }
+
+    if (priv->cancellable_id) {
+        g_assert (priv->cancellable != NULL);
+        g_cancellable_disconnect (priv->cancellable,
+                                  priv->cancellable_id);
+        priv->cancellable_id = 0;
     }
 
     g_clear_object (&priv->cancellable);
@@ -1275,6 +1301,17 @@ mm_serial_port_reopen (MMSerialPort *self,
 
     g_return_val_if_fail (MM_IS_SERIAL_PORT (self), FALSE);
     priv = MM_SERIAL_PORT_GET_PRIVATE (self);
+
+    if (priv->forced_close) {
+        GError *error;
+
+        error = g_error_new_literal (MM_CORE_ERROR,
+                                     MM_CORE_ERROR_FAILED,
+                                     "Serial port has been forced close.");
+        callback (self, error, user_data);
+        g_error_free (error);
+        return FALSE;
+    }
 
     if (priv->reopen_id > 0) {
         GError *error;
@@ -1711,7 +1748,7 @@ mm_serial_port_class_init (MMSerialPortClass *klass)
         (object_class, PROP_FD,
          g_param_spec_int (MM_SERIAL_PORT_FD,
                            "File descriptor",
-                           "Fiel descriptor",
+                           "File descriptor",
                            -1, G_MAXINT, -1,
                            G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
@@ -1783,12 +1820,12 @@ mm_serial_port_class_init (MMSerialPortClass *klass)
     /* Signals */
     signals[BUFFER_FULL] =
         g_signal_new ("buffer-full",
-                  G_OBJECT_CLASS_TYPE (object_class),
-                  G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (MMSerialPortClass, buffer_full),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__POINTER,
-                  G_TYPE_NONE, 1, G_TYPE_POINTER);
+                      G_OBJECT_CLASS_TYPE (object_class),
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (MMSerialPortClass, buffer_full),
+                      NULL, NULL,
+                      g_cclosure_marshal_generic,
+                      G_TYPE_NONE, 1, G_TYPE_POINTER);
 
     signals[TIMED_OUT] =
         g_signal_new ("timed-out",
@@ -1796,15 +1833,15 @@ mm_serial_port_class_init (MMSerialPortClass *klass)
                       G_SIGNAL_RUN_FIRST,
                       G_STRUCT_OFFSET (MMSerialPortClass, timed_out),
                       NULL, NULL,
-                      g_cclosure_marshal_VOID__UINT,
+                      g_cclosure_marshal_generic,
 					  G_TYPE_NONE, 1, G_TYPE_UINT);
 
     signals[FORCED_CLOSE] =
         g_signal_new ("forced-close",
-                  G_OBJECT_CLASS_TYPE (object_class),
-                  G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (MMSerialPortClass, forced_close),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                      G_OBJECT_CLASS_TYPE (object_class),
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (MMSerialPortClass, forced_close),
+                      NULL, NULL,
+                      g_cclosure_marshal_generic,
+                      G_TYPE_NONE, 0);
 }

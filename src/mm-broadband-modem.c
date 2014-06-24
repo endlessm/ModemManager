@@ -37,9 +37,12 @@
 #include "mm-iface-modem-messaging.h"
 #include "mm-iface-modem-time.h"
 #include "mm-iface-modem-firmware.h"
+#include "mm-iface-modem-signal.h"
+#include "mm-iface-modem-oma.h"
 #include "mm-broadband-bearer.h"
 #include "mm-bearer-list.h"
 #include "mm-sms-list.h"
+#include "mm-sms-part-3gpp.h"
 #include "mm-sim.h"
 #include "mm-log.h"
 #include "mm-modem-helpers.h"
@@ -56,6 +59,8 @@ static void iface_modem_simple_init (MMIfaceModemSimple *iface);
 static void iface_modem_location_init (MMIfaceModemLocation *iface);
 static void iface_modem_messaging_init (MMIfaceModemMessaging *iface);
 static void iface_modem_time_init (MMIfaceModemTime *iface);
+static void iface_modem_signal_init (MMIfaceModemSignal *iface);
+static void iface_modem_oma_init (MMIfaceModemOma *iface);
 static void iface_modem_firmware_init (MMIfaceModemFirmware *iface);
 
 G_DEFINE_TYPE_EXTENDED (MMBroadbandModem, mm_broadband_modem, MM_TYPE_BASE_MODEM, 0,
@@ -67,6 +72,8 @@ G_DEFINE_TYPE_EXTENDED (MMBroadbandModem, mm_broadband_modem, MM_TYPE_BASE_MODEM
                         G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM_LOCATION, iface_modem_location_init)
                         G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM_MESSAGING, iface_modem_messaging_init)
                         G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM_TIME, iface_modem_time_init)
+                        G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM_SIGNAL, iface_modem_signal_init)
+                        G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM_OMA, iface_modem_oma_init)
                         G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM_FIRMWARE, iface_modem_firmware_init))
 
 enum {
@@ -79,6 +86,8 @@ enum {
     PROP_MODEM_LOCATION_DBUS_SKELETON,
     PROP_MODEM_MESSAGING_DBUS_SKELETON,
     PROP_MODEM_TIME_DBUS_SKELETON,
+    PROP_MODEM_SIGNAL_DBUS_SKELETON,
+    PROP_MODEM_OMA_DBUS_SKELETON,
     PROP_MODEM_FIRMWARE_DBUS_SKELETON,
     PROP_MODEM_SIM,
     PROP_MODEM_BEARER_LIST,
@@ -184,6 +193,14 @@ struct _MMBroadbandModemPrivate {
     /* Properties */
     GObject *modem_time_dbus_skeleton;
 
+    /*<--- Modem Signal interface --->*/
+    /* Properties */
+    GObject *modem_signal_dbus_skeleton;
+
+    /*<--- Modem OMA interface --->*/
+    /* Properties */
+    GObject *modem_oma_dbus_skeleton;
+
     /*<--- Modem Firmware interface --->*/
     /* Properties */
     GObject *modem_firmware_dbus_skeleton;
@@ -275,7 +292,7 @@ modem_create_bearer (MMIfaceModem *self,
 }
 
 /*****************************************************************************/
-/* Create SIM (Modem inteface) */
+/* Create SIM (Modem interface) */
 
 static MMSim *
 modem_create_sim_finish (MMIfaceModem *self,
@@ -590,8 +607,11 @@ mode_pref_qcdm_ready (MMQcdmSerialPort *port,
     err = qcdm_result_get_u8 (result, QCDM_CMD_NV_GET_MODE_PREF_ITEM_MODE_PREF, &pref);
     if (err) {
         mm_dbg ("Failed to read NV ModePref: %d", err);
+        qcdm_result_unref (result);
         goto at_caps;
     }
+
+    qcdm_result_unref (result);
 
     /* Only parse explicit modes; for 'auto' just fall back to whatever
      * the AT current capabilities probing figures out.
@@ -1727,19 +1747,16 @@ signal_quality_csq_ready (MMBroadbandModem *self,
 
         result_str = mm_strip_tag (result_str, "+CSQ:");
         if (sscanf (result_str, "%d, %d", &quality, &ber)) {
-            /* 99 means unknown */
             if (quality == 99) {
-                g_simple_async_result_take_error (
-                    ctx->result,
-                    mm_mobile_equipment_error_for_code (MM_MOBILE_EQUIPMENT_ERROR_NO_NETWORK));
+                /* 99 means unknown, no service, etc */
+                quality = 0;
             } else {
                 /* Normalize the quality */
                 quality = CLAMP (quality, 0, 31) * 100 / 31;
-                g_simple_async_result_set_op_res_gpointer (ctx->result,
-                                                           GUINT_TO_POINTER (quality),
-                                                           NULL);
             }
-
+            g_simple_async_result_set_op_res_gpointer (ctx->result,
+                                                       GUINT_TO_POINTER (quality),
+                                                       NULL);
             signal_quality_context_complete_and_free (ctx);
             return;
         }
@@ -1971,7 +1988,8 @@ modem_load_signal_quality (MMIfaceModem *self,
     /* Check whether we can get a non-connected AT port */
     ctx->port = (MMSerialPort *)mm_base_modem_get_best_at_port (MM_BASE_MODEM (self), &error);
     if (ctx->port) {
-        if (MM_BROADBAND_MODEM (self)->priv->modem_cind_supported)
+        if (MM_BROADBAND_MODEM (self)->priv->modem_cind_supported &&
+            CIND_INDICATOR_IS_VALID (MM_BROADBAND_MODEM (self)->priv->modem_cind_indicator_signal_quality))
             signal_quality_cind (ctx);
         else
             signal_quality_csq (ctx);
@@ -3423,6 +3441,49 @@ modem_3gpp_load_operator_name (MMIfaceModem3gpp *self,
 }
 
 /*****************************************************************************/
+/* Subscription State Loading (3GPP interface) */
+
+static MMModem3gppSubscriptionState
+modem_3gpp_load_subscription_state_finish (MMIfaceModem3gpp *self,
+                                           GAsyncResult *res,
+                                           GError **error)
+{
+    if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
+        return MM_MODEM_3GPP_SUBSCRIPTION_STATE_UNKNOWN;
+
+    return (MMModem3gppSubscriptionState) GPOINTER_TO_UINT (
+        g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res)));
+}
+
+static void
+modem_3gpp_load_subscription_state (MMIfaceModem3gpp *self,
+                                    GAsyncReadyCallback callback,
+                                    gpointer user_data)
+{
+    GSimpleAsyncResult *result;
+
+    result = g_simple_async_result_new (G_OBJECT (self),
+                                        callback,
+                                        user_data,
+                                        modem_3gpp_load_subscription_state);
+
+   /* Reloading subscription state only occurs on a successfully registered
+    * modem. (Although the 3GPP interface does not reflect this until after
+    * loading operator information completes.)
+    * By default, we can assume that successful registration implies a
+    * provisioned SIM.
+    */
+    mm_dbg ("Load subscription state: Marking the SIM as provisioned.");
+    g_simple_async_result_set_op_res_gpointer (
+        result,
+        GUINT_TO_POINTER (MM_MODEM_3GPP_SUBSCRIPTION_STATE_PROVISIONED),
+        NULL);
+
+    g_simple_async_result_complete_in_idle (result);
+    g_object_unref (result);
+}
+
+/*****************************************************************************/
 /* Unsolicited registration messages handling (3GPP interface) */
 
 static gboolean
@@ -4230,7 +4291,7 @@ unsolicited_registration_events_context_step (UnsolicitedRegistrationEventsConte
 
     /* All done!
      * If we have any error reported, we'll propagate it. EPS errors take
-     * precendence over PS errors and PS errors take precendence over CS errors. */
+     * precedence over PS errors and PS errors take precedence over CS errors. */
     if (ctx->eps_error) {
         g_simple_async_result_take_error (ctx->result, ctx->eps_error);
         ctx->eps_error = NULL;
@@ -5518,7 +5579,7 @@ sms_part_ready (MMBroadbandModem *self,
 {
     MMSmsPart *part;
     gint rv, status, tpdu_len;
-    gchar pdu[SMS_MAX_PDU_LEN + 1];
+    gchar pdu[MM_SMS_PART_3GPP_MAX_PDU_LEN + 1];
     const gchar *response;
     GError *error = NULL;
 
@@ -5536,7 +5597,7 @@ sms_part_ready (MMBroadbandModem *self,
         return;
     }
 
-    rv = sscanf (response, "+CMGR: %d,,%d %" G_STRINGIFY (SMS_MAX_PDU_LEN) "s",
+    rv = sscanf (response, "+CMGR: %d,,%d %" G_STRINGIFY (MM_SMS_PART_3GPP_MAX_PDU_LEN) "s",
                  &status, &tpdu_len, pdu);
     if (rv != 3) {
         error = g_error_new (MM_CORE_ERROR,
@@ -5548,7 +5609,7 @@ sms_part_ready (MMBroadbandModem *self,
         return;
     }
 
-    part = mm_sms_part_new_from_pdu (ctx->idx, pdu, &error);
+    part = mm_sms_part_3gpp_new_from_pdu (ctx->idx, pdu, &error);
     if (part) {
         mm_dbg ("Correctly parsed PDU (%d)", ctx->idx);
         mm_iface_modem_messaging_take_part (MM_IFACE_MODEM_MESSAGING (self),
@@ -5658,7 +5719,7 @@ cds_received (MMAtSerialPort *port,
     if (!pdu)
         return;
 
-    part = mm_sms_part_new_from_pdu (SMS_PART_INVALID_INDEX, pdu, &error);
+    part = mm_sms_part_3gpp_new_from_pdu (SMS_PART_INVALID_INDEX, pdu, &error);
     if (part) {
         mm_dbg ("Correctly parsed non-stored PDU");
         mm_iface_modem_messaging_take_part (MM_IFACE_MODEM_MESSAGING (self),
@@ -6025,7 +6086,7 @@ sms_pdu_part_list_ready (MMBroadbandModem *self,
         MM3gppPduInfo *info = l->data;
         MMSmsPart *part;
 
-        part = mm_sms_part_new_from_pdu (info->index, info->pdu, &error);
+        part = mm_sms_part_3gpp_new_from_pdu (info->index, info->pdu, &error);
         if (part) {
             mm_dbg ("Correctly parsed PDU (%d)", info->index);
             mm_iface_modem_messaging_take_part (MM_IFACE_MODEM_MESSAGING (self),
@@ -7395,10 +7456,10 @@ enable_location_gathering (MMIfaceModemLocation *self,
         mm_iface_modem_is_3gpp (MM_IFACE_MODEM (self))) {
         /* Reload registration to get LAC/CI */
         mm_iface_modem_3gpp_run_registration_checks (MM_IFACE_MODEM_3GPP (self), NULL, NULL);
-        /* Reload operator to get MCC/MNC */
+        /* Reload registration information to get MCC/MNC */
         if (MM_BROADBAND_MODEM (self)->priv->modem_3gpp_registration_state == MM_MODEM_3GPP_REGISTRATION_STATE_HOME ||
             MM_BROADBAND_MODEM (self)->priv->modem_3gpp_registration_state == MM_MODEM_3GPP_REGISTRATION_STATE_ROAMING)
-            mm_iface_modem_3gpp_reload_current_operator (MM_IFACE_MODEM_3GPP (self), NULL, NULL);
+            mm_iface_modem_3gpp_reload_current_registration_info (MM_IFACE_MODEM_3GPP (self), NULL, NULL);
     }
 
     /* Done we are */
@@ -7925,6 +7986,8 @@ typedef enum {
     DISABLING_STEP_DISCONNECT_BEARERS,
     DISABLING_STEP_IFACE_SIMPLE,
     DISABLING_STEP_IFACE_FIRMWARE,
+    DISABLING_STEP_IFACE_SIGNAL,
+    DISABLING_STEP_IFACE_OMA,
     DISABLING_STEP_IFACE_TIME,
     DISABLING_STEP_IFACE_MESSAGING,
     DISABLING_STEP_IFACE_LOCATION,
@@ -8013,7 +8076,7 @@ disable_finish (MMBaseModem *self,
                                          result,                        \
                                          &error)) {                     \
             if (FATAL_ERRORS) {                                         \
-                g_simple_async_result_take_error (G_SIMPLE_ASYNC_RESULT (ctx->result), error); \
+                g_simple_async_result_take_error (ctx->result, error);  \
                 disabling_context_complete_and_free (ctx);              \
                 return;                                                 \
             }                                                           \
@@ -8035,7 +8098,9 @@ INTERFACE_DISABLE_READY_FN (iface_modem_3gpp_ussd, MM_IFACE_MODEM_3GPP_USSD, TRU
 INTERFACE_DISABLE_READY_FN (iface_modem_cdma,      MM_IFACE_MODEM_CDMA,      TRUE)
 INTERFACE_DISABLE_READY_FN (iface_modem_location,  MM_IFACE_MODEM_LOCATION,  FALSE)
 INTERFACE_DISABLE_READY_FN (iface_modem_messaging, MM_IFACE_MODEM_MESSAGING, FALSE)
+INTERFACE_DISABLE_READY_FN (iface_modem_signal,    MM_IFACE_MODEM_SIGNAL,    FALSE)
 INTERFACE_DISABLE_READY_FN (iface_modem_time,      MM_IFACE_MODEM_TIME,      FALSE)
+INTERFACE_DISABLE_READY_FN (iface_modem_oma,       MM_IFACE_MODEM_OMA,       FALSE)
 
 static void
 bearer_list_disconnect_all_bearers_ready (MMBearerList *list,
@@ -8045,7 +8110,7 @@ bearer_list_disconnect_all_bearers_ready (MMBearerList *list,
     GError *error = NULL;
 
     if (!mm_bearer_list_disconnect_all_bearers_finish (list, res, &error)) {
-        g_simple_async_result_take_error (G_SIMPLE_ASYNC_RESULT (ctx->result), error);
+        g_simple_async_result_take_error (ctx->result, error);
         disabling_context_complete_and_free (ctx);
         return;
     }
@@ -8064,7 +8129,7 @@ disabling_wait_for_final_state_ready (MMIfaceModem *self,
 
     ctx->previous_state = mm_iface_modem_wait_for_final_state_finish (self, res, &error);
     if (error) {
-        g_simple_async_result_take_error (G_SIMPLE_ASYNC_RESULT (ctx->result), error);
+        g_simple_async_result_take_error (ctx->result, error);
         disabling_context_complete_and_free (ctx);
         return;
     }
@@ -8130,6 +8195,30 @@ disabling_step (DisablingContext *ctx)
         ctx->step++;
 
     case DISABLING_STEP_IFACE_FIRMWARE:
+        /* Fall down to next step */
+        ctx->step++;
+
+    case DISABLING_STEP_IFACE_SIGNAL:
+        if (ctx->self->priv->modem_signal_dbus_skeleton) {
+            mm_dbg ("Modem has extended signal reporting capabilities, disabling the Signal interface...");
+            /* Disabling the Modem Signal interface */
+            mm_iface_modem_signal_disable (MM_IFACE_MODEM_SIGNAL (ctx->self),
+                                           (GAsyncReadyCallback)iface_modem_signal_disable_ready,
+                                           ctx);
+            return;
+        }
+        /* Fall down to next step */
+        ctx->step++;
+
+    case DISABLING_STEP_IFACE_OMA:
+        if (ctx->self->priv->modem_oma_dbus_skeleton) {
+            mm_dbg ("Modem has OMA capabilities, disabling the OMA interface...");
+            /* Disabling the Modem Oma interface */
+            mm_iface_modem_oma_disable (MM_IFACE_MODEM_OMA (ctx->self),
+                                        (GAsyncReadyCallback)iface_modem_oma_disable_ready,
+                                        ctx);
+            return;
+        }
         /* Fall down to next step */
         ctx->step++;
 
@@ -8225,7 +8314,7 @@ disabling_step (DisablingContext *ctx)
     case DISABLING_STEP_LAST:
         ctx->disabled = TRUE;
         /* All disabled without errors! */
-        g_simple_async_result_set_op_res_gboolean (G_SIMPLE_ASYNC_RESULT (ctx->result), TRUE);
+        g_simple_async_result_set_op_res_gboolean (ctx->result, TRUE);
         disabling_context_complete_and_free (ctx);
         return;
     }
@@ -8264,6 +8353,8 @@ typedef enum {
     ENABLING_STEP_IFACE_LOCATION,
     ENABLING_STEP_IFACE_MESSAGING,
     ENABLING_STEP_IFACE_TIME,
+    ENABLING_STEP_IFACE_SIGNAL,
+    ENABLING_STEP_IFACE_OMA,
     ENABLING_STEP_IFACE_FIRMWARE,
     ENABLING_STEP_IFACE_SIMPLE,
     ENABLING_STEP_LAST,
@@ -8340,7 +8431,7 @@ enable_finish (MMBaseModem *self,
                                         result,                         \
                                         &error)) {                      \
             if (FATAL_ERRORS) {                                         \
-                g_simple_async_result_take_error (G_SIMPLE_ASYNC_RESULT (ctx->result), error); \
+                g_simple_async_result_take_error (ctx->result, error);  \
                 enabling_context_complete_and_free (ctx);               \
                 return;                                                 \
             }                                                           \
@@ -8361,7 +8452,9 @@ INTERFACE_ENABLE_READY_FN (iface_modem_3gpp_ussd, MM_IFACE_MODEM_3GPP_USSD, TRUE
 INTERFACE_ENABLE_READY_FN (iface_modem_cdma,      MM_IFACE_MODEM_CDMA,      TRUE)
 INTERFACE_ENABLE_READY_FN (iface_modem_location,  MM_IFACE_MODEM_LOCATION,  FALSE)
 INTERFACE_ENABLE_READY_FN (iface_modem_messaging, MM_IFACE_MODEM_MESSAGING, FALSE)
+INTERFACE_ENABLE_READY_FN (iface_modem_signal,    MM_IFACE_MODEM_SIGNAL,    FALSE)
 INTERFACE_ENABLE_READY_FN (iface_modem_time,      MM_IFACE_MODEM_TIME,      FALSE)
+INTERFACE_ENABLE_READY_FN (iface_modem_oma,       MM_IFACE_MODEM_OMA,       FALSE)
 
 static void
 enabling_started_ready (MMBroadbandModem *self,
@@ -8371,7 +8464,7 @@ enabling_started_ready (MMBroadbandModem *self,
     GError *error = NULL;
 
     if (!MM_BROADBAND_MODEM_GET_CLASS (self)->enabling_started_finish (self, result, &error)) {
-        g_simple_async_result_take_error (G_SIMPLE_ASYNC_RESULT (ctx->result), error);
+        g_simple_async_result_take_error (ctx->result, error);
         enabling_context_complete_and_free (ctx);
         return;
     }
@@ -8390,7 +8483,7 @@ enabling_wait_for_final_state_ready (MMIfaceModem *self,
 
     ctx->previous_state = mm_iface_modem_wait_for_final_state_finish (self, res, &error);
     if (error) {
-        g_simple_async_result_take_error (G_SIMPLE_ASYNC_RESULT (ctx->result), error);
+        g_simple_async_result_take_error (ctx->result, error);
         enabling_context_complete_and_free (ctx);
         return;
     }
@@ -8531,6 +8624,32 @@ enabling_step (EnablingContext *ctx)
         /* Fall down to next step */
         ctx->step++;
 
+    case ENABLING_STEP_IFACE_SIGNAL:
+        if (ctx->self->priv->modem_signal_dbus_skeleton) {
+            mm_dbg ("Modem has extended signal reporting capabilities, enabling the Signal interface...");
+            /* Enabling the Modem Signal interface */
+            mm_iface_modem_signal_enable (MM_IFACE_MODEM_SIGNAL (ctx->self),
+                                          ctx->cancellable,
+                                          (GAsyncReadyCallback)iface_modem_signal_enable_ready,
+                                          ctx);
+            return;
+        }
+        /* Fall down to next step */
+        ctx->step++;
+
+    case ENABLING_STEP_IFACE_OMA:
+        if (ctx->self->priv->modem_oma_dbus_skeleton) {
+            mm_dbg ("Modem has OMA capabilities, enabling the OMA interface...");
+            /* Enabling the Modem Oma interface */
+            mm_iface_modem_oma_enable (MM_IFACE_MODEM_OMA (ctx->self),
+                                       ctx->cancellable,
+                                       (GAsyncReadyCallback)iface_modem_oma_enable_ready,
+                                       ctx);
+            return;
+        }
+        /* Fall down to next step */
+        ctx->step++;
+
     case ENABLING_STEP_IFACE_FIRMWARE:
         /* Fall down to next step */
         ctx->step++;
@@ -8542,7 +8661,7 @@ enabling_step (EnablingContext *ctx)
     case ENABLING_STEP_LAST:
         ctx->enabled = TRUE;
         /* All enabled without errors! */
-        g_simple_async_result_set_op_res_gboolean (G_SIMPLE_ASYNC_RESULT (ctx->result), TRUE);
+        g_simple_async_result_set_op_res_gboolean (ctx->result, TRUE);
         enabling_context_complete_and_free (ctx);
         return;
     }
@@ -8606,7 +8725,7 @@ enable (MMBaseModem *self,
     case MM_MODEM_STATE_ENABLING:
         g_simple_async_result_set_error (result,
                                          MM_CORE_ERROR,
-                                         MM_CORE_ERROR_WRONG_STATE,
+                                         MM_CORE_ERROR_IN_PROGRESS,
                                          "Cannot enable modem: "
                                          "already being enabled");
         break;
@@ -8641,6 +8760,8 @@ typedef enum {
     INITIALIZE_STEP_IFACE_LOCATION,
     INITIALIZE_STEP_IFACE_MESSAGING,
     INITIALIZE_STEP_IFACE_TIME,
+    INITIALIZE_STEP_IFACE_SIGNAL,
+    INITIALIZE_STEP_IFACE_OMA,
     INITIALIZE_STEP_IFACE_FIRMWARE,
     INITIALIZE_STEP_IFACE_SIMPLE,
     INITIALIZE_STEP_LAST,
@@ -8836,6 +8957,8 @@ INTERFACE_INIT_READY_FN (iface_modem_cdma,      MM_IFACE_MODEM_CDMA,      TRUE)
 INTERFACE_INIT_READY_FN (iface_modem_location,  MM_IFACE_MODEM_LOCATION,  FALSE)
 INTERFACE_INIT_READY_FN (iface_modem_messaging, MM_IFACE_MODEM_MESSAGING, FALSE)
 INTERFACE_INIT_READY_FN (iface_modem_time,      MM_IFACE_MODEM_TIME,      FALSE)
+INTERFACE_INIT_READY_FN (iface_modem_signal,    MM_IFACE_MODEM_SIGNAL,    FALSE)
+INTERFACE_INIT_READY_FN (iface_modem_oma,       MM_IFACE_MODEM_OMA,       FALSE)
 INTERFACE_INIT_READY_FN (iface_modem_firmware,  MM_IFACE_MODEM_FIRMWARE,  FALSE)
 
 static void
@@ -8948,6 +9071,22 @@ initialize_step (InitializeContext *ctx)
                                         ctx);
         return;
 
+    case INITIALIZE_STEP_IFACE_SIGNAL:
+        /* Initialize the Signal interface */
+        mm_iface_modem_signal_initialize (MM_IFACE_MODEM_SIGNAL (ctx->self),
+                                          ctx->cancellable,
+                                          (GAsyncReadyCallback)iface_modem_signal_initialize_ready,
+                                          ctx);
+        return;
+
+    case INITIALIZE_STEP_IFACE_OMA:
+        /* Initialize the Oma interface */
+        mm_iface_modem_oma_initialize (MM_IFACE_MODEM_OMA (ctx->self),
+                                       ctx->cancellable,
+                                       (GAsyncReadyCallback)iface_modem_oma_initialize_ready,
+                                       ctx);
+        return;
+
     case INITIALIZE_STEP_IFACE_FIRMWARE:
         /* Initialize the Firmware interface */
         mm_iface_modem_firmware_initialize (MM_IFACE_MODEM_FIRMWARE (ctx->self),
@@ -9011,7 +9150,7 @@ initialize_step (InitializeContext *ctx)
                                      MM_MODEM_STATE_DISABLED,
                                      MM_MODEM_STATE_CHANGE_REASON_UNKNOWN);
 
-        g_simple_async_result_set_op_res_gboolean (G_SIMPLE_ASYNC_RESULT (ctx->result), TRUE);
+        g_simple_async_result_set_op_res_gboolean (ctx->result, TRUE);
         initialize_context_complete_and_free (ctx);
         return;
     }
@@ -9062,7 +9201,7 @@ initialize (MMBaseModem *self,
     case MM_MODEM_STATE_INITIALIZING:
         g_simple_async_result_set_error (result,
                                          MM_CORE_ERROR,
-                                         MM_CORE_ERROR_WRONG_STATE,
+                                         MM_CORE_ERROR_IN_PROGRESS,
                                          "Cannot initialize modem: "
                                          "already being initialized");
         break;
@@ -9189,6 +9328,14 @@ set_property (GObject *object,
         g_clear_object (&self->priv->modem_time_dbus_skeleton);
         self->priv->modem_time_dbus_skeleton = g_value_dup_object (value);
         break;
+    case PROP_MODEM_SIGNAL_DBUS_SKELETON:
+        g_clear_object (&self->priv->modem_signal_dbus_skeleton);
+        self->priv->modem_signal_dbus_skeleton = g_value_dup_object (value);
+        break;
+    case PROP_MODEM_OMA_DBUS_SKELETON:
+        g_clear_object (&self->priv->modem_oma_dbus_skeleton);
+        self->priv->modem_oma_dbus_skeleton = g_value_dup_object (value);
+        break;
     case PROP_MODEM_FIRMWARE_DBUS_SKELETON:
         g_clear_object (&self->priv->modem_firmware_dbus_skeleton);
         self->priv->modem_firmware_dbus_skeleton = g_value_dup_object (value);
@@ -9283,6 +9430,12 @@ get_property (GObject *object,
         break;
     case PROP_MODEM_TIME_DBUS_SKELETON:
         g_value_set_object (value, self->priv->modem_time_dbus_skeleton);
+        break;
+    case PROP_MODEM_SIGNAL_DBUS_SKELETON:
+        g_value_set_object (value, self->priv->modem_signal_dbus_skeleton);
+        break;
+    case PROP_MODEM_OMA_DBUS_SKELETON:
+        g_value_set_object (value, self->priv->modem_oma_dbus_skeleton);
         break;
     case PROP_MODEM_FIRMWARE_DBUS_SKELETON:
         g_value_set_object (value, self->priv->modem_firmware_dbus_skeleton);
@@ -9517,6 +9670,8 @@ iface_modem_3gpp_init (MMIfaceModem3gpp *iface)
     iface->load_operator_code_finish = modem_3gpp_load_operator_code_finish;
     iface->load_operator_name = modem_3gpp_load_operator_name;
     iface->load_operator_name_finish = modem_3gpp_load_operator_name_finish;
+    iface->load_subscription_state = modem_3gpp_load_subscription_state;
+    iface->load_subscription_state_finish = modem_3gpp_load_subscription_state_finish;
     iface->run_registration_checks = modem_3gpp_run_registration_checks;
     iface->run_registration_checks_finish = modem_3gpp_run_registration_checks_finish;
     iface->register_in_network = modem_3gpp_register_in_network;
@@ -9623,6 +9778,16 @@ iface_modem_time_init (MMIfaceModemTime *iface)
 }
 
 static void
+iface_modem_signal_init (MMIfaceModemSignal *iface)
+{
+}
+
+static void
+iface_modem_oma_init (MMIfaceModemOma *iface)
+{
+}
+
+static void
 iface_modem_firmware_init (MMIfaceModemFirmware *iface)
 {
 }
@@ -9689,6 +9854,14 @@ mm_broadband_modem_class_init (MMBroadbandModemClass *klass)
     g_object_class_override_property (object_class,
                                       PROP_MODEM_TIME_DBUS_SKELETON,
                                       MM_IFACE_MODEM_TIME_DBUS_SKELETON);
+
+    g_object_class_override_property (object_class,
+                                      PROP_MODEM_SIGNAL_DBUS_SKELETON,
+                                      MM_IFACE_MODEM_SIGNAL_DBUS_SKELETON);
+
+    g_object_class_override_property (object_class,
+                                      PROP_MODEM_OMA_DBUS_SKELETON,
+                                      MM_IFACE_MODEM_OMA_DBUS_SKELETON);
 
     g_object_class_override_property (object_class,
                                       PROP_MODEM_FIRMWARE_DBUS_SKELETON,
