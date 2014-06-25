@@ -1,4 +1,4 @@
-modemmanager (1.2.0-1) UNRELEASED; urgency=medium
+modemmanager (1.2.0-1) unstable; urgency=medium
 
   [ Guido Günther ]
   * New upstream version 1.2.0 (Closes: #731851)
@@ -14,7 +14,7 @@ modemmanager (1.2.0-1) UNRELEASED; urgency=medium
   * Use gir dh addon
   * Update extendend package description (Closes: #744180)
 
- -- Michael Biebl <biebl@debian.org>  Wed, 25 Jun 2014 02:18:20 +0200
+ -- Michael Biebl <biebl@debian.org>  Wed, 25 Jun 2014 02:23:09 +0200
 
 modemmanager (1.0.0-5) unstable; urgency=medium
 
