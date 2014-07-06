@@ -26,7 +26,7 @@ Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/modemmanager.git
 Homepage: http://www.freedesktop.org/wiki/Software/ModemManager/
 
 Package: modemmanager
-Architecture: any
+Architecture: linux-any
 Depends: ${shlibs:Depends},
          ${misc:Depends},
 Recommends: usb-modeswitch
@@ -39,7 +39,7 @@ Description: D-Bus service for managing modems
  setup connections with them.
 
 Package: modemmanager-dbg
-Architecture: any
+Architecture: linux-any
 Section: debug
 Priority: extra
 Depends: modemmanager (= ${binary:Version}),
@@ -55,7 +55,7 @@ Description: D-Bus service for managing modems - debugging symbols
 
 Package: modemmanager-dev
 Section: libdevel
-Architecture: any
+Architecture: linux-any
 Depends: ${misc:Depends}
 Replaces: modemmanager (<< 0.7.990)
 Breaks: modemmanager (<< 0.7.990)
@@ -85,7 +85,7 @@ Description: D-Bus service for managing modems - documentation files
  ModemManager.
 
 Package: libmm-glib0
-Architecture: any
+Architecture: linux-any
 Section: libs
 Pre-Depends: ${misc:Pre-Depends},
 Multi-Arch: same
@@ -103,7 +103,7 @@ Description: D-Bus service for managing modems - shared libraries
  ModemManager.
 
 Package: libmm-glib-dev
-Architecture: any
+Architecture: linux-any
 Section: libdevel
 Depends: libmm-glib0 (= ${binary:Version}),
          gir1.2-modemmanager-1.0 (= ${binary:Version}),
@@ -138,7 +138,7 @@ Description: D-Bus service for managing modems - library documentation
 
 Package: gir1.2-modemmanager-1.0
 Section: introspection
-Architecture: any
+Architecture: linux-any
 Depends: ${gir:Depends},
          ${shlibs:Depends},
          ${misc:Depends}
