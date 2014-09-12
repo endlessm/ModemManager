@@ -50,7 +50,7 @@ struct _MMBroadbandBearerHsoPrivate {
 typedef struct {
     MMBroadbandBearerHso *self;
     MMBaseModem *modem;
-    MMAtSerialPort *primary;
+    MMPortSerialAt *primary;
     guint cid;
     GSimpleAsyncResult *result;
 } GetIpConfig3gppContext;
@@ -100,7 +100,7 @@ ip_config_ready (MMBaseModem *modem,
     guint i;
     guint dns_i;
 
-    response = mm_base_modem_at_command_full_finish (MM_BASE_MODEM (modem), res, &error);
+    response = mm_base_modem_at_command_full_finish (modem, res, &error);
     if (error) {
         g_simple_async_result_take_error (ctx->result, error);
         get_ip_config_context_complete_and_free (ctx);
@@ -183,10 +183,11 @@ ip_config_ready (MMBaseModem *modem,
 static void
 get_ip_config_3gpp (MMBroadbandBearer *self,
                     MMBroadbandModem *modem,
-                    MMAtSerialPort *primary,
-                    MMAtSerialPort *secondary,
+                    MMPortSerialAt *primary,
+                    MMPortSerialAt *secondary,
                     MMPort *data,
                     guint cid,
+                    MMBearerIpFamily ip_family,
                     GAsyncReadyCallback callback,
                     gpointer user_data)
 {
@@ -223,7 +224,7 @@ get_ip_config_3gpp (MMBroadbandBearer *self,
 typedef struct {
     MMBroadbandBearerHso *self;
     MMBaseModem *modem;
-    MMAtSerialPort *primary;
+    MMPortSerialAt *primary;
     guint cid;
     GCancellable *cancellable;
     GSimpleAsyncResult *result;
@@ -316,7 +317,7 @@ connect_reset (Dial3gppContext *ctx)
 }
 
 static void
-report_connection_status (MMBearer *bearer,
+report_connection_status (MMBaseBearer *bearer,
                           MMBearerConnectionStatus status)
 {
     MMBroadbandBearerHso *self = MM_BROADBAND_BEARER_HSO (bearer);
@@ -340,7 +341,7 @@ report_connection_status (MMBearer *bearer,
         if (status == MM_BEARER_CONNECTION_STATUS_DISCONNECTED) {
             /* If no connection attempt on-going, make sure we mark ourselves as
              * disconnected */
-            MM_BEARER_CLASS (mm_broadband_bearer_hso_parent_class)->report_connection_status (
+            MM_BASE_BEARER_CLASS (mm_broadband_bearer_hso_parent_class)->report_connection_status (
                 bearer,
                 status);
         }
@@ -462,12 +463,12 @@ connect_cancelled_cb (GCancellable *cancellable,
 }
 
 static void
-forced_close_cb (MMSerialPort *port,
+forced_close_cb (MMPortSerial *port,
                  MMBroadbandBearerHso *self)
 {
     /* Just treat the forced close event as any other unsolicited message */
-    mm_bearer_report_connection_status (MM_BEARER (self),
-                                        MM_BEARER_CONNECTION_STATUS_CONNECTION_FAILED);
+    mm_base_bearer_report_connection_status (MM_BASE_BEARER (self),
+                                             MM_BEARER_CONNECTION_STATUS_CONNECTION_FAILED);
 }
 
 static void
@@ -568,12 +569,12 @@ authenticate_ready (MMBaseModem *modem,
 }
 
 const gchar *auth_commands[] = {
-	"$QCPDPP",
-	/* Icera-based devices (GI0322/Quicksilver, iCON 505) don't implement
-	 * $QCPDPP, but instead use _OPDPP with the same arguments.
-	 */
-	"_OPDPP",
-	NULL
+    "$QCPDPP",
+    /* Icera-based devices (GI0322/Quicksilver, iCON 505) don't implement
+     * $QCPDPP, but instead use _OPDPP with the same arguments.
+     */
+    "_OPDPP",
+    NULL
 };
 
 static void
@@ -593,14 +594,14 @@ authenticate (Dial3gppContext *ctx)
         return;
     }
 
-    user = mm_bearer_properties_get_user (mm_bearer_peek_config (MM_BEARER (ctx->self)));
-    password = mm_bearer_properties_get_password (mm_bearer_peek_config (MM_BEARER (ctx->self)));
-    allowed_auth = mm_bearer_properties_get_allowed_auth (mm_bearer_peek_config (MM_BEARER (ctx->self)));
+    user = mm_bearer_properties_get_user (mm_base_bearer_peek_config (MM_BASE_BEARER (ctx->self)));
+    password = mm_bearer_properties_get_password (mm_base_bearer_peek_config (MM_BASE_BEARER (ctx->self)));
+    allowed_auth = mm_bearer_properties_get_allowed_auth (mm_base_bearer_peek_config (MM_BASE_BEARER (ctx->self)));
 
     /* Both user and password are required; otherwise firmware returns an error */
     if (!user || !password || allowed_auth == MM_BEARER_ALLOWED_AUTH_NONE) {
         mm_dbg ("Not using authentication");
-		command = g_strdup_printf ("%s=%d,0",
+        command = g_strdup_printf ("%s=%d,0",
                                    auth_commands[ctx->auth_idx],
                                    ctx->cid);
     } else {
@@ -632,8 +633,8 @@ authenticate (Dial3gppContext *ctx)
             return;
         }
 
-        quoted_user = mm_at_serial_port_quote_string (user);
-        quoted_password = mm_at_serial_port_quote_string (password);
+        quoted_user = mm_port_serial_at_quote_string (user);
+        quoted_password = mm_port_serial_at_quote_string (password);
         command = g_strdup_printf ("%s=%d,%u,%s,%s",
                                    auth_commands[ctx->auth_idx],
                                    ctx->cid,
@@ -659,7 +660,7 @@ authenticate (Dial3gppContext *ctx)
 static void
 dial_3gpp (MMBroadbandBearer *self,
            MMBaseModem *modem,
-           MMAtSerialPort *primary,
+           MMPortSerialAt *primary,
            guint cid,
            GCancellable *cancellable,
            GAsyncReadyCallback callback,
@@ -705,7 +706,7 @@ dial_3gpp (MMBroadbandBearer *self,
 typedef struct {
     MMBroadbandBearerHso *self;
     MMBaseModem *modem;
-    MMAtSerialPort *primary;
+    MMPortSerialAt *primary;
     GSimpleAsyncResult *result;
 } DisconnectContext;
 
@@ -736,7 +737,7 @@ disconnect_owancall_ready (MMBaseModem *modem,
     GError *error = NULL;
 
     /* Ignore errors for now */
-    mm_base_modem_at_command_full_finish (MM_BASE_MODEM (modem), res, &error);
+    mm_base_modem_at_command_full_finish (modem, res, &error);
     if (error) {
         mm_dbg ("Disconnection failed (not fatal): %s", error->message);
         g_error_free (error);
@@ -749,8 +750,8 @@ disconnect_owancall_ready (MMBaseModem *modem,
 static void
 disconnect_3gpp (MMBroadbandBearer *self,
                  MMBroadbandModem *modem,
-                 MMAtSerialPort *primary,
-                 MMAtSerialPort *secondary,
+                 MMPortSerialAt *primary,
+                 MMPortSerialAt *secondary,
                  MMPort *data,
                  guint cid,
                  GAsyncReadyCallback callback,
@@ -786,7 +787,7 @@ disconnect_3gpp (MMBroadbandBearer *self,
 
 /*****************************************************************************/
 
-MMBearer *
+MMBaseBearer *
 mm_broadband_bearer_hso_new_finish (GAsyncResult *res,
                                     GError **error)
 {
@@ -801,9 +802,9 @@ mm_broadband_bearer_hso_new_finish (GAsyncResult *res,
         return NULL;
 
     /* Only export valid bearers */
-    mm_bearer_export (MM_BEARER (bearer));
+    mm_base_bearer_export (MM_BASE_BEARER (bearer));
 
-    return MM_BEARER (bearer);
+    return MM_BASE_BEARER (bearer);
 }
 
 void
@@ -819,8 +820,8 @@ mm_broadband_bearer_hso_new (MMBroadbandModemHso *modem,
         cancellable,
         callback,
         user_data,
-        MM_BEARER_MODEM, modem,
-        MM_BEARER_CONFIG, config,
+        MM_BASE_BEARER_MODEM, modem,
+        MM_BASE_BEARER_CONFIG, config,
         NULL);
 }
 
@@ -828,7 +829,7 @@ static void
 mm_broadband_bearer_hso_init (MMBroadbandBearerHso *self)
 {
     /* Initialize private data */
-    self->priv = G_TYPE_INSTANCE_GET_PRIVATE ((self),
+    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
                                               MM_TYPE_BROADBAND_BEARER_HSO,
                                               MMBroadbandBearerHsoPrivate);
 }
@@ -837,12 +838,12 @@ static void
 mm_broadband_bearer_hso_class_init (MMBroadbandBearerHsoClass *klass)
 {
     GObjectClass *object_class = G_OBJECT_CLASS (klass);
-    MMBearerClass *bearer_class = MM_BEARER_CLASS (klass);
+    MMBaseBearerClass *base_bearer_class = MM_BASE_BEARER_CLASS (klass);
     MMBroadbandBearerClass *broadband_bearer_class = MM_BROADBAND_BEARER_CLASS (klass);
 
     g_type_class_add_private (object_class, sizeof (MMBroadbandBearerHsoPrivate));
 
-    bearer_class->report_connection_status = report_connection_status;
+    base_bearer_class->report_connection_status = report_connection_status;
     broadband_bearer_class->dial_3gpp = dial_3gpp;
     broadband_bearer_class->dial_3gpp_finish = dial_3gpp_finish;
     broadband_bearer_class->get_ip_config_3gpp = get_ip_config_3gpp;

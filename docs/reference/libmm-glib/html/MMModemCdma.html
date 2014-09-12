@@ -2,34 +2,28 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>MMModemCdma</title>
+<title>libmm-glib Reference Manual: MMModemCdma</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
 <link rel="up" href="ch03.html#id-1.2.4.3" title="Generic interfaces">
 <link rel="prev" href="MMModem3gppUssd.html" title="MMModem3gppUssd">
 <link rel="next" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties">
-<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
-<td><a accesskey="p" href="MMModem3gppUssd.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="ch03.html#id-1.2.4.3"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">libmm-glib Reference Manual</th>
-<td><a accesskey="n" href="MMCdmaManualActivationProperties.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts">
-<a href="#MMModemCdma.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#MMModemCdma.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#MMModemCdma.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                   | 
-                  <a href="#MMModemCdma.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
-</td></tr>
-</table>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
+                  <a href="#MMModemCdma.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
+                  <a href="#MMModemCdma.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces"> <span class="dim">|</span> 
+                  <a href="#MMModemCdma.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch03.html#id-1.2.4.3"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="MMModem3gppUssd.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="MMCdmaManualActivationProperties.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
 <div class="refentry">
 <a name="MMModemCdma"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
@@ -37,63 +31,181 @@
 <h2><span class="refentrytitle"><a name="MMModemCdma.top_of_page"></a>MMModemCdma</span></h2>
 <p>MMModemCdma — The CDMA interface</p>
 </td>
-<td valign="top" align="right"></td>
+<td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
-<a name="MMModemCdma.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">struct              <a class="link" href="MMModemCdma.html#MMModemCdma-struct" title="struct MMModemCdma">MMModemCdma</a>;
-#define             <a class="link" href="MMModemCdma.html#MM-MODEM-CDMA-NID-UNKNOWN:CAPS" title="MM_MODEM_CDMA_NID_UNKNOWN">MM_MODEM_CDMA_NID_UNKNOWN</a>
-#define             <a class="link" href="MMModemCdma.html#MM-MODEM-CDMA-SID-UNKNOWN:CAPS" title="MM_MODEM_CDMA_SID_UNKNOWN">MM_MODEM_CDMA_SID_UNKNOWN</a>
-
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModemCdma.html#mm-modem-cdma-get-path" title="mm_modem_cdma_get_path ()">mm_modem_cdma_get_path</a>              (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModemCdma.html#mm-modem-cdma-dup-path" title="mm_modem_cdma_dup_path ()">mm_modem_cdma_dup_path</a>              (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModemCdma.html#mm-modem-cdma-get-esn" title="mm_modem_cdma_get_esn ()">mm_modem_cdma_get_esn</a>               (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModemCdma.html#mm-modem-cdma-dup-esn" title="mm_modem_cdma_dup_esn ()">mm_modem_cdma_dup_esn</a>               (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMModemCdma.html#mm-modem-cdma-get-meid" title="mm_modem_cdma_get_meid ()">mm_modem_cdma_get_meid</a>              (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMModemCdma.html#mm-modem-cdma-dup-meid" title="mm_modem_cdma_dup_meid ()">mm_modem_cdma_dup_meid</a>              (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMModemCdma.html#mm-modem-cdma-get-nid" title="mm_modem_cdma_get_nid ()">mm_modem_cdma_get_nid</a>               (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMModemCdma.html#mm-modem-cdma-get-sid" title="mm_modem_cdma_get_sid ()">mm_modem_cdma_get_sid</a>               (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);
-<span class="returnvalue">MMModemCdmaRegistrationState</span> <a class="link" href="MMModemCdma.html#mm-modem-cdma-get-cdma1x-registration-state" title="mm_modem_cdma_get_cdma1x_registration_state ()">mm_modem_cdma_get_cdma1x_registration_state</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);
-<span class="returnvalue">MMModemCdmaRegistrationState</span> <a class="link" href="MMModemCdma.html#mm-modem-cdma-get-evdo-registration-state" title="mm_modem_cdma_get_evdo_registration_state ()">mm_modem_cdma_get_evdo_registration_state</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);
-<span class="returnvalue">MMModemCdmaActivationState</span> <a class="link" href="MMModemCdma.html#mm-modem-cdma-get-activation-state" title="mm_modem_cdma_get_activation_state ()">mm_modem_cdma_get_activation_state</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);
-
-<span class="returnvalue">void</span>                <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate" title="mm_modem_cdma_activate ()">mm_modem_cdma_activate</a>              (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *carrier</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-finish" title="mm_modem_cdma_activate_finish ()">mm_modem_cdma_activate_finish</a>       (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-sync" title="mm_modem_cdma_activate_sync ()">mm_modem_cdma_activate_sync</a>         (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *carrier</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-manual" title="mm_modem_cdma_activate_manual ()">mm_modem_cdma_activate_manual</a>       (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *properties</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-manual-finish" title="mm_modem_cdma_activate_manual_finish ()">mm_modem_cdma_activate_manual_finish</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-manual-sync" title="mm_modem_cdma_activate_manual_sync ()">mm_modem_cdma_activate_manual_sync</a>  (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *properties</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-</pre>
+<div class="refsect1">
+<a name="MMModemCdma.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMModemCdma.html#mm-modem-cdma-get-path" title="mm_modem_cdma_get_path ()">mm_modem_cdma_get_path</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMModemCdma.html#mm-modem-cdma-dup-path" title="mm_modem_cdma_dup_path ()">mm_modem_cdma_dup_path</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMModemCdma.html#mm-modem-cdma-get-esn" title="mm_modem_cdma_get_esn ()">mm_modem_cdma_get_esn</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMModemCdma.html#mm-modem-cdma-dup-esn" title="mm_modem_cdma_dup_esn ()">mm_modem_cdma_dup_esn</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMModemCdma.html#mm-modem-cdma-get-meid" title="mm_modem_cdma_get_meid ()">mm_modem_cdma_get_meid</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMModemCdma.html#mm-modem-cdma-dup-meid" title="mm_modem_cdma_dup_meid ()">mm_modem_cdma_dup_meid</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMModemCdma.html#mm-modem-cdma-get-nid" title="mm_modem_cdma_get_nid ()">mm_modem_cdma_get_nid</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMModemCdma.html#mm-modem-cdma-get-sid" title="mm_modem_cdma_get_sid ()">mm_modem_cdma_get_sid</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="returnvalue">MMModemCdmaRegistrationState</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMModemCdma.html#mm-modem-cdma-get-cdma1x-registration-state" title="mm_modem_cdma_get_cdma1x_registration_state ()">mm_modem_cdma_get_cdma1x_registration_state</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="returnvalue">MMModemCdmaRegistrationState</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMModemCdma.html#mm-modem-cdma-get-evdo-registration-state" title="mm_modem_cdma_get_evdo_registration_state ()">mm_modem_cdma_get_evdo_registration_state</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaActivationState"><span class="returnvalue">MMModemCdmaActivationState</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMModemCdma.html#mm-modem-cdma-get-activation-state" title="mm_modem_cdma_get_activation_state ()">mm_modem_cdma_get_activation_state</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMModemCdma.html#mm-modem-cdma-activate" title="mm_modem_cdma_activate ()">mm_modem_cdma_activate</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-finish" title="mm_modem_cdma_activate_finish ()">mm_modem_cdma_activate_finish</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-sync" title="mm_modem_cdma_activate_sync ()">mm_modem_cdma_activate_sync</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-manual" title="mm_modem_cdma_activate_manual ()">mm_modem_cdma_activate_manual</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-manual-finish" title="mm_modem_cdma_activate_manual_finish ()">mm_modem_cdma_activate_manual_finish</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-manual-sync" title="mm_modem_cdma_activate_manual_sync ()">mm_modem_cdma_activate_manual_sync</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="MMModemCdma.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="MMModemCdma.html#MMModemCdma-struct" title="struct MMModemCdma">MMModemCdma</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="MMModemCdma.html#MM-MODEM-CDMA-NID-UNKNOWN:CAPS" title="MM_MODEM_CDMA_NID_UNKNOWN">MM_MODEM_CDMA_NID_UNKNOWN</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="MMModemCdma.html#MM-MODEM-CDMA-SID-UNKNOWN:CAPS" title="MM_MODEM_CDMA_SID_UNKNOWN">MM_MODEM_CDMA_SID_UNKNOWN</a></td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <div class="refsect1">
 <a name="MMModemCdma.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="synopsis">
-  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-   +----<a href="http://library.gnome.org/devel/gio/unstable/GDBusProxy.html">GDBusProxy</a>
-         +----<a class="link" href="MmGdbusModemCdmaProxy.html" title="MmGdbusModemCdmaProxy">MmGdbusModemCdmaProxy</a>
-               +----MMModemCdma
+<pre class="screen">    <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gio/unstable/GDBusProxy.html">GDBusProxy</a>
+        <span class="lineart">╰──</span> <a class="link" href="MmGdbusModemCdmaProxy.html" title="MmGdbusModemCdmaProxy">MmGdbusModemCdmaProxy</a>
+            <span class="lineart">╰──</span> MMModemCdma
 </pre>
 </div>
 <div class="refsect1">
@@ -104,611 +216,648 @@ MMModemCdma implements
 </div>
 <div class="refsect1">
 <a name="MMModemCdma.description"></a><h2>Description</h2>
-<p>
-The <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> is an object providing access to the methods, signals and
-properties of the CDMA interface.
-</p>
-<p>
-The CDMA interface is exposed whenever a modem has CDMA capabilities
-(<code class="literal">MM_MODEM_CAPABILITY_CDMA_EVDO</code>).
-</p>
+<p>The <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> is an object providing access to the methods, signals and
+properties of the CDMA interface.</p>
+<p>The CDMA interface is exposed whenever a modem has CDMA capabilities
+(<code class="literal">MM_MODEM_CAPABILITY_CDMA_EVDO</code>).</p>
 </div>
 <div class="refsect1">
-<a name="MMModemCdma.details"></a><h2>Details</h2>
+<a name="MMModemCdma.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="mm-modem-cdma-get-path"></a><h3>mm_modem_cdma_get_path ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_modem_cdma_get_path (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
+<p>Gets the DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> which implements this interface.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.2.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.2.6"></a><h4>Returns</h4>
+<p> The DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> object. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-cdma-dup-path"></a><h3>mm_modem_cdma_dup_path ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_modem_cdma_dup_path (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
+<p>Gets a copy of the DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> object which implements this interface.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.3.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.3.6"></a><h4>Returns</h4>
+<p> The DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a>. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-cdma-get-esn"></a><h3>mm_modem_cdma_get_esn ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_modem_cdma_get_esn (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
+<p>Gets the <a class="ulink" href="http://en.wikipedia.org/wiki/Electronic_serial_number" target="_top">Electronic Serial Number</a>,
+as reported by this <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p>
+<p>The ESN is superceded by MEID, but still used in older devices.</p>
+<div class="warning">The returned value is only valid until the property changes so
+it is only safe to use this function on the thread where
+<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMModemCdma.html#mm-modem-cdma-dup-esn" title="mm_modem_cdma_dup_esn ()"><code class="function">mm_modem_cdma_dup_esn()</code></a> if on another
+thread.</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.4.7"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.4.8"></a><h4>Returns</h4>
+<p> The ESN, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none available. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-cdma-dup-esn"></a><h3>mm_modem_cdma_dup_esn ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_modem_cdma_dup_esn (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
+<p>Gets a copy of the <a class="ulink" href="http://en.wikipedia.org/wiki/Electronic_serial_number" target="_top">Electronic Serial Number</a>,
+as reported by this <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p>
+<p>The ESN is superceded by MEID, but still used in older devices.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.5.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.5.7"></a><h4>Returns</h4>
+<p> The ESN, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none available. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-cdma-get-meid"></a><h3>mm_modem_cdma_get_meid ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_modem_cdma_get_meid (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
+<p>Gets the <a class="ulink" href="http://en.wikipedia.org/wiki/MEID" target="_top">Mobile Equipment Identifier</a>,
+as reported by this <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p>
+<div class="warning">The returned value is only valid until the property changes so
+it is only safe to use this function on the thread where
+<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMModemCdma.html#mm-modem-cdma-dup-meid" title="mm_modem_cdma_dup_meid ()"><code class="function">mm_modem_cdma_dup_meid()</code></a> if on another
+thread.</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.6.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.6.7"></a><h4>Returns</h4>
+<p> The MEID, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none available. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-cdma-dup-meid"></a><h3>mm_modem_cdma_dup_meid ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_modem_cdma_dup_meid (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
+<p>Gets a copy of the <a class="ulink" href="http://en.wikipedia.org/wiki/MEID" target="_top">Mobile Equipment Identifier</a>,
+as reported by this <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.7.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.7.6"></a><h4>Returns</h4>
+<p> The MEID, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none available. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-cdma-get-nid"></a><h3>mm_modem_cdma_get_nid ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+mm_modem_cdma_get_nid (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
+<p>Gets the <a class="ulink" href="http://en.wikipedia.org/wiki/Network_Identification_Number" target="_top">Network Identifier</a>
+of the serving CDMA 1x network, if known, and if the modem is registered with
+a CDMA 1x network.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.8.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.8.6"></a><h4>Returns</h4>
+<p> The NID, or <a class="link" href="MMModemCdma.html#MM-MODEM-CDMA-NID-UNKNOWN:CAPS" title="MM_MODEM_CDMA_NID_UNKNOWN"><code class="literal">MM_MODEM_CDMA_NID_UNKNOWN</code></a>.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-cdma-get-sid"></a><h3>mm_modem_cdma_get_sid ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+mm_modem_cdma_get_sid (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
+<p>Gets the <a class="ulink" href="http://en.wikipedia.org/wiki/System_Identification_Number" target="_top">System Identifier</a>
+of the serving CDMA 1x network, if known, and if the modem is registered with
+a CDMA 1x network.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.9.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.9.6"></a><h4>Returns</h4>
+<p> The SID, or <a class="link" href="MMModemCdma.html#MM-MODEM-CDMA-SID-UNKNOWN:CAPS" title="MM_MODEM_CDMA_SID_UNKNOWN"><code class="literal">MM_MODEM_CDMA_SID_UNKNOWN</code></a>.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-cdma-get-cdma1x-registration-state"></a><h3>mm_modem_cdma_get_cdma1x_registration_state ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="returnvalue">MMModemCdmaRegistrationState</span></a>
+mm_modem_cdma_get_cdma1x_registration_state
+                               (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
+<p>Gets the state of the registration in the CDMA 1x network.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.10.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.10.6"></a><h4>Returns</h4>
+<p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a>.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-cdma-get-evdo-registration-state"></a><h3>mm_modem_cdma_get_evdo_registration_state ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="returnvalue">MMModemCdmaRegistrationState</span></a>
+mm_modem_cdma_get_evdo_registration_state
+                               (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
+<p>Gets the state of the registration in the EV-DO network.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.11.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.11.6"></a><h4>Returns</h4>
+<p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a>.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-cdma-get-activation-state"></a><h3>mm_modem_cdma_get_activation_state ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaActivationState"><span class="returnvalue">MMModemCdmaActivationState</span></a>
+mm_modem_cdma_get_activation_state (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
+<p>Gets the state of the activation in the 3GPP2 network.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.12.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.12.6"></a><h4>Returns</h4>
+<p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaActivationState"><span class="type">MMModemCdmaActivationState</span></a>.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-cdma-activate"></a><h3>mm_modem_cdma_activate ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_modem_cdma_activate (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
+                        <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *carrier</code></em>,
+                        <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                        <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                        <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>Asynchronously requests to provision the modem for use with a given carrier
+using the modem's OTA activation functionality, if any.</p>
+<p>When the operation is finished, <em class="parameter"><code>callback</code></em>
+ will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
+You can then call <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-finish" title="mm_modem_cdma_activate_finish ()"><code class="function">mm_modem_cdma_activate_finish()</code></a> to get the result of the operation.</p>
+<p>See <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-sync" title="mm_modem_cdma_activate_sync ()"><code class="function">mm_modem_cdma_activate_sync()</code></a> for the synchronous, blocking version of this method.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.13.7"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>carrier</p></td>
+<td class="parameter_description"><p>Name of the carrier.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>cancellable</p></td>
+<td class="parameter_description"><p> A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>callback</p></td>
+<td class="parameter_description"><p>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>User data to pass to <em class="parameter"><code>callback</code></em>
+.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-cdma-activate-finish"></a><h3>mm_modem_cdma_activate_finish ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+mm_modem_cdma_activate_finish (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
+                               <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                               <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>Finishes an operation started with <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate" title="mm_modem_cdma_activate ()"><code class="function">mm_modem_cdma_activate()</code></a>.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.14.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>res</p></td>
+<td class="parameter_description"><p>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate" title="mm_modem_cdma_activate ()"><code class="function">mm_modem_cdma_activate()</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>error</p></td>
+<td class="parameter_description"><p>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.14.6"></a><h4>Returns</h4>
+<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the activation was successful, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
+is set.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-cdma-activate-sync"></a><h3>mm_modem_cdma_activate_sync ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+mm_modem_cdma_activate_sync (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
+                             <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *carrier</code></em>,
+                             <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                             <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>Synchronously requests to provision the modem for use with a given carrier
+using the modem's OTA activation functionality, if any.</p>
+<p>The calling thread is blocked until a reply is received. See <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate" title="mm_modem_cdma_activate ()"><code class="function">mm_modem_cdma_activate()</code></a>
+for the asynchronous version of this method.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.15.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>carrier</p></td>
+<td class="parameter_description"><p>Name of the carrier.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>cancellable</p></td>
+<td class="parameter_description"><p> A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>error</p></td>
+<td class="parameter_description"><p>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.15.7"></a><h4>Returns</h4>
+<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the activation was successful, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
+is set.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-cdma-activate-manual"></a><h3>mm_modem_cdma_activate_manual ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_modem_cdma_activate_manual (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
+                               <em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *properties</code></em>,
+                               <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                               <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                               <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>Asynchronously requests to provision the modem with the given properties.</p>
+<p>When the operation is finished, <em class="parameter"><code>callback</code></em>
+ will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
+You can then call <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-manual-finish" title="mm_modem_cdma_activate_manual_finish ()"><code class="function">mm_modem_cdma_activate_manual_finish()</code></a> to get the result of the operation.</p>
+<p>See <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-manual-sync" title="mm_modem_cdma_activate_manual_sync ()"><code class="function">mm_modem_cdma_activate_manual_sync()</code></a> for the synchronous, blocking version of this method.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.16.7"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>properties</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>cancellable</p></td>
+<td class="parameter_description"><p> A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>callback</p></td>
+<td class="parameter_description"><p>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>User data to pass to <em class="parameter"><code>callback</code></em>
+.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-cdma-activate-manual-finish"></a><h3>mm_modem_cdma_activate_manual_finish ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+mm_modem_cdma_activate_manual_finish (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
+                                      <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                      <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>Finishes an operation started with <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-manual" title="mm_modem_cdma_activate_manual ()"><code class="function">mm_modem_cdma_activate_manual()</code></a>.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.17.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>res</p></td>
+<td class="parameter_description"><p>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-manual" title="mm_modem_cdma_activate_manual ()"><code class="function">mm_modem_cdma_activate_manual()</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>error</p></td>
+<td class="parameter_description"><p>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.17.6"></a><h4>Returns</h4>
+<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the activation was successful, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
+is set.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-cdma-activate-manual-sync"></a><h3>mm_modem_cdma_activate_manual_sync ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+mm_modem_cdma_activate_manual_sync (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
+                                    <em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *properties</code></em>,
+                                    <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                    <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>Synchronously requests to provision the modem with the given properties.</p>
+<p>The calling thread is blocked until a reply is received. See <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-manual" title="mm_modem_cdma_activate_manual ()"><code class="function">mm_modem_cdma_activate_manual()</code></a>
+for the asynchronous version of this method.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.18.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>properties</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>cancellable</p></td>
+<td class="parameter_description"><p> A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>error</p></td>
+<td class="parameter_description"><p>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.5.8.18.7"></a><h4>Returns</h4>
+<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the activation was successful, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
+is set.</p>
+<p></p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="MMModemCdma.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
 <a name="MMModemCdma-struct"></a><h3>struct MMModemCdma</h3>
 <pre class="programlisting">struct MMModemCdma;</pre>
-<p>
-The <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> structure contains private data and should only be accessed
-using the provided API.
-</p>
+<p>The <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> structure contains private data and should only be accessed
+using the provided API.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="MM-MODEM-CDMA-NID-UNKNOWN:CAPS"></a><h3>MM_MODEM_CDMA_NID_UNKNOWN</h3>
 <pre class="programlisting">#define MM_MODEM_CDMA_NID_UNKNOWN 99999
 </pre>
-<p>
-Identifier for an unknown NID.
-</p>
+<p>Identifier for an unknown NID.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="MM-MODEM-CDMA-SID-UNKNOWN:CAPS"></a><h3>MM_MODEM_CDMA_SID_UNKNOWN</h3>
 <pre class="programlisting">#define MM_MODEM_CDMA_SID_UNKNOWN 99999
 </pre>
-<p>
-Identifier for an unknown SID.
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-cdma-get-path"></a><h3>mm_modem_cdma_get_path ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_cdma_get_path              (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
-<p>
-Gets the DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> which implements this interface.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> object. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-cdma-dup-path"></a><h3>mm_modem_cdma_dup_path ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_modem_cdma_dup_path              (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
-<p>
-Gets a copy of the DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> object which implements this interface.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a>. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-cdma-get-esn"></a><h3>mm_modem_cdma_get_esn ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_cdma_get_esn               (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
-<p>
-Gets the <a class="ulink" href="http://en.wikipedia.org/wiki/Electronic_serial_number" target="_top">Electronic Serial Number</a>,
-as reported by this <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.
-</p>
-<p>
-The ESN is superceded by MEID, but still used in older devices.
-</p>
-<p>
-</p>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Warning</h3>The returned value is only valid until the property changes so
-it is only safe to use this function on the thread where
-<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMModemCdma.html#mm-modem-cdma-dup-esn" title="mm_modem_cdma_dup_esn ()"><code class="function">mm_modem_cdma_dup_esn()</code></a> if on another
-thread.</div>
-<p>
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The ESN, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none available. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-cdma-dup-esn"></a><h3>mm_modem_cdma_dup_esn ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_modem_cdma_dup_esn               (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
-<p>
-Gets a copy of the <a class="ulink" href="http://en.wikipedia.org/wiki/Electronic_serial_number" target="_top">Electronic Serial Number</a>,
-as reported by this <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.
-</p>
-<p>
-The ESN is superceded by MEID, but still used in older devices.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The ESN, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none available. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-cdma-get-meid"></a><h3>mm_modem_cdma_get_meid ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_modem_cdma_get_meid              (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
-<p>
-Gets the <a class="ulink" href="http://en.wikipedia.org/wiki/MEID" target="_top">Mobile Equipment Identifier</a>,
-as reported by this <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.
-</p>
-<p>
-</p>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Warning</h3>The returned value is only valid until the property changes so
-it is only safe to use this function on the thread where
-<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMModemCdma.html#mm-modem-cdma-dup-meid" title="mm_modem_cdma_dup_meid ()"><code class="function">mm_modem_cdma_dup_meid()</code></a> if on another
-thread.</div>
-<p>
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The MEID, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none available. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-cdma-dup-meid"></a><h3>mm_modem_cdma_dup_meid ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_modem_cdma_dup_meid              (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
-<p>
-Gets a copy of the <a class="ulink" href="http://en.wikipedia.org/wiki/MEID" target="_top">Mobile Equipment Identifier</a>,
-as reported by this <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The MEID, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none available. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-cdma-get-nid"></a><h3>mm_modem_cdma_get_nid ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_modem_cdma_get_nid               (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
-<p>
-Gets the <a class="ulink" href="http://en.wikipedia.org/wiki/Network_Identification_Number" target="_top">Network Identifier</a>
-of the serving CDMA 1x network, if known, and if the modem is registered with
-a CDMA 1x network.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The NID, or <a class="link" href="MMModemCdma.html#MM-MODEM-CDMA-NID-UNKNOWN:CAPS" title="MM_MODEM_CDMA_NID_UNKNOWN"><code class="literal">MM_MODEM_CDMA_NID_UNKNOWN</code></a>.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-cdma-get-sid"></a><h3>mm_modem_cdma_get_sid ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_modem_cdma_get_sid               (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
-<p>
-Gets the <a class="ulink" href="http://en.wikipedia.org/wiki/System_Identification_Number" target="_top">System Identifier</a>
-of the serving CDMA 1x network, if known, and if the modem is registered with
-a CDMA 1x network.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The SID, or <a class="link" href="MMModemCdma.html#MM-MODEM-CDMA-SID-UNKNOWN:CAPS" title="MM_MODEM_CDMA_SID_UNKNOWN"><code class="literal">MM_MODEM_CDMA_SID_UNKNOWN</code></a>.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-cdma-get-cdma1x-registration-state"></a><h3>mm_modem_cdma_get_cdma1x_registration_state ()</h3>
-<pre class="programlisting"><span class="returnvalue">MMModemCdmaRegistrationState</span> mm_modem_cdma_get_cdma1x_registration_state
-                                                        (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
-<p>
-Gets the state of the registration in the CDMA 1x network.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <span class="type">MMModemCdmaRegistrationState</span>.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-cdma-get-evdo-registration-state"></a><h3>mm_modem_cdma_get_evdo_registration_state ()</h3>
-<pre class="programlisting"><span class="returnvalue">MMModemCdmaRegistrationState</span> mm_modem_cdma_get_evdo_registration_state
-                                                        (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
-<p>
-Gets the state of the registration in the EV-DO network.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <span class="type">MMModemCdmaRegistrationState</span>.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-cdma-get-activation-state"></a><h3>mm_modem_cdma_get_activation_state ()</h3>
-<pre class="programlisting"><span class="returnvalue">MMModemCdmaActivationState</span> mm_modem_cdma_get_activation_state
-                                                        (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>);</pre>
-<p>
-Gets the state of the activation in the 3GPP2 network.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <span class="type">MMModemCdmaActivationState</span>.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-cdma-activate"></a><h3>mm_modem_cdma_activate ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_modem_cdma_activate              (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *carrier</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
-<p>
-Asynchronously requests to provision the modem for use with a given carrier
-using the modem's OTA activation functionality, if any.
-</p>
-<p>
-When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
-You can then call <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-finish" title="mm_modem_cdma_activate_finish ()"><code class="function">mm_modem_cdma_activate_finish()</code></a> to get the result of the operation.
-</p>
-<p>
-See <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-sync" title="mm_modem_cdma_activate_sync ()"><code class="function">mm_modem_cdma_activate_sync()</code></a> for the synchronous, blocking version of this method.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>carrier</code></em> :</span></p></td>
-<td>Name of the carrier.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
-<td>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
-<td>User data to pass to <em class="parameter"><code>callback</code></em>.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-cdma-activate-finish"></a><h3>mm_modem_cdma_activate_finish ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_cdma_activate_finish       (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
-<p>
-Finishes an operation started with <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate" title="mm_modem_cdma_activate ()"><code class="function">mm_modem_cdma_activate()</code></a>.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate" title="mm_modem_cdma_activate ()"><code class="function">mm_modem_cdma_activate()</code></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the activation was successful, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-cdma-activate-sync"></a><h3>mm_modem_cdma_activate_sync ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_cdma_activate_sync         (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *carrier</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
-<p>
-Synchronously requests to provision the modem for use with a given carrier
-using the modem's OTA activation functionality, if any.
-</p>
-<p>
-The calling thread is blocked until a reply is received. See <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate" title="mm_modem_cdma_activate ()"><code class="function">mm_modem_cdma_activate()</code></a>
-for the asynchronous version of this method.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>carrier</code></em> :</span></p></td>
-<td>Name of the carrier.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the activation was successful, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-cdma-activate-manual"></a><h3>mm_modem_cdma_activate_manual ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_modem_cdma_activate_manual       (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *properties</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
-<p>
-Asynchronously requests to provision the modem with the given properties.
-</p>
-<p>
-When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
-You can then call <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-manual-finish" title="mm_modem_cdma_activate_manual_finish ()"><code class="function">mm_modem_cdma_activate_manual_finish()</code></a> to get the result of the operation.
-</p>
-<p>
-See <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-manual-sync" title="mm_modem_cdma_activate_manual_sync ()"><code class="function">mm_modem_cdma_activate_manual_sync()</code></a> for the synchronous, blocking version of this method.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>properties</code></em> :</span></p></td>
-<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
-<td>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
-<td>User data to pass to <em class="parameter"><code>callback</code></em>.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-cdma-activate-manual-finish"></a><h3>mm_modem_cdma_activate_manual_finish ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_cdma_activate_manual_finish
-                                                        (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
-<p>
-Finishes an operation started with <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-manual" title="mm_modem_cdma_activate_manual ()"><code class="function">mm_modem_cdma_activate_manual()</code></a>.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-manual" title="mm_modem_cdma_activate_manual ()"><code class="function">mm_modem_cdma_activate_manual()</code></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the activation was successful, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-cdma-activate-manual-sync"></a><h3>mm_modem_cdma_activate_manual_sync ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_modem_cdma_activate_manual_sync  (<em class="parameter"><code><a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a> *properties</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
-<p>
-Synchronously requests to provision the modem with the given properties.
-</p>
-<p>
-The calling thread is blocked until a reply is received. See <a class="link" href="MMModemCdma.html#mm-modem-cdma-activate-manual" title="mm_modem_cdma_activate_manual ()"><code class="function">mm_modem_cdma_activate_manual()</code></a>
-for the asynchronous version of this method.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>properties</code></em> :</span></p></td>
-<td>A <a class="link" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties"><span class="type">MMCdmaManualActivationProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the activation was successful, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
-</tr>
-</tbody>
-</table></div>
+<p>Identifier for an unknown SID.</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.19</div>
+          Generated by GTK-Doc V1.20</div>
 </body>
 </html>

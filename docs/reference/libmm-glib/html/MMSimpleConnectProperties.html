@@ -2,32 +2,27 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>MMSimpleConnectProperties</title>
+<title>libmm-glib Reference Manual: MMSimpleConnectProperties</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
 <link rel="up" href="ch03s02.html" title="Simple interface support">
 <link rel="prev" href="MMModemSimple.html" title="MMModemSimple">
 <link rel="next" href="MMSimpleStatus.html" title="MMSimpleStatus">
-<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
-<td><a accesskey="p" href="MMModemSimple.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="ch03s02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">libmm-glib Reference Manual</th>
-<td><a accesskey="n" href="MMSimpleStatus.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts">
-<a href="#MMSimpleConnectProperties.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#MMSimpleConnectProperties.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#MMSimpleConnectProperties.object-hierarchy" class="shortcut">Object Hierarchy</a>
-</td></tr>
-</table>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
+                  <a href="#MMSimpleConnectProperties.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
+                  <a href="#MMSimpleConnectProperties.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch03s02.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="MMModemSimple.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="MMSimpleStatus.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
 <div class="refentry">
 <a name="MMSimpleConnectProperties"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
@@ -35,581 +30,749 @@
 <h2><span class="refentrytitle"><a name="MMSimpleConnectProperties.top_of_page"></a>MMSimpleConnectProperties</span></h2>
 <p>MMSimpleConnectProperties — Helper object to handle connection properties.</p>
 </td>
-<td valign="top" align="right"></td>
+<td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
-<a name="MMSimpleConnectProperties.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">struct              <a class="link" href="MMSimpleConnectProperties.html#MMSimpleConnectProperties-struct" title="struct MMSimpleConnectProperties">MMSimpleConnectProperties</a>;
-
-<a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="returnvalue">MMSimpleConnectProperties</span></a> * <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-new" title="mm_simple_connect_properties_new ()">mm_simple_connect_properties_new</a>
-                                                        (<em class="parameter"><code><span class="type">void</span></code></em>);
-
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-pin" title="mm_simple_connect_properties_get_pin ()">mm_simple_connect_properties_get_pin</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-pin" title="mm_simple_connect_properties_set_pin ()">mm_simple_connect_properties_set_pin</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-operator-id" title="mm_simple_connect_properties_get_operator_id ()">mm_simple_connect_properties_get_operator_id</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-operator-id" title="mm_simple_connect_properties_set_operator_id ()">mm_simple_connect_properties_set_operator_id</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *operator_id</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-apn" title="mm_simple_connect_properties_get_apn ()">mm_simple_connect_properties_get_apn</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-apn" title="mm_simple_connect_properties_set_apn ()">mm_simple_connect_properties_set_apn</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *apn</code></em>);
-<span class="returnvalue">MMBearerAllowedAuth</span> <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-allowed-auth" title="mm_simple_connect_properties_get_allowed_auth ()">mm_simple_connect_properties_get_allowed_auth</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-allowed-auth" title="mm_simple_connect_properties_set_allowed_auth ()">mm_simple_connect_properties_set_allowed_auth</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><span class="type">MMBearerAllowedAuth</span> allowed_auth</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-user" title="mm_simple_connect_properties_get_user ()">mm_simple_connect_properties_get_user</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-user" title="mm_simple_connect_properties_set_user ()">mm_simple_connect_properties_set_user</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *user</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-password" title="mm_simple_connect_properties_get_password ()">mm_simple_connect_properties_get_password</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-password" title="mm_simple_connect_properties_set_password ()">mm_simple_connect_properties_set_password</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *password</code></em>);
-<span class="returnvalue">MMBearerIpFamily</span>    <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-ip-type" title="mm_simple_connect_properties_get_ip_type ()">mm_simple_connect_properties_get_ip_type</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-ip-type" title="mm_simple_connect_properties_set_ip_type ()">mm_simple_connect_properties_set_ip_type</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><span class="type">MMBearerIpFamily</span> ip_type</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-allow-roaming" title="mm_simple_connect_properties_get_allow_roaming ()">mm_simple_connect_properties_get_allow_roaming</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-allow-roaming" title="mm_simple_connect_properties_set_allow_roaming ()">mm_simple_connect_properties_set_allow_roaming</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> allow_roaming</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-number" title="mm_simple_connect_properties_get_number ()">mm_simple_connect_properties_get_number</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-number" title="mm_simple_connect_properties_set_number ()">mm_simple_connect_properties_set_number</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *number</code></em>);
-</pre>
+<div class="refsect1">
+<a name="MMSimpleConnectProperties.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="returnvalue">MMSimpleConnectProperties</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-new" title="mm_simple_connect_properties_new ()">mm_simple_connect_properties_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-pin" title="mm_simple_connect_properties_get_pin ()">mm_simple_connect_properties_get_pin</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-pin" title="mm_simple_connect_properties_set_pin ()">mm_simple_connect_properties_set_pin</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-operator-id" title="mm_simple_connect_properties_get_operator_id ()">mm_simple_connect_properties_get_operator_id</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-operator-id" title="mm_simple_connect_properties_set_operator_id ()">mm_simple_connect_properties_set_operator_id</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-apn" title="mm_simple_connect_properties_get_apn ()">mm_simple_connect_properties_get_apn</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-apn" title="mm_simple_connect_properties_set_apn ()">mm_simple_connect_properties_set_apn</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth"><span class="returnvalue">MMBearerAllowedAuth</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-allowed-auth" title="mm_simple_connect_properties_get_allowed_auth ()">mm_simple_connect_properties_get_allowed_auth</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-allowed-auth" title="mm_simple_connect_properties_set_allowed_auth ()">mm_simple_connect_properties_set_allowed_auth</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-user" title="mm_simple_connect_properties_get_user ()">mm_simple_connect_properties_get_user</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-user" title="mm_simple_connect_properties_set_user ()">mm_simple_connect_properties_set_user</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-password" title="mm_simple_connect_properties_get_password ()">mm_simple_connect_properties_get_password</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-password" title="mm_simple_connect_properties_set_password ()">mm_simple_connect_properties_set_password</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="returnvalue">MMBearerIpFamily</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-ip-type" title="mm_simple_connect_properties_get_ip_type ()">mm_simple_connect_properties_get_ip_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-ip-type" title="mm_simple_connect_properties_set_ip_type ()">mm_simple_connect_properties_set_ip_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-allow-roaming" title="mm_simple_connect_properties_get_allow_roaming ()">mm_simple_connect_properties_get_allow_roaming</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-allow-roaming" title="mm_simple_connect_properties_set_allow_roaming ()">mm_simple_connect_properties_set_allow_roaming</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-get-number" title="mm_simple_connect_properties_get_number ()">mm_simple_connect_properties_get_number</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSimpleConnectProperties.html#mm-simple-connect-properties-set-number" title="mm_simple_connect_properties_set_number ()">mm_simple_connect_properties_set_number</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="MMSimpleConnectProperties.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody><tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="MMSimpleConnectProperties.html#MMSimpleConnectProperties-struct" title="struct MMSimpleConnectProperties">MMSimpleConnectProperties</a></td>
+</tr></tbody>
+</table></div>
 </div>
 <div class="refsect1">
 <a name="MMSimpleConnectProperties.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="synopsis">
-  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-   +----MMSimpleConnectProperties
+<pre class="screen">    <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> MMSimpleConnectProperties
 </pre>
 </div>
 <div class="refsect1">
 <a name="MMSimpleConnectProperties.description"></a><h2>Description</h2>
-<p>
-The <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> is an object handling the properties requested
-to ModemManager when launching a connection with the Simple interface.
-</p>
-<p>
-This object is created by the user and passed to ModemManager with either
-<a class="link" href="MMModemSimple.html#mm-modem-simple-connect" title="mm_modem_simple_connect ()"><code class="function">mm_modem_simple_connect()</code></a> or <a class="link" href="MMModemSimple.html#mm-modem-simple-connect-sync" title="mm_modem_simple_connect_sync ()"><code class="function">mm_modem_simple_connect_sync()</code></a>.
-</p>
+<p>The <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> is an object handling the properties requested
+to ModemManager when launching a connection with the Simple interface.</p>
+<p>This object is created by the user and passed to ModemManager with either
+<a class="link" href="MMModemSimple.html#mm-modem-simple-connect" title="mm_modem_simple_connect ()"><code class="function">mm_modem_simple_connect()</code></a> or <a class="link" href="MMModemSimple.html#mm-modem-simple-connect-sync" title="mm_modem_simple_connect_sync ()"><code class="function">mm_modem_simple_connect_sync()</code></a>.</p>
 </div>
 <div class="refsect1">
-<a name="MMSimpleConnectProperties.details"></a><h2>Details</h2>
+<a name="MMSimpleConnectProperties.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
-<a name="MMSimpleConnectProperties-struct"></a><h3>struct MMSimpleConnectProperties</h3>
-<pre class="programlisting">struct MMSimpleConnectProperties;</pre>
-<p>
-The <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> structure contains private data and should
-only be accessed using the provided API.
-</p>
+<a name="mm-simple-connect-properties-new"></a><h3>mm_simple_connect_properties_new ()</h3>
+<pre class="programlisting"><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="returnvalue">MMSimpleConnectProperties</span></a> *
+mm_simple_connect_properties_new (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Creates a new empty <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.2.5"></a><h4>Returns</h4>
+<p> a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="mm-simple-connect-properties-new"></a><h3>mm_simple_connect_properties_new ()</h3>
-<pre class="programlisting"><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="returnvalue">MMSimpleConnectProperties</span></a> * mm_simple_connect_properties_new
-                                                        (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>
-Creates a new empty <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-simple-connect-properties-get-pin"></a><h3>mm_simple_connect_properties_get_pin ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_simple_connect_properties_get_pin (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
+<p>Gets the PIN code to use when unlocking the modem.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.3.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
-</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.3.6"></a><h4>Returns</h4>
+<p> the PIN, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not set. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-simple-connect-properties-get-pin"></a><h3>mm_simple_connect_properties_get_pin ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_simple_connect_properties_get_pin
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
-<p>
-Gets the PIN code to use when unlocking the modem.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-simple-connect-properties-set-pin"></a><h3>mm_simple_connect_properties_set_pin ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_simple_connect_properties_set_pin (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
+                                      <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>);</pre>
+<p>Sets the PIN code to use when unlocking the modem.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.4.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the PIN, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not set. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
+<td class="parameter_name"><p>pin</p></td>
+<td class="parameter_description"><p>PIN code.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-simple-connect-properties-set-pin"></a><h3>mm_simple_connect_properties_set_pin ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_simple_connect_properties_set_pin
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *pin</code></em>);</pre>
-<p>
-Sets the PIN code to use when unlocking the modem.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-simple-connect-properties-get-operator-id"></a><h3>mm_simple_connect_properties_get_operator_id ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_simple_connect_properties_get_operator_id
+                               (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
+<p>Gets the ID of the network to which register before connecting.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.5.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.5.6"></a><h4>Returns</h4>
+<p> the operator ID, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not set. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-connect-properties-set-operator-id"></a><h3>mm_simple_connect_properties_set_operator_id ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_simple_connect_properties_set_operator_id
+                               (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
+                                <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *operator_id</code></em>);</pre>
+<p>Sets the ID of the network to which register before connecting.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.6.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>pin</code></em> :</span></p></td>
-<td>PIN code.</td>
+<td class="parameter_name"><p>operator_id</p></td>
+<td class="parameter_description"><p>operator ID, given as MCC/MNC.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-simple-connect-properties-get-operator-id"></a><h3>mm_simple_connect_properties_get_operator_id ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_simple_connect_properties_get_operator_id
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
-<p>
-Gets the ID of the network to which register before connecting.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-simple-connect-properties-get-apn"></a><h3>mm_simple_connect_properties_get_apn ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_simple_connect_properties_get_apn (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
+<p>Gets the name of the access point to use when connecting.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.7.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.7.6"></a><h4>Returns</h4>
+<p> the access point, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not set. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-connect-properties-set-apn"></a><h3>mm_simple_connect_properties_set_apn ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_simple_connect_properties_set_apn (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
+                                      <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *apn</code></em>);</pre>
+<p>Sets the name of the access point to use when connecting.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.8.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the operator ID, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not set. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
+<td class="parameter_name"><p>apn</p></td>
+<td class="parameter_description"><p>Name of the access point.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-simple-connect-properties-set-operator-id"></a><h3>mm_simple_connect_properties_set_operator_id ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_simple_connect_properties_set_operator_id
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *operator_id</code></em>);</pre>
-<p>
-Sets the ID of the network to which register before connecting.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-simple-connect-properties-get-allowed-auth"></a><h3>mm_simple_connect_properties_get_allowed_auth ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth"><span class="returnvalue">MMBearerAllowedAuth</span></a>
+mm_simple_connect_properties_get_allowed_auth
+                               (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
+<p>Gets the authentication methods allowed in the connection.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.9.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.9.6"></a><h4>Returns</h4>
+<p> a bitmask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth"><span class="type">MMBearerAllowedAuth</span></a> values, or <code class="literal">MM_BEARER_ALLOWED_AUTH_UNKNOWN</code> to request the modem-default method.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-connect-properties-set-allowed-auth"></a><h3>mm_simple_connect_properties_set_allowed_auth ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_simple_connect_properties_set_allowed_auth
+                               (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth"><span class="type">MMBearerAllowedAuth</span></a> allowed_auth</code></em>);</pre>
+<p>Sets the authentication method to use.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.10.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>operator_id</code></em> :</span></p></td>
-<td>operator ID, given as MCC/MNC.</td>
+<td class="parameter_name"><p>allowed_auth</p></td>
+<td class="parameter_description"><p>a bitmask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth"><span class="type">MMBearerAllowedAuth</span></a> values. <code class="literal">MM_BEARER_ALLOWED_AUTH_UNKNOWN</code> may be given to request the modem-default method.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-simple-connect-properties-get-apn"></a><h3>mm_simple_connect_properties_get_apn ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_simple_connect_properties_get_apn
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
-<p>
-Gets the name of the access point to use when connecting.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-simple-connect-properties-get-user"></a><h3>mm_simple_connect_properties_get_user ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_simple_connect_properties_get_user (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
+<p>Gets the username used to authenticate with the access point.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.11.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.11.6"></a><h4>Returns</h4>
+<p> the username, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not set. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-connect-properties-set-user"></a><h3>mm_simple_connect_properties_set_user ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_simple_connect_properties_set_user (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
+                                       <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *user</code></em>);</pre>
+<p>Sets the username used to authenticate with the access point.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.12.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the access point, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not set. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
+<td class="parameter_name"><p>user</p></td>
+<td class="parameter_description"><p>the username</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-simple-connect-properties-set-apn"></a><h3>mm_simple_connect_properties_set_apn ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_simple_connect_properties_set_apn
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *apn</code></em>);</pre>
-<p>
-Sets the name of the access point to use when connecting.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-simple-connect-properties-get-password"></a><h3>mm_simple_connect_properties_get_password ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_simple_connect_properties_get_password
+                               (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
+<p>Gets the password used to authenticate with the access point.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.13.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.13.6"></a><h4>Returns</h4>
+<p> the password, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not set. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-connect-properties-set-password"></a><h3>mm_simple_connect_properties_set_password ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_simple_connect_properties_set_password
+                               (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
+                                <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *password</code></em>);</pre>
+<p>Sets the password used to authenticate with the access point.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.14.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>apn</code></em> :</span></p></td>
-<td>Name of the access point.</td>
+<td class="parameter_name"><p>password</p></td>
+<td class="parameter_description"><p>the password</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-simple-connect-properties-get-allowed-auth"></a><h3>mm_simple_connect_properties_get_allowed_auth ()</h3>
-<pre class="programlisting"><span class="returnvalue">MMBearerAllowedAuth</span> mm_simple_connect_properties_get_allowed_auth
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
-<p>
-Gets the authentication methods allowed in the connection.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-simple-connect-properties-get-ip-type"></a><h3>mm_simple_connect_properties_get_ip_type ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="returnvalue">MMBearerIpFamily</span></a>
+mm_simple_connect_properties_get_ip_type
+                               (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
+<p>Sets the IP type to use.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.15.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.15.6"></a><h4>Returns</h4>
+<p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="type">MMBearerIpFamily</span></a>.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-connect-properties-set-ip-type"></a><h3>mm_simple_connect_properties_set_ip_type ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_simple_connect_properties_set_ip_type
+                               (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="type">MMBearerIpFamily</span></a> ip_type</code></em>);</pre>
+<p>Sets the IP type to use.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.16.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a bitmask of <span class="type">MMBearerAllowedAuth</span> values, or <code class="literal">MM_BEARER_ALLOWED_AUTH_UNKNOWN</code> to request the modem-default method.</td>
+<td class="parameter_name"><p>ip_type</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="type">MMBearerIpFamily</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-simple-connect-properties-set-allowed-auth"></a><h3>mm_simple_connect_properties_set_allowed_auth ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_simple_connect_properties_set_allowed_auth
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><span class="type">MMBearerAllowedAuth</span> allowed_auth</code></em>);</pre>
-<p>
-Sets the authentication method to use.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-simple-connect-properties-get-allow-roaming"></a><h3>mm_simple_connect_properties_get_allow_roaming ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+mm_simple_connect_properties_get_allow_roaming
+                               (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
+<p>Checks whether roaming is allowed in the connection.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.17.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.17.6"></a><h4>Returns</h4>
+<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if roaming is allowed, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise..</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-connect-properties-set-allow-roaming"></a><h3>mm_simple_connect_properties_set_allow_roaming ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_simple_connect_properties_set_allow_roaming
+                               (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
+                                <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> allow_roaming</code></em>);</pre>
+<p>Sets the flag to indicate whether roaming is allowed or not in the
+connection.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.18.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>allowed_auth</code></em> :</span></p></td>
-<td>a bitmask of <span class="type">MMBearerAllowedAuth</span> values. <code class="literal">MM_BEARER_ALLOWED_AUTH_UNKNOWN</code> may be given to request the modem-default method.</td>
+<td class="parameter_name"><p>allow_roaming</p></td>
+<td class="parameter_description"><p>boolean value.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-simple-connect-properties-get-user"></a><h3>mm_simple_connect_properties_get_user ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_simple_connect_properties_get_user
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
-<p>
-Gets the username used to authenticate with the access point.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-simple-connect-properties-get-number"></a><h3>mm_simple_connect_properties_get_number ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_simple_connect_properties_get_number
+                               (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
+<p>Gets the number to use when performing the connection.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.19.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.19.6"></a><h4>Returns</h4>
+<p> the number, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not set. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-simple-connect-properties-set-number"></a><h3>mm_simple_connect_properties_set_number ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_simple_connect_properties_set_number
+                               (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
+                                <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *number</code></em>);</pre>
+<p>Sets the number to use when performing the connection.</p>
+<div class="refsect3">
+<a name="id-1.2.4.4.3.7.20.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the username, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not set. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
+<td class="parameter_name"><p>number</p></td>
+<td class="parameter_description"><p>the number.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
-<hr>
-<div class="refsect2">
-<a name="mm-simple-connect-properties-set-user"></a><h3>mm_simple_connect_properties_set_user ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_simple_connect_properties_set_user
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *user</code></em>);</pre>
-<p>
-Sets the username used to authenticate with the access point.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>user</code></em> :</span></p></td>
-<td>the username</td>
-</tr>
-</tbody>
-</table></div>
 </div>
-<hr>
-<div class="refsect2">
-<a name="mm-simple-connect-properties-get-password"></a><h3>mm_simple_connect_properties_get_password ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_simple_connect_properties_get_password
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
-<p>
-Gets the password used to authenticate with the access point.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the password, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not set. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
-<hr>
+<div class="refsect1">
+<a name="MMSimpleConnectProperties.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
-<a name="mm-simple-connect-properties-set-password"></a><h3>mm_simple_connect_properties_set_password ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_simple_connect_properties_set_password
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *password</code></em>);</pre>
-<p>
-Sets the password used to authenticate with the access point.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>password</code></em> :</span></p></td>
-<td>the password</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-simple-connect-properties-get-ip-type"></a><h3>mm_simple_connect_properties_get_ip_type ()</h3>
-<pre class="programlisting"><span class="returnvalue">MMBearerIpFamily</span>    mm_simple_connect_properties_get_ip_type
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
-<p>
-Sets the IP type to use.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <span class="type">MMBearerIpFamily</span>.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-simple-connect-properties-set-ip-type"></a><h3>mm_simple_connect_properties_set_ip_type ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_simple_connect_properties_set_ip_type
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><span class="type">MMBearerIpFamily</span> ip_type</code></em>);</pre>
-<p>
-Sets the IP type to use.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>ip_type</code></em> :</span></p></td>
-<td>a <span class="type">MMBearerIpFamily</span>.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-simple-connect-properties-get-allow-roaming"></a><h3>mm_simple_connect_properties_get_allow_roaming ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_simple_connect_properties_get_allow_roaming
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
-<p>
-Checks whether roaming is allowed in the connection.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if roaming is allowed, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise..</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-simple-connect-properties-set-allow-roaming"></a><h3>mm_simple_connect_properties_set_allow_roaming ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_simple_connect_properties_set_allow_roaming
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> allow_roaming</code></em>);</pre>
-<p>
-Sets the flag to indicate whether roaming is allowed or not in the
-connection.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>allow_roaming</code></em> :</span></p></td>
-<td>boolean value.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-simple-connect-properties-get-number"></a><h3>mm_simple_connect_properties_get_number ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_simple_connect_properties_get_number
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>);</pre>
-<p>
-Gets the number to use when performing the connection.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the number, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if not set. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-simple-connect-properties-set-number"></a><h3>mm_simple_connect_properties_set_number ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_simple_connect_properties_set_number
-                                                        (<em class="parameter"><code><a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *number</code></em>);</pre>
-<p>
-Sets the number to use when performing the connection.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>number</code></em> :</span></p></td>
-<td>the number.</td>
-</tr>
-</tbody>
-</table></div>
+<a name="MMSimpleConnectProperties-struct"></a><h3>struct MMSimpleConnectProperties</h3>
+<pre class="programlisting">struct MMSimpleConnectProperties;</pre>
+<p>The <a class="link" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties"><span class="type">MMSimpleConnectProperties</span></a> structure contains private data and should
+only be accessed using the provided API.</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.19</div>
+          Generated by GTK-Doc V1.20</div>
 </body>
 </html>

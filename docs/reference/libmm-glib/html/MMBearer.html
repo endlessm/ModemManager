@@ -2,34 +2,28 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>MMBearer</title>
+<title>libmm-glib Reference Manual: MMBearer</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
 <link rel="up" href="ch04.html" title="The Bearer object">
 <link rel="prev" href="ch04.html" title="The Bearer object">
 <link rel="next" href="MMBearerProperties.html" title="MMBearerProperties">
-<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
-<td><a accesskey="p" href="ch04.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">libmm-glib Reference Manual</th>
-<td><a accesskey="n" href="MMBearerProperties.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts">
-<a href="#MMBearer.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#MMBearer.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#MMBearer.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                   | 
-                  <a href="#MMBearer.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
-</td></tr>
-</table>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
+                  <a href="#MMBearer.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
+                  <a href="#MMBearer.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces"> <span class="dim">|</span> 
+                  <a href="#MMBearer.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="ch04.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="MMBearerProperties.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
 <div class="refentry">
 <a name="MMBearer"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
@@ -37,55 +31,188 @@
 <h2><span class="refentrytitle"><a name="MMBearer.top_of_page"></a>MMBearer</span></h2>
 <p>MMBearer — The Bearer interface</p>
 </td>
-<td valign="top" align="right"></td>
+<td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
-<a name="MMBearer.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">struct              <a class="link" href="MMBearer.html#MMBearer-struct" title="struct MMBearer">MMBearer</a>;
-
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMBearer.html#mm-bearer-get-path" title="mm_bearer_get_path ()">mm_bearer_get_path</a>                  (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMBearer.html#mm-bearer-dup-path" title="mm_bearer_dup_path ()">mm_bearer_dup_path</a>                  (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMBearer.html#mm-bearer-get-interface" title="mm_bearer_get_interface ()">mm_bearer_get_interface</a>             (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="MMBearer.html#mm-bearer-dup-interface" title="mm_bearer_dup_interface ()">mm_bearer_dup_interface</a>             (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMBearer.html#mm-bearer-get-connected" title="mm_bearer_get_connected ()">mm_bearer_get_connected</a>             (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMBearer.html#mm-bearer-get-suspended" title="mm_bearer_get_suspended ()">mm_bearer_get_suspended</a>             (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMBearer.html#mm-bearer-get-ip-timeout" title="mm_bearer_get_ip_timeout ()">mm_bearer_get_ip_timeout</a>            (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);
-<a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="returnvalue">MMBearerIpConfig</span></a> *  <a class="link" href="MMBearer.html#mm-bearer-peek-ipv4-config" title="mm_bearer_peek_ipv4_config ()">mm_bearer_peek_ipv4_config</a>          (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);
-<a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="returnvalue">MMBearerIpConfig</span></a> *  <a class="link" href="MMBearer.html#mm-bearer-get-ipv4-config" title="mm_bearer_get_ipv4_config ()">mm_bearer_get_ipv4_config</a>           (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);
-<a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="returnvalue">MMBearerIpConfig</span></a> *  <a class="link" href="MMBearer.html#mm-bearer-peek-ipv6-config" title="mm_bearer_peek_ipv6_config ()">mm_bearer_peek_ipv6_config</a>          (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);
-<a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="returnvalue">MMBearerIpConfig</span></a> *  <a class="link" href="MMBearer.html#mm-bearer-get-ipv6-config" title="mm_bearer_get_ipv6_config ()">mm_bearer_get_ipv6_config</a>           (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);
-<a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="returnvalue">MMBearerProperties</span></a> * <a class="link" href="MMBearer.html#mm-bearer-peek-properties" title="mm_bearer_peek_properties ()">mm_bearer_peek_properties</a>          (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);
-<a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="returnvalue">MMBearerProperties</span></a> * <a class="link" href="MMBearer.html#mm-bearer-get-properties" title="mm_bearer_get_properties ()">mm_bearer_get_properties</a>           (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);
-
-<span class="returnvalue">void</span>                <a class="link" href="MMBearer.html#mm-bearer-connect" title="mm_bearer_connect ()">mm_bearer_connect</a>                   (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMBearer.html#mm-bearer-connect-finish" title="mm_bearer_connect_finish ()">mm_bearer_connect_finish</a>            (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMBearer.html#mm-bearer-connect-sync" title="mm_bearer_connect_sync ()">mm_bearer_connect_sync</a>              (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMBearer.html#mm-bearer-disconnect" title="mm_bearer_disconnect ()">mm_bearer_disconnect</a>                (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMBearer.html#mm-bearer-disconnect-finish" title="mm_bearer_disconnect_finish ()">mm_bearer_disconnect_finish</a>         (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMBearer.html#mm-bearer-disconnect-sync" title="mm_bearer_disconnect_sync ()">mm_bearer_disconnect_sync</a>           (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-</pre>
+<div class="refsect1">
+<a name="MMBearer.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-get-path" title="mm_bearer_get_path ()">mm_bearer_get_path</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-dup-path" title="mm_bearer_dup_path ()">mm_bearer_dup_path</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-get-interface" title="mm_bearer_get_interface ()">mm_bearer_get_interface</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-dup-interface" title="mm_bearer_dup_interface ()">mm_bearer_dup_interface</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-get-connected" title="mm_bearer_get_connected ()">mm_bearer_get_connected</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-get-suspended" title="mm_bearer_get_suspended ()">mm_bearer_get_suspended</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-get-ip-timeout" title="mm_bearer_get_ip_timeout ()">mm_bearer_get_ip_timeout</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="returnvalue">MMBearerIpConfig</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-peek-ipv4-config" title="mm_bearer_peek_ipv4_config ()">mm_bearer_peek_ipv4_config</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="returnvalue">MMBearerIpConfig</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-get-ipv4-config" title="mm_bearer_get_ipv4_config ()">mm_bearer_get_ipv4_config</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="returnvalue">MMBearerIpConfig</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-peek-ipv6-config" title="mm_bearer_peek_ipv6_config ()">mm_bearer_peek_ipv6_config</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="returnvalue">MMBearerIpConfig</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-get-ipv6-config" title="mm_bearer_get_ipv6_config ()">mm_bearer_get_ipv6_config</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="returnvalue">MMBearerProperties</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-peek-properties" title="mm_bearer_peek_properties ()">mm_bearer_peek_properties</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="returnvalue">MMBearerProperties</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-get-properties" title="mm_bearer_get_properties ()">mm_bearer_get_properties</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-connect" title="mm_bearer_connect ()">mm_bearer_connect</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-connect-finish" title="mm_bearer_connect_finish ()">mm_bearer_connect_finish</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-connect-sync" title="mm_bearer_connect_sync ()">mm_bearer_connect_sync</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-disconnect" title="mm_bearer_disconnect ()">mm_bearer_disconnect</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-disconnect-finish" title="mm_bearer_disconnect_finish ()">mm_bearer_disconnect_finish</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMBearer.html#mm-bearer-disconnect-sync" title="mm_bearer_disconnect_sync ()">mm_bearer_disconnect_sync</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="MMBearer.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody><tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="MMBearer.html#MMBearer-struct" title="struct MMBearer">MMBearer</a></td>
+</tr></tbody>
+</table></div>
 </div>
 <div class="refsect1">
 <a name="MMBearer.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="synopsis">
-  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-   +----<a href="http://library.gnome.org/devel/gio/unstable/GDBusProxy.html">GDBusProxy</a>
-         +----<a class="link" href="MmGdbusBearerProxy.html" title="MmGdbusBearerProxy">MmGdbusBearerProxy</a>
-               +----MMBearer
+<pre class="screen">    <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> <a href="http://library.gnome.org/devel/gio/unstable/GDBusProxy.html">GDBusProxy</a>
+        <span class="lineart">╰──</span> <a class="link" href="MmGdbusBearerProxy.html" title="MmGdbusBearerProxy">MmGdbusBearerProxy</a>
+            <span class="lineart">╰──</span> MMBearer
 </pre>
 </div>
 <div class="refsect1">
@@ -96,666 +223,687 @@ MMBearer implements
 </div>
 <div class="refsect1">
 <a name="MMBearer.description"></a><h2>Description</h2>
-<p>
-The <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> is an object providing access to the methods, signals and
-properties of the Bearer interface.
-</p>
-<p>
-When the bearer is exposed and available in the bus, it is ensured that at
-least this interface is also available.
-</p>
+<p>The <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> is an object providing access to the methods, signals and
+properties of the Bearer interface.</p>
+<p>When the bearer is exposed and available in the bus, it is ensured that at
+least this interface is also available.</p>
 </div>
 <div class="refsect1">
-<a name="MMBearer.details"></a><h2>Details</h2>
+<a name="MMBearer.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="mm-bearer-get-path"></a><h3>mm_bearer_get_path ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_bearer_get_path (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
+<p>Gets the DBus path of the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> object.</p>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.2.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.2.6"></a><h4>Returns</h4>
+<p> The DBus path of the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> object. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-dup-path"></a><h3>mm_bearer_dup_path ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_bearer_dup_path (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
+<p>Gets a copy of the DBus path of the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> object.</p>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.3.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.3.6"></a><h4>Returns</h4>
+<p> The DBus path of the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> object. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-get-interface"></a><h3>mm_bearer_get_interface ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_bearer_get_interface (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
+<p>Gets the operating system name for the network data interface that provides
+packet data using this <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>. This will only be available once the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>
+is in connected state.</p>
+<div class="warning">The returned value is only valid until the property changes so
+it is only safe to use this function on the thread where
+<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMBearer.html#mm-bearer-dup-interface" title="mm_bearer_dup_interface ()"><code class="function">mm_bearer_dup_interface()</code></a> if on another
+thread.</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.4.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.4.7"></a><h4>Returns</h4>
+<p> The name of the interface, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it couldn't be retrieved. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-dup-interface"></a><h3>mm_bearer_dup_interface ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_bearer_dup_interface (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
+<p>Gets a copy of the operating system name for the network data interface that provides
+packet data using this <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>. This will only be available once the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>
+is in connected state.</p>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.5.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.5.6"></a><h4>Returns</h4>
+<p> The name of the interface, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it couldn't be retrieved. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-get-connected"></a><h3>mm_bearer_get_connected ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+mm_bearer_get_connected (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
+<p>Checks whether or not the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> is connected and thus whether packet data
+communication is possible.</p>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.6.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.6.6"></a><h4>Returns</h4>
+<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> is connected, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><span class="type">FALSE</span></a> otherwise.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-get-suspended"></a><h3>mm_bearer_get_suspended ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+mm_bearer_get_suspended (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
+<p>Checks whether or not the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> is suspended (but not deactivated) while the
+device is handling other communications, like a voice call.</p>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.7.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.7.6"></a><h4>Returns</h4>
+<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if packet data service is suspended in the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><span class="type">FALSE</span></a> otherwise.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-get-ip-timeout"></a><h3>mm_bearer_get_ip_timeout ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+mm_bearer_get_ip_timeout (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
+<p>Gets the maximum time to wait for the bearer to retrieve a valid IP address.</p>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.8.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.8.6"></a><h4>Returns</h4>
+<p> The IP timeout, or 0 if no specific one given.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-peek-ipv4-config"></a><h3>mm_bearer_peek_ipv4_config ()</h3>
+<pre class="programlisting"><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="returnvalue">MMBearerIpConfig</span></a> *
+mm_bearer_peek_ipv4_config (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
+<p>Gets a <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> object specifying the IPv4 configuration to use in
+the bearer.</p>
+<div class="warning">The returned value is only valid until the property changes so
+it is only safe to use this function on the thread where
+<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMBearer.html#mm-bearer-get-ipv4-config" title="mm_bearer_get_ipv4_config ()"><code class="function">mm_bearer_get_ipv4_config()</code></a> if on another
+thread.</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.9.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.9.7"></a><h4>Returns</h4>
+<p> A <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a>. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-get-ipv4-config"></a><h3>mm_bearer_get_ipv4_config ()</h3>
+<pre class="programlisting"><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="returnvalue">MMBearerIpConfig</span></a> *
+mm_bearer_get_ipv4_config (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
+<p>Gets a <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> object specifying the IPv4 configuration to use in
+the bearer.</p>
+<div class="warning">The values reported by <em class="parameter"><code>self</code></em> are not updated when the values in the
+interface change. Instead, the client is expected to call
+<a class="link" href="MMBearer.html#mm-bearer-get-ipv4-config" title="mm_bearer_get_ipv4_config ()"><code class="function">mm_bearer_get_ipv4_config()</code></a> again to get a new <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> with the
+new values.</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.10.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.10.7"></a><h4>Returns</h4>
+<p> A <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> that must be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-peek-ipv6-config"></a><h3>mm_bearer_peek_ipv6_config ()</h3>
+<pre class="programlisting"><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="returnvalue">MMBearerIpConfig</span></a> *
+mm_bearer_peek_ipv6_config (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
+<p>Gets a <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> object specifying the IPv6 configuration to use in
+the bearer.</p>
+<div class="warning">The returned value is only valid until the property changes so
+it is only safe to use this function on the thread where
+<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMBearer.html#mm-bearer-get-ipv6-config" title="mm_bearer_get_ipv6_config ()"><code class="function">mm_bearer_get_ipv6_config()</code></a> if on another
+thread.</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.11.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.11.7"></a><h4>Returns</h4>
+<p> A <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a>. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-get-ipv6-config"></a><h3>mm_bearer_get_ipv6_config ()</h3>
+<pre class="programlisting"><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="returnvalue">MMBearerIpConfig</span></a> *
+mm_bearer_get_ipv6_config (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
+<p>Gets a <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> object specifying the IPv6 configuration to use in
+the bearer.</p>
+<div class="warning">The values reported by <em class="parameter"><code>self</code></em> are not updated when the values in the
+interface change. Instead, the client is expected to call
+<a class="link" href="MMBearer.html#mm-bearer-get-ipv6-config" title="mm_bearer_get_ipv6_config ()"><code class="function">mm_bearer_get_ipv6_config()</code></a> again to get a new <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> with the
+new values.</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.12.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.12.7"></a><h4>Returns</h4>
+<p> A <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> that must be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-peek-properties"></a><h3>mm_bearer_peek_properties ()</h3>
+<pre class="programlisting"><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="returnvalue">MMBearerProperties</span></a> *
+mm_bearer_peek_properties (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
+<p>Gets a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> object specifying the properties which were used
+to create the bearer.</p>
+<div class="warning">The returned value is only valid until the property changes so
+it is only safe to use this function on the thread where
+<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMBearer.html#mm-bearer-get-properties" title="mm_bearer_get_properties ()"><code class="function">mm_bearer_get_properties()</code></a> if on another
+thread.</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.13.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.13.7"></a><h4>Returns</h4>
+<p> A <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-get-properties"></a><h3>mm_bearer_get_properties ()</h3>
+<pre class="programlisting"><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="returnvalue">MMBearerProperties</span></a> *
+mm_bearer_get_properties (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
+<p>Gets a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> object specifying the properties which were used
+to create the bearer.</p>
+<div class="warning">The values reported by <em class="parameter"><code>self</code></em> are not updated when the values in the
+interface change. Instead, the client is expected to call
+<a class="link" href="MMBearer.html#mm-bearer-get-properties" title="mm_bearer_get_properties ()"><code class="function">mm_bearer_get_properties()</code></a> again to get a new <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> with the
+new values.</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.14.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.14.7"></a><h4>Returns</h4>
+<p> A <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> that must be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-connect"></a><h3>mm_bearer_connect ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_bearer_connect (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
+                   <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                   <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                   <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>Asynchronously requests activation of a packet data connection with the
+network using this <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> properties.</p>
+<p>When the operation is finished, <em class="parameter"><code>callback</code></em>
+ will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
+You can then call <a class="link" href="MMBearer.html#mm-bearer-connect-finish" title="mm_bearer_connect_finish ()"><code class="function">mm_bearer_connect_finish()</code></a> to get the result of the operation.</p>
+<p>See <a class="link" href="MMBearer.html#mm-bearer-connect-sync" title="mm_bearer_connect_sync ()"><code class="function">mm_bearer_connect_sync()</code></a> for the synchronous, blocking version of this method.</p>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.15.7"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>cancellable</p></td>
+<td class="parameter_description"><p> A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>callback</p></td>
+<td class="parameter_description"><p>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>User data to pass to <em class="parameter"><code>callback</code></em>
+.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-connect-finish"></a><h3>mm_bearer_connect_finish ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+mm_bearer_connect_finish (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
+                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>Finishes an operation started with <a class="link" href="MMBearer.html#mm-bearer-connect" title="mm_bearer_connect ()"><code class="function">mm_bearer_connect()</code></a>.</p>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.16.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>res</p></td>
+<td class="parameter_description"><p>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMBearer.html#mm-bearer-connect" title="mm_bearer_connect ()"><code class="function">mm_bearer_connect()</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>error</p></td>
+<td class="parameter_description"><p>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.16.6"></a><h4>Returns</h4>
+<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
+is set.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-connect-sync"></a><h3>mm_bearer_connect_sync ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+mm_bearer_connect_sync (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
+                        <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                        <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>Synchronously requests activation of a packet data connection with the
+network using this <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> properties.</p>
+<p>The calling thread is blocked until a reply is received.
+See <a class="link" href="MMBearer.html#mm-bearer-connect" title="mm_bearer_connect ()"><code class="function">mm_bearer_connect()</code></a> for the asynchronous version of this method.</p>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.17.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>cancellable</p></td>
+<td class="parameter_description"><p> A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>error</p></td>
+<td class="parameter_description"><p>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.17.7"></a><h4>Returns</h4>
+<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
+is set.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-disconnect"></a><h3>mm_bearer_disconnect ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_bearer_disconnect (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
+                      <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                      <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                      <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>Synchronously requests disconnection and deactivation of the packet data connection.</p>
+<p>When the operation is finished, <em class="parameter"><code>callback</code></em>
+ will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
+You can then call <a class="link" href="MMBearer.html#mm-bearer-disconnect-finish" title="mm_bearer_disconnect_finish ()"><code class="function">mm_bearer_disconnect_finish()</code></a> to get the result of the operation.</p>
+<p>See <a class="link" href="MMBearer.html#mm-bearer-disconnect-sync" title="mm_bearer_disconnect_sync ()"><code class="function">mm_bearer_disconnect_sync()</code></a> for the synchronous, blocking version of this method.</p>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.18.7"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>cancellable</p></td>
+<td class="parameter_description"><p> A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>callback</p></td>
+<td class="parameter_description"><p>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>User data to pass to <em class="parameter"><code>callback</code></em>
+.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-disconnect-finish"></a><h3>mm_bearer_disconnect_finish ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+mm_bearer_disconnect_finish (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
+                             <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                             <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>Finishes an operation started with <a class="link" href="MMBearer.html#mm-bearer-disconnect" title="mm_bearer_disconnect ()"><code class="function">mm_bearer_disconnect()</code></a>.</p>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.19.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>res</p></td>
+<td class="parameter_description"><p>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMBearer.html#mm-bearer-disconnect" title="mm_bearer_disconnect ()"><code class="function">mm_bearer_disconnect()</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>error</p></td>
+<td class="parameter_description"><p>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.19.6"></a><h4>Returns</h4>
+<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
+is set.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-disconnect-sync"></a><h3>mm_bearer_disconnect_sync ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+mm_bearer_disconnect_sync (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
+                           <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                           <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>Synchronously requests disconnection and deactivation of the packet data connection.</p>
+<p>The calling thread is blocked until a reply is received.
+See <a class="link" href="MMBearer.html#mm-bearer-disconnect" title="mm_bearer_disconnect ()"><code class="function">mm_bearer_disconnect()</code></a> for the asynchronous version of this method.</p>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.20.6"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>cancellable</p></td>
+<td class="parameter_description"><p> A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>error</p></td>
+<td class="parameter_description"><p>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.5.2.8.20.7"></a><h4>Returns</h4>
+<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
+is set.</p>
+<p></p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="MMBearer.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
 <a name="MMBearer-struct"></a><h3>struct MMBearer</h3>
 <pre class="programlisting">struct MMBearer;</pre>
-<p>
-The <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> structure contains private data and should only be accessed
-using the provided API.
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-get-path"></a><h3>mm_bearer_get_path ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_bearer_get_path                  (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
-<p>
-Gets the DBus path of the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> object.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The DBus path of the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> object. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-dup-path"></a><h3>mm_bearer_dup_path ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_bearer_dup_path                  (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
-<p>
-Gets a copy of the DBus path of the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> object.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The DBus path of the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> object. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-get-interface"></a><h3>mm_bearer_get_interface ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_bearer_get_interface             (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
-<p>
-Gets the operating system name for the network data interface that provides
-packet data using this <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>. This will only be available once the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>
-is in connected state.
-</p>
-<p>
-</p>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Warning</h3>The returned value is only valid until the property changes so
-it is only safe to use this function on the thread where
-<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMBearer.html#mm-bearer-dup-interface" title="mm_bearer_dup_interface ()"><code class="function">mm_bearer_dup_interface()</code></a> if on another
-thread.</div>
-<p>
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The name of the interface, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it couldn't be retrieved. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-dup-interface"></a><h3>mm_bearer_dup_interface ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             mm_bearer_dup_interface             (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
-<p>
-Gets a copy of the operating system name for the network data interface that provides
-packet data using this <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>. This will only be available once the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>
-is in connected state.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The name of the interface, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it couldn't be retrieved. The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-get-connected"></a><h3>mm_bearer_get_connected ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_bearer_get_connected             (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
-<p>
-Checks whether or not the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> is connected and thus whether packet data
-communication is possible.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> is connected, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><span class="type">FALSE</span></a> otherwise.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-get-suspended"></a><h3>mm_bearer_get_suspended ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_bearer_get_suspended             (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
-<p>
-Checks whether or not the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> is suspended (but not deactivated) while the
-device is handling other communications, like a voice call.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if packet data service is suspended in the <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><span class="type">FALSE</span></a> otherwise.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-get-ip-timeout"></a><h3>mm_bearer_get_ip_timeout ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_bearer_get_ip_timeout            (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
-<p>
-Gets the maximum time to wait for the bearer to retrieve a valid IP address.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The IP timeout, or 0 if no specific one given.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-peek-ipv4-config"></a><h3>mm_bearer_peek_ipv4_config ()</h3>
-<pre class="programlisting"><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="returnvalue">MMBearerIpConfig</span></a> *  mm_bearer_peek_ipv4_config          (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
-<p>
-Gets a <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> object specifying the IPv4 configuration to use in
-the bearer.
-</p>
-<p>
-</p>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Warning</h3>The returned value is only valid until the property changes so
-it is only safe to use this function on the thread where
-<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMBearer.html#mm-bearer-get-ipv4-config" title="mm_bearer_get_ipv4_config ()"><code class="function">mm_bearer_get_ipv4_config()</code></a> if on another
-thread.</div>
-<p>
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a>. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-get-ipv4-config"></a><h3>mm_bearer_get_ipv4_config ()</h3>
-<pre class="programlisting"><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="returnvalue">MMBearerIpConfig</span></a> *  mm_bearer_get_ipv4_config           (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
-<p>
-Gets a <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> object specifying the IPv4 configuration to use in
-the bearer.
-</p>
-<p>
-</p>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Warning</h3>The values reported by <em class="parameter"><code>self</code></em> are not updated when the values in the
-interface change. Instead, the client is expected to call
-<a class="link" href="MMBearer.html#mm-bearer-get-ipv4-config" title="mm_bearer_get_ipv4_config ()"><code class="function">mm_bearer_get_ipv4_config()</code></a> again to get a new <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> with the
-new values.</div>
-<p>
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> that must be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-peek-ipv6-config"></a><h3>mm_bearer_peek_ipv6_config ()</h3>
-<pre class="programlisting"><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="returnvalue">MMBearerIpConfig</span></a> *  mm_bearer_peek_ipv6_config          (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
-<p>
-Gets a <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> object specifying the IPv6 configuration to use in
-the bearer.
-</p>
-<p>
-</p>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Warning</h3>The returned value is only valid until the property changes so
-it is only safe to use this function on the thread where
-<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMBearer.html#mm-bearer-get-ipv6-config" title="mm_bearer_get_ipv6_config ()"><code class="function">mm_bearer_get_ipv6_config()</code></a> if on another
-thread.</div>
-<p>
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a>. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-get-ipv6-config"></a><h3>mm_bearer_get_ipv6_config ()</h3>
-<pre class="programlisting"><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="returnvalue">MMBearerIpConfig</span></a> *  mm_bearer_get_ipv6_config           (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
-<p>
-Gets a <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> object specifying the IPv6 configuration to use in
-the bearer.
-</p>
-<p>
-</p>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Warning</h3>The values reported by <em class="parameter"><code>self</code></em> are not updated when the values in the
-interface change. Instead, the client is expected to call
-<a class="link" href="MMBearer.html#mm-bearer-get-ipv6-config" title="mm_bearer_get_ipv6_config ()"><code class="function">mm_bearer_get_ipv6_config()</code></a> again to get a new <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> with the
-new values.</div>
-<p>
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> that must be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-peek-properties"></a><h3>mm_bearer_peek_properties ()</h3>
-<pre class="programlisting"><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="returnvalue">MMBearerProperties</span></a> * mm_bearer_peek_properties          (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
-<p>
-Gets a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> object specifying the properties which were used
-to create the bearer.
-</p>
-<p>
-</p>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Warning</h3>The returned value is only valid until the property changes so
-it is only safe to use this function on the thread where
-<em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMBearer.html#mm-bearer-get-properties" title="mm_bearer_get_properties ()"><code class="function">mm_bearer_get_properties()</code></a> if on another
-thread.</div>
-<p>
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a>. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-get-properties"></a><h3>mm_bearer_get_properties ()</h3>
-<pre class="programlisting"><a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="returnvalue">MMBearerProperties</span></a> * mm_bearer_get_properties           (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>);</pre>
-<p>
-Gets a <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> object specifying the properties which were used
-to create the bearer.
-</p>
-<p>
-</p>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Warning</h3>The values reported by <em class="parameter"><code>self</code></em> are not updated when the values in the
-interface change. Instead, the client is expected to call
-<a class="link" href="MMBearer.html#mm-bearer-get-properties" title="mm_bearer_get_properties ()"><code class="function">mm_bearer_get_properties()</code></a> again to get a new <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> with the
-new values.</div>
-<p>
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a class="link" href="MMBearerProperties.html" title="MMBearerProperties"><span class="type">MMBearerProperties</span></a> that must be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-connect"></a><h3>mm_bearer_connect ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_bearer_connect                   (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
-<p>
-Asynchronously requests activation of a packet data connection with the
-network using this <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> properties.
-</p>
-<p>
-When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
-You can then call <a class="link" href="MMBearer.html#mm-bearer-connect-finish" title="mm_bearer_connect_finish ()"><code class="function">mm_bearer_connect_finish()</code></a> to get the result of the operation.
-</p>
-<p>
-See <a class="link" href="MMBearer.html#mm-bearer-connect-sync" title="mm_bearer_connect_sync ()"><code class="function">mm_bearer_connect_sync()</code></a> for the synchronous, blocking version of this method.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
-<td>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
-<td>User data to pass to <em class="parameter"><code>callback</code></em>.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-connect-finish"></a><h3>mm_bearer_connect_finish ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_bearer_connect_finish            (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
-<p>
-Finishes an operation started with <a class="link" href="MMBearer.html#mm-bearer-connect" title="mm_bearer_connect ()"><code class="function">mm_bearer_connect()</code></a>.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMBearer.html#mm-bearer-connect" title="mm_bearer_connect ()"><code class="function">mm_bearer_connect()</code></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-connect-sync"></a><h3>mm_bearer_connect_sync ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_bearer_connect_sync              (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
-<p>
-Synchronously requests activation of a packet data connection with the
-network using this <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> properties.
-</p>
-<p>
-The calling thread is blocked until a reply is received.
-See <a class="link" href="MMBearer.html#mm-bearer-connect" title="mm_bearer_connect ()"><code class="function">mm_bearer_connect()</code></a> for the asynchronous version of this method.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-disconnect"></a><h3>mm_bearer_disconnect ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_bearer_disconnect                (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
-<p>
-Synchronously requests disconnection and deactivation of the packet data connection.
-</p>
-<p>
-When the operation is finished, <em class="parameter"><code>callback</code></em> will be invoked in the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
-You can then call <a class="link" href="MMBearer.html#mm-bearer-disconnect-finish" title="mm_bearer_disconnect_finish ()"><code class="function">mm_bearer_disconnect_finish()</code></a> to get the result of the operation.
-</p>
-<p>
-See <a class="link" href="MMBearer.html#mm-bearer-disconnect-sync" title="mm_bearer_disconnect_sync ()"><code class="function">mm_bearer_disconnect_sync()</code></a> for the synchronous, blocking version of this method.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
-<td>A <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
-<td>User data to pass to <em class="parameter"><code>callback</code></em>.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-disconnect-finish"></a><h3>mm_bearer_disconnect_finish ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_bearer_disconnect_finish         (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
-<p>
-Finishes an operation started with <a class="link" href="MMBearer.html#mm-bearer-disconnect" title="mm_bearer_disconnect ()"><code class="function">mm_bearer_disconnect()</code></a>.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMBearer.html#mm-bearer-disconnect" title="mm_bearer_disconnect ()"><code class="function">mm_bearer_disconnect()</code></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-bearer-disconnect-sync"></a><h3>mm_bearer_disconnect_sync ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_bearer_disconnect_sync           (<em class="parameter"><code><a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
-<p>
-Synchronously requests disconnection and deactivation of the packet data connection.
-</p>
-<p>
-The calling thread is blocked until a reply is received.
-See <a class="link" href="MMBearer.html#mm-bearer-disconnect" title="mm_bearer_disconnect ()"><code class="function">mm_bearer_disconnect()</code></a> for the asynchronous version of this method.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>A <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>Return location for error or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the operation succeded, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em> is set.</td>
-</tr>
-</tbody>
-</table></div>
+<p>The <a class="link" href="MMBearer.html" title="MMBearer"><span class="type">MMBearer</span></a> structure contains private data and should only be accessed
+using the provided API.</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.19</div>
+          Generated by GTK-Doc V1.20</div>
 </body>
 </html>

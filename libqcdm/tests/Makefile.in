@@ -81,13 +81,15 @@ host_triplet = @host@
 DIST_COMMON = $(top_srcdir)/gtester.make $(srcdir)/Makefile.in \
 	$(srcdir)/Makefile.am $(top_srcdir)/depcomp
 noinst_PROGRAMS = test-qcdm$(EXEEXT) modepref$(EXEEXT) \
-	ipv6pref$(EXEEXT)
+	ipv6pref$(EXEEXT) reset$(EXEEXT)
 @QCDM_STANDALONE_TRUE@am__append_1 = $(top_builddir)/src/libqcdm.la
 @QCDM_STANDALONE_TRUE@am__append_2 = $(top_builddir)/src/libqcdm.la
 @QCDM_STANDALONE_TRUE@am__append_3 = $(top_builddir)/src/libqcdm.la
-@QCDM_STANDALONE_FALSE@am__append_4 = $(top_builddir)/libqcdm/src/libqcdm.la
+@QCDM_STANDALONE_TRUE@am__append_4 = $(top_builddir)/src/libqcdm.la
 @QCDM_STANDALONE_FALSE@am__append_5 = $(top_builddir)/libqcdm/src/libqcdm.la
 @QCDM_STANDALONE_FALSE@am__append_6 = $(top_builddir)/libqcdm/src/libqcdm.la
+@QCDM_STANDALONE_FALSE@am__append_7 = $(top_builddir)/libqcdm/src/libqcdm.la
+@QCDM_STANDALONE_FALSE@am__append_8 = $(top_builddir)/libqcdm/src/libqcdm.la
 subdir = libqcdm/tests
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/compiler_warnings.m4 \
@@ -112,7 +114,7 @@ am_ipv6pref_OBJECTS = ipv6pref-ipv6pref.$(OBJEXT)
 ipv6pref_OBJECTS = $(am_ipv6pref_OBJECTS)
 am__DEPENDENCIES_1 =
 ipv6pref_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__append_3) \
-	$(am__append_6)
+	$(am__append_7)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -120,7 +122,11 @@ am__v_lt_1 =
 am_modepref_OBJECTS = modepref-modepref.$(OBJEXT)
 modepref_OBJECTS = $(am_modepref_OBJECTS)
 modepref_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__append_2) \
-	$(am__append_5)
+	$(am__append_6)
+am_reset_OBJECTS = reset-reset.$(OBJEXT)
+reset_OBJECTS = $(am_reset_OBJECTS)
+reset_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__append_4) \
+	$(am__append_8)
 am_test_qcdm_OBJECTS = test_qcdm-test-qcdm-crc.$(OBJEXT) \
 	test_qcdm-test-qcdm-escaping.$(OBJEXT) \
 	test_qcdm-test-qcdm-utils.$(OBJEXT) \
@@ -129,7 +135,7 @@ am_test_qcdm_OBJECTS = test_qcdm-test-qcdm-crc.$(OBJEXT) \
 	test_qcdm-test-qcdm.$(OBJEXT)
 test_qcdm_OBJECTS = $(am_test_qcdm_OBJECTS)
 test_qcdm_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__append_1) \
-	$(am__append_4)
+	$(am__append_5)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -164,9 +170,10 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(ipv6pref_SOURCES) $(modepref_SOURCES) $(test_qcdm_SOURCES)
-DIST_SOURCES = $(ipv6pref_SOURCES) $(modepref_SOURCES) \
+SOURCES = $(ipv6pref_SOURCES) $(modepref_SOURCES) $(reset_SOURCES) \
 	$(test_qcdm_SOURCES)
+DIST_SOURCES = $(ipv6pref_SOURCES) $(modepref_SOURCES) \
+	$(reset_SOURCES) $(test_qcdm_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -220,14 +227,15 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+GDBUS_CODEGEN = @GDBUS_CODEGEN@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
-GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
 GLIB_MKENUMS = @GLIB_MKENUMS@
 GMSGFMT = @GMSGFMT@
 GMSGFMT_015 = @GMSGFMT_015@
 GREP = @GREP@
 GTKDOC_CHECK = @GTKDOC_CHECK@
+GTKDOC_CHECK_PATH = @GTKDOC_CHECK_PATH@
 GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
 GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
 GTKDOC_MKPDF = @GTKDOC_MKPDF@
@@ -391,10 +399,6 @@ GTESTER_REPORT = gtester-report
 # initialize variables for unconditional += appending
 EXTRA_DIST = 
 TEST_PROGS = test-qcdm
-INCLUDES = \
-	-I$(top_srcdir)/libqcdm/src \
-	-I$(top_srcdir)/src
-
 test_qcdm_SOURCES = \
 	test-qcdm-crc.c \
 	test-qcdm-crc.h \
@@ -408,14 +412,33 @@ test_qcdm_SOURCES = \
 	test-qcdm-result.h \
 	test-qcdm.c
 
-test_qcdm_CPPFLAGS = $(MM_CFLAGS)
-test_qcdm_LDADD = $(MM_LIBS) $(am__append_1) $(am__append_4)
+test_qcdm_CPPFLAGS = \
+	$(MM_CFLAGS) \
+	-I$(top_srcdir)/libqcdm/src \
+	-I$(top_srcdir)/src
+
+test_qcdm_LDADD = $(MM_LIBS) $(am__append_1) $(am__append_5)
 modepref_SOURCES = modepref.c
-modepref_CPPFLAGS = $(MM_CFLAGS)
-modepref_LDADD = $(MM_LIBS) $(am__append_2) $(am__append_5)
+modepref_CPPFLAGS = \
+	$(MM_CFLAGS) \
+	-I$(top_srcdir)/libqcdm/src \
+	-I$(top_srcdir)/src
+
+modepref_LDADD = $(MM_LIBS) $(am__append_2) $(am__append_6)
 ipv6pref_SOURCES = ipv6pref.c
-ipv6pref_CPPFLAGS = $(MM_CFLAGS)
-ipv6pref_LDADD = $(MM_LIBS) $(am__append_3) $(am__append_6)
+ipv6pref_CPPFLAGS = \
+	$(MM_CFLAGS) \
+	-I$(top_srcdir)/libqcdm/src \
+	-I$(top_srcdir)/src
+
+ipv6pref_LDADD = $(MM_LIBS) $(am__append_3) $(am__append_7)
+reset_SOURCES = reset.c
+reset_CPPFLAGS = \
+	$(MM_CFLAGS) \
+	-I$(top_srcdir)/libqcdm/src \
+	-I$(top_srcdir)/src
+
+reset_LDADD = $(MM_LIBS) $(am__append_4) $(am__append_8)
 all: all-am
 
 .SUFFIXES:
@@ -469,6 +492,10 @@ modepref$(EXEEXT): $(modepref_OBJECTS) $(modepref_DEPENDENCIES) $(EXTRA_modepref
 	@rm -f modepref$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(modepref_OBJECTS) $(modepref_LDADD) $(LIBS)
 
+reset$(EXEEXT): $(reset_OBJECTS) $(reset_DEPENDENCIES) $(EXTRA_reset_DEPENDENCIES) 
+	@rm -f reset$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(reset_OBJECTS) $(reset_LDADD) $(LIBS)
+
 test-qcdm$(EXEEXT): $(test_qcdm_OBJECTS) $(test_qcdm_DEPENDENCIES) $(EXTRA_test_qcdm_DEPENDENCIES) 
 	@rm -f test-qcdm$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(test_qcdm_OBJECTS) $(test_qcdm_LDADD) $(LIBS)
@@ -481,6 +508,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ipv6pref-ipv6pref.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/modepref-modepref.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/reset-reset.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_qcdm-test-qcdm-com.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_qcdm-test-qcdm-crc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_qcdm-test-qcdm-escaping.Po@am__quote@
@@ -539,6 +567,20 @@ modepref-modepref.obj: modepref.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='modepref.c' object='modepref-modepref.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(modepref_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o modepref-modepref.obj `if test -f 'modepref.c'; then $(CYGPATH_W) 'modepref.c'; else $(CYGPATH_W) '$(srcdir)/modepref.c'; fi`
+
+reset-reset.o: reset.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(reset_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT reset-reset.o -MD -MP -MF $(DEPDIR)/reset-reset.Tpo -c -o reset-reset.o `test -f 'reset.c' || echo '$(srcdir)/'`reset.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/reset-reset.Tpo $(DEPDIR)/reset-reset.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='reset.c' object='reset-reset.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(reset_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o reset-reset.o `test -f 'reset.c' || echo '$(srcdir)/'`reset.c
+
+reset-reset.obj: reset.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(reset_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT reset-reset.obj -MD -MP -MF $(DEPDIR)/reset-reset.Tpo -c -o reset-reset.obj `if test -f 'reset.c'; then $(CYGPATH_W) 'reset.c'; else $(CYGPATH_W) '$(srcdir)/reset.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/reset-reset.Tpo $(DEPDIR)/reset-reset.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='reset.c' object='reset-reset.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(reset_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o reset-reset.obj `if test -f 'reset.c'; then $(CYGPATH_W) 'reset.c'; else $(CYGPATH_W) '$(srcdir)/reset.c'; fi`
 
 test_qcdm-test-qcdm-crc.o: test-qcdm-crc.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_qcdm_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT test_qcdm-test-qcdm-crc.o -MD -MP -MF $(DEPDIR)/test_qcdm-test-qcdm-crc.Tpo -c -o test_qcdm-test-qcdm-crc.o `test -f 'test-qcdm-crc.c' || echo '$(srcdir)/'`test-qcdm-crc.c

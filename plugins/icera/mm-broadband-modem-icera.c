@@ -401,7 +401,7 @@ typedef struct {
 } BearerListReportStatusForeachContext;
 
 static void
-bearer_list_report_status_foreach (MMBearer *bearer,
+bearer_list_report_status_foreach (MMBaseBearer *bearer,
                                    BearerListReportStatusForeachContext *ctx)
 {
     if (mm_broadband_bearer_get_3gpp_cid (MM_BROADBAND_BEARER (bearer)) != ctx->cid)
@@ -410,11 +410,11 @@ bearer_list_report_status_foreach (MMBearer *bearer,
     if (!MM_IS_BROADBAND_BEARER_ICERA (bearer))
         return;
 
-    mm_bearer_report_connection_status (bearer, ctx->status);
+    mm_base_bearer_report_connection_status (bearer, ctx->status);
 }
 
 static void
-ipdpact_received (MMAtSerialPort *port,
+ipdpact_received (MMPortSerialAt *port,
                   GMatchInfo *match_info,
                   MMBroadbandModemIcera *self)
 {
@@ -497,7 +497,7 @@ nwstate_to_act (const gchar *str)
 }
 
 static void
-nwstate_changed (MMAtSerialPort *port,
+nwstate_changed (MMPortSerialAt *port,
                  GMatchInfo *info,
                  MMBroadbandModemIcera *self)
 {
@@ -548,7 +548,7 @@ static void
 set_unsolicited_events_handlers (MMBroadbandModemIcera *self,
                                  gboolean enable)
 {
-    MMAtSerialPort *ports[2];
+    MMPortSerialAt *ports[2];
     guint i;
 
     ports[0] = mm_base_modem_peek_port_primary (MM_BASE_MODEM (self));
@@ -560,24 +560,24 @@ set_unsolicited_events_handlers (MMBroadbandModemIcera *self,
             continue;
 
         /* Access technology related */
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->nwstate_regex,
-            enable ? (MMAtSerialUnsolicitedMsgFn)nwstate_changed : NULL,
+            enable ? (MMPortSerialAtUnsolicitedMsgFn)nwstate_changed : NULL,
             enable ? self : NULL,
             NULL);
 
         /* Connection status related */
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->ipdpact_regex,
-            enable ? (MMAtSerialUnsolicitedMsgFn)ipdpact_received : NULL,
+            enable ? (MMPortSerialAtUnsolicitedMsgFn)ipdpact_received : NULL,
             enable ? self : NULL,
             NULL);
 
         /* Always to ignore */
         if (!enable) {
-            mm_at_serial_port_add_unsolicited_msg_handler (
+            mm_port_serial_at_add_unsolicited_msg_handler (
                 ports[i],
                 self->priv->pacsp_regex,
                 NULL,
@@ -856,7 +856,7 @@ modem_3gpp_disable_unsolicited_events (MMIfaceModem3gpp *self,
 /*****************************************************************************/
 /* Create bearer (Modem interface) */
 
-static MMBearer *
+static MMBaseBearer *
 modem_create_bearer_finish (MMIfaceModem *self,
                             GAsyncResult *res,
                             GError **error)
@@ -864,9 +864,9 @@ modem_create_bearer_finish (MMIfaceModem *self,
     if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
         return NULL;
 
-    return MM_BEARER (g_object_ref (
-                          g_simple_async_result_get_op_res_gpointer (
-                              G_SIMPLE_ASYNC_RESULT (res))));
+    return MM_BASE_BEARER (g_object_ref (
+                               g_simple_async_result_get_op_res_gpointer (
+                                   G_SIMPLE_ASYNC_RESULT (res))));
 }
 
 static void
@@ -874,7 +874,7 @@ broadband_bearer_icera_new_ready (GObject *source,
                                   GAsyncResult *res,
                                   GSimpleAsyncResult *simple)
 {
-    MMBearer *bearer = NULL;
+    MMBaseBearer *bearer = NULL;
     GError *error = NULL;
 
     bearer = mm_broadband_bearer_icera_new_finish (res, &error);
@@ -893,7 +893,7 @@ broadband_bearer_new_ready (GObject *source,
                             GAsyncResult *res,
                             GSimpleAsyncResult *simple)
 {
-    MMBearer *bearer = NULL;
+    MMBaseBearer *bearer = NULL;
     GError *error = NULL;
 
     bearer = mm_broadband_bearer_new_finish (res, &error);
@@ -1895,7 +1895,7 @@ static void
 mm_broadband_modem_icera_init (MMBroadbandModemIcera *self)
 {
     /* Initialize private data */
-    self->priv = G_TYPE_INSTANCE_GET_PRIVATE ((self),
+    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
                                               MM_TYPE_BROADBAND_MODEM_ICERA,
                                               MMBroadbandModemIceraPrivate);
 

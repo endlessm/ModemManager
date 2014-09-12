@@ -2,32 +2,27 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>MMSmsProperties</title>
+<title>libmm-glib Reference Manual: MMSmsProperties</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
 <link rel="up" href="ch06.html" title="The SMS object">
 <link rel="prev" href="MMSms.html" title="MMSms">
 <link rel="next" href="pt02.html" title="Part II. Low level API">
-<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
-<td><a accesskey="p" href="MMSms.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="ch06.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">libmm-glib Reference Manual</th>
-<td><a accesskey="n" href="pt02.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts">
-<a href="#MMSmsProperties.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#MMSmsProperties.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#MMSmsProperties.object-hierarchy" class="shortcut">Object Hierarchy</a>
-</td></tr>
-</table>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
+                  <a href="#MMSmsProperties.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
+                  <a href="#MMSmsProperties.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch06.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="MMSms.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="pt02.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
 <div class="refentry">
 <a name="MMSmsProperties"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
@@ -35,680 +30,901 @@
 <h2><span class="refentrytitle"><a name="MMSmsProperties.top_of_page"></a>MMSmsProperties</span></h2>
 <p>MMSmsProperties — Helper object to handle SMS properties.</p>
 </td>
-<td valign="top" align="right"></td>
+<td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
-<a name="MMSmsProperties.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">struct              <a class="link" href="MMSmsProperties.html#MMSmsProperties-struct" title="struct MMSmsProperties">MMSmsProperties</a>;
-
-<a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="returnvalue">MMSmsProperties</span></a> *   <a class="link" href="MMSmsProperties.html#mm-sms-properties-new" title="mm_sms_properties_new ()">mm_sms_properties_new</a>               (<em class="parameter"><code><span class="type">void</span></code></em>);
-
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSmsProperties.html#mm-sms-properties-get-text" title="mm_sms_properties_get_text ()">mm_sms_properties_get_text</a>          (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSmsProperties.html#mm-sms-properties-set-text" title="mm_sms_properties_set_text ()">mm_sms_properties_set_text</a>          (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a> *      <a class="link" href="MMSmsProperties.html#mm-sms-properties-get-data" title="mm_sms_properties_get_data ()">mm_sms_properties_get_data</a>          (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> *data_len</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSmsProperties.html#mm-sms-properties-set-data" title="mm_sms_properties_set_data ()">mm_sms_properties_set_data</a>          (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> data_length</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="returnvalue">GByteArray</span></a> *        <a class="link" href="MMSmsProperties.html#mm-sms-properties-peek-data-bytearray" title="mm_sms_properties_peek_data_bytearray ()">mm_sms_properties_peek_data_bytearray</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="returnvalue">GByteArray</span></a> *        <a class="link" href="MMSmsProperties.html#mm-sms-properties-get-data-bytearray" title="mm_sms_properties_get_data_bytearray ()">mm_sms_properties_get_data_bytearray</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSmsProperties.html#mm-sms-properties-set-data-bytearray" title="mm_sms_properties_set_data_bytearray ()">mm_sms_properties_set_data_bytearray</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="type">GByteArray</span></a> *data</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSmsProperties.html#mm-sms-properties-get-number" title="mm_sms_properties_get_number ()">mm_sms_properties_get_number</a>        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSmsProperties.html#mm-sms-properties-set-number" title="mm_sms_properties_set_number ()">mm_sms_properties_set_number</a>        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *number</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="MMSmsProperties.html#mm-sms-properties-get-smsc" title="mm_sms_properties_get_smsc ()">mm_sms_properties_get_smsc</a>          (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSmsProperties.html#mm-sms-properties-set-smsc" title="mm_sms_properties_set_smsc ()">mm_sms_properties_set_smsc</a>          (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *smsc</code></em>);
-<span class="returnvalue">MMSmsValidityType</span>   <a class="link" href="MMSmsProperties.html#mm-sms-properties-get-validity-type" title="mm_sms_properties_get_validity_type ()">mm_sms_properties_get_validity_type</a> (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMSmsProperties.html#mm-sms-properties-get-validity-relative" title="mm_sms_properties_get_validity_relative ()">mm_sms_properties_get_validity_relative</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSmsProperties.html#mm-sms-properties-set-validity-relative" title="mm_sms_properties_set_validity_relative ()">mm_sms_properties_set_validity_relative</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> validity</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                <a class="link" href="MMSmsProperties.html#mm-sms-properties-get-class" title="mm_sms_properties_get_class ()">mm_sms_properties_get_class</a>         (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSmsProperties.html#mm-sms-properties-set-class" title="mm_sms_properties_set_class ()">mm_sms_properties_set_class</a>         (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> class</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="MMSmsProperties.html#mm-sms-properties-get-delivery-report-request" title="mm_sms_properties_get_delivery_report_request ()">mm_sms_properties_get_delivery_report_request</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSmsProperties.html#mm-sms-properties-set-delivery-report-request" title="mm_sms_properties_set_delivery_report_request ()">mm_sms_properties_set_delivery_report_request</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> request</code></em>);
-<span class="returnvalue">MMSmsCdmaTeleserviceId</span> <a class="link" href="MMSmsProperties.html#mm-sms-properties-get-teleservice-id" title="mm_sms_properties_get_teleservice_id ()">mm_sms_properties_get_teleservice_id</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSmsProperties.html#mm-sms-properties-set-teleservice-id" title="mm_sms_properties_set_teleservice_id ()">mm_sms_properties_set_teleservice_id</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><span class="type">MMSmsCdmaTeleserviceId</span> teleservice_id</code></em>);
-<span class="returnvalue">MMSmsCdmaServiceCategory</span> <a class="link" href="MMSmsProperties.html#mm-sms-properties-get-service-category" title="mm_sms_properties_get_service_category ()">mm_sms_properties_get_service_category</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMSmsProperties.html#mm-sms-properties-set-service-category" title="mm_sms_properties_set_service_category ()">mm_sms_properties_set_service_category</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><span class="type">MMSmsCdmaServiceCategory</span> service_category</code></em>);
-</pre>
+<div class="refsect1">
+<a name="MMSmsProperties.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="returnvalue">MMSmsProperties</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-new" title="mm_sms_properties_new ()">mm_sms_properties_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-get-text" title="mm_sms_properties_get_text ()">mm_sms_properties_get_text</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-set-text" title="mm_sms_properties_set_text ()">mm_sms_properties_set_text</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-get-data" title="mm_sms_properties_get_data ()">mm_sms_properties_get_data</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-set-data" title="mm_sms_properties_set_data ()">mm_sms_properties_set_data</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="returnvalue">GByteArray</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-peek-data-bytearray" title="mm_sms_properties_peek_data_bytearray ()">mm_sms_properties_peek_data_bytearray</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="returnvalue">GByteArray</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-get-data-bytearray" title="mm_sms_properties_get_data_bytearray ()">mm_sms_properties_get_data_bytearray</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-set-data-bytearray" title="mm_sms_properties_set_data_bytearray ()">mm_sms_properties_set_data_bytearray</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-get-number" title="mm_sms_properties_get_number ()">mm_sms_properties_get_number</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-set-number" title="mm_sms_properties_set_number ()">mm_sms_properties_set_number</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-get-smsc" title="mm_sms_properties_get_smsc ()">mm_sms_properties_get_smsc</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-set-smsc" title="mm_sms_properties_set_smsc ()">mm_sms_properties_set_smsc</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsValidityType"><span class="returnvalue">MMSmsValidityType</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-get-validity-type" title="mm_sms_properties_get_validity_type ()">mm_sms_properties_get_validity_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-get-validity-relative" title="mm_sms_properties_get_validity_relative ()">mm_sms_properties_get_validity_relative</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-set-validity-relative" title="mm_sms_properties_set_validity_relative ()">mm_sms_properties_set_validity_relative</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-get-class" title="mm_sms_properties_get_class ()">mm_sms_properties_get_class</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-set-class" title="mm_sms_properties_set_class ()">mm_sms_properties_set_class</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-get-delivery-report-request" title="mm_sms_properties_get_delivery_report_request ()">mm_sms_properties_get_delivery_report_request</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-set-delivery-report-request" title="mm_sms_properties_set_delivery_report_request ()">mm_sms_properties_set_delivery_report_request</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsCdmaTeleserviceId"><span class="returnvalue">MMSmsCdmaTeleserviceId</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-get-teleservice-id" title="mm_sms_properties_get_teleservice_id ()">mm_sms_properties_get_teleservice_id</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-set-teleservice-id" title="mm_sms_properties_set_teleservice_id ()">mm_sms_properties_set_teleservice_id</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsCdmaServiceCategory"><span class="returnvalue">MMSmsCdmaServiceCategory</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-get-service-category" title="mm_sms_properties_get_service_category ()">mm_sms_properties_get_service_category</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMSmsProperties.html#mm-sms-properties-set-service-category" title="mm_sms_properties_set_service_category ()">mm_sms_properties_set_service_category</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="MMSmsProperties.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody><tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="MMSmsProperties.html#MMSmsProperties-struct" title="struct MMSmsProperties">MMSmsProperties</a></td>
+</tr></tbody>
+</table></div>
 </div>
 <div class="refsect1">
 <a name="MMSmsProperties.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="synopsis">
-  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-   +----MMSmsProperties
+<pre class="screen">    <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> MMSmsProperties
 </pre>
 </div>
 <div class="refsect1">
 <a name="MMSmsProperties.description"></a><h2>Description</h2>
-<p>
-The <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> is an object handling the properties to be set
-in newly created SMS objects.
-</p>
-<p>
-This object is created by the user and passed to ModemManager with either
-<a class="link" href="MMModemMessaging.html#mm-modem-messaging-create" title="mm_modem_messaging_create ()"><code class="function">mm_modem_messaging_create()</code></a> or <a class="link" href="MMModemMessaging.html#mm-modem-messaging-create-sync" title="mm_modem_messaging_create_sync ()"><code class="function">mm_modem_messaging_create_sync()</code></a>.
-</p>
+<p>The <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> is an object handling the properties to be set
+in newly created SMS objects.</p>
+<p>This object is created by the user and passed to ModemManager with either
+<a class="link" href="MMModemMessaging.html#mm-modem-messaging-create" title="mm_modem_messaging_create ()"><code class="function">mm_modem_messaging_create()</code></a> or <a class="link" href="MMModemMessaging.html#mm-modem-messaging-create-sync" title="mm_modem_messaging_create_sync ()"><code class="function">mm_modem_messaging_create_sync()</code></a>.</p>
 </div>
 <div class="refsect1">
-<a name="MMSmsProperties.details"></a><h2>Details</h2>
+<a name="MMSmsProperties.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
-<a name="MMSmsProperties-struct"></a><h3>struct MMSmsProperties</h3>
-<pre class="programlisting">struct MMSmsProperties;</pre>
-<p>
-The <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> structure contains private data and should only be
-accessed using the provided API.
-</p>
+<a name="mm-sms-properties-new"></a><h3>mm_sms_properties_new ()</h3>
+<pre class="programlisting"><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="returnvalue">MMSmsProperties</span></a> *
+mm_sms_properties_new (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Creates a new empty <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.2.5"></a><h4>Returns</h4>
+<p> a <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="mm-sms-properties-new"></a><h3>mm_sms_properties_new ()</h3>
-<pre class="programlisting"><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="returnvalue">MMSmsProperties</span></a> *   mm_sms_properties_new               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>
-Creates a new empty <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-sms-properties-get-text"></a><h3>mm_sms_properties_get_text ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_sms_properties_get_text (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
+<p>Gets the message text, in UTF-8.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.3.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>. The returned value should be freed with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
-</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.3.6"></a><h4>Returns</h4>
+<p> The message text, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it doesn't contain any (e.g. contains data instead). Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-sms-properties-get-text"></a><h3>mm_sms_properties_get_text ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sms_properties_get_text          (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
-<p>
-Gets the message text, in UTF-8.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-sms-properties-set-text"></a><h3>mm_sms_properties_set_text ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_sms_properties_set_text (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
+                            <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>);</pre>
+<p>Sets the message text.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.4.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The message text, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it doesn't contain any (e.g. contains data instead). Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
+<td class="parameter_name"><p>text</p></td>
+<td class="parameter_description"><p>The text to set, in UTF-8.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-sms-properties-set-text"></a><h3>mm_sms_properties_set_text ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_sms_properties_set_text          (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>);</pre>
-<p>
-Sets the message text.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-sms-properties-get-data"></a><h3>mm_sms_properties_get_data ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a> *
+mm_sms_properties_get_data (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
+                            <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> *data_len</code></em>);</pre>
+<p>Gets the message data.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.5.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>text</code></em> :</span></p></td>
-<td>The text to set, in UTF-8.</td>
+<td class="parameter_name"><p>data_len</p></td>
+<td class="parameter_description"><p> Size of the output data, if any given. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
 </tr>
 </tbody>
 </table></div>
 </div>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.5.6"></a><h4>Returns</h4>
+<p> The message data, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it doesn't contain any (e.g. contains text instead). </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-sms-properties-get-data"></a><h3>mm_sms_properties_get_data ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="returnvalue">guint8</span></a> *      mm_sms_properties_get_data          (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> *data_len</code></em>);</pre>
-<p>
-Gets the message data.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-sms-properties-set-data"></a><h3>mm_sms_properties_set_data ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_sms_properties_set_data (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
+                            <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>,
+                            <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> data_length</code></em>);</pre>
+<p>Sets the message data.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.6.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>data_len</code></em> :</span></p></td>
-<td>Size of the output data, if any given. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
-</td>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>The data to set.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The message data, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it doesn't contain any (e.g. contains text instead). <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
+<td class="parameter_name"><p>data_length</p></td>
+<td class="parameter_description"><p>Length of <em class="parameter"><code>data</code></em>
+.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-sms-properties-set-data"></a><h3>mm_sms_properties_set_data ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_sms_properties_set_data          (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> data_length</code></em>);</pre>
-<p>
-Sets the message data.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-sms-properties-peek-data-bytearray"></a><h3>mm_sms_properties_peek_data_bytearray ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="returnvalue">GByteArray</span></a> *
+mm_sms_properties_peek_data_bytearray (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
+<p>Gets the message data.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.7.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.7.6"></a><h4>Returns</h4>
+<p> A <a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="type">GByteArray</span></a> with the message data, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it doesn't contain any (e.g. contains text instead). Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sms-properties-get-data-bytearray"></a><h3>mm_sms_properties_get_data_bytearray ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="returnvalue">GByteArray</span></a> *
+mm_sms_properties_get_data_bytearray (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
+<p>Gets the message data.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.8.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.8.6"></a><h4>Returns</h4>
+<p> A <a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="type">GByteArray</span></a> with the message data, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it doesn't contain any (e.g. contains text instead). The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#g-byte-array-unref"><code class="function">g_byte_array_unref()</code></a>. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sms-properties-set-data-bytearray"></a><h3>mm_sms_properties_set_data_bytearray ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_sms_properties_set_data_bytearray (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
+                                      <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="type">GByteArray</span></a> *data</code></em>);</pre>
+<p>Sets the message data.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.9.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>The data to set.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>data_length</code></em> :</span></p></td>
-<td>Length of <em class="parameter"><code>data</code></em>.</td>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="type">GByteArray</span></a> with the data to set. This method takes a new reference of <em class="parameter"><code>data</code></em>
+.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-sms-properties-peek-data-bytearray"></a><h3>mm_sms_properties_peek_data_bytearray ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="returnvalue">GByteArray</span></a> *        mm_sms_properties_peek_data_bytearray
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
-<p>
-Gets the message data.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-sms-properties-get-number"></a><h3>mm_sms_properties_get_number ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_sms_properties_get_number (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
+<p>Gets the number to which the message is addressed.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.10.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.10.6"></a><h4>Returns</h4>
+<p> The number, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it couldn't be retrieved. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sms-properties-set-number"></a><h3>mm_sms_properties_set_number ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_sms_properties_set_number (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
+                              <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *number</code></em>);</pre>
+<p>Sets the number to which the message is addressed.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.11.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="type">GByteArray</span></a> with the message data, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it doesn't contain any (e.g. contains text instead). Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
+<td class="parameter_name"><p>number</p></td>
+<td class="parameter_description"><p>The number.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-sms-properties-get-data-bytearray"></a><h3>mm_sms_properties_get_data_bytearray ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="returnvalue">GByteArray</span></a> *        mm_sms_properties_get_data_bytearray
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
-<p>
-Gets the message data.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-sms-properties-get-smsc"></a><h3>mm_sms_properties_get_smsc ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_sms_properties_get_smsc (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
+<p>Gets the SMS service center number.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.12.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.12.6"></a><h4>Returns</h4>
+<p> The number of the SMSC, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it couldn't be retrieved. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sms-properties-set-smsc"></a><h3>mm_sms_properties_set_smsc ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_sms_properties_set_smsc (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
+                            <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *smsc</code></em>);</pre>
+<p>Sets the SMS service center number.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.13.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="type">GByteArray</span></a> with the message data, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it doesn't contain any (e.g. contains text instead). The returned value should be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#g-byte-array-unref"><code class="function">g_byte_array_unref()</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
-</td>
+<td class="parameter_name"><p>smsc</p></td>
+<td class="parameter_description"><p>The SMSC number.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-sms-properties-set-data-bytearray"></a><h3>mm_sms_properties_set_data_bytearray ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_sms_properties_set_data_bytearray
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="type">GByteArray</span></a> *data</code></em>);</pre>
-<p>
-Sets the message data.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-sms-properties-get-validity-type"></a><h3>mm_sms_properties_get_validity_type ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsValidityType"><span class="returnvalue">MMSmsValidityType</span></a>
+mm_sms_properties_get_validity_type (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
+<p>Gets the relative validity type the SMS.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.14.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.14.6"></a><h4>Returns</h4>
+<p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsValidityType"><span class="type">MMSmsValidityType</span></a>.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sms-properties-get-validity-relative"></a><h3>mm_sms_properties_get_validity_relative ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+mm_sms_properties_get_validity_relative
+                               (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
+<p>Gets the relative validity time of the SMS.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.15.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.15.6"></a><h4>Returns</h4>
+<p> the validity time or 0 if unknown.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sms-properties-set-validity-relative"></a><h3>mm_sms_properties_set_validity_relative ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_sms_properties_set_validity_relative
+                               (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
+                                <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> validity</code></em>);</pre>
+<p>Sets the relative validity time of the SMS.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.16.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Byte-Arrays.html#GByteArray"><span class="type">GByteArray</span></a> with the data to set. This method takes a new reference of <em class="parameter"><code>data</code></em>.</td>
+<td class="parameter_name"><p>validity</p></td>
+<td class="parameter_description"><p>The validity of <code class="literal">MM_SMS_VALIDITY_TYPE_RELATIVE</code> type.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-sms-properties-get-number"></a><h3>mm_sms_properties_get_number ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sms_properties_get_number        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
-<p>
-Gets the number to which the message is addressed.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-sms-properties-get-class"></a><h3>mm_sms_properties_get_class ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+mm_sms_properties_get_class (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
+<p>Gets the 3GPP message class of the SMS.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.17.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.17.6"></a><h4>Returns</h4>
+<p> the message class, or -1 for invalid/unset class.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sms-properties-set-class"></a><h3>mm_sms_properties_set_class ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_sms_properties_set_class (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
+                             <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> class</code></em>);</pre>
+<p>Sets the 3GPP message class of the SMS.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.18.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The number, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it couldn't be retrieved. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
+<td class="parameter_name"><p>class</p></td>
+<td class="parameter_description"><p>The message class (0..3), or -1 for invalid/unset class.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-sms-properties-set-number"></a><h3>mm_sms_properties_set_number ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_sms_properties_set_number        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *number</code></em>);</pre>
-<p>
-Sets the number to which the message is addressed.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-sms-properties-get-delivery-report-request"></a><h3>mm_sms_properties_get_delivery_report_request ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+mm_sms_properties_get_delivery_report_request
+                               (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
+<p>Checks whether delivery report is requested for the SMS.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.19.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.19.6"></a><h4>Returns</h4>
+<p> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if delivery report is requested, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sms-properties-set-delivery-report-request"></a><h3>mm_sms_properties_set_delivery_report_request ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_sms_properties_set_delivery_report_request
+                               (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
+                                <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> request</code></em>);</pre>
+<p>Sets whether delivery report is requested for the SMS.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.20.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>number</code></em> :</span></p></td>
-<td>The number.</td>
+<td class="parameter_name"><p>request</p></td>
+<td class="parameter_description"><p><a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if delivery report is requested, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-sms-properties-get-smsc"></a><h3>mm_sms_properties_get_smsc ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       mm_sms_properties_get_smsc          (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
-<p>
-Gets the SMS service center number.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-sms-properties-get-teleservice-id"></a><h3>mm_sms_properties_get_teleservice_id ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsCdmaTeleserviceId"><span class="returnvalue">MMSmsCdmaTeleserviceId</span></a>
+mm_sms_properties_get_teleservice_id (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
+<p>Gets the CDMA teleservice ID of the SMS.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.21.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.21.6"></a><h4>Returns</h4>
+<p> the CDMA teleservice ID.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sms-properties-set-teleservice-id"></a><h3>mm_sms_properties_set_teleservice_id ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_sms_properties_set_teleservice_id (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
+                                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsCdmaTeleserviceId"><span class="type">MMSmsCdmaTeleserviceId</span></a> teleservice_id</code></em>);</pre>
+<p>Sets the CDMA teleservice ID of the SMS.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.22.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The number of the SMSC, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if it couldn't be retrieved. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
-</td>
+<td class="parameter_name"><p>teleservice_id</p></td>
+<td class="parameter_description"><p>The CDMA teleservice ID.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
-<a name="mm-sms-properties-set-smsc"></a><h3>mm_sms_properties_set_smsc ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_sms_properties_set_smsc          (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *smsc</code></em>);</pre>
-<p>
-Sets the SMS service center number.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<a name="mm-sms-properties-get-service-category"></a><h3>mm_sms_properties_get_service_category ()</h3>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsCdmaServiceCategory"><span class="returnvalue">MMSmsCdmaServiceCategory</span></a>
+mm_sms_properties_get_service_category
+                               (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
+<p>Gets the CDMA message service category of the SMS.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.23.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.23.6"></a><h4>Returns</h4>
+<p> the CDMA service category.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-sms-properties-set-service-category"></a><h3>mm_sms_properties_set_service_category ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_sms_properties_set_service_category
+                               (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsCdmaServiceCategory"><span class="type">MMSmsCdmaServiceCategory</span></a> service_category</code></em>);</pre>
+<p>Sets the CDMA service category of the SMS.</p>
+<div class="refsect3">
+<a name="id-1.2.7.3.7.24.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>smsc</code></em> :</span></p></td>
-<td>The SMSC number.</td>
+<td class="parameter_name"><p>service_category</p></td>
+<td class="parameter_description"><p>The CDMA service category.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
-<hr>
-<div class="refsect2">
-<a name="mm-sms-properties-get-validity-type"></a><h3>mm_sms_properties_get_validity_type ()</h3>
-<pre class="programlisting"><span class="returnvalue">MMSmsValidityType</span>   mm_sms_properties_get_validity_type (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
-<p>
-Gets the relative validity type the SMS.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <span class="type">MMSmsValidityType</span>.</td>
-</tr>
-</tbody>
-</table></div>
 </div>
-<hr>
-<div class="refsect2">
-<a name="mm-sms-properties-get-validity-relative"></a><h3>mm_sms_properties_get_validity_relative ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_sms_properties_get_validity_relative
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
-<p>
-Gets the relative validity time of the SMS.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the validity time or 0 if unknown.</td>
-</tr>
-</tbody>
-</table></div>
 </div>
-<hr>
+<div class="refsect1">
+<a name="MMSmsProperties.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
-<a name="mm-sms-properties-set-validity-relative"></a><h3>mm_sms_properties_set_validity_relative ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_sms_properties_set_validity_relative
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> validity</code></em>);</pre>
-<p>
-Sets the relative validity time of the SMS.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>validity</code></em> :</span></p></td>
-<td>The validity of <code class="literal">MM_SMS_VALIDITY_TYPE_RELATIVE</code> type.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-sms-properties-get-class"></a><h3>mm_sms_properties_get_class ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                mm_sms_properties_get_class         (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
-<p>
-Gets the 3GPP message class of the SMS.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the message class, or -1 for invalid/unset class.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-sms-properties-set-class"></a><h3>mm_sms_properties_set_class ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_sms_properties_set_class         (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> class</code></em>);</pre>
-<p>
-Sets the 3GPP message class of the SMS.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>class</code></em> :</span></p></td>
-<td>The message class (0..3), or -1 for invalid/unset class.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-sms-properties-get-delivery-report-request"></a><h3>mm_sms_properties_get_delivery_report_request ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            mm_sms_properties_get_delivery_report_request
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
-<p>
-Checks whether delivery report is requested for the SMS.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if delivery report is requested, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-sms-properties-set-delivery-report-request"></a><h3>mm_sms_properties_set_delivery_report_request ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_sms_properties_set_delivery_report_request
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> request</code></em>);</pre>
-<p>
-Sets whether delivery report is requested for the SMS.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>request</code></em> :</span></p></td>
-<td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if delivery report is requested, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-sms-properties-get-teleservice-id"></a><h3>mm_sms_properties_get_teleservice_id ()</h3>
-<pre class="programlisting"><span class="returnvalue">MMSmsCdmaTeleserviceId</span> mm_sms_properties_get_teleservice_id
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
-<p>
-Gets the CDMA teleservice ID of the SMS.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the CDMA teleservice ID.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-sms-properties-set-teleservice-id"></a><h3>mm_sms_properties_set_teleservice_id ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_sms_properties_set_teleservice_id
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><span class="type">MMSmsCdmaTeleserviceId</span> teleservice_id</code></em>);</pre>
-<p>
-Sets the CDMA teleservice ID of the SMS.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>teleservice_id</code></em> :</span></p></td>
-<td>The CDMA teleservice ID.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-sms-properties-get-service-category"></a><h3>mm_sms_properties_get_service_category ()</h3>
-<pre class="programlisting"><span class="returnvalue">MMSmsCdmaServiceCategory</span> mm_sms_properties_get_service_category
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>);</pre>
-<p>
-Gets the CDMA message service category of the SMS.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the CDMA service category.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-sms-properties-set-service-category"></a><h3>mm_sms_properties_set_service_category ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_sms_properties_set_service_category
-                                                        (<em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><span class="type">MMSmsCdmaServiceCategory</span> service_category</code></em>);</pre>
-<p>
-Sets the CDMA service category of the SMS.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>A <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>service_category</code></em> :</span></p></td>
-<td>The CDMA service category.</td>
-</tr>
-</tbody>
-</table></div>
+<a name="MMSmsProperties-struct"></a><h3>struct MMSmsProperties</h3>
+<pre class="programlisting">struct MMSmsProperties;</pre>
+<p>The <a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> structure contains private data and should only be
+accessed using the provided API.</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.19</div>
+          Generated by GTK-Doc V1.20</div>
 </body>
 </html>

@@ -31,19 +31,24 @@
 #include "mm-iface-modem.h"
 #include "mm-iface-modem-3gpp.h"
 #include "mm-iface-modem-messaging.h"
+#include "mm-iface-modem-location.h"
 #include "mm-base-modem-at.h"
 #include "mm-broadband-modem-cinterion.h"
+#include "mm-modem-helpers-cinterion.h"
+#include "mm-common-cinterion.h"
 
 static void iface_modem_init      (MMIfaceModem *iface);
 static void iface_modem_3gpp_init (MMIfaceModem3gpp *iface);
 static void iface_modem_messaging_init (MMIfaceModemMessaging *iface);
+static void iface_modem_location_init (MMIfaceModemLocation *iface);
 
 static MMIfaceModem *iface_modem_parent;
 
 G_DEFINE_TYPE_EXTENDED (MMBroadbandModemCinterion, mm_broadband_modem_cinterion, MM_TYPE_BROADBAND_MODEM, 0,
                         G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM, iface_modem_init)
                         G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM_3GPP, iface_modem_3gpp_init)
-                        G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM_MESSAGING, iface_modem_messaging_init))
+                        G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM_MESSAGING, iface_modem_messaging_init)
+                        G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM_LOCATION, iface_modem_location_init))
 
 struct _MMBroadbandModemCinterionPrivate {
     /* Flag to know if we should try AT^SIND or not to get psinfo */
@@ -51,6 +56,19 @@ struct _MMBroadbandModemCinterionPrivate {
 
     /* Command to go into sleep mode */
     gchar *sleep_mode_cmd;
+
+    /* Cached manual selection attempt */
+    gchar *manual_operator_id;
+
+    /* Cached supported bands in Cinterion format */
+    guint supported_bands;
+
+    /* Cached supported modes for SMS setup */
+    GArray *cnmi_supported_mode;
+    GArray *cnmi_supported_mt;
+    GArray *cnmi_supported_bm;
+    GArray *cnmi_supported_ds;
+    GArray *cnmi_supported_bfr;
 };
 
 /* Setup relationship between the band bitmask in the modem and the bitmask
@@ -75,28 +93,6 @@ static const CinterionBand2G bands_2g[] = {
     { "10", 2, { MM_MODEM_BAND_G850, MM_MODEM_BAND_DCS, 0, 0 }},
     { "12", 2, { MM_MODEM_BAND_G850, MM_MODEM_BAND_PCS, 0, 0 }},
     { "15", 4, { MM_MODEM_BAND_EGSM, MM_MODEM_BAND_DCS, MM_MODEM_BAND_PCS, MM_MODEM_BAND_G850 }}
-};
-
-/* Setup relationship between the 3G band bitmask in the modem and the bitmask
- * in ModemManager. */
-typedef struct {
-    guint32 cinterion_band_flag;
-    MMModemBand mm_band;
-} CinterionBand3G;
-
-/* Table checked in HC25 (3G) reference. This table includes both 2G and 3G
- * frequencies. Depending on which one is configured, one access technology or
- * the other will be used. This may conflict with the allowed mode configuration
- * set, so you shouldn't for example set 3G frequency bands, and then use a
- * 2G-only allowed mode. */
-static const CinterionBand3G bands_3g[] = {
-    { (1 << 0), MM_MODEM_BAND_EGSM  },
-    { (1 << 1), MM_MODEM_BAND_DCS   },
-    { (1 << 2), MM_MODEM_BAND_PCS   },
-    { (1 << 3), MM_MODEM_BAND_G850  },
-    { (1 << 4), MM_MODEM_BAND_U2100 },
-    { (1 << 5), MM_MODEM_BAND_U1900 },
-    { (1 << 6), MM_MODEM_BAND_U850  }
 };
 
 /*****************************************************************************/
@@ -135,24 +131,210 @@ messaging_enable_unsolicited_events_finish (MMIfaceModemMessaging *self,
                                             GAsyncResult *res,
                                             GError **error)
 {
-    return !!mm_base_modem_at_command_finish (MM_BASE_MODEM (self), res, error);
+    return !g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error);
 }
 
 static void
-messaging_enable_unsolicited_events (MMIfaceModemMessaging *self,
+cnmi_test_ready (MMBaseModem *self,
+                 GAsyncResult *res,
+                 GSimpleAsyncResult *simple)
+{
+    GError *error = NULL;
+
+    mm_base_modem_at_command_finish (MM_BASE_MODEM (self), res, &error);
+    if (error)
+        g_simple_async_result_take_error (simple, error);
+    else
+        g_simple_async_result_set_op_res_gboolean (simple, TRUE);
+    g_simple_async_result_complete (simple);
+    g_object_unref (simple);
+}
+
+static gboolean
+value_supported (const GArray *array,
+                 const guint value)
+{
+    guint i;
+
+    if (!array)
+        return FALSE;
+
+    for (i = 0; i < array->len; i++) {
+        if (g_array_index (array, guint, i) == value)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+static void
+messaging_enable_unsolicited_events (MMIfaceModemMessaging *_self,
                                      GAsyncReadyCallback callback,
                                      gpointer user_data)
 {
-    /* AT+CNMI=<mode>,[<mt>[,<bm>[,<ds>[,<bfr>]]]]
-     *  but <bfr> should be either not set, or equal to 1;
-     *  and <ds> can be only either 0 or 2 (EGS5)
-     */
+    MMBroadbandModemCinterion *self = MM_BROADBAND_MODEM_CINTERION (_self);
+    GString *cmd;
+    GError *error = NULL;
+    GSimpleAsyncResult *simple;
+
+    simple = g_simple_async_result_new (G_OBJECT (self),
+                                        callback,
+                                        user_data,
+                                        messaging_enable_unsolicited_events);
+
+    /* AT+CNMI=<mode>,[<mt>[,<bm>[,<ds>[,<bfr>]]]] */
+    cmd = g_string_new ("+CNMI=");
+
+    /* Mode 2 or 1 */
+    if (!error) {
+        if (value_supported (self->priv->cnmi_supported_mode, 2))
+            g_string_append_printf (cmd, "%u,", 2);
+        else if (value_supported (self->priv->cnmi_supported_mode, 1))
+            g_string_append_printf (cmd, "%u,", 1);
+        else
+            error = g_error_new (MM_CORE_ERROR,
+                                 MM_CORE_ERROR_FAILED,
+                                 "SMS settings don't accept [2,1] <mode>");
+    }
+
+    /* mt 2 or 1 */
+    if (!error) {
+        if (value_supported (self->priv->cnmi_supported_mt, 2))
+            g_string_append_printf (cmd, "%u,", 2);
+        else if (value_supported (self->priv->cnmi_supported_mt, 1))
+            g_string_append_printf (cmd, "%u,", 1);
+        else
+            error = g_error_new (MM_CORE_ERROR,
+                                 MM_CORE_ERROR_FAILED,
+                                 "SMS settings don't accept [2,1] <mt>");
+    }
+
+    /* bm 2 or 0 */
+    if (!error) {
+        if (value_supported (self->priv->cnmi_supported_bm, 2))
+            g_string_append_printf (cmd, "%u,", 2);
+        else if (value_supported (self->priv->cnmi_supported_bm, 0))
+            g_string_append_printf (cmd, "%u,", 0);
+        else
+            error = g_error_new (MM_CORE_ERROR,
+                                 MM_CORE_ERROR_FAILED,
+                                 "SMS settings don't accept [2,0] <bm>");
+    }
+
+    /* ds 2, 1 or 0 */
+    if (!error) {
+        if (value_supported (self->priv->cnmi_supported_ds, 2))
+            g_string_append_printf (cmd, "%u,", 2);
+        if (value_supported (self->priv->cnmi_supported_ds, 1))
+            g_string_append_printf (cmd, "%u,", 1);
+        else if (value_supported (self->priv->cnmi_supported_ds, 0))
+            g_string_append_printf (cmd, "%u,", 0);
+        else
+            error = g_error_new (MM_CORE_ERROR,
+                                 MM_CORE_ERROR_FAILED,
+                                 "SMS settings don't accept [2,1,0] <ds>");
+    }
+
+    /* bfr 1 */
+    if (!error) {
+        if (value_supported (self->priv->cnmi_supported_bfr, 1))
+            g_string_append_printf (cmd, "%u", 1);
+        /* otherwise, skip setting it */
+    }
+
+    /* Early error report */
+    if (error) {
+        g_simple_async_result_take_error (simple, error);
+        g_simple_async_result_complete_in_idle (simple);
+        g_object_unref (simple);
+        g_string_free (cmd, TRUE);
+        return;
+    }
+
     mm_base_modem_at_command (MM_BASE_MODEM (self),
-                              "+CNMI=2,1,2,2,1",
+                              cmd->str,
                               3,
                               FALSE,
-                              callback,
-                              user_data);
+                              (GAsyncReadyCallback)cnmi_test_ready,
+                              simple);
+    g_string_free (cmd, TRUE);
+}
+
+/*****************************************************************************/
+/* Check if Messaging supported (Messaging interface) */
+
+static gboolean
+messaging_check_support_finish (MMIfaceModemMessaging *self,
+                                GAsyncResult *res,
+                                GError **error)
+{
+    return !g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error);
+}
+
+static void
+cnmi_format_check_ready (MMBroadbandModemCinterion *self,
+                         GAsyncResult *res,
+                         GSimpleAsyncResult *simple)
+{
+    GError *error = NULL;
+    const gchar *response;
+
+    response = mm_base_modem_at_command_finish (MM_BASE_MODEM (self), res, &error);
+    if (error) {
+        g_simple_async_result_take_error (simple, error);
+        g_simple_async_result_complete (simple);
+        g_object_unref (simple);
+        return;
+    }
+
+    /* Parse */
+    if (!mm_cinterion_parse_cnmi_test (response,
+                                       &self->priv->cnmi_supported_mode,
+                                       &self->priv->cnmi_supported_mt,
+                                       &self->priv->cnmi_supported_bm,
+                                       &self->priv->cnmi_supported_ds,
+                                       &self->priv->cnmi_supported_bfr,
+                                       &error)) {
+        mm_warn ("error reading SMS setup: %s", error->message);
+        g_error_free (error);
+    }
+
+    /* CNMI command is supported; assume we have full messaging capabilities */
+    g_simple_async_result_set_op_res_gboolean (simple, TRUE);
+    g_simple_async_result_complete (simple);
+    g_object_unref (simple);
+}
+
+static void
+messaging_check_support (MMIfaceModemMessaging *self,
+                         GAsyncReadyCallback callback,
+                         gpointer user_data)
+{
+    GSimpleAsyncResult *result;
+
+    result = g_simple_async_result_new (G_OBJECT (self),
+                                        callback,
+                                        user_data,
+                                        messaging_check_support);
+
+    /* We assume that CDMA-only modems don't have messaging capabilities */
+    if (mm_iface_modem_is_cdma_only (MM_IFACE_MODEM (self))) {
+        g_simple_async_result_set_error (
+            result,
+            MM_CORE_ERROR,
+            MM_CORE_ERROR_UNSUPPORTED,
+            "CDMA-only modems don't have messaging capabilities");
+        g_simple_async_result_complete_in_idle (result);
+        g_object_unref (result);
+        return;
+    }
+
+    /* Check CNMI support */
+    mm_base_modem_at_command (MM_BASE_MODEM (self),
+                              "+CNMI=?",
+                              3,
+                              TRUE,
+                              (GAsyncReadyCallback)cnmi_format_check_ready,
+                              result);
 }
 
 /*****************************************************************************/
@@ -277,6 +459,158 @@ modem_power_down (MMIfaceModem *self,
 }
 
 /*****************************************************************************/
+/* Modem Power Off */
+
+#define MAX_POWER_OFF_WAIT_TIME_SECS 20
+
+typedef struct {
+    MMBroadbandModemCinterion *self;
+    MMPortSerialAt *port;
+    GSimpleAsyncResult *result;
+    GRegex *shutdown_regex;
+    gboolean shutdown_received;
+    gboolean smso_replied;
+    gboolean serial_open;
+    guint timeout_id;
+} PowerOffContext;
+
+static void
+power_off_context_complete_and_free (PowerOffContext *ctx)
+{
+    if (ctx->serial_open)
+        mm_port_serial_close (MM_PORT_SERIAL (ctx->port));
+    if (ctx->timeout_id)
+        g_source_remove (ctx->timeout_id);
+    mm_port_serial_at_add_unsolicited_msg_handler (ctx->port, ctx->shutdown_regex, NULL, NULL, NULL);
+    g_object_unref (ctx->port);
+    g_object_unref (ctx->self);
+    g_regex_unref (ctx->shutdown_regex);
+    g_simple_async_result_complete_in_idle (ctx->result);
+    g_object_unref (ctx->result);
+    g_slice_free (PowerOffContext, ctx);
+}
+
+static gboolean
+modem_power_off_finish (MMIfaceModem *self,
+                        GAsyncResult *res,
+                        GError **error)
+{
+    return !g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error);
+}
+
+static void
+complete_power_off (PowerOffContext *ctx)
+{
+    if (!ctx->shutdown_received || !ctx->smso_replied)
+        return;
+
+    g_simple_async_result_set_op_res_gboolean (ctx->result, TRUE);
+    power_off_context_complete_and_free (ctx);
+}
+
+static void
+smso_ready (MMBaseModem *self,
+            GAsyncResult *res,
+            PowerOffContext *ctx)
+{
+    GError *error = NULL;
+
+    mm_base_modem_at_command_full_finish (MM_BASE_MODEM (self), res, &error);
+    if (error) {
+        g_simple_async_result_take_error (ctx->result, error);
+        power_off_context_complete_and_free (ctx);
+        return;
+    }
+
+    /* Set as replied */
+    ctx->smso_replied = TRUE;
+    complete_power_off (ctx);
+}
+
+static void
+shutdown_received (MMPortSerialAt *port,
+                   GMatchInfo *match_info,
+                   PowerOffContext *ctx)
+{
+    /* Cleanup handler */
+    mm_port_serial_at_add_unsolicited_msg_handler (port, ctx->shutdown_regex, NULL, NULL, NULL);
+    /* Set as received */
+    ctx->shutdown_received = TRUE;
+    complete_power_off (ctx);
+}
+
+static gboolean
+power_off_timeout_cb (PowerOffContext *ctx)
+{
+    ctx->timeout_id = 0;
+
+    /* The SMSO reply should have come earlier */
+    g_warn_if_fail (ctx->smso_replied == TRUE);
+
+    g_simple_async_result_set_error (ctx->result,
+                                     MM_CORE_ERROR,
+                                     MM_CORE_ERROR_FAILED,
+                                     "Power off operation timed out");
+    power_off_context_complete_and_free (ctx);
+
+    return FALSE;
+}
+
+static void
+modem_power_off (MMIfaceModem *self,
+                 GAsyncReadyCallback callback,
+                 gpointer user_data)
+{
+    PowerOffContext *ctx;
+    GError *error = NULL;
+
+    ctx = g_slice_new0 (PowerOffContext);
+    ctx->self = g_object_ref (self);
+    ctx->port = mm_base_modem_get_port_primary (MM_BASE_MODEM (self));
+    ctx->result = g_simple_async_result_new (G_OBJECT (self),
+                                             callback,
+                                             user_data,
+                                             modem_power_off);
+    ctx->shutdown_regex = g_regex_new ("\\r\\n\\^SHUTDOWN\\r\\n",
+                                       G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
+    ctx->timeout_id = g_timeout_add_seconds (MAX_POWER_OFF_WAIT_TIME_SECS,
+                                             (GSourceFunc)power_off_timeout_cb,
+                                             ctx);
+
+    /* We'll need to wait for a ^SHUTDOWN before returning the action, which is
+     * when the modem tells us that it is ready to be shutdown */
+    mm_port_serial_at_add_unsolicited_msg_handler (
+        ctx->port,
+        ctx->shutdown_regex,
+        (MMPortSerialAtUnsolicitedMsgFn)shutdown_received,
+        ctx,
+        NULL);
+
+    /* In order to get the ^SHUTDOWN notification, we must keep the port open
+     * during the wait time */
+    ctx->serial_open = mm_port_serial_open (MM_PORT_SERIAL (ctx->port), &error);
+    if (G_UNLIKELY (error)) {
+        g_simple_async_result_take_error (ctx->result, error);
+        power_off_context_complete_and_free (ctx);
+        return;
+    }
+
+    /* Note: we'll use a timeout < MAX_POWER_OFF_WAIT_TIME_SECS for the AT command,
+     * so we're sure that the AT command reply will always come before the timeout
+     * fires */
+    g_assert (MAX_POWER_OFF_WAIT_TIME_SECS > 5);
+    mm_base_modem_at_command_full (MM_BASE_MODEM (self),
+                                   ctx->port,
+                                   "^SMSO",
+                                   5,
+                                   FALSE, /* allow_cached */
+                                   FALSE, /* is_raw */
+                                   NULL, /* cancellable */
+                                   (GAsyncReadyCallback)smso_ready,
+                                   ctx);
+}
+
+/*****************************************************************************/
 /* ACCESS TECHNOLOGIES */
 
 static gboolean
@@ -396,22 +730,27 @@ static MMModemAccessTechnology
 get_access_technology_from_psinfo (const gchar *psinfo,
                                    GError **error)
 {
-    if (strlen (psinfo) == 1) {
-        switch (psinfo[0]) {
-        case '0':
+    guint psinfoval;
+
+    if (mm_get_uint_from_str (psinfo, &psinfoval)) {
+        switch (psinfoval) {
+        case 0:
             return MM_MODEM_ACCESS_TECHNOLOGY_UNKNOWN;
-        case '1':
-        case '2':
+        case 1:
+        case 2:
             return MM_MODEM_ACCESS_TECHNOLOGY_GPRS;
-        case '3':
-        case '4':
+        case 3:
+        case 4:
             return MM_MODEM_ACCESS_TECHNOLOGY_EDGE;
-        case '5':
-        case '6':
+        case 5:
+        case 6:
             return MM_MODEM_ACCESS_TECHNOLOGY_UMTS;
-        case '7':
-        case '8':
+        case 7:
+        case 8:
             return MM_MODEM_ACCESS_TECHNOLOGY_HSDPA;
+        case 9:
+        case 10:
+            return (MM_MODEM_ACCESS_TECHNOLOGY_HSDPA | MM_MODEM_ACCESS_TECHNOLOGY_HSUPA);
         default:
             break;
         }
@@ -611,20 +950,26 @@ allowed_access_technology_update_ready (MMBroadbandModemCinterion *self,
     if (error)
         /* Let the error be critical. */
         g_simple_async_result_take_error (operation_result, error);
-    else
+    else {
+        /* Request immediate access tech update */
+        mm_iface_modem_refresh_access_technologies (MM_IFACE_MODEM (self));
         g_simple_async_result_set_op_res_gboolean (operation_result, TRUE);
+    }
     g_simple_async_result_complete (operation_result);
     g_object_unref (operation_result);
 }
 
 static void
-set_current_modes (MMIfaceModem *self,
+set_current_modes (MMIfaceModem *_self,
                    MMModemMode allowed,
                    MMModemMode preferred,
                    GAsyncReadyCallback callback,
                    gpointer user_data)
 {
     GSimpleAsyncResult *result;
+    MMBroadbandModemCinterion *self = MM_BROADBAND_MODEM_CINTERION (_self);
+
+    g_assert (preferred == MM_MODEM_MODE_NONE);
 
     result = g_simple_async_result_new (G_OBJECT (self),
                                         callback,
@@ -632,9 +977,9 @@ set_current_modes (MMIfaceModem *self,
                                         set_current_modes);
 
     /* For dual 2G/3G devices... */
-    if (mm_iface_modem_is_2g (self) &&
-        mm_iface_modem_is_3g (self)) {
-        GString *cmd;
+    if (mm_iface_modem_is_2g (_self) &&
+        mm_iface_modem_is_3g (_self)) {
+        gchar *command;
 
         /* We will try to simulate the possible allowed modes here. The
          * Cinterion devices do not seem to allow setting preferred access
@@ -645,77 +990,162 @@ set_current_modes (MMIfaceModem *self,
          * - for the remaining ones, we default to automatic selection of RAT,
          *   which is based on the quality of the connection.
          */
-        cmd = g_string_new ("+COPS=,,,");
-        if (allowed == MM_MODEM_MODE_3G) {
-            g_string_append (cmd, "2");
-        } else if (allowed == MM_MODEM_MODE_2G) {
-            g_string_append (cmd, "0");
-        } else {
-            gchar *allowed_str;
-            gchar *preferred_str;
 
-            /* no AcT given, defaults to Auto */
-            allowed_str = mm_modem_mode_build_string_from_mask (allowed);
-            preferred_str = mm_modem_mode_build_string_from_mask (preferred);
-            mm_warn ("Requested mode (allowed: '%s', preferred: '%s') not "
-                     "supported by the modem. Defaulting to automatic mode.",
-                     allowed_str,
-                     preferred_str);
-            g_free (allowed_str);
-            g_free (preferred_str);
-        }
+        if (allowed == MM_MODEM_MODE_3G)
+            command = g_strdup ("+COPS=,,,2");
+        else if (allowed == MM_MODEM_MODE_2G)
+            command = g_strdup ("+COPS=,,,0");
+        else if (allowed == (MM_MODEM_MODE_3G | MM_MODEM_MODE_2G)) {
+            /* no AcT given, defaults to Auto. For this case, we cannot provide
+             * AT+COPS=,,, (i.e. just without a last value). Instead, we need to
+             * re-run the last manual/automatic selection command which succeeded,
+             * (or auto by default if none was launched) */
+            if (self->priv->manual_operator_id)
+                command = g_strdup_printf ("+COPS=1,2,\"%s\"", self->priv->manual_operator_id);
+            else
+                command = g_strdup ("+COPS=0");
+        } else
+            g_assert_not_reached ();
 
         mm_base_modem_at_command (
             MM_BASE_MODEM (self),
-            cmd->str,
-            3,
+            command,
+            20,
             FALSE,
             (GAsyncReadyCallback)allowed_access_technology_update_ready,
             result);
-        g_string_free (cmd, TRUE);
+        g_free (command);
         return;
     }
 
-    /* For 3G-only devices, allow only 3G-related allowed modes.
-     * For 2G-only devices, allow only 2G-related allowed modes.
-     *
-     * Note that the common logic of the interface already limits the
-     * allowed/preferred modes that can be tried in these cases. */
-    if (mm_iface_modem_is_2g_only (self) ||
-        mm_iface_modem_is_3g_only (self)) {
-        gchar *allowed_str;
-        gchar *preferred_str;
-
-        allowed_str = mm_modem_mode_build_string_from_mask (allowed);
-        preferred_str = mm_modem_mode_build_string_from_mask (preferred);
-        mm_dbg ("Not doing anything. Assuming requested mode "
-                "(allowed: '%s', preferred: '%s') is supported by "
-                "%s-only modem.",
-                allowed_str,
-                preferred_str,
-                mm_iface_modem_is_3g_only (self) ? "3G" : "2G");
-        g_free (allowed_str);
-        g_free (preferred_str);
-        g_simple_async_result_set_op_res_gboolean (result, TRUE);
-        g_simple_async_result_complete_in_idle (result);
-        g_object_unref (result);
-        return;
-    }
-
+    /* For 2G-only and 3G-only devices, we already stated that we don't
+     * support mode switching. */
     g_assert_not_reached ();
 }
 
 /*****************************************************************************/
-/* SUPPORTED BANDS */
+/* Register in network (3GPP interface) */
+
+typedef struct {
+    MMBroadbandModemCinterion *self;
+    GSimpleAsyncResult *result;
+    gchar *operator_id;
+} RegisterInNetworkContext;
+
+static void
+register_in_network_context_complete_and_free (RegisterInNetworkContext *ctx)
+{
+    g_simple_async_result_complete (ctx->result);
+    g_object_unref (ctx->result);
+    g_object_unref (ctx->self);
+    g_free (ctx->operator_id);
+    g_slice_free (RegisterInNetworkContext, ctx);
+}
+
+static gboolean
+register_in_network_finish (MMIfaceModem3gpp *self,
+                            GAsyncResult *res,
+                            GError **error)
+{
+    return !g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error);
+}
+
+static void
+cops_write_ready (MMBaseModem *self,
+                  GAsyncResult *res,
+                  RegisterInNetworkContext *ctx)
+{
+    GError *error = NULL;
+
+    if (!mm_base_modem_at_command_full_finish (MM_BASE_MODEM (self), res, &error))
+        g_simple_async_result_take_error (ctx->result, error);
+    else {
+        /* Update cached */
+        g_free (ctx->self->priv->manual_operator_id);
+        ctx->self->priv->manual_operator_id = g_strdup (ctx->operator_id);
+        g_simple_async_result_set_op_res_gboolean (ctx->result, TRUE);
+    }
+
+    register_in_network_context_complete_and_free (ctx);
+}
+
+static void
+register_in_network (MMIfaceModem3gpp *self,
+                     const gchar *operator_id,
+                     GCancellable *cancellable,
+                     GAsyncReadyCallback callback,
+                     gpointer user_data)
+{
+    RegisterInNetworkContext *ctx;
+    gchar *command;
+
+    ctx = g_slice_new (RegisterInNetworkContext);
+    ctx->self = g_object_ref (self);
+    ctx->operator_id = g_strdup (operator_id);
+    ctx->result = g_simple_async_result_new (G_OBJECT (self),
+                                             callback,
+                                             user_data,
+                                             register_in_network);
+
+    /* If the user sent a specific network to use, lock it in. */
+    if (operator_id)
+        command = g_strdup_printf ("+COPS=1,2,\"%s\"", operator_id);
+    else
+        command = g_strdup ("+COPS=0");
+
+    mm_base_modem_at_command_full (MM_BASE_MODEM (self),
+                                   mm_base_modem_peek_best_at_port (MM_BASE_MODEM (self), NULL),
+                                   command,
+                                   120,
+                                   FALSE,
+                                   FALSE, /* raw */
+                                   cancellable,
+                                   (GAsyncReadyCallback)cops_write_ready,
+                                   ctx);
+    g_free (command);
+}
+
+/*****************************************************************************/
+/* Supported bands (Modem interface) */
 
 static GArray *
 load_supported_bands_finish (MMIfaceModem *self,
                              GAsyncResult *res,
                              GError **error)
 {
-    /* Never fails */
+    if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
+        return NULL;
+
     return (GArray *) g_array_ref (g_simple_async_result_get_op_res_gpointer (
                                        G_SIMPLE_ASYNC_RESULT (res)));
+}
+
+static void
+scfg_test_ready (MMBaseModem *_self,
+                 GAsyncResult *res,
+                 GSimpleAsyncResult *simple)
+{
+    MMBroadbandModemCinterion *self = MM_BROADBAND_MODEM_CINTERION (_self);
+    const gchar *response;
+    GError *error = NULL;
+    GArray *bands;
+
+    response = mm_base_modem_at_command_finish (_self, res, &error);
+    if (!response)
+        g_simple_async_result_take_error (simple, error);
+    else if (!mm_cinterion_parse_scfg_test (response,
+                                            mm_broadband_modem_get_current_charset (MM_BROADBAND_MODEM (self)),
+                                            &bands,
+                                            &error))
+        g_simple_async_result_take_error (simple, error);
+    else {
+        mm_cinterion_build_band (bands, 0, FALSE, &self->priv->supported_bands, NULL);
+        g_assert (self->priv->supported_bands != 0);
+        g_simple_async_result_set_op_res_gpointer (simple, bands, (GDestroyNotify)g_array_unref);
+    }
+
+    g_simple_async_result_complete (simple);
+    g_object_unref (simple);
 }
 
 static void
@@ -723,45 +1153,23 @@ load_supported_bands (MMIfaceModem *self,
                       GAsyncReadyCallback callback,
                       gpointer user_data)
 {
-    GSimpleAsyncResult *result;
-    GArray *bands;
+    GSimpleAsyncResult *simple;
 
-    result = g_simple_async_result_new (G_OBJECT (self),
+    simple = g_simple_async_result_new (G_OBJECT (self),
                                         callback,
                                         user_data,
                                         load_supported_bands);
 
-    /* We do assume that we already know if the modem is 2G-only, 3G-only or
-     * 2G+3G. This is checked quite before trying to load supported bands. */
-
-#define _g_array_insert_enum(array,index,type,val) do { \
-        type aux = (type)val;                           \
-        g_array_insert_val (array, index, aux);         \
-    } while (0)
-
-    bands = g_array_sized_new (FALSE, FALSE, sizeof (MMModemBand), 4);
-    _g_array_insert_enum (bands, 0, MMModemBand, MM_MODEM_BAND_EGSM);
-    _g_array_insert_enum (bands, 1, MMModemBand, MM_MODEM_BAND_DCS);
-    _g_array_insert_enum (bands, 2, MMModemBand, MM_MODEM_BAND_PCS);
-    _g_array_insert_enum (bands, 3, MMModemBand, MM_MODEM_BAND_G850);
-
-    /* Add 3G-specific bands */
-    if (mm_iface_modem_is_3g (self)) {
-        g_array_set_size (bands, 7);
-        _g_array_insert_enum (bands, 4, MMModemBand, MM_MODEM_BAND_U2100);
-        _g_array_insert_enum (bands, 5, MMModemBand, MM_MODEM_BAND_U1900);
-        _g_array_insert_enum (bands, 6, MMModemBand, MM_MODEM_BAND_U850);
-    }
-
-    g_simple_async_result_set_op_res_gpointer (result,
-                                               bands,
-                                               (GDestroyNotify)g_array_unref);
-    g_simple_async_result_complete_in_idle (result);
-    g_object_unref (result);
+    mm_base_modem_at_command (MM_BASE_MODEM (self),
+                              "AT^SCFG=?",
+                              3,
+                              FALSE,
+                              (GAsyncReadyCallback)scfg_test_ready,
+                              simple);
 }
 
 /*****************************************************************************/
-/* CURRENT BANDS */
+/* Load current bands (Modem interface) */
 
 static GArray *
 load_current_bands_finish (MMIfaceModem *self,
@@ -776,156 +1184,27 @@ load_current_bands_finish (MMIfaceModem *self,
 }
 
 static void
-get_2g_band_ready (MMBroadbandModemCinterion *self,
-                   GAsyncResult *res,
-                   GSimpleAsyncResult *operation_result)
+get_band_ready (MMBroadbandModemCinterion *self,
+                GAsyncResult *res,
+                GSimpleAsyncResult *simple)
 {
     const gchar *response;
     GError *error = NULL;
-    GArray *bands_array = NULL;
-    GRegex *regex;
-    GMatchInfo *match_info = NULL;
+    GArray *bands = NULL;
 
     response = mm_base_modem_at_command_finish (MM_BASE_MODEM (self), res, &error);
-    if (!response) {
-        /* Let the error be critical. */
-        g_simple_async_result_take_error (operation_result, error);
-        g_simple_async_result_complete (operation_result);
-        g_object_unref (operation_result);
-        return;
-    }
-
-    /* The AT^SCFG? command replies a list of several different config
-     * values. We will only look for 'Radio/Band".
-     *
-     * AT+SCFG="Radio/Band"
-     * ^SCFG: "Radio/Band","0031","0031"
-     *
-     * Note that "0031" is a UCS2-encoded string, as we configured UCS2 as
-     * character set to use.
-     */
-    regex = g_regex_new ("\\^SCFG:\\s*\"Radio/Band\",\\s*\"(.*)\",\\s*\"(.*)\"", 0, 0, NULL);
-    g_assert (regex != NULL);
-
-    if (g_regex_match_full (regex, response, strlen (response), 0, 0, &match_info, NULL)) {
-        gchar *current;
-
-        /* The first number given is the current band configuration, the
-         * second number given is the allowed band configuration, which we
-         * don't really need to get here. */
-        current = g_match_info_fetch (match_info, 1);
-        if (current) {
-            guint i;
-
-            /* If in UCS2, convert to UTF-8 */
-            current = mm_broadband_modem_take_and_convert_to_utf8 (MM_BROADBAND_MODEM (self),
-                                                                   current);
-
-            for (i = 0; i < G_N_ELEMENTS (bands_2g); i++) {
-                if (strcmp (bands_2g[i].cinterion_band, current) == 0) {
-                    guint j;
-
-                    if (G_UNLIKELY (!bands_array))
-                        bands_array = g_array_new (FALSE, FALSE, sizeof (MMModemBand));
-
-                    for (j = 0; j < bands_2g[i].n_mm_bands; j++)
-                        g_array_append_val (bands_array, bands_2g[i].mm_bands[j]);
-
-                    break;
-                }
-            }
-
-            g_free (current);
-        }
-    }
-
-    if (match_info)
-        g_match_info_free (match_info);
-    g_regex_unref (regex);
-
-    if (!bands_array)
-        g_simple_async_result_set_error (operation_result,
-                                         MM_CORE_ERROR,
-                                         MM_CORE_ERROR_FAILED,
-                                         "Couldn't parse current bands reply");
+    if (!response)
+        g_simple_async_result_take_error (simple, error);
+    else if (!mm_cinterion_parse_scfg_response (response,
+                                                mm_broadband_modem_get_current_charset (MM_BROADBAND_MODEM (self)),
+                                                &bands,
+                                                &error))
+        g_simple_async_result_take_error (simple, error);
     else
-        g_simple_async_result_set_op_res_gpointer (operation_result,
-                                                   bands_array,
-                                                   (GDestroyNotify)g_array_unref);
+        g_simple_async_result_set_op_res_gpointer (simple, bands, (GDestroyNotify)g_array_unref);
 
-    g_simple_async_result_complete (operation_result);
-    g_object_unref (operation_result);
-}
-
-static void
-get_3g_band_ready (MMBroadbandModemCinterion *self,
-                   GAsyncResult *res,
-                   GSimpleAsyncResult *operation_result)
-{
-    const gchar *response;
-    GError *error = NULL;
-    GArray *bands_array = NULL;
-    GRegex *regex;
-    GMatchInfo *match_info = NULL;
-
-    response = mm_base_modem_at_command_finish (MM_BASE_MODEM (self), res, &error);
-    if (!response) {
-        /* Let the error be critical. */
-        g_simple_async_result_take_error (operation_result, error);
-        g_simple_async_result_complete (operation_result);
-        g_object_unref (operation_result);
-        return;
-    }
-
-    /* The AT^SCFG? command replies a list of several different config
-     * values. We will only look for 'Radio/Band".
-     *
-     * AT+SCFG="Radio/Band"
-     * ^SCFG: "Radio/Band",127
-     *
-     * Note that in this case, the <rba> replied is a number, not a string.
-     */
-    regex = g_regex_new ("\\^SCFG:\\s*\"Radio/Band\",\\s*(\\d*)", 0, 0, NULL);
-    g_assert (regex != NULL);
-
-    if (g_regex_match_full (regex, response, strlen (response), 0, 0, &match_info, NULL)) {
-        gchar *current;
-
-        current = g_match_info_fetch (match_info, 1);
-        if (current) {
-            guint32 current_int;
-            guint i;
-
-            current_int = (guint32) atoi (current);
-
-            for (i = 0; i < G_N_ELEMENTS (bands_3g); i++) {
-                if (current_int & bands_3g[i].cinterion_band_flag) {
-                    if (G_UNLIKELY (!bands_array))
-                        bands_array = g_array_new (FALSE, FALSE, sizeof (MMModemBand));
-                    g_array_append_val (bands_array, bands_3g[i].mm_band);
-                }
-            }
-
-            g_free (current);
-        }
-    }
-
-    if (match_info)
-        g_match_info_free (match_info);
-    g_regex_unref (regex);
-
-    if (!bands_array)
-        g_simple_async_result_set_error (operation_result,
-                                         MM_CORE_ERROR,
-                                         MM_CORE_ERROR_FAILED,
-                                         "Couldn't parse current bands reply");
-    else
-        g_simple_async_result_set_op_res_gpointer (operation_result,
-                                                   bands_array,
-                                                   (GDestroyNotify)g_array_unref);
-
-    g_simple_async_result_complete (operation_result);
-    g_object_unref (operation_result);
+    g_simple_async_result_complete (simple);
+    g_object_unref (simple);
 }
 
 static void
@@ -940,15 +1219,11 @@ load_current_bands (MMIfaceModem *self,
                                         user_data,
                                         load_current_bands);
 
-    /* Query the currently used Radio/Band. The query command is the same for
-     * both 2G and 3G devices, but the reply reader is different. */
     mm_base_modem_at_command (MM_BASE_MODEM (self),
                               "AT^SCFG=\"Radio/Band\"",
                               3,
                               FALSE,
-                              (GAsyncReadyCallback)(mm_iface_modem_is_3g (self) ?
-                                                    get_3g_band_ready :
-                                                    get_2g_band_ready),
+                              (GAsyncReadyCallback)get_band_ready,
                               result);
 }
 
@@ -973,155 +1248,88 @@ scfg_set_ready (MMBaseModem *self,
     if (!mm_base_modem_at_command_finish (MM_BASE_MODEM (self), res, &error))
         /* Let the error be critical */
         g_simple_async_result_take_error (operation_result, error);
-    else
+    else {
+        /* Request immediate access tech update */
+        mm_iface_modem_refresh_access_technologies (MM_IFACE_MODEM (self));
         g_simple_async_result_set_op_res_gboolean (operation_result, TRUE);
+    }
 
     g_simple_async_result_complete (operation_result);
     g_object_unref (operation_result);
 }
 
 static void
-set_bands_3g (MMIfaceModem *self,
+set_bands_3g (MMIfaceModem *_self,
               GArray *bands_array,
-              GSimpleAsyncResult *result)
+              GSimpleAsyncResult *simple)
 {
-    GArray *bands_array_final;
-    guint cinterion_band = 0;
-    guint i;
-    gchar *bands_string;
+    MMBroadbandModemCinterion *self = MM_BROADBAND_MODEM_CINTERION (_self);
+    GError *error = NULL;
+    guint band = 0;
     gchar *cmd;
 
-    /* The special case of ANY should be treated separately. */
-    if (bands_array->len == 1 &&
-        g_array_index (bands_array, MMModemBand, 0) == MM_MODEM_BAND_ANY) {
-        /* We build an array with all bands to set; so that we use the same
-         * logic to build the cinterion_band, and so that we can log the list of
-         * bands being set properly */
-        bands_array_final = g_array_sized_new (FALSE, FALSE, sizeof (MMModemBand), G_N_ELEMENTS (bands_3g));
-        for (i = 0; i < G_N_ELEMENTS (bands_3g); i++)
-            g_array_append_val (bands_array_final, bands_3g[i].mm_band);
-    } else
-        bands_array_final = g_array_ref (bands_array);
-
-    for (i = 0; i < G_N_ELEMENTS (bands_3g); i++) {
-        guint j;
-
-        for (j = 0; j < bands_array_final->len; j++) {
-            if (g_array_index (bands_array_final, MMModemBand, j) == bands_3g[i].mm_band) {
-                cinterion_band |= bands_3g[i].cinterion_band_flag;
-                break;
-            }
-        }
-    }
-
-    bands_string = mm_common_build_bands_string ((MMModemBand *)bands_array_final->data,
-                                                 bands_array_final->len);
-    g_array_unref (bands_array_final);
-
-    if (!cinterion_band) {
-        g_simple_async_result_set_error (result,
-                                         MM_CORE_ERROR,
-                                         MM_CORE_ERROR_UNSUPPORTED,
-                                         "The given band combination is not supported: '%s'",
-                                         bands_string);
-        g_simple_async_result_complete_in_idle (result);
-        g_object_unref (result);
-        g_free (bands_string);
+    if (!mm_cinterion_build_band (bands_array,
+                                  self->priv->supported_bands,
+                                  FALSE, /* 2G and 3G */
+                                  &band,
+                                  &error)) {
+        g_simple_async_result_take_error (simple, error);
+        g_simple_async_result_complete_in_idle (simple);
+        g_object_unref (simple);
         return;
     }
-
-    mm_dbg ("Setting new bands to use: '%s'", bands_string);
 
     /* Following the setup:
      *  AT^SCFG="Radion/Band",<rba>
      * We will set the preferred band equal to the allowed band, so that we force
      * the modem to connect at that specific frequency only. Note that we will be
      * passing a number here!
+     *
+     * The optional <rbe> field is set to 1, so that changes take effect
+     * immediately.
      */
-    cmd = g_strdup_printf ("^SCFG=\"Radio/Band\",%u", cinterion_band);
+    cmd = g_strdup_printf ("^SCFG=\"Radio/Band\",%u,1", band);
     mm_base_modem_at_command (MM_BASE_MODEM (self),
                               cmd,
                               15,
                               FALSE,
                               (GAsyncReadyCallback)scfg_set_ready,
-                              result);
+                              simple);
     g_free (cmd);
-    g_free (bands_string);
 }
 
 static void
-set_bands_2g (MMIfaceModem *self,
+set_bands_2g (MMIfaceModem *_self,
               GArray *bands_array,
-              GSimpleAsyncResult *result)
+              GSimpleAsyncResult *simple)
 {
-    GArray *bands_array_final;
-    gchar *cinterion_band = NULL;
-    guint i;
-    gchar *bands_string;
+    MMBroadbandModemCinterion *self = MM_BROADBAND_MODEM_CINTERION (_self);
+    GError *error = NULL;
+    guint band = 0;
     gchar *cmd;
+    gchar *bandstr;
 
-    /* If the iface properly checked the given list against the supported bands,
-     * it's not possible to get an array longer than 4 here. */
-    g_assert (bands_array->len <= 4);
-
-    /* The special case of ANY should be treated separately. */
-    if (bands_array->len == 1 &&
-        g_array_index (bands_array, MMModemBand, 0) == MM_MODEM_BAND_ANY) {
-        const CinterionBand2G *all;
-
-        /* All bands is the last element in our 2G bands array */
-        all = &bands_2g[G_N_ELEMENTS (bands_2g) - 1];
-
-        /* We build an array with all bands to set; so that we use the same
-         * logic to build the cinterion_band, and so that we can log the list of
-         * bands being set properly */
-        bands_array_final = g_array_sized_new (FALSE, FALSE, sizeof (MMModemBand), 4);
-        g_array_append_vals (bands_array_final, all->mm_bands, all->n_mm_bands);
-    } else
-        bands_array_final = g_array_ref (bands_array);
-
-    for (i = 0; !cinterion_band && i < G_N_ELEMENTS (bands_2g); i++) {
-        GArray *supported_combination;
-
-        supported_combination = g_array_sized_new (FALSE, FALSE, sizeof (MMModemBand), bands_2g[i].n_mm_bands);
-        g_array_append_vals (supported_combination, bands_2g[i].mm_bands, bands_2g[i].n_mm_bands);
-
-        /* Check if the given array is exactly one of the supported combinations */
-        if (mm_common_bands_garray_cmp (bands_array_final, supported_combination))
-            cinterion_band = g_strdup (bands_2g[i].cinterion_band);
-
-        g_array_unref (supported_combination);
-    }
-
-    bands_string = mm_common_build_bands_string ((MMModemBand *)bands_array_final->data,
-                                                 bands_array_final->len);
-    g_array_unref (bands_array_final);
-
-    if (!cinterion_band) {
-        g_simple_async_result_set_error (result,
-                                         MM_CORE_ERROR,
-                                         MM_CORE_ERROR_UNSUPPORTED,
-                                         "The given band combination is not supported: '%s'",
-                                         bands_string);
-        g_simple_async_result_complete_in_idle (result);
-        g_object_unref (result);
-        g_free (bands_string);
+    if (!mm_cinterion_build_band (bands_array,
+                                  self->priv->supported_bands,
+                                  TRUE, /* 2G only */
+                                  &band,
+                                  &error)) {
+        g_simple_async_result_take_error (simple, error);
+        g_simple_async_result_complete_in_idle (simple);
+        g_object_unref (simple);
         return;
     }
 
-
-    mm_dbg ("Setting new bands to use: '%s'", bands_string);
-    cinterion_band = (mm_broadband_modem_take_and_convert_to_current_charset (
-                          MM_BROADBAND_MODEM (self),
-                          cinterion_band));
-    if (!cinterion_band) {
-        g_simple_async_result_set_error (result,
+    /* Build string with the value, in the proper charset */
+    bandstr = g_strdup_printf ("%u", band);
+    bandstr = mm_broadband_modem_take_and_convert_to_current_charset (MM_BROADBAND_MODEM (self), bandstr);
+    if (!bandstr) {
+        g_simple_async_result_set_error (simple,
                                          MM_CORE_ERROR,
                                          MM_CORE_ERROR_UNSUPPORTED,
                                          "Couldn't convert band set to current charset");
-        g_simple_async_result_complete_in_idle (result);
-        g_object_unref (result);
-        g_free (bands_string);
+        g_simple_async_result_complete_in_idle (simple);
+        g_object_unref (simple);
         return;
     }
 
@@ -1131,20 +1339,17 @@ set_bands_2g (MMIfaceModem *self,
      * the modem to connect at that specific frequency only. Note that we will be
      * passing double-quote enclosed strings here!
      */
-    cmd = g_strdup_printf ("^SCFG=\"Radio/Band\",\"%s\",\"%s\"",
-                           cinterion_band,
-                           cinterion_band);
+    cmd = g_strdup_printf ("^SCFG=\"Radio/Band\",\"%s\",\"%s\"", bandstr, bandstr);
 
     mm_base_modem_at_command (MM_BASE_MODEM (self),
                               cmd,
                               15,
                               FALSE,
                               (GAsyncReadyCallback)scfg_set_ready,
-                              result);
+                              simple);
 
     g_free (cmd);
-    g_free (cinterion_band);
-    g_free (bands_string);
+    g_free (bandstr);
 }
 
 static void
@@ -1223,6 +1428,250 @@ setup_flow_control (MMIfaceModem *self,
 }
 
 /*****************************************************************************/
+/* Load unlock retries (Modem interface) */
+
+typedef struct {
+    MMBroadbandModemCinterion *self;
+    GSimpleAsyncResult *result;
+    MMUnlockRetries *retries;
+    guint i;
+} LoadUnlockRetriesContext;
+
+typedef struct {
+    MMModemLock lock;
+    const gchar *command;
+} UnlockRetriesMap;
+
+static const UnlockRetriesMap unlock_retries_map [] = {
+    { MM_MODEM_LOCK_SIM_PIN,     "^SPIC=\"SC\""   },
+    { MM_MODEM_LOCK_SIM_PUK,     "^SPIC=\"SC\",1" },
+    { MM_MODEM_LOCK_SIM_PIN2,    "^SPIC=\"P2\""   },
+    { MM_MODEM_LOCK_SIM_PUK2,    "^SPIC=\"P2\",1" },
+    { MM_MODEM_LOCK_PH_FSIM_PIN, "^SPIC=\"PS\""   },
+    { MM_MODEM_LOCK_PH_FSIM_PUK, "^SPIC=\"PS\",1" },
+    { MM_MODEM_LOCK_PH_NET_PIN,  "^SPIC=\"PN\""   },
+    { MM_MODEM_LOCK_PH_NET_PUK,  "^SPIC=\"PN\",1" },
+};
+
+static void
+load_unlock_retries_context_complete_and_free (LoadUnlockRetriesContext *ctx)
+{
+    g_simple_async_result_complete (ctx->result);
+    g_object_unref (ctx->retries);
+    g_object_unref (ctx->result);
+    g_object_unref (ctx->self);
+    g_slice_free (LoadUnlockRetriesContext, ctx);
+}
+
+static MMUnlockRetries *
+load_unlock_retries_finish (MMIfaceModem *self,
+                            GAsyncResult *res,
+                            GError **error)
+{
+    if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
+        return NULL;
+    return (MMUnlockRetries *) g_object_ref (g_simple_async_result_get_op_res_gpointer (
+                                                 G_SIMPLE_ASYNC_RESULT (res)));
+}
+
+static void load_unlock_retries_context_step (LoadUnlockRetriesContext *ctx);
+
+static void
+spic_ready (MMBaseModem *self,
+            GAsyncResult *res,
+            LoadUnlockRetriesContext *ctx)
+{
+    const gchar *response;
+    GError *error = NULL;
+
+    response = mm_base_modem_at_command_finish (self, res, &error);
+    if (!response) {
+        mm_dbg ("Couldn't load retry count for lock '%s': %s",
+                mm_modem_lock_get_string (unlock_retries_map[ctx->i].lock),
+                error->message);
+        g_error_free (error);
+    } else {
+        guint val;
+
+        response = mm_strip_tag (response, "^SPIC:");
+        if (!mm_get_uint_from_str (response, &val))
+            mm_dbg ("Couldn't parse retry count value for lock '%s'",
+                    mm_modem_lock_get_string (unlock_retries_map[ctx->i].lock));
+        else
+            mm_unlock_retries_set (ctx->retries, unlock_retries_map[ctx->i].lock, val);
+    }
+
+    /* Go to next lock value */
+    ctx->i++;
+    load_unlock_retries_context_step (ctx);
+}
+
+static void
+load_unlock_retries_context_step (LoadUnlockRetriesContext *ctx)
+{
+    if (ctx->i == G_N_ELEMENTS (unlock_retries_map)) {
+        g_simple_async_result_set_op_res_gpointer (ctx->result,
+                                                   g_object_ref (ctx->retries),
+                                                   (GDestroyNotify)g_object_unref);
+        load_unlock_retries_context_complete_and_free (ctx);
+        return;
+    }
+
+    mm_base_modem_at_command (
+        MM_BASE_MODEM (ctx->self),
+        unlock_retries_map[ctx->i].command,
+        3,
+        FALSE,
+        (GAsyncReadyCallback)spic_ready,
+        ctx);
+}
+
+static void
+load_unlock_retries (MMIfaceModem *self,
+                     GAsyncReadyCallback callback,
+                     gpointer user_data)
+{
+    LoadUnlockRetriesContext *ctx;
+
+    ctx = g_slice_new0 (LoadUnlockRetriesContext);
+    ctx->self = g_object_ref (self);
+    ctx->result = g_simple_async_result_new (G_OBJECT (self),
+                                             callback,
+                                             user_data,
+                                             load_unlock_retries);
+    ctx->retries = mm_unlock_retries_new ();
+    ctx->i = 0;
+
+    load_unlock_retries_context_step (ctx);
+}
+
+/*****************************************************************************/
+/* After SIM unlock (Modem interface) */
+
+#define MAX_AFTER_SIM_UNLOCK_RETRIES 15
+
+typedef enum {
+    CINTERION_SIM_STATUS_REMOVED        = 0,
+    CINTERION_SIM_STATUS_INSERTED       = 1,
+    CINTERION_SIM_STATUS_INIT_COMPLETED = 5,
+} CinterionSimStatus;
+
+typedef struct {
+    MMBroadbandModemCinterion *self;
+    GSimpleAsyncResult *result;
+    guint retries;
+    guint timeout_id;
+} AfterSimUnlockContext;
+
+static void
+after_sim_unlock_context_complete_and_free (AfterSimUnlockContext *ctx)
+{
+    g_assert (ctx->timeout_id == 0);
+    g_simple_async_result_complete (ctx->result);
+    g_object_unref (ctx->result);
+    g_object_unref (ctx->self);
+    g_slice_free (AfterSimUnlockContext, ctx);
+}
+
+static gboolean
+after_sim_unlock_finish (MMIfaceModem *self,
+                         GAsyncResult *res,
+                         GError **error)
+{
+    return !g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error);
+}
+
+static void after_sim_unlock_context_step (AfterSimUnlockContext *ctx);
+
+static gboolean
+simstatus_timeout_cb (AfterSimUnlockContext *ctx)
+{
+    ctx->timeout_id = 0;
+    after_sim_unlock_context_step (ctx);
+    return FALSE;
+}
+
+static void
+simstatus_check_ready (MMBaseModem *self,
+                       GAsyncResult *res,
+                       AfterSimUnlockContext *ctx)
+{
+    const gchar *response;
+
+    response = mm_base_modem_at_command_finish (MM_BASE_MODEM (self), res, NULL);
+    if (response) {
+        gchar *descr = NULL;
+        guint val = 0;
+
+        if (mm_cinterion_parse_sind_response (response, &descr, NULL, &val, NULL) &&
+            g_str_equal (descr, "simstatus") &&
+            val == CINTERION_SIM_STATUS_INIT_COMPLETED) {
+            /* SIM ready! */
+            g_free (descr);
+            g_simple_async_result_set_op_res_gboolean (ctx->result, TRUE);
+            after_sim_unlock_context_complete_and_free (ctx);
+            return;
+        }
+
+        g_free (descr);
+    }
+
+    /* Need to retry after 1 sec */
+    g_assert (ctx->timeout_id == 0);
+    ctx->timeout_id = g_timeout_add_seconds (1, (GSourceFunc)simstatus_timeout_cb, ctx);
+}
+
+static void
+after_sim_unlock_context_step (AfterSimUnlockContext *ctx)
+{
+    if (ctx->retries == 0) {
+        /* Too much wait, go on anyway */
+        g_simple_async_result_set_op_res_gboolean (ctx->result, TRUE);
+        after_sim_unlock_context_complete_and_free (ctx);
+        return;
+    }
+
+    /* Recheck */
+    ctx->retries--;
+    mm_base_modem_at_command (MM_BASE_MODEM (ctx->self),
+                              "^SIND=\"simstatus\",1",
+                              3,
+                              FALSE,
+                              (GAsyncReadyCallback)simstatus_check_ready,
+                              ctx);
+}
+
+static void
+after_sim_unlock (MMIfaceModem *self,
+                  GAsyncReadyCallback callback,
+                  gpointer user_data)
+{
+    AfterSimUnlockContext *ctx;
+
+    ctx = g_slice_new0 (AfterSimUnlockContext);
+    ctx->self = g_object_ref (self);
+    ctx->result = g_simple_async_result_new (G_OBJECT (self),
+                                             callback,
+                                             user_data,
+                                             after_sim_unlock);
+    ctx->retries = MAX_AFTER_SIM_UNLOCK_RETRIES;
+
+    after_sim_unlock_context_step (ctx);
+}
+
+/*****************************************************************************/
+/* Setup ports (Broadband modem class) */
+
+static void
+setup_ports (MMBroadbandModem *self)
+{
+    /* Call parent's setup ports first always */
+    MM_BROADBAND_MODEM_CLASS (mm_broadband_modem_cinterion_parent_class)->setup_ports (self);
+
+    mm_common_cinterion_setup_gps_port (self);
+}
+
+/*****************************************************************************/
 
 MMBroadbandModemCinterion *
 mm_broadband_modem_cinterion_new (const gchar *device,
@@ -1258,6 +1707,18 @@ finalize (GObject *object)
     MMBroadbandModemCinterion *self = MM_BROADBAND_MODEM_CINTERION (object);
 
     g_free (self->priv->sleep_mode_cmd);
+    g_free (self->priv->manual_operator_id);
+
+    if (self->priv->cnmi_supported_mode)
+        g_array_unref (self->priv->cnmi_supported_mode);
+    if (self->priv->cnmi_supported_mt)
+        g_array_unref (self->priv->cnmi_supported_mt);
+    if (self->priv->cnmi_supported_bm)
+        g_array_unref (self->priv->cnmi_supported_bm);
+    if (self->priv->cnmi_supported_ds)
+        g_array_unref (self->priv->cnmi_supported_ds);
+    if (self->priv->cnmi_supported_bfr)
+        g_array_unref (self->priv->cnmi_supported_bfr);
 
     G_OBJECT_CLASS (mm_broadband_modem_cinterion_parent_class)->finalize (object);
 }
@@ -1281,8 +1742,14 @@ iface_modem_init (MMIfaceModem *iface)
     iface->load_access_technologies_finish = load_access_technologies_finish;
     iface->setup_flow_control = setup_flow_control;
     iface->setup_flow_control_finish = setup_flow_control_finish;
+    iface->modem_after_sim_unlock = after_sim_unlock;
+    iface->modem_after_sim_unlock_finish = after_sim_unlock_finish;
+    iface->load_unlock_retries = load_unlock_retries;
+    iface->load_unlock_retries_finish = load_unlock_retries_finish;
     iface->modem_power_down = modem_power_down;
     iface->modem_power_down_finish = modem_power_down_finish;
+    iface->modem_power_off = modem_power_off;
+    iface->modem_power_off_finish = modem_power_off_finish;
 }
 
 static void
@@ -1290,22 +1757,41 @@ iface_modem_3gpp_init (MMIfaceModem3gpp *iface)
 {
     iface->enable_unsolicited_events = enable_unsolicited_events;
     iface->enable_unsolicited_events_finish = enable_unsolicited_events_finish;
+    iface->register_in_network = register_in_network;
+    iface->register_in_network_finish = register_in_network_finish;
 }
 
 static void
 iface_modem_messaging_init (MMIfaceModemMessaging *iface)
 {
+    iface->check_support = messaging_check_support;
+    iface->check_support_finish = messaging_check_support_finish;
     iface->enable_unsolicited_events = messaging_enable_unsolicited_events;
     iface->enable_unsolicited_events_finish = messaging_enable_unsolicited_events_finish;
+}
+
+static void
+iface_modem_location_init (MMIfaceModemLocation *iface)
+{
+    mm_common_cinterion_peek_parent_location_interface (iface);
+
+    iface->load_capabilities = mm_common_cinterion_location_load_capabilities;
+    iface->load_capabilities_finish = mm_common_cinterion_location_load_capabilities_finish;
+    iface->enable_location_gathering = mm_common_cinterion_enable_location_gathering;
+    iface->enable_location_gathering_finish = mm_common_cinterion_enable_location_gathering_finish;
+    iface->disable_location_gathering = mm_common_cinterion_disable_location_gathering;
+    iface->disable_location_gathering_finish = mm_common_cinterion_disable_location_gathering_finish;
 }
 
 static void
 mm_broadband_modem_cinterion_class_init (MMBroadbandModemCinterionClass *klass)
 {
     GObjectClass *object_class = G_OBJECT_CLASS (klass);
+    MMBroadbandModemClass *broadband_modem_class = MM_BROADBAND_MODEM_CLASS (klass);
 
     g_type_class_add_private (object_class, sizeof (MMBroadbandModemCinterionPrivate));
 
     /* Virtual methods */
     object_class->finalize = finalize;
+    broadband_modem_class->setup_ports = setup_ports;
 }

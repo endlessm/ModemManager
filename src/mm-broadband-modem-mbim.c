@@ -52,6 +52,9 @@ typedef enum {
     PROCESS_NOTIFICATION_FLAG_SIGNAL_QUALITY       = 1 << 0,
     PROCESS_NOTIFICATION_FLAG_REGISTRATION_UPDATES = 1 << 1,
     PROCESS_NOTIFICATION_FLAG_SMS_READ             = 1 << 2,
+    PROCESS_NOTIFICATION_FLAG_CONNECT              = 1 << 3,
+    PROCESS_NOTIFICATION_FLAG_SUBSCRIBER_INFO      = 1 << 4,
+    PROCESS_NOTIFICATION_FLAG_PACKET_SERVICE       = 1 << 5,
 } ProcessNotificationFlag;
 
 struct _MMBroadbandModemMbimPrivate {
@@ -71,6 +74,10 @@ struct _MMBroadbandModemMbimPrivate {
     /* 3GPP registration helpers */
     gchar *current_operator_id;
     gchar *current_operator_name;
+
+    /* Access technology updates */
+    MbimDataClass available_data_classes;
+    MbimDataClass highest_available_data_class;
 };
 
 /*****************************************************************************/
@@ -81,7 +88,7 @@ peek_device (gpointer self,
              GAsyncReadyCallback callback,
              gpointer user_data)
 {
-    MMMbimPort *port;
+    MMPortMbim *port;
 
     port = mm_base_modem_peek_port_mbim (MM_BASE_MODEM (self));
     if (!port) {
@@ -94,7 +101,7 @@ peek_device (gpointer self,
         return FALSE;
     }
 
-    *o_device = mm_mbim_port_peek_device (port);
+    *o_device = mm_port_mbim_peek_device (port);
     return TRUE;
 }
 
@@ -546,7 +553,15 @@ pin_query_ready (MbimDevice *device,
         g_simple_async_result_set_op_res_gpointer (ctx->result,
                                                    GUINT_TO_POINTER (unlock_required),
                                                    NULL);
-    } else
+    }
+    /* VZ20M reports an error when SIM-PIN is required... */
+    else if (g_error_matches (error, MBIM_STATUS_ERROR, MBIM_STATUS_ERROR_PIN_REQUIRED)) {
+        g_error_free (error);
+        g_simple_async_result_set_op_res_gpointer (ctx->result,
+                                                   GUINT_TO_POINTER (MBIM_PIN_TYPE_PIN1),
+                                                   NULL);
+    }
+    else
         g_simple_async_result_take_error (ctx->result, error);
 
     if (response)
@@ -725,9 +740,13 @@ pin_query_unlock_retries_ready (MbimDevice *device,
         MMUnlockRetries *retries;
 
         retries = mm_unlock_retries_new ();
-        mm_unlock_retries_set (retries,
-                               mm_modem_lock_from_mbim_pin_type (pin_type),
-                               remaining_attempts);
+        /* According to the MBIM specification, RemainingAttempts is set to
+         * 0xffffffff if the device does not support this information. */
+        if (remaining_attempts != G_MAXUINT32) {
+            mm_unlock_retries_set (retries,
+                                   mm_modem_lock_from_mbim_pin_type (pin_type),
+                                   remaining_attempts);
+        }
         g_simple_async_result_set_op_res_gpointer (simple, retries, g_object_unref);
     } else
         g_simple_async_result_take_error (simple, error);
@@ -1017,7 +1036,7 @@ common_power_up_down (MMIfaceModem *self,
     message = mbim_message_radio_state_set_new (state, NULL);
     mbim_device_command (device,
                          message,
-                         10,
+                         20,
                          NULL,
                          ready_cb,
                          result);
@@ -1043,15 +1062,15 @@ modem_power_up (MMIfaceModem *self,
 /*****************************************************************************/
 /* Create Bearer (Modem interface) */
 
-static MMBearer *
+static MMBaseBearer *
 modem_create_bearer_finish (MMIfaceModem *self,
                             GAsyncResult *res,
                             GError **error)
 {
-    MMBearer *bearer;
+    MMBaseBearer *bearer;
 
     bearer = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res));
-    mm_dbg ("New bearer created at DBus path '%s'", mm_bearer_get_path (bearer));
+    mm_dbg ("New bearer created at DBus path '%s'", mm_base_bearer_get_path (bearer));
 
     return g_object_ref (bearer);
 }
@@ -1062,7 +1081,7 @@ typedef struct {
 } FindSessionId;
 
 static void
-bearer_list_session_id_foreach (MMBearer *bearer,
+bearer_list_session_id_foreach (MMBaseBearer *bearer,
                                 gpointer user_data)
 {
     FindSessionId *ctx = user_data;
@@ -1113,7 +1132,7 @@ modem_create_bearer (MMIfaceModem *self,
                      GAsyncReadyCallback callback,
                      gpointer user_data)
 {
-    MMBearer *bearer;
+    MMBaseBearer *bearer;
     GSimpleAsyncResult *result;
     gint session_id;
 
@@ -1150,7 +1169,7 @@ modem_create_bearer (MMIfaceModem *self,
 /*****************************************************************************/
 /* Create SIM (Modem interface) */
 
-static MMSim *
+static MMBaseSim *
 create_sim_finish (MMIfaceModem *self,
                    GAsyncResult *res,
                    GError **error)
@@ -1226,7 +1245,7 @@ enabling_started (MMBroadbandModem *self,
 typedef struct {
     MMBroadbandModem *self;
     GSimpleAsyncResult *result;
-    MMMbimPort *mbim;
+    MMPortMbim *mbim;
 } InitializationStartedContext;
 
 static void
@@ -1285,13 +1304,13 @@ parent_initialization_started (InitializationStartedContext *ctx)
 }
 
 static void
-mbim_port_open_ready (MMMbimPort *mbim,
+mbim_port_open_ready (MMPortMbim *mbim,
                       GAsyncResult *res,
                       InitializationStartedContext *ctx)
 {
     GError *error = NULL;
 
-    if (!mm_mbim_port_open_finish (mbim, res, &error)) {
+    if (!mm_port_mbim_open_finish (mbim, res, &error)) {
         g_simple_async_result_take_error (ctx->result, error);
         initialization_started_context_complete_and_free (ctx);
         return;
@@ -1326,14 +1345,14 @@ initialization_started (MMBroadbandModem *self,
         return;
     }
 
-    if (mm_mbim_port_is_open (ctx->mbim)) {
+    if (mm_port_mbim_is_open (ctx->mbim)) {
         /* Nothing to be done, just launch parent's callback */
         parent_initialization_started (ctx);
         return;
     }
 
     /* Now open our MBIM port */
-    mm_mbim_port_open (ctx->mbim,
+    mm_port_mbim_open (ctx->mbim,
                        NULL,
                        (GAsyncReadyCallback)mbim_port_open_ready,
                        ctx);
@@ -1527,6 +1546,18 @@ basic_connect_notification_signal_state (MMBroadbandModemMbim *self,
 }
 
 static void
+update_access_technologies (MMBroadbandModemMbim *self)
+{
+    MMModemAccessTechnology act;
+
+    act = mm_modem_access_technology_from_mbim_data_class (self->priv->highest_available_data_class);
+    if (act == MM_MODEM_ACCESS_TECHNOLOGY_UNKNOWN)
+        act = mm_modem_access_technology_from_mbim_data_class (self->priv->available_data_classes);
+
+    mm_iface_modem_3gpp_update_access_technologies (MM_IFACE_MODEM_3GPP (self), act);
+}
+
+static void
 update_registration_info (MMBroadbandModemMbim *self,
                           MbimRegisterState state,
                           MbimDataClass available_data_classes,
@@ -1534,14 +1565,12 @@ update_registration_info (MMBroadbandModemMbim *self,
                           gchar *operator_name_take)
 {
     MMModem3gppRegistrationState reg_state;
-    MMModemAccessTechnology act;
 
     reg_state = mm_modem_3gpp_registration_state_from_mbim_register_state (state);
-    act = mm_modem_access_technology_from_mbim_data_class (available_data_classes);
 
     if (reg_state == MM_MODEM_3GPP_REGISTRATION_STATE_HOME ||
         reg_state == MM_MODEM_3GPP_REGISTRATION_STATE_ROAMING) {
-        if (self->priv->current_operator_id &&
+        if (self->priv->current_operator_id && operator_id_take &&
             g_str_equal (self->priv->current_operator_id, operator_id_take)) {
             g_free (operator_id_take);
         } else {
@@ -1549,7 +1578,7 @@ update_registration_info (MMBroadbandModemMbim *self,
             self->priv->current_operator_id = operator_id_take;
         }
 
-        if (self->priv->current_operator_name &&
+        if (self->priv->current_operator_name && operator_name_take &&
             g_str_equal (self->priv->current_operator_name, operator_name_take)) {
             g_free (operator_name_take);
         } else {
@@ -1559,11 +1588,11 @@ update_registration_info (MMBroadbandModemMbim *self,
     } else {
         if (self->priv->current_operator_id) {
             g_free (self->priv->current_operator_id);
-            self->priv->current_operator_id = 0;
+            self->priv->current_operator_id = NULL;
         }
         if (self->priv->current_operator_name) {
             g_free (self->priv->current_operator_name);
-            self->priv->current_operator_name = 0;
+            self->priv->current_operator_name = NULL;
         }
         g_free (operator_id_take);
         g_free (operator_name_take);
@@ -1573,9 +1602,8 @@ update_registration_info (MMBroadbandModemMbim *self,
         MM_IFACE_MODEM_3GPP (self),
         reg_state);
 
-    mm_iface_modem_3gpp_update_access_technologies (
-        MM_IFACE_MODEM_3GPP (self),
-        act);
+    self->priv->available_data_classes = available_data_classes;
+    update_access_technologies (self);
 }
 
 static void
@@ -1605,6 +1633,125 @@ basic_connect_notification_register_state (MMBroadbandModemMbim *self,
                                   provider_id,
                                   provider_name);
     }
+}
+
+typedef struct {
+    guint32 session_id;
+} ReportDisconnectedStatusContext;
+
+static void
+bearer_list_report_disconnected_status (MMBaseBearer *bearer,
+                                        gpointer user_data)
+{
+    ReportDisconnectedStatusContext *ctx = user_data;
+
+    if (MM_IS_BEARER_MBIM (bearer) &&
+        mm_bearer_mbim_get_session_id (MM_BEARER_MBIM (bearer)) == ctx->session_id) {
+        mm_dbg ("Bearer '%s' was disconnected.", mm_base_bearer_get_path (bearer));
+        mm_base_bearer_report_connection_status (bearer, MM_BEARER_CONNECTION_STATUS_DISCONNECTED);
+    }
+}
+
+static void
+basic_connect_notification_connect (MMBroadbandModemMbim *self,
+                                    MbimMessage *notification)
+{
+    guint32 session_id;
+    MbimActivationState activation_state;
+    const MbimUuid *context_type;
+    MMBearerList *bearer_list;
+
+    if (!mbim_message_connect_notification_parse (
+            notification,
+            &session_id,
+            &activation_state,
+            NULL, /* voice_call_state */
+            NULL, /* ip_type */
+            &context_type,
+            NULL, /* nw_error */
+            NULL)) {
+        return;
+    }
+
+    g_object_get (self,
+                  MM_IFACE_MODEM_BEARER_LIST, &bearer_list,
+                  NULL);
+
+    if (!bearer_list)
+        return;
+
+    if (mbim_uuid_to_context_type (context_type) == MBIM_CONTEXT_TYPE_INTERNET &&
+        activation_state == MBIM_ACTIVATION_STATE_DEACTIVATED) {
+      ReportDisconnectedStatusContext ctx;
+
+      mm_dbg ("Session ID '%u' was deactivated.", session_id);
+      ctx.session_id = session_id;
+      mm_bearer_list_foreach (bearer_list,
+                              (MMBearerListForeachFunc)bearer_list_report_disconnected_status,
+                              &ctx);
+    }
+
+    g_object_unref (bearer_list);
+}
+
+static void
+basic_connect_notification_subscriber_ready_status (MMBroadbandModemMbim *self,
+                                                    MbimMessage *notification)
+{
+    MbimSubscriberReadyState ready_state;
+    gchar **telephone_numbers;
+
+    if (!mbim_message_subscriber_ready_status_notification_parse (
+            notification,
+            &ready_state,
+            NULL, /* subscriber_id */
+            NULL, /* sim_iccid */
+            NULL, /* ready_info */
+            NULL, /* telephone_numbers_count */
+            &telephone_numbers,
+            NULL)) {
+        return;
+    }
+
+    if (ready_state == MBIM_SUBSCRIBER_READY_STATE_INITIALIZED)
+        mm_iface_modem_update_own_numbers (MM_IFACE_MODEM (self), telephone_numbers);
+
+    /* TODO: handle SIM removal using MBIM_SUBSCRIBER_READY_STATE_SIM_NOT_INSERTED */
+
+    g_strfreev (telephone_numbers);
+}
+
+static void
+basic_connect_notification_packet_service (MMBroadbandModemMbim *self,
+                                           MbimMessage *notification)
+{
+    MbimPacketServiceState packet_service_state;
+    MbimDataClass highest_available_data_class;
+    gchar *str;
+
+    if (!mbim_message_packet_service_notification_parse (
+            notification,
+            NULL, /* nw_error */
+            &packet_service_state,
+            &highest_available_data_class,
+            NULL, /* uplink_speed */
+            NULL, /* downlink_speed */
+            NULL)) {
+        return;
+    }
+
+    str = mbim_data_class_build_string_from_mask (highest_available_data_class);
+    mm_dbg("Packet service state: '%s', data class: '%s'",
+           mbim_packet_service_state_get_string(packet_service_state), str);
+    g_free (str);
+
+    if (packet_service_state == MBIM_PACKET_SERVICE_STATE_ATTACHED) {
+      self->priv->highest_available_data_class = highest_available_data_class;
+    } else if (packet_service_state == MBIM_PACKET_SERVICE_STATE_DETACHED) {
+      self->priv->highest_available_data_class = 0;
+    }
+
+    update_access_technologies (self);
 }
 
 static void add_sms_part (MMBroadbandModemMbim *self,
@@ -1649,6 +1796,18 @@ basic_connect_notification (MMBroadbandModemMbim *self,
     case MBIM_CID_BASIC_CONNECT_REGISTER_STATE:
         if (self->priv->setup_flags & PROCESS_NOTIFICATION_FLAG_REGISTRATION_UPDATES)
             basic_connect_notification_register_state (self, notification);
+        break;
+    case MBIM_CID_BASIC_CONNECT_CONNECT:
+        if (self->priv->setup_flags & PROCESS_NOTIFICATION_FLAG_CONNECT)
+            basic_connect_notification_connect (self, notification);
+        break;
+    case MBIM_CID_BASIC_CONNECT_SUBSCRIBER_READY_STATUS:
+        if (self->priv->setup_flags & PROCESS_NOTIFICATION_FLAG_SUBSCRIBER_INFO)
+            basic_connect_notification_subscriber_ready_status (self, notification);
+        break;
+    case MBIM_CID_BASIC_CONNECT_PACKET_SERVICE:
+        if (self->priv->setup_flags & PROCESS_NOTIFICATION_FLAG_PACKET_SERVICE)
+            basic_connect_notification_packet_service (self, notification);
         break;
     default:
         /* Ignore */
@@ -1698,14 +1857,14 @@ static void
 sms_notification_read_alert_sms (MMBroadbandModemMbim *self,
                                  guint32 index)
 {
-    MMMbimPort *port;
+    MMPortMbim *port;
     MbimDevice *device;
     MbimMessage *message;
 
     port = mm_base_modem_peek_port_mbim (MM_BASE_MODEM (self));
     if (!port)
         return;
-    device = mm_mbim_port_peek_device (port);
+    device = mm_port_mbim_peek_device (port);
     if (!device)
         return;
 
@@ -1808,10 +1967,13 @@ common_setup_cleanup_unsolicited_events (MMBroadbandModemMbim *self,
                                         user_data,
                                         common_setup_cleanup_unsolicited_events);
 
-    mm_dbg ("Supported notifications: signal (%s), registration (%s), sms (%s)",
+    mm_dbg ("Supported notifications: signal (%s), registration (%s), sms (%s), connect (%s), subscriber (%s), packet (%s)",
             self->priv->setup_flags & PROCESS_NOTIFICATION_FLAG_SIGNAL_QUALITY ? "yes" : "no",
             self->priv->setup_flags & PROCESS_NOTIFICATION_FLAG_REGISTRATION_UPDATES ? "yes" : "no",
-            self->priv->setup_flags & PROCESS_NOTIFICATION_FLAG_SMS_READ ? "yes" : "no");
+            self->priv->setup_flags & PROCESS_NOTIFICATION_FLAG_SMS_READ ? "yes" : "no",
+            self->priv->setup_flags & PROCESS_NOTIFICATION_FLAG_CONNECT ? "yes" : "no",
+            self->priv->setup_flags & PROCESS_NOTIFICATION_FLAG_SUBSCRIBER_INFO ? "yes" : "no",
+            self->priv->setup_flags & PROCESS_NOTIFICATION_FLAG_PACKET_SERVICE ? "yes" : "no");
 
     if (setup) {
         /* Don't re-enable it if already there */
@@ -1852,6 +2014,9 @@ cleanup_unsolicited_events_3gpp (MMIfaceModem3gpp *self,
                                  gpointer user_data)
 {
     MM_BROADBAND_MODEM_MBIM (self)->priv->setup_flags &= ~PROCESS_NOTIFICATION_FLAG_SIGNAL_QUALITY;
+    MM_BROADBAND_MODEM_MBIM (self)->priv->setup_flags &= ~PROCESS_NOTIFICATION_FLAG_CONNECT;
+    MM_BROADBAND_MODEM_MBIM (self)->priv->setup_flags &= ~PROCESS_NOTIFICATION_FLAG_SUBSCRIBER_INFO;
+    MM_BROADBAND_MODEM_MBIM (self)->priv->setup_flags &= ~PROCESS_NOTIFICATION_FLAG_PACKET_SERVICE;
     common_setup_cleanup_unsolicited_events (MM_BROADBAND_MODEM_MBIM (self), FALSE, callback, user_data);
 }
 
@@ -1861,6 +2026,9 @@ setup_unsolicited_events_3gpp (MMIfaceModem3gpp *self,
                                gpointer user_data)
 {
     MM_BROADBAND_MODEM_MBIM (self)->priv->setup_flags |= PROCESS_NOTIFICATION_FLAG_SIGNAL_QUALITY;
+    MM_BROADBAND_MODEM_MBIM (self)->priv->setup_flags |= PROCESS_NOTIFICATION_FLAG_CONNECT;
+    MM_BROADBAND_MODEM_MBIM (self)->priv->setup_flags |= PROCESS_NOTIFICATION_FLAG_SUBSCRIBER_INFO;
+    MM_BROADBAND_MODEM_MBIM (self)->priv->setup_flags |= PROCESS_NOTIFICATION_FLAG_PACKET_SERVICE;
     common_setup_cleanup_unsolicited_events (MM_BROADBAND_MODEM_MBIM (self), TRUE, callback, user_data);
 }
 
@@ -1897,9 +2065,9 @@ common_enable_disable_unsolicited_events_finish (MMBroadbandModemMbim *self,
 }
 
 static void
-subscriber_list_set_ready_cb (MbimDevice *device,
-                              GAsyncResult *res,
-                              GSimpleAsyncResult *simple)
+subscribe_list_set_ready_cb (MbimDevice *device,
+                             GAsyncResult *res,
+                             GSimpleAsyncResult *simple)
 {
     MbimMessage *response;
     GError *error = NULL;
@@ -1938,24 +2106,36 @@ common_enable_disable_unsolicited_events (MMBroadbandModemMbim *self,
                                         user_data,
                                         common_enable_disable_unsolicited_events);
 
-    mm_dbg ("Enabled notifications: signal (%s), registration (%s), sms (%s)",
+    mm_dbg ("Enabled notifications: signal (%s), registration (%s), sms (%s), connect (%s), subscriber (%s), packet (%s)",
             self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_SIGNAL_QUALITY ? "yes" : "no",
             self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_REGISTRATION_UPDATES ? "yes" : "no",
-            self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_SMS_READ ? "yes" : "no");
+            self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_SMS_READ ? "yes" : "no",
+            self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_CONNECT ? "yes" : "no",
+            self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_SUBSCRIBER_INFO ? "yes" : "no",
+            self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_PACKET_SERVICE ? "yes" : "no");
 
     entries = g_new0 (MbimEventEntry *, 3);
 
     /* Basic connect service */
     if (self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_SIGNAL_QUALITY ||
-        self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_REGISTRATION_UPDATES) {
+        self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_REGISTRATION_UPDATES ||
+        self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_CONNECT ||
+        self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_SUBSCRIBER_INFO ||
+        self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_PACKET_SERVICE) {
         entries[n_entries] = g_new (MbimEventEntry, 1);
         memcpy (&(entries[n_entries]->device_service_id), MBIM_UUID_BASIC_CONNECT, sizeof (MbimUuid));
         entries[n_entries]->cids_count = 0;
-        entries[n_entries]->cids = g_new0 (guint32, 2);
+        entries[n_entries]->cids = g_new0 (guint32, 5);
         if (self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_SIGNAL_QUALITY)
             entries[n_entries]->cids[entries[n_entries]->cids_count++] = MBIM_CID_BASIC_CONNECT_SIGNAL_STATE;
         if (self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_REGISTRATION_UPDATES)
             entries[n_entries]->cids[entries[n_entries]->cids_count++] = MBIM_CID_BASIC_CONNECT_REGISTER_STATE;
+        if (self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_CONNECT)
+            entries[n_entries]->cids[entries[n_entries]->cids_count++] = MBIM_CID_BASIC_CONNECT_CONNECT;
+        if (self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_SUBSCRIBER_INFO)
+            entries[n_entries]->cids[entries[n_entries]->cids_count++] = MBIM_CID_BASIC_CONNECT_SUBSCRIBER_READY_STATUS;
+        if (self->priv->enable_flags & PROCESS_NOTIFICATION_FLAG_PACKET_SERVICE)
+            entries[n_entries]->cids[entries[n_entries]->cids_count++] = MBIM_CID_BASIC_CONNECT_PACKET_SERVICE;
         n_entries++;
     }
 
@@ -1970,7 +2150,7 @@ common_enable_disable_unsolicited_events (MMBroadbandModemMbim *self,
         n_entries++;
     }
 
-    request = (mbim_message_device_service_subscriber_list_set_new (
+    request = (mbim_message_device_service_subscribe_list_set_new (
                    n_entries,
                    (const MbimEventEntry *const *)entries,
                    NULL));
@@ -1978,7 +2158,7 @@ common_enable_disable_unsolicited_events (MMBroadbandModemMbim *self,
                          request,
                          10,
                          NULL,
-                         (GAsyncReadyCallback)subscriber_list_set_ready_cb,
+                         (GAsyncReadyCallback)subscribe_list_set_ready_cb,
                          result);
     mbim_message_unref (request);
     mbim_event_entry_array_free (entries);
@@ -2037,6 +2217,9 @@ modem_3gpp_disable_unsolicited_events (MMIfaceModem3gpp *self,
                                        gpointer user_data)
 {
     MM_BROADBAND_MODEM_MBIM (self)->priv->enable_flags &= ~PROCESS_NOTIFICATION_FLAG_SIGNAL_QUALITY;
+    MM_BROADBAND_MODEM_MBIM (self)->priv->enable_flags &= ~PROCESS_NOTIFICATION_FLAG_CONNECT;
+    MM_BROADBAND_MODEM_MBIM (self)->priv->enable_flags &= ~PROCESS_NOTIFICATION_FLAG_SUBSCRIBER_INFO;
+    MM_BROADBAND_MODEM_MBIM (self)->priv->enable_flags &= ~PROCESS_NOTIFICATION_FLAG_PACKET_SERVICE;
     common_enable_disable_unsolicited_events (MM_BROADBAND_MODEM_MBIM (self), callback, user_data);
 }
 
@@ -2046,6 +2229,9 @@ modem_3gpp_enable_unsolicited_events (MMIfaceModem3gpp *self,
                                       gpointer user_data)
 {
     MM_BROADBAND_MODEM_MBIM (self)->priv->enable_flags |= PROCESS_NOTIFICATION_FLAG_SIGNAL_QUALITY;
+    MM_BROADBAND_MODEM_MBIM (self)->priv->enable_flags |= PROCESS_NOTIFICATION_FLAG_CONNECT;
+    MM_BROADBAND_MODEM_MBIM (self)->priv->enable_flags |= PROCESS_NOTIFICATION_FLAG_SUBSCRIBER_INFO;
+    MM_BROADBAND_MODEM_MBIM (self)->priv->enable_flags |= PROCESS_NOTIFICATION_FLAG_PACKET_SERVICE;
     common_enable_disable_unsolicited_events (MM_BROADBAND_MODEM_MBIM (self), callback, user_data);
 }
 
@@ -2633,7 +2819,7 @@ enable_unsolicited_events_messaging (MMIfaceModemMessaging *self,
 /*****************************************************************************/
 /* Create SMS (Messaging interface) */
 
-static MMSms *
+static MMBaseSms *
 messaging_create_sms (MMIfaceModemMessaging *self)
 {
     return mm_sms_mbim_new (MM_BASE_MODEM (self));
@@ -2661,7 +2847,7 @@ static void
 mm_broadband_modem_mbim_init (MMBroadbandModemMbim *self)
 {
     /* Initialize private data */
-    self->priv = G_TYPE_INSTANCE_GET_PRIVATE ((self),
+    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
                                               MM_TYPE_BROADBAND_MODEM_MBIM,
                                               MMBroadbandModemMbimPrivate);
 }
@@ -2669,7 +2855,7 @@ mm_broadband_modem_mbim_init (MMBroadbandModemMbim *self)
 static void
 finalize (GObject *object)
 {
-    MMMbimPort *mbim;
+    MMPortMbim *mbim;
     MMBroadbandModemMbim *self = MM_BROADBAND_MODEM_MBIM (object);
 
     g_free (self->priv->caps_device_id);
@@ -2679,8 +2865,8 @@ finalize (GObject *object)
 
     mbim = mm_base_modem_peek_port_mbim (MM_BASE_MODEM (self));
     /* If we did open the MBIM port during initialization, close it now */
-    if (mbim && mm_mbim_port_is_open (mbim)) {
-        mm_mbim_port_close (mbim, NULL, NULL);
+    if (mbim && mm_port_mbim_is_open (mbim)) {
+        mm_port_mbim_close (mbim, NULL, NULL);
     }
 
     G_OBJECT_CLASS (mm_broadband_modem_mbim_parent_class)->finalize (object);

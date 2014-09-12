@@ -23,7 +23,7 @@
 #define _LIBMM_INSIDE_MM
 #include <libmm-glib.h>
 
-#include "mm-serial-enums-types.h"
+#include "mm-port-enums-types.h"
 #include "mm-log.h"
 #include "mm-plugin-huawei.h"
 #include "mm-broadband-modem-huawei.h"
@@ -74,7 +74,7 @@ first_interface_context_free (FirstInterfaceContext *ctx)
 
 typedef struct {
     MMPortProbe *probe;
-    MMAtSerialPort *port;
+    MMPortSerialAt *port;
     GCancellable *cancellable;
     GSimpleAsyncResult *result;
     gboolean curc_done;
@@ -127,11 +127,14 @@ cache_port_mode (MMDevice *device,
 }
 
 static void
-getportmode_ready (MMAtSerialPort *port,
-                   GString *response,
-                   GError *error,
+getportmode_ready (MMPortSerialAt *port,
+                   GAsyncResult *res,
                    HuaweiCustomInitContext *ctx)
 {
+    const gchar *response;
+    GError *error = NULL;
+
+    response = mm_port_serial_at_command_finish (port, res, &error);
     if (error) {
         mm_dbg ("(Huawei) couldn't get port mode: '%s'",
                 error->message);
@@ -141,11 +144,8 @@ getportmode_ready (MMAtSerialPort *port,
          */
         if (!g_error_matches (error,
                               MM_MOBILE_EQUIPMENT_ERROR,
-                              MM_MOBILE_EQUIPMENT_ERROR_UNKNOWN)) {
-            /* Retry */
-            huawei_custom_init_step (ctx);
-            return;
-        }
+                              MM_MOBILE_EQUIPMENT_ERROR_UNKNOWN))
+            goto out;
 
         /* Port mode not supported */
     } else {
@@ -155,10 +155,10 @@ getportmode_ready (MMAtSerialPort *port,
 
         /* Results are cached in the parent device object */
         device = mm_port_probe_peek_device (ctx->probe);
-        cache_port_mode (device, response->str, "PCUI:", TAG_HUAWEI_PCUI_PORT);
-        cache_port_mode (device, response->str, "MDM:",  TAG_HUAWEI_MODEM_PORT);
-        cache_port_mode (device, response->str, "NDIS:", TAG_HUAWEI_NDIS_PORT);
-        cache_port_mode (device, response->str, "DIAG:", TAG_HUAWEI_DIAG_PORT);
+        cache_port_mode (device, response, "PCUI:", TAG_HUAWEI_PCUI_PORT);
+        cache_port_mode (device, response, "MDM:",  TAG_HUAWEI_MODEM_PORT);
+        cache_port_mode (device, response, "NDIS:", TAG_HUAWEI_NDIS_PORT);
+        cache_port_mode (device, response, "DIAG:", TAG_HUAWEI_DIAG_PORT);
         g_object_set_data (G_OBJECT (device), TAG_GETPORTMODE_SUPPORTED, GUINT_TO_POINTER (TRUE));
 
         /* Mark port as being AT already */
@@ -166,32 +166,42 @@ getportmode_ready (MMAtSerialPort *port,
     }
 
     ctx->getportmode_done = TRUE;
+
+out:
+    if (error)
+        g_error_free (error);
+
     huawei_custom_init_step (ctx);
 }
 
 static void
-curc_ready (MMAtSerialPort *port,
-            GString *response,
-            GError *error,
+curc_ready (MMPortSerialAt *port,
+            GAsyncResult *res,
             HuaweiCustomInitContext *ctx)
 {
+    const gchar *response;
+    GError *error = NULL;
+
+    response = mm_port_serial_at_command_finish (port, res, &error);
     if (error) {
         /* Retry if we get a timeout error */
         if (g_error_matches (error,
                              MM_SERIAL_ERROR,
-                             MM_SERIAL_ERROR_RESPONSE_TIMEOUT)) {
-            huawei_custom_init_step (ctx);
-            return;
-        }
+                             MM_SERIAL_ERROR_RESPONSE_TIMEOUT))
+            goto out;
 
-        mm_dbg ("(Huawei) couldn't turn off unsolicited messages in"
-                "secondary ports: '%s'",
+        mm_dbg ("(Huawei) couldn't turn off unsolicited messages in secondary ports: '%s'",
                 error->message);
     }
 
     mm_dbg ("(Huawei) unsolicited messages in secondary ports turned off");
 
     ctx->curc_done = TRUE;
+
+out:
+    if (error)
+        g_error_free (error);
+
     huawei_custom_init_step (ctx);
 }
 
@@ -240,6 +250,7 @@ static void
 huawei_custom_init_step (HuaweiCustomInitContext *ctx)
 {
     FirstInterfaceContext *fi_ctx;
+    GUdevDevice *port;
 
     /* If cancelled, end */
     if (g_cancellable_is_cancelled (ctx->cancellable)) {
@@ -263,19 +274,21 @@ huawei_custom_init_step (HuaweiCustomInitContext *ctx)
 
         ctx->curc_retries--;
         /* Turn off unsolicited messages on secondary ports until needed */
-        mm_at_serial_port_queue_command (
+        mm_port_serial_at_command (
             ctx->port,
             "AT^CURC=0",
             3,
             FALSE, /* raw */
+            FALSE, /* allow_cached */
             ctx->cancellable,
-            (MMAtSerialResponseFn)curc_ready,
+            (GAsyncReadyCallback)curc_ready,
             ctx);
         return;
     }
 
     /* Try to get a port map from the modem */
-    if (!ctx->getportmode_done) {
+    port = mm_port_probe_peek_port (ctx->probe);
+    if (!ctx->getportmode_done && !g_udev_device_get_property_as_boolean (port, "ID_MM_HUAWEI_DISABLE_GETPORTMODE")) {
         if (ctx->getportmode_retries == 0) {
             g_simple_async_result_set_op_res_gboolean (ctx->result, TRUE);
             huawei_custom_init_context_complete_and_free (ctx);
@@ -283,13 +296,14 @@ huawei_custom_init_step (HuaweiCustomInitContext *ctx)
         }
 
         ctx->getportmode_retries--;
-        mm_at_serial_port_queue_command (
+        mm_port_serial_at_command (
             ctx->port,
             "AT^GETPORTMODE",
             3,
             FALSE, /* raw */
+            FALSE, /* allow_cached */
             ctx->cancellable,
-            (MMAtSerialResponseFn)getportmode_ready,
+            (GAsyncReadyCallback)getportmode_ready,
             ctx);
         return;
     }
@@ -315,7 +329,7 @@ first_interface_missing_timeout_cb (MMDevice *device)
 
 static void
 huawei_custom_init (MMPortProbe *probe,
-                    MMAtSerialPort *port,
+                    MMPortSerialAt *port,
                     GCancellable *cancellable,
                     GAsyncReadyCallback callback,
                     gpointer user_data)
@@ -405,40 +419,59 @@ propagate_port_mode_results (GList *probes)
 {
     MMDevice *device;
     GList *l;
+    gboolean primary_flagged = FALSE;
 
     g_assert (probes != NULL);
     device = mm_port_probe_peek_device (MM_PORT_PROBE (probes->data));
 
     /* Now we propagate the tags to the specific port probes */
     for (l = probes; l; l = g_list_next (l)) {
-        MMAtPortFlag at_port_flags = MM_AT_PORT_FLAG_NONE;
+        MMPortSerialAtFlag at_port_flags = MM_PORT_SERIAL_AT_FLAG_NONE;
         gint usbif;
 
         usbif = g_udev_device_get_property_as_int (mm_port_probe_peek_port (MM_PORT_PROBE (l->data)), "ID_USB_INTERFACE_NUM");
 
         if (GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (device), TAG_GETPORTMODE_SUPPORTED))) {
-            if (usbif + 1 == GPOINTER_TO_INT (g_object_get_data (G_OBJECT (device), TAG_HUAWEI_PCUI_PORT)))
-                at_port_flags = MM_AT_PORT_FLAG_PRIMARY;
-            else if (usbif + 1 == GPOINTER_TO_INT (g_object_get_data (G_OBJECT (device), TAG_HUAWEI_MODEM_PORT)))
-                at_port_flags = MM_AT_PORT_FLAG_PPP;
+            if (usbif + 1 == GPOINTER_TO_INT (g_object_get_data (G_OBJECT (device), TAG_HUAWEI_PCUI_PORT))) {
+                at_port_flags = MM_PORT_SERIAL_AT_FLAG_PRIMARY;
+                primary_flagged = TRUE;
+            } else if (usbif + 1 == GPOINTER_TO_INT (g_object_get_data (G_OBJECT (device), TAG_HUAWEI_MODEM_PORT)))
+                at_port_flags = MM_PORT_SERIAL_AT_FLAG_PPP;
             else if (!g_object_get_data (G_OBJECT (device), TAG_HUAWEI_MODEM_PORT) &&
                      usbif + 1 == GPOINTER_TO_INT (g_object_get_data (G_OBJECT (device), TAG_HUAWEI_NDIS_PORT)))
                 /* If NDIS reported only instead of MDM, use it */
-                at_port_flags = MM_AT_PORT_FLAG_PPP;
+                at_port_flags = MM_PORT_SERIAL_AT_FLAG_PPP;
         } else if (usbif == 0 &&
                    mm_port_probe_is_at (MM_PORT_PROBE (l->data))) {
             /* If GETPORTMODE is not supported, we assume usbif 0 is the modem port */
-            at_port_flags = MM_AT_PORT_FLAG_PPP;
+            at_port_flags = MM_PORT_SERIAL_AT_FLAG_PPP;
 
             /* /\* TODO. */
             /*  * For CDMA modems we assume usbif0 is both primary and PPP, since */
             /*  * they don't have problems with talking on secondary ports. */
             /*  *\/ */
             /* if (caps & CAP_CDMA) */
-            /*     pflags |= MM_AT_PORT_FLAG_PRIMARY; */
+            /*     pflags |= MM_PORT_SERIAL_AT_FLAG_PRIMARY; */
         }
 
         g_object_set_data (G_OBJECT (l->data), TAG_AT_PORT_FLAGS, GUINT_TO_POINTER (at_port_flags));
+    }
+
+    if (primary_flagged)
+        return;
+
+    /* For devices exposing a cdc-wdm port, make sure it gets flagged as primary, if there is none
+     * already */
+    for (l = probes; l; l = g_list_next (l)) {
+        MMPortProbe *probe = MM_PORT_PROBE (l->data);
+
+        if (mm_port_probe_is_at (probe) &&
+            g_str_has_prefix (mm_port_probe_get_port_subsys (probe), "usb") &&
+            g_str_has_prefix (mm_port_probe_get_port_name (probe), "cdc-wdm")) {
+            /* Flag as PRIMARY and do nothing else */
+            g_object_set_data (G_OBJECT (probe), TAG_AT_PORT_FLAGS, GUINT_TO_POINTER (MM_PORT_SERIAL_AT_FLAG_PRIMARY));
+            break;
+        }
     }
 }
 
@@ -488,25 +521,33 @@ grab_port (MMPlugin *self,
            MMPortProbe *probe,
            GError **error)
 {
-    MMAtPortFlag pflags;
+    MMPortSerialAtFlag pflags = MM_PORT_SERIAL_AT_FLAG_NONE;
     GUdevDevice *port;
+    MMPortType port_type;
 
+    port_type = mm_port_probe_get_port_type (probe);
     port = mm_port_probe_peek_port (probe);
+
     if (g_udev_device_get_property_as_boolean (port, "ID_MM_HUAWEI_AT_PORT")) {
         mm_dbg ("(%s/%s)' Port flagged as primary",
                 mm_port_probe_get_port_subsys (probe),
                 mm_port_probe_get_port_name (probe));
-        pflags = MM_AT_PORT_FLAG_PRIMARY;
+        pflags = MM_PORT_SERIAL_AT_FLAG_PRIMARY;
     } else if (g_udev_device_get_property_as_boolean (port, "ID_MM_HUAWEI_MODEM_PORT")) {
         mm_dbg ("(%s/%s) Port flagged as PPP",
                 mm_port_probe_get_port_subsys (probe),
                 mm_port_probe_get_port_name (probe));
-        pflags = MM_AT_PORT_FLAG_PPP;
+        pflags = MM_PORT_SERIAL_AT_FLAG_PPP;
+    } else if (g_udev_device_get_property_as_boolean (port, "ID_MM_HUAWEI_GPS_PORT")) {
+        mm_dbg ("(%s/%s) Port flagged as GPS",
+                mm_port_probe_get_port_subsys (probe),
+                mm_port_probe_get_port_name (probe));
+        port_type = MM_PORT_TYPE_GPS;
     } else {
         gchar *str;
 
-        pflags = (MMAtPortFlag) GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (probe), TAG_AT_PORT_FLAGS));
-        str = mm_at_port_flag_build_string_from_mask (pflags);
+        pflags = (MMPortSerialAtFlag) GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (probe), TAG_AT_PORT_FLAGS));
+        str = mm_port_serial_at_flag_build_string_from_mask (pflags);
         mm_dbg ("(%s/%s) Port will have AT flags '%s'",
                 mm_port_probe_get_port_subsys (probe),
                 mm_port_probe_get_port_name (probe),
@@ -517,7 +558,8 @@ grab_port (MMPlugin *self,
     return mm_base_modem_grab_port (modem,
                                     mm_port_probe_get_port_subsys (probe),
                                     mm_port_probe_get_port_name (probe),
-                                    mm_port_probe_get_port_type (probe),
+                                    mm_port_probe_get_parent_path (probe),
+                                    port_type,
                                     pflags,
                                     error);
 }

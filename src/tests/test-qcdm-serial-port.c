@@ -29,7 +29,7 @@
 #include <ModemManager.h>
 #include <mm-errors-types.h>
 
-#include "mm-qcdm-serial-port.h"
+#include "mm-port-serial-qcdm.h"
 #include "libqcdm/src/commands.h"
 #include "libqcdm/src/utils.h"
 #include "libqcdm/src/com.h"
@@ -122,7 +122,7 @@ server_wait_request (int fd, char *buf, gsize len)
     FD_ZERO (&in);
     FD_SET (fd, &in);
     result = select (fd + 1, &in, NULL, NULL, &timeout);
-    g_assert (result == 1);
+    g_assert_cmpint (result, ==, 1);
     g_assert (FD_ISSET (fd, &in));
 
     do {
@@ -170,26 +170,26 @@ server_wait_request (int fd, char *buf, gsize len)
     return decap_len;
 }
 
-typedef void (*VerInfoCb) (MMQcdmSerialPort *port,
-                           GByteArray *response,
-                           GError *error,
-                           gpointer user_data);
-
 static void
-qcdm_verinfo_expect_success_cb (MMQcdmSerialPort *port,
-                                GByteArray *response,
-                                GError *error,
-                                gpointer user_data)
+qcdm_verinfo_expect_success_cb (MMPortSerialQcdm *port,
+                                GAsyncResult *res,
+                                GMainLoop *loop)
 {
-    GMainLoop *loop = user_data;
+    GError *error = NULL;
+    GByteArray *response;
+
+    response = mm_port_serial_qcdm_command_finish (port, res, &error);
 
     g_assert_no_error (error);
     g_assert (response->len > 0);
+    g_byte_array_unref (response);
     g_main_loop_quit (loop);
 }
 
 static void
-qcdm_request_verinfo (MMQcdmSerialPort *port, VerInfoCb cb, GMainLoop *loop)
+qcdm_request_verinfo (MMPortSerialQcdm *port,
+                      GAsyncReadyCallback cb,
+                      GMainLoop *loop)
 {
     GByteArray *verinfo;
     gint len;
@@ -201,13 +201,14 @@ qcdm_request_verinfo (MMQcdmSerialPort *port, VerInfoCb cb, GMainLoop *loop)
         g_byte_array_free (verinfo, TRUE);
     verinfo->len = len;
 
-    mm_qcdm_serial_port_queue_command (port, verinfo, 3, NULL, cb, loop);
+    mm_port_serial_qcdm_command (port, verinfo, 3, NULL, cb, loop);
+    g_byte_array_unref (verinfo);
 }
 
 static void
-qcdm_test_child (int fd, VerInfoCb cb)
+qcdm_test_child (int fd, GAsyncReadyCallback cb)
 {
-    MMQcdmSerialPort *port;
+    MMPortSerialQcdm *port;
     GMainLoop *loop;
     gboolean success;
     GError *error = NULL;
@@ -217,17 +218,18 @@ qcdm_test_child (int fd, VerInfoCb cb)
 
     loop = g_main_loop_new (NULL, FALSE);
 
-    port = mm_qcdm_serial_port_new_fd (fd);
+    port = mm_port_serial_qcdm_new_fd (fd);
     g_assert (port);
 
-    success = mm_serial_port_open (MM_SERIAL_PORT (port), &error);
+    success = mm_port_serial_open (MM_PORT_SERIAL (port), &error);
     g_assert_no_error (error);
     g_assert (success);
 
     qcdm_request_verinfo (port, cb, loop);
     g_main_loop_run (loop);
+    g_main_loop_unref (loop);
 
-    mm_serial_port_close (MM_SERIAL_PORT (port));
+    mm_port_serial_close (MM_PORT_SERIAL (port));
     g_object_unref (port);
 }
 
@@ -235,9 +237,8 @@ qcdm_test_child (int fd, VerInfoCb cb)
  * make sure things in general are working.
  */
 static void
-test_verinfo (void *f)
+test_verinfo (TestData *d)
 {
-    TestData *d = f;
     char req[512];
     gsize req_len;
     pid_t cpid;
@@ -255,7 +256,7 @@ test_verinfo (void *f)
 
     if (cpid == 0) {
         /* In the child */
-        qcdm_test_child (d->slave, qcdm_verinfo_expect_success_cb);
+        qcdm_test_child (d->slave, (GAsyncReadyCallback)qcdm_verinfo_expect_success_cb);
         exit (0);
     }
     /* Parent */
@@ -270,14 +271,19 @@ test_verinfo (void *f)
 }
 
 static void
-qcdm_verinfo_expect_fail_cb (MMQcdmSerialPort *port,
-                             GByteArray *response,
-                             GError *error,
-                             gpointer user_data)
+qcdm_verinfo_expect_fail_cb (MMPortSerialQcdm *port,
+                             GAsyncResult *res,
+                             GMainLoop *loop)
 {
-    GMainLoop *loop = user_data;
+    GError *error = NULL;
+    GByteArray *response;
+
+    response = mm_port_serial_qcdm_command_finish (port, res, &error);
 
     g_assert_error (error, MM_CORE_ERROR, MM_CORE_ERROR_FAILED);
+    g_error_free (error);
+    g_assert (response == NULL);
+
     g_main_loop_quit (loop);
 }
 
@@ -285,9 +291,8 @@ qcdm_verinfo_expect_fail_cb (MMQcdmSerialPort *port,
  * raises an error in the child's response handler.
  */
 static void
-test_sierra_cns_rejected (void *f)
+test_sierra_cns_rejected (TestData *d)
 {
-    TestData *d = f;
     char req[512];
     gsize req_len;
     pid_t cpid;
@@ -302,7 +307,7 @@ test_sierra_cns_rejected (void *f)
 
     if (cpid == 0) {
         /* In the child */
-        qcdm_test_child (d->slave, qcdm_verinfo_expect_fail_cb);
+        qcdm_test_child (d->slave, (GAsyncReadyCallback)qcdm_verinfo_expect_fail_cb);
         exit (0);
     }
     /* Parent */
@@ -322,9 +327,8 @@ test_sierra_cns_rejected (void *f)
  * raises an error in the child's response handler.
  */
 static void
-test_random_data_rejected (void *f)
+test_random_data_rejected (TestData *d)
 {
-    TestData *d = f;
     char req[512];
     gsize req_len;
     pid_t cpid;
@@ -339,7 +343,7 @@ test_random_data_rejected (void *f)
 
     if (cpid == 0) {
         /* In the child */
-        qcdm_test_child (d->slave, qcdm_verinfo_expect_fail_cb);
+        qcdm_test_child (d->slave, (GAsyncReadyCallback)qcdm_verinfo_expect_fail_cb);
         exit (0);
     }
     /* Parent */
@@ -359,9 +363,8 @@ test_random_data_rejected (void *f)
  * to a Version Info command is parsed correctly.
  */
 static void
-test_leading_frame_markers (void *f)
+test_leading_frame_markers (TestData *d)
 {
-    TestData *d = f;
     char req[512];
     gsize req_len;
     pid_t cpid;
@@ -380,7 +383,7 @@ test_leading_frame_markers (void *f)
 
     if (cpid == 0) {
         /* In the child */
-        qcdm_test_child (d->slave, qcdm_verinfo_expect_success_cb);
+        qcdm_test_child (d->slave, (GAsyncReadyCallback)qcdm_verinfo_expect_success_cb);
         exit (0);
     }
     /* Parent */
@@ -397,10 +400,9 @@ test_leading_frame_markers (void *f)
 }
 
 static void
-test_pty_create (gpointer user_data)
+test_pty_create (TestData *d)
 {
-    TestData *d = user_data;
-	struct termios stbuf;
+    struct termios stbuf;
     int ret, err;
 
     ret = openpty (&d->master, &d->slave, NULL, NULL, NULL);
@@ -408,11 +410,11 @@ test_pty_create (gpointer user_data)
     d->valid = TRUE;
 
     /* set raw mode on the slave using kernel default parameters */
-	memset (&stbuf, 0, sizeof (stbuf));
-	tcgetattr (d->slave, &stbuf);
-	tcflush (d->slave, TCIOFLUSH);
-	cfmakeraw (&stbuf);
-	tcsetattr (d->slave, TCSANOW, &stbuf);
+    memset (&stbuf, 0, sizeof (stbuf));
+    tcgetattr (d->slave, &stbuf);
+    tcflush (d->slave, TCIOFLUSH);
+    cfmakeraw (&stbuf);
+    tcsetattr (d->slave, TCSANOW, &stbuf);
     fcntl (d->slave, F_SETFL, O_NONBLOCK);
 
     fcntl (d->master, F_SETFL, O_NONBLOCK);
@@ -421,10 +423,8 @@ test_pty_create (gpointer user_data)
 }
 
 static void
-test_pty_cleanup (gpointer user_data)
+test_pty_cleanup (TestData *d)
 {
-    TestData *d = user_data;
-
     /* For some reason the cleanup function gets called more times
      * than the setup function does...
      */
@@ -438,11 +438,6 @@ test_pty_cleanup (gpointer user_data)
         memset (d, 0, sizeof (*d));
     }
 }
-
-typedef GTestFixtureFunc TCFunc;
-
-#define TESTCASE(t, d) g_test_create_case (#t, 0, d, NULL, (TCFunc) t, NULL)
-#define TESTCASE_PTY(t, d) g_test_create_case (#t, sizeof (*d), d, (TCFunc) test_pty_create, (TCFunc) t, (TCFunc) test_pty_cleanup)
 
 void
 _mm_log (const char *loc,
@@ -464,22 +459,17 @@ _mm_log (const char *loc,
 #endif
 }
 
+typedef void (*TCFunc) (TestData *, gconstpointer);
+#define TESTCASE_PTY(s, t) g_test_add (s, TestData, NULL, (TCFunc)test_pty_create, (TCFunc)t, (TCFunc)test_pty_cleanup);
+
 int main (int argc, char **argv)
 {
-    GTestSuite *suite;
-    gint result;
-    TestData *data = NULL;
-
     g_test_init (&argc, &argv, NULL);
 
-    suite = g_test_get_root ();
+    TESTCASE_PTY ("/MM/QCDM/Verinfo", test_verinfo);
+    TESTCASE_PTY ("/MM/QCDM/Sierra-Cns-Rejected", test_sierra_cns_rejected);
+    TESTCASE_PTY ("/MM/QCDM/Random-Data-Rejected", test_random_data_rejected);
+    TESTCASE_PTY ("/MM/QCDM/Leading-Frame-Markers", test_leading_frame_markers);
 
-    g_test_suite_add (suite, TESTCASE_PTY (test_verinfo, data));
-    g_test_suite_add (suite, TESTCASE_PTY (test_sierra_cns_rejected, data));
-    g_test_suite_add (suite, TESTCASE_PTY (test_random_data_rejected, data));
-    g_test_suite_add (suite, TESTCASE_PTY (test_leading_frame_markers, data));
-
-    result = g_test_run ();
-
-    return result;
+    return g_test_run ();
 }

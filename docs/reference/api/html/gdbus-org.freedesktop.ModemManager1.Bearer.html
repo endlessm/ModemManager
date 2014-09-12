@@ -2,32 +2,27 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>org.freedesktop.ModemManager1.Bearer</title>
+<title>ModemManager Reference Manual: org.freedesktop.ModemManager1.Bearer</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="ModemManager Reference Manual">
 <link rel="up" href="ref-dbus-object-bearer.html" title="The /org/freedesktop/ModemManager/Bearers objects">
 <link rel="prev" href="ref-dbus-object-bearer.html" title="The /org/freedesktop/ModemManager/Bearers objects">
 <link rel="next" href="ref-dbus-object-sim.html" title="The /org/freedesktop/ModemManager/SIMs objects">
-<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
-<td><a accesskey="p" href="ref-dbus-object-bearer.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="ref-dbus-object-bearer.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">ModemManager Reference Manual</th>
-<td><a accesskey="n" href="ref-dbus-object-sim.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts">
-<a href="#gdbus-org.freedesktop.ModemManager1.Bearer.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#gdbus-org.freedesktop.ModemManager1.Bearer.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#gdbus-org.freedesktop.ModemManager1.Bearer.properties" class="shortcut">Properties</a>
-</td></tr>
-</table>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Bearer.description" class="shortcut">Description</a></span><span id="nav_properties"> <span class="dim">|</span> 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Bearer.properties" class="shortcut">Properties</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ref-dbus-object-bearer.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="ref-dbus-object-bearer.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="ref-dbus-object-sim.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
 <div class="refentry">
 <a name="gdbus-org.freedesktop.ModemManager1.Bearer"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
@@ -35,7 +30,7 @@
 <h2><span class="refentrytitle"><a name="gdbus-interface-org-freedesktop-ModemManager1-Bearer.top_of_page"></a>org.freedesktop.ModemManager1.Bearer</span></h2>
 <p>org.freedesktop.ModemManager1.Bearer — The ModemManager Bearer interface.</p>
 </td>
-<td valign="top" align="right"></td>
+<td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
 <h2>Methods</h2>
@@ -116,7 +111,7 @@ Interface  readable   s
         or
         <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-BEARER-IP-METHOD-DHCP:CAPS">MM_BEARER_IP_METHOD_DHCP</a>
         methods are given, the interface
-        will be an ethernet-style inteface suitable for DHCP or setting static
+        will be an ethernet-style interface suitable for DHCP or setting static
         IP configuration on, while if the
         <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-BEARER-IP-METHOD-PPP:CAPS">MM_BEARER_IP_METHOD_PPP</a>
         method is given, the interface
@@ -193,7 +188,7 @@ Ip4Config  readable   a{sv}
 <tr>
 <td><p><span class="term"><code class="literal">"prefix"</code></span></p></td>
 <td>
-              Numeric CIDR network prefix (ie, 24, 32, etc), give as an unsigned integer value (signature <code class="literal">"u"</code>).
+              Numeric CIDR network prefix (ie, 24, 32, etc), given as an unsigned integer value (signature <code class="literal">"u"</code>).
             </td>
 </tr>
 <tr>
@@ -221,6 +216,22 @@ Ip4Config  readable   a{sv}
             </td>
 </tr>
 </tbody>
+</table></div>
+<p>
+</p>
+<p>        This property may also include the following items when such information is available:
+        </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">"mtu"</code></span></p></td>
+<td>
+              Maximum transmission unit (MTU), given as an unsigned integer value (signature <code class="literal">"u"</code>).
+            </td>
+</tr></tbody>
 </table></div>
 <p>
 </p>
@@ -252,10 +263,15 @@ Ip6Config  readable   a{sv}
 </table></div>
 <p>
 </p>
-<p>        If the bearer specifies configuration via PPP or DHCP, only the
-        <code class="literal">"method"</code> item will be present.
+<p>        If the bearer specifies configuration via PPP or DHCP, often only the
+        <code class="literal">"method"</code> item will be present.  IPv6 SLAAC should
+        be used to retrieve correct addressing and DNS information via Router
+        Advertisements and DHCPv6.  In some cases an IPv6 Link-Local
+        <code class="literal">"address"</code> item will be present, which should be
+        assigned to the data port before performing SLAAC, as the mobile network
+        may expect SLAAC setup to use this address.
 </p>
-<p>        Additional items which are only applicable when using the
+<p>        Additional items which are usually only applicable when using the
         <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-BEARER-IP-METHOD-STATIC:CAPS">MM_BEARER_IP_METHOD_STATIC</a>
         method are:
         </p>
@@ -274,7 +290,7 @@ Ip6Config  readable   a{sv}
 <tr>
 <td><p><span class="term"><code class="literal">"prefix"</code></span></p></td>
 <td>
-              Numeric CIDR network prefix (ie, 24, 32, etc), give as an unsigned integer value (signature <code class="literal">"u"</code>).
+              Numeric CIDR network prefix (ie, 24, 32, etc), given as an unsigned integer value (signature <code class="literal">"u"</code>).
             </td>
 </tr>
 <tr>
@@ -305,6 +321,22 @@ Ip6Config  readable   a{sv}
 </table></div>
 <p>
 </p>
+<p>        This property may also include the following items when such information is available:
+        </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">"mtu"</code></span></p></td>
+<td>
+              Maximum transmission unit (MTU), given as an unsigned integer value (signature <code class="literal">"u"</code>).
+            </td>
+</tr></tbody>
+</table></div>
+<p>
+</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -328,6 +360,6 @@ Properties  readable   a{sv}
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.19</div>
+          Generated by GTK-Doc V1.20</div>
 </body>
 </html>

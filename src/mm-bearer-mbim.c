@@ -28,11 +28,11 @@
 
 #include "mm-iface-modem.h"
 #include "mm-modem-helpers-mbim.h"
-#include "mm-serial-enums-types.h"
+#include "mm-port-enums-types.h"
 #include "mm-bearer-mbim.h"
 #include "mm-log.h"
 
-G_DEFINE_TYPE (MMBearerMbim, mm_bearer_mbim, MM_TYPE_BEARER)
+G_DEFINE_TYPE (MMBearerMbim, mm_bearer_mbim, MM_TYPE_BASE_BEARER)
 
 enum {
     PROP_0,
@@ -61,12 +61,12 @@ peek_ports (gpointer self,
     MMBaseModem *modem = NULL;
 
     g_object_get (G_OBJECT (self),
-                  MM_BEARER_MODEM, &modem,
+                  MM_BASE_BEARER_MODEM, &modem,
                   NULL);
     g_assert (MM_IS_BASE_MODEM (modem));
 
     if (o_device) {
-        MMMbimPort *port;
+        MMPortMbim *port;
 
         port = mm_base_modem_peek_port_mbim (modem);
         if (!port) {
@@ -80,7 +80,7 @@ peek_ports (gpointer self,
             return FALSE;
         }
 
-        *o_device = mm_mbim_port_peek_device (port);
+        *o_device = mm_port_mbim_peek_device (port);
     }
 
     if (o_data) {
@@ -146,7 +146,7 @@ connect_context_complete_and_free (ConnectContext *ctx)
 }
 
 static MMBearerConnectResult *
-connect_finish (MMBearer *self,
+connect_finish (MMBaseBearer *self,
                 GAsyncResult *res,
                 GError **error)
 {
@@ -239,9 +239,11 @@ ip_configuration_query_ready (MbimDevice *device,
             mm_dbg ("  DNS addresses (%u)", ipv4dnsservercount);
             for (i = 0; i < ipv4dnsservercount; i++) {
                 addr = g_inet_address_new_from_bytes ((guint8 *)&ipv4dnsserver[i], G_SOCKET_FAMILY_IPV4);
-                str = g_inet_address_to_string (addr);
-                mm_dbg ("    DNS [%u]: '%s'", i, str);
-                g_free (str);
+                if (!g_inet_address_get_is_any (addr)) {
+                    str = g_inet_address_to_string (addr);
+                    mm_dbg ("    DNS [%u]: '%s'", i, str);
+                    g_free (str);
+                }
                 g_object_unref (addr);
             }
         }
@@ -283,9 +285,11 @@ ip_configuration_query_ready (MbimDevice *device,
             mm_dbg ("  DNS addresses (%u)", ipv6dnsservercount);
             for (i = 0; i < ipv6dnsservercount; i++) {
                 addr = g_inet_address_new_from_bytes ((guint8 *)&ipv6dnsserver[i], G_SOCKET_FAMILY_IPV6);
-                str = g_inet_address_to_string (addr);
-                mm_dbg ("    DNS [%u]: '%s'", i, str);
-                g_free (str);
+                if (!g_inet_address_get_is_any (addr)) {
+                    str = g_inet_address_to_string (addr);
+                    mm_dbg ("    DNS [%u]: '%s'", i, str);
+                    g_free (str);
+                }
                 g_object_unref (addr);
             }
         }
@@ -308,7 +312,7 @@ ip_configuration_query_ready (MbimDevice *device,
                 ipv4addresscount > 0 &&
                 ipv4dnsservercount > 0) {
                 gchar **strarr;
-                guint i;
+                guint i, n;
 
                 mm_bearer_ip_config_set_method (ipv4_config, MM_BEARER_IP_METHOD_STATIC);
 
@@ -333,19 +337,24 @@ ip_configuration_query_ready (MbimDevice *device,
 
                 /* DNS */
                 strarr = g_new0 (gchar *, ipv4dnsservercount + 1);
-                for (i = 0; i < ipv4dnsservercount; i++) {
+                for (i = 0, n = 0; i < ipv4dnsservercount; i++) {
                     addr = g_inet_address_new_from_bytes ((guint8 *)&ipv4dnsserver[i], G_SOCKET_FAMILY_IPV4);
-                    strarr[i] = g_inet_address_to_string (addr);
+                    if (!g_inet_address_get_is_any (addr))
+                        strarr[n++] = g_inet_address_to_string (addr);
                     g_object_unref (addr);
                 }
                 mm_bearer_ip_config_set_dns (ipv4_config, (const gchar **)strarr);
                 g_strfreev (strarr);
             } else
                 mm_bearer_ip_config_set_method (ipv4_config, MM_BEARER_IP_METHOD_DHCP);
+
+            /* MTU */
+            if (ipv4configurationavailable & MBIM_IP_CONFIGURATION_AVAILABLE_FLAG_MTU)
+                mm_bearer_ip_config_set_mtu (ipv4_config, ipv4mtu);
         } else
             ipv4_config = NULL;
 
-        /* Build IPv6 config; always DHCP based */
+        /* Build IPv6 config */
         if (ctx->ip_type == MBIM_CONTEXT_IP_TYPE_IPV6 ||
             ctx->ip_type == MBIM_CONTEXT_IP_TYPE_IPV4V6 ||
             ctx->ip_type == MBIM_CONTEXT_IP_TYPE_IPV4_AND_IPV6) {
@@ -357,7 +366,7 @@ ip_configuration_query_ready (MbimDevice *device,
                 ipv6addresscount > 0 &&
                 ipv6dnsservercount > 0) {
                 gchar **strarr;
-                guint i;
+                guint i, n;
 
                 mm_bearer_ip_config_set_method (ipv6_config, MM_BEARER_IP_METHOD_STATIC);
 
@@ -366,6 +375,14 @@ ip_configuration_query_ready (MbimDevice *device,
                 str = g_inet_address_to_string (addr);
                 mm_bearer_ip_config_set_address (ipv6_config, str);
                 g_free (str);
+
+                /* If the address is a link-local one, then SLAAC or DHCP must be used
+                 * to get the real prefix and address.  Change the method to DHCP to
+                 * indicate this to clients.
+                 */
+                if (g_inet_address_get_is_link_local (addr))
+                    mm_bearer_ip_config_set_method (ipv6_config, MM_BEARER_IP_METHOD_DHCP);
+
                 g_object_unref (addr);
 
                 /* Netmask */
@@ -382,15 +399,20 @@ ip_configuration_query_ready (MbimDevice *device,
 
                 /* DNS */
                 strarr = g_new0 (gchar *, ipv6dnsservercount + 1);
-                for (i = 0; i < ipv6dnsservercount; i++) {
+                for (i = 0, n = 0; i < ipv6dnsservercount; i++) {
                     addr = g_inet_address_new_from_bytes ((guint8 *)&ipv6dnsserver[i], G_SOCKET_FAMILY_IPV6);
-                    strarr[i] = g_inet_address_to_string (addr);
+                    if (!g_inet_address_get_is_any (addr))
+                        strarr[n++] = g_inet_address_to_string (addr);
                     g_object_unref (addr);
                 }
                 mm_bearer_ip_config_set_dns (ipv6_config, (const gchar **)strarr);
                 g_strfreev (strarr);
             } else
                 mm_bearer_ip_config_set_method (ipv6_config, MM_BEARER_IP_METHOD_DHCP);
+
+            /* MTU */
+            if (ipv6configurationavailable & MBIM_IP_CONFIGURATION_AVAILABLE_FLAG_MTU)
+                mm_bearer_ip_config_set_mtu (ipv6_config, ipv6mtu);
         } else
             ipv6_config = NULL;
 
@@ -560,7 +582,7 @@ packet_service_set_ready (MbimDevice *device,
                 &highest_available_data_class,
                 &uplink_speed,
                 &downlink_speed,
-                &error)) {
+                &inner_error)) {
             if (nw_error) {
                 if (error)
                     g_error_free (error);
@@ -714,7 +736,7 @@ connect_context_step (ConnectContext *ctx)
             ip_family == MM_BEARER_IP_FAMILY_ANY) {
             gchar * str;
 
-            ip_family = mm_bearer_get_default_ip_family (MM_BEARER (ctx->self));
+            ip_family = mm_base_bearer_get_default_ip_family (MM_BASE_BEARER (ctx->self));
             str = mm_bearer_ip_family_build_string_from_mask (ip_family);
             mm_dbg ("No specific IP family requested, defaulting to %s", str);
             g_free (str);
@@ -833,7 +855,7 @@ connect_context_step (ConnectContext *ctx)
 }
 
 static void
-_connect (MMBearer *self,
+_connect (MMBaseBearer *self,
           GCancellable *cancellable,
           GAsyncReadyCallback callback,
           gpointer user_data)
@@ -848,12 +870,12 @@ _connect (MMBearer *self,
         return;
 
     g_object_get (self,
-                  MM_BEARER_MODEM, &modem,
+                  MM_BASE_BEARER_MODEM, &modem,
                   NULL);
     g_assert (modem);
 
     /* Check whether we have an APN */
-    apn = mm_bearer_properties_get_apn (mm_bearer_peek_config (MM_BEARER (self)));
+    apn = mm_bearer_properties_get_apn (mm_base_bearer_peek_config (MM_BASE_BEARER (self)));
 
     /* Is this a 3GPP only modem and no APN was given? If so, error */
     if (mm_iface_modem_is_3gpp_only (MM_IFACE_MODEM (modem)) && !apn) {
@@ -886,7 +908,7 @@ _connect (MMBearer *self,
                                              _connect);
 
     g_object_get (self,
-                  MM_BEARER_CONFIG, &ctx->properties,
+                  MM_BASE_BEARER_CONFIG, &ctx->properties,
                   NULL);
 
     /* Run! */
@@ -921,7 +943,7 @@ disconnect_context_complete_and_free (DisconnectContext *ctx)
 }
 
 static gboolean
-disconnect_finish (MMBearer *self,
+disconnect_finish (MMBaseBearer *self,
                    GAsyncResult *res,
                    GError **error)
 {
@@ -942,35 +964,49 @@ disconnect_set_ready (MbimDevice *device,
     guint32 nw_error;
 
     response = mbim_device_command_finish (device, res, &error);
-    if (response &&
-        (mbim_message_command_done_get_result (response, &error) ||
-         error->code == MBIM_STATUS_ERROR_FAILURE)) {
+    if (response) {
         GError *inner_error = NULL;
+        gboolean result = FALSE, parsed_result = FALSE;
 
-        if (mbim_message_connect_response_parse (
-                response,
-                &session_id,
-                &activation_state,
-                NULL, /* voice_call_state */
-                NULL, /* ip_type */
-                NULL, /* context_type */
-                &nw_error,
-                &error)) {
-            if (nw_error) {
-                if (error)
-                    g_error_free (error);
-                error = mm_mobile_equipment_error_from_mbim_nw_error (nw_error);
-            } else
-                mm_dbg ("Session ID '%u': %s",
-                        session_id,
-                        mbim_activation_state_get_string (activation_state));
-        } else {
-            /* Prefer the error from the result to the parsing error */
-            if (!error)
-                error = inner_error;
-            else
-                g_error_free (inner_error);
+        result = mbim_message_command_done_get_result (response, &error);
+        /* Parse the response only for the cases we need to */
+        if (result ||
+            g_error_matches (error, MBIM_STATUS_ERROR, MBIM_STATUS_ERROR_FAILURE) ||
+            g_error_matches (error, MBIM_STATUS_ERROR,
+                             MBIM_STATUS_ERROR_CONTEXT_NOT_ACTIVATED)) {
+            parsed_result = mbim_message_connect_response_parse (
+                    response,
+                    &session_id,
+                    &activation_state,
+                    NULL, /* voice_call_state */
+                    NULL, /* ip_type */
+                    NULL, /* context_type */
+                    &nw_error,
+                    &inner_error);
         }
+
+        /* Now handle different response / error cases */
+        if (result && parsed_result) {
+            mm_dbg ("Session ID '%u': %s",
+                    session_id,
+                    mbim_activation_state_get_string (activation_state));
+        } else if (g_error_matches (error,
+                                    MBIM_STATUS_ERROR,
+                                    MBIM_STATUS_ERROR_CONTEXT_NOT_ACTIVATED)) {
+            mm_dbg ("Session ID '%u' already disconnected.", session_id);
+            g_clear_error (&error);
+            g_clear_error (&inner_error);
+        } else if (g_error_matches (error, MBIM_STATUS_ERROR, MBIM_STATUS_ERROR_FAILURE)) {
+            if (nw_error) {
+                g_error_free (error);
+                error = mm_mobile_equipment_error_from_mbim_nw_error (nw_error);
+            }
+        }  /* else: For other errors, give precedence to error over nw_error */
+
+        /* Give precedence to original error over parsing error */
+        if (!error && inner_error)
+            error = g_error_copy (inner_error);
+        g_clear_error (&inner_error);
     }
 
     if (response)
@@ -1018,7 +1054,7 @@ disconnect_context_step (DisconnectContext *ctx)
 
         mbim_device_command (ctx->device,
                              message,
-                             10,
+                             30,
                              NULL,
                              (GAsyncReadyCallback)disconnect_set_ready,
                              ctx);
@@ -1038,7 +1074,7 @@ disconnect_context_step (DisconnectContext *ctx)
 }
 
 static void
-disconnect (MMBearer *_self,
+disconnect (MMBaseBearer *_self,
             GAsyncReadyCallback callback,
             gpointer user_data)
 {
@@ -1090,24 +1126,24 @@ mm_bearer_mbim_get_session_id (MMBearerMbim *self)
 
 /*****************************************************************************/
 
-MMBearer *
+MMBaseBearer *
 mm_bearer_mbim_new (MMBroadbandModemMbim *modem,
                     MMBearerProperties *config,
                     guint32 session_id)
 {
-    MMBearer *bearer;
+    MMBaseBearer *bearer;
 
-    /* The Mbim bearer inherits from MMBearer (so it's not a MMBroadbandBearer)
+    /* The Mbim bearer inherits from MMBaseBearer (so it's not a MMBroadbandBearer)
      * and that means that the object is not async-initable, so we just use
      * g_object_new() here */
     bearer = g_object_new (MM_TYPE_BEARER_MBIM,
-                           MM_BEARER_MODEM,           modem,
-                           MM_BEARER_CONFIG,          config,
+                           MM_BASE_BEARER_MODEM, modem,
+                           MM_BASE_BEARER_CONFIG, config,
                            MM_BEARER_MBIM_SESSION_ID, (guint)session_id,
                            NULL);
 
     /* Only export valid bearers */
-    mm_bearer_export (bearer);
+    mm_base_bearer_export (bearer);
 
     return bearer;
 }
@@ -1153,7 +1189,7 @@ static void
 mm_bearer_mbim_init (MMBearerMbim *self)
 {
     /* Initialize private data */
-    self->priv = G_TYPE_INSTANCE_GET_PRIVATE ((self),
+    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
                                               MM_TYPE_BEARER_MBIM,
                                               MMBearerMbimPrivate);
 }
@@ -1172,7 +1208,7 @@ static void
 mm_bearer_mbim_class_init (MMBearerMbimClass *klass)
 {
     GObjectClass *object_class = G_OBJECT_CLASS (klass);
-    MMBearerClass *bearer_class = MM_BEARER_CLASS (klass);
+    MMBaseBearerClass *base_bearer_class = MM_BASE_BEARER_CLASS (klass);
 
     g_type_class_add_private (object_class, sizeof (MMBearerMbimPrivate));
 
@@ -1181,10 +1217,10 @@ mm_bearer_mbim_class_init (MMBearerMbimClass *klass)
     object_class->get_property = get_property;
     object_class->set_property = set_property;
 
-    bearer_class->connect = _connect;
-    bearer_class->connect_finish = connect_finish;
-    bearer_class->disconnect = disconnect;
-    bearer_class->disconnect_finish = disconnect_finish;
+    base_bearer_class->connect = _connect;
+    base_bearer_class->connect_finish = connect_finish;
+    base_bearer_class->disconnect = disconnect;
+    base_bearer_class->disconnect_finish = disconnect_finish;
 
     properties[PROP_SESSION_ID] =
         g_param_spec_uint (MM_BEARER_MBIM_SESSION_ID,

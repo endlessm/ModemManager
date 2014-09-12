@@ -25,7 +25,7 @@
 
 #include "mm-private-boxed-types.h"
 #include "mm-port-probe-at.h"
-#include "mm-at-serial-port.h"
+#include "mm-port-serial-at.h"
 #include "mm-device.h"
 
 #define MM_TYPE_PORT_PROBE            (mm_port_probe_get_type ())
@@ -68,7 +68,7 @@ struct _MMPortProbeClass {
  * It also helps to implement plugin-specific checks, as plugins can set
  * their own probing results on the 'probe' object. */
 typedef void     (* MMPortProbeAtCustomInit)       (MMPortProbe *probe,
-                                                    MMAtSerialPort *port,
+                                                    MMPortSerialAt *port,
                                                     GCancellable *cancellable,
                                                     GAsyncReadyCallback callback,
                                                     gpointer user_data);
@@ -87,6 +87,7 @@ GUdevDevice *mm_port_probe_peek_port        (MMPortProbe *self);
 GUdevDevice *mm_port_probe_get_port         (MMPortProbe *self);
 const gchar *mm_port_probe_get_port_name    (MMPortProbe *self);
 const gchar *mm_port_probe_get_port_subsys  (MMPortProbe *self);
+const gchar *mm_port_probe_get_parent_path  (MMPortProbe *self);
 
 /* Probing result setters */
 void mm_port_probe_set_result_at         (MMPortProbe *self,

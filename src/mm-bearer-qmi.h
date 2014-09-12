@@ -24,7 +24,7 @@
 #define _LIBMM_INSIDE_MM
 #include <libmm-glib.h>
 
-#include "mm-bearer.h"
+#include "mm-base-bearer.h"
 #include "mm-broadband-modem-qmi.h"
 
 #define MM_TYPE_BEARER_QMI            (mm_bearer_qmi_get_type ())
@@ -38,20 +38,23 @@ typedef struct _MMBearerQmi MMBearerQmi;
 typedef struct _MMBearerQmiClass MMBearerQmiClass;
 typedef struct _MMBearerQmiPrivate MMBearerQmiPrivate;
 
+#define MM_BEARER_QMI_FORCE_DHCP "bearer-qmi-force-dhcp"
+
 struct _MMBearerQmi {
-    MMBearer parent;
+    MMBaseBearer parent;
     MMBearerQmiPrivate *priv;
 };
 
 struct _MMBearerQmiClass {
-    MMBearerClass parent;
+    MMBaseBearerClass parent;
 };
 
 GType mm_bearer_qmi_get_type (void);
 
 /* QMI bearer creation implementation.
  * NOTE it is *not* a broadband bearer, so not async-initable */
-MMBearer *mm_bearer_qmi_new (MMBroadbandModemQmi *modem,
-			     MMBearerProperties *config);
+MMBaseBearer *mm_bearer_qmi_new (MMBroadbandModemQmi *modem,
+                                 MMBearerProperties *config,
+                                 gboolean force_dhcp);
 
 #endif /* MM_BEARER_QMI_H */

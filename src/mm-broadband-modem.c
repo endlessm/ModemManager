@@ -43,11 +43,11 @@
 #include "mm-bearer-list.h"
 #include "mm-sms-list.h"
 #include "mm-sms-part-3gpp.h"
-#include "mm-sim.h"
+#include "mm-base-sim.h"
 #include "mm-log.h"
 #include "mm-modem-helpers.h"
 #include "mm-error-helpers.h"
-#include "mm-qcdm-serial-port.h"
+#include "mm-port-serial-qcdm.h"
 #include "libqcdm/src/errors.h"
 #include "libqcdm/src/commands.h"
 
@@ -122,7 +122,7 @@ struct _MMBroadbandModemPrivate {
     /*<--- Modem interface --->*/
     /* Properties */
     GObject *modem_dbus_skeleton;
-    MMSim *modem_sim;
+    MMBaseSim *modem_sim;
     MMBearerList *modem_bearer_list;
     MMModemState modem_state;
     /* Implementation helpers */
@@ -233,18 +233,18 @@ response_processor_string_ignore_at_errors (MMBaseModem *self,
 /*****************************************************************************/
 /* Create Bearer (Modem interface) */
 
-static MMBearer *
+static MMBaseBearer *
 modem_create_bearer_finish (MMIfaceModem *self,
                             GAsyncResult *res,
                             GError **error)
 {
-    MMBearer *bearer;
+    MMBaseBearer *bearer;
 
     if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
         return NULL;
 
     bearer = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res));
-    mm_dbg ("New bearer created at DBus path '%s'", mm_bearer_get_path (bearer));
+    mm_dbg ("New bearer created at DBus path '%s'", mm_base_bearer_get_path (bearer));
 
     return g_object_ref (bearer);
 }
@@ -254,7 +254,7 @@ broadband_bearer_new_ready (GObject *source,
                             GAsyncResult *res,
                             GSimpleAsyncResult *simple)
 {
-    MMBearer *bearer = NULL;
+    MMBaseBearer *bearer = NULL;
     GError *error = NULL;
 
     bearer = mm_broadband_bearer_new_finish (res, &error);
@@ -294,12 +294,12 @@ modem_create_bearer (MMIfaceModem *self,
 /*****************************************************************************/
 /* Create SIM (Modem interface) */
 
-static MMSim *
+static MMBaseSim *
 modem_create_sim_finish (MMIfaceModem *self,
-                            GAsyncResult *res,
-                            GError **error)
+                         GAsyncResult *res,
+                         GError **error)
 {
-    return mm_sim_new_finish (res, error);
+    return mm_base_sim_new_finish (res, error);
 }
 
 static void
@@ -308,10 +308,10 @@ modem_create_sim (MMIfaceModem *self,
                   gpointer user_data)
 {
     /* New generic SIM */
-    mm_sim_new (MM_BASE_MODEM (self),
-                NULL, /* cancellable */
-                callback,
-                user_data);
+    mm_base_sim_new (MM_BASE_MODEM (self),
+                     NULL, /* cancellable */
+                     callback,
+                     user_data);
 }
 
 /*****************************************************************************/
@@ -321,7 +321,7 @@ typedef struct {
     MMBroadbandModem *self;
     GSimpleAsyncResult *result;
     MMModemCapability caps;
-    MMQcdmSerialPort *qcdm_port;
+    MMPortSerialQcdm *qcdm_port;
 } LoadCapabilitiesContext;
 
 static void
@@ -329,7 +329,7 @@ load_capabilities_context_complete_and_free (LoadCapabilitiesContext *ctx)
 {
     g_simple_async_result_complete (ctx->result);
     if (ctx->qcdm_port) {
-        mm_serial_port_close (MM_SERIAL_PORT (ctx->qcdm_port));
+        mm_port_serial_close (MM_PORT_SERIAL (ctx->qcdm_port));
         g_object_unref (ctx->qcdm_port);
     }
     g_object_unref (ctx->result);
@@ -580,38 +580,41 @@ load_current_capabilities_at (LoadCapabilitiesContext *ctx)
 }
 
 static void
-mode_pref_qcdm_ready (MMQcdmSerialPort *port,
-                      GByteArray *response,
-                      GError *error,
+mode_pref_qcdm_ready (MMPortSerialQcdm *port,
+                      GAsyncResult *res,
                       LoadCapabilitiesContext *ctx)
 {
     QcdmResult *result;
     gint err = QCDM_SUCCESS;
     u_int8_t pref = 0;
+    GError *error = NULL;
+    GByteArray *response;
 
+    response = mm_port_serial_qcdm_command_finish (port, res, &error);
     if (error) {
         /* Fall back to AT checking */
         mm_dbg ("Failed to load NV ModePref: %s", error->message);
+        g_error_free (error);
         goto at_caps;
     }
 
     /* Parse the response */
-    result = qcdm_cmd_nv_get_mode_pref_result ((const gchar *) response->data,
+    result = qcdm_cmd_nv_get_mode_pref_result ((const gchar *)response->data,
                                                response->len,
                                                &err);
+    g_byte_array_unref (response);
     if (!result) {
         mm_dbg ("Failed to parse NV ModePref result: %d", err);
+        g_byte_array_unref (response);
         goto at_caps;
     }
 
     err = qcdm_result_get_u8 (result, QCDM_CMD_NV_GET_MODE_PREF_ITEM_MODE_PREF, &pref);
+    qcdm_result_unref (result);
     if (err) {
         mm_dbg ("Failed to read NV ModePref: %d", err);
-        qcdm_result_unref (result);
         goto at_caps;
     }
-
-    qcdm_result_unref (result);
 
     /* Only parse explicit modes; for 'auto' just fall back to whatever
      * the AT current capabilities probing figures out.
@@ -662,7 +665,7 @@ load_current_capabilities_qcdm (LoadCapabilitiesContext *ctx)
     ctx->qcdm_port = mm_base_modem_peek_port_qcdm (MM_BASE_MODEM (ctx->self));
     g_assert (ctx->qcdm_port);
 
-    if (!mm_serial_port_open (MM_SERIAL_PORT (ctx->qcdm_port), &error)) {
+    if (!mm_port_serial_open (MM_PORT_SERIAL (ctx->qcdm_port), &error)) {
         mm_dbg ("Failed to open QCDM port for NV ModePref request: %s",
                 error->message);
         g_error_free (error);
@@ -677,12 +680,13 @@ load_current_capabilities_qcdm (LoadCapabilitiesContext *ctx)
     cmd->len = qcdm_cmd_nv_get_mode_pref_new ((char *) cmd->data, 300, 0);
     g_assert (cmd->len);
 
-    mm_qcdm_serial_port_queue_command (ctx->qcdm_port,
-                                       cmd,
-                                       3,
-                                       NULL,
-                                       (MMQcdmSerialResponseFn) mode_pref_qcdm_ready,
-                                       ctx);
+    mm_port_serial_qcdm_command (ctx->qcdm_port,
+                                 cmd,
+                                 3,
+                                 NULL,
+                                 (GAsyncReadyCallback)mode_pref_qcdm_ready,
+                                 ctx);
+    g_byte_array_unref (cmd);
 }
 
 static void
@@ -997,7 +1001,7 @@ modem_load_device_identifier (MMIfaceModem *self,
 typedef struct {
     MMBroadbandModem *self;
     GSimpleAsyncResult *result;
-    MMQcdmSerialPort *qcdm;
+    MMPortSerialQcdm *qcdm;
 } OwnNumbersContext;
 
 static void
@@ -1007,7 +1011,7 @@ own_numbers_context_complete_and_free (OwnNumbersContext *ctx)
     g_object_unref (ctx->result);
     g_object_unref (ctx->self);
     if (ctx->qcdm) {
-        mm_serial_port_close (MM_SERIAL_PORT (ctx->qcdm));
+        mm_port_serial_close (MM_PORT_SERIAL (ctx->qcdm));
         g_object_unref (ctx->qcdm);
     }
     g_free (ctx);
@@ -1025,17 +1029,19 @@ modem_load_own_numbers_finish (MMIfaceModem *self,
 }
 
 static void
-mdn_qcdm_ready (MMQcdmSerialPort *port,
-                GByteArray *response,
-                GError *error,
+mdn_qcdm_ready (MMPortSerialQcdm *port,
+                GAsyncResult *res,
                 OwnNumbersContext *ctx)
 {
     QcdmResult *result;
     gint err = QCDM_SUCCESS;
     const char *numbers[2] = { NULL, NULL };
+    GByteArray *response;
+    GError *error = NULL;
 
+    response = mm_port_serial_qcdm_command_finish (port, res, &error);
     if (error) {
-        g_simple_async_result_set_from_error (ctx->result, error);
+        g_simple_async_result_take_error (ctx->result, error);
         own_numbers_context_complete_and_free (ctx);
         return;
     }
@@ -1112,12 +1118,13 @@ modem_load_own_numbers_done (MMIfaceModem *self,
             mdn->len = qcdm_cmd_nv_get_mdn_new ((char *) mdn->data, 200, 0);
             g_assert (mdn->len);
 
-            mm_qcdm_serial_port_queue_command (ctx->qcdm,
-                                               mdn,
-                                               3,
-                                               NULL,
-                                               (MMQcdmSerialResponseFn)mdn_qcdm_ready,
-                                               ctx);
+            mm_port_serial_qcdm_command (ctx->qcdm,
+                                         mdn,
+                                         3,
+                                         NULL,
+                                         (GAsyncReadyCallback)mdn_qcdm_ready,
+                                         ctx);
+            g_byte_array_unref (mdn);
             return;
         }
     } else {
@@ -1148,7 +1155,7 @@ modem_load_own_numbers (MMIfaceModem *self,
                                              modem_load_own_numbers);
     ctx->qcdm = mm_base_modem_peek_port_qcdm (MM_BASE_MODEM (self));
     if (ctx->qcdm) {
-        if (mm_serial_port_open (MM_SERIAL_PORT (ctx->qcdm), &error)) {
+        if (mm_port_serial_open (MM_PORT_SERIAL (ctx->qcdm), &error)) {
             ctx->qcdm = g_object_ref (ctx->qcdm);
         } else {
             mm_dbg ("Couldn't open QCDM port: (%d) %s",
@@ -1697,7 +1704,7 @@ modem_load_supported_ip_families (MMIfaceModem *self,
 typedef struct {
     MMBroadbandModem *self;
     GSimpleAsyncResult *result;
-    MMSerialPort *port;
+    MMPortSerial *port;
 } SignalQualityContext;
 
 static void
@@ -1784,7 +1791,7 @@ signal_quality_csq (SignalQualityContext *ctx)
 {
     mm_base_modem_at_sequence_full (
         MM_BASE_MODEM (ctx->self),
-        MM_AT_SERIAL_PORT (ctx->port),
+        MM_PORT_SERIAL_AT (ctx->port),
         signal_quality_csq_sequence,
         NULL, /* response_processor_context */
         NULL, /* response_processor_context_free */
@@ -1877,7 +1884,7 @@ static void
 signal_quality_cind (SignalQualityContext *ctx)
 {
     mm_base_modem_at_command_full (MM_BASE_MODEM (ctx->self),
-                                   MM_AT_SERIAL_PORT (ctx->port),
+                                   MM_PORT_SERIAL_AT (ctx->port),
                                    "+CIND?",
                                    3,
                                    FALSE,
@@ -1888,18 +1895,20 @@ signal_quality_cind (SignalQualityContext *ctx)
 }
 
 static void
-signal_quality_qcdm_ready (MMQcdmSerialPort *port,
-                           GByteArray *response,
-                           GError *error,
+signal_quality_qcdm_ready (MMPortSerialQcdm *port,
+                           GAsyncResult *res,
                            SignalQualityContext *ctx)
 {
     QcdmResult *result;
     guint32 num = 0, quality = 0, i;
     gfloat best_db = -28;
     gint err = QCDM_SUCCESS;
+    GByteArray *response;
+    GError *error = NULL;
 
+    response = mm_port_serial_qcdm_command_finish (port, res, &error);
     if (error) {
-        g_simple_async_result_set_from_error (ctx->result, error);
+        g_simple_async_result_take_error (ctx->result, error);
         signal_quality_context_complete_and_free (ctx);
         return;
     }
@@ -1908,6 +1917,7 @@ signal_quality_qcdm_ready (MMQcdmSerialPort *port,
     result = qcdm_cmd_pilot_sets_result ((const gchar *) response->data,
                                          response->len,
                                          &err);
+    g_byte_array_unref (response);
     if (!result) {
         g_simple_async_result_set_error (ctx->result,
                                          MM_CORE_ERROR,
@@ -1961,12 +1971,13 @@ signal_quality_qcdm (SignalQualityContext *ctx)
     pilot_sets->len = qcdm_cmd_pilot_sets_new ((char *) pilot_sets->data, 25);
     g_assert (pilot_sets->len);
 
-    mm_qcdm_serial_port_queue_command (MM_QCDM_SERIAL_PORT (ctx->port),
-                                       pilot_sets,
-                                       3,
-                                       NULL,
-                                       (MMQcdmSerialResponseFn)signal_quality_qcdm_ready,
-                                       ctx);
+    mm_port_serial_qcdm_command (MM_PORT_SERIAL_QCDM (ctx->port),
+                                 pilot_sets,
+                                 3,
+                                 NULL,
+                                 (GAsyncReadyCallback)signal_quality_qcdm_ready,
+                                 ctx);
+    g_byte_array_unref (pilot_sets);
 }
 
 static void
@@ -1986,7 +1997,7 @@ modem_load_signal_quality (MMIfaceModem *self,
                                              modem_load_signal_quality);
 
     /* Check whether we can get a non-connected AT port */
-    ctx->port = (MMSerialPort *)mm_base_modem_get_best_at_port (MM_BASE_MODEM (self), &error);
+    ctx->port = (MMPortSerial *)mm_base_modem_get_best_at_port (MM_BASE_MODEM (self), &error);
     if (ctx->port) {
         if (MM_BROADBAND_MODEM (self)->priv->modem_cind_supported &&
             CIND_INDICATOR_IS_VALID (MM_BROADBAND_MODEM (self)->priv->modem_cind_indicator_signal_quality))
@@ -1997,7 +2008,7 @@ modem_load_signal_quality (MMIfaceModem *self,
     }
 
     /* If no best AT port available (all connected), try with QCDM ports */
-    ctx->port = (MMSerialPort *)mm_base_modem_get_port_qcdm (MM_BASE_MODEM (self));
+    ctx->port = (MMPortSerial *)mm_base_modem_get_port_qcdm (MM_BASE_MODEM (self));
     if (ctx->port) {
         g_error_free (error);
         signal_quality_qcdm (ctx);
@@ -2040,7 +2051,7 @@ modem_load_access_technologies_finish (MMIfaceModem *self,
 typedef struct {
     MMBroadbandModem *self;
     GSimpleAsyncResult *result;
-    MMQcdmSerialPort *port;
+    MMPortSerialQcdm *port;
 
     guint32 opmode;
     guint32 sysmode;
@@ -2135,17 +2146,19 @@ done:
 }
 
 static void
-access_tech_qcdm_wcdma_ready (MMQcdmSerialPort *port,
-                              GByteArray *response,
-                              GError *error,
+access_tech_qcdm_wcdma_ready (MMPortSerialQcdm *port,
+                              GAsyncResult *res,
                               AccessTechContext *ctx)
 {
     QcdmResult *result;
     gint err = QCDM_SUCCESS;
     guint8 l1;
+    GError *error = NULL;
+    GByteArray *response;
 
+    response = mm_port_serial_qcdm_command_finish (port, res, &error);
     if (error) {
-        access_tech_context_complete_and_free (ctx, g_error_copy (error), FALSE);
+        access_tech_context_complete_and_free (ctx, error, FALSE);
         return;
     }
 
@@ -2153,6 +2166,7 @@ access_tech_qcdm_wcdma_ready (MMQcdmSerialPort *port,
     result = qcdm_cmd_wcdma_subsys_state_info_result ((const gchar *) response->data,
                                                       response->len,
                                                       &err);
+    g_byte_array_unref (response);
     if (result) {
         qcdm_result_get_u8 (result, QCDM_CMD_WCDMA_SUBSYS_STATE_INFO_ITEM_L1_STATE, &l1);
         qcdm_result_unref (result);
@@ -2167,9 +2181,8 @@ access_tech_qcdm_wcdma_ready (MMQcdmSerialPort *port,
 }
 
 static void
-access_tech_qcdm_gsm_ready (MMQcdmSerialPort *port,
-                            GByteArray *response,
-                            GError *error,
+access_tech_qcdm_gsm_ready (MMPortSerialQcdm *port,
+                            GAsyncResult *res,
                             AccessTechContext *ctx)
 {
     GByteArray *cmd;
@@ -2177,9 +2190,12 @@ access_tech_qcdm_gsm_ready (MMQcdmSerialPort *port,
     gint err = QCDM_SUCCESS;
     guint8 opmode = 0;
     guint8 sysmode = 0;
+    GError *error = NULL;
+    GByteArray *response;
 
+    response = mm_port_serial_qcdm_command_finish (port, res, &error);
     if (error) {
-        access_tech_context_complete_and_free (ctx, g_error_copy (error), FALSE);
+        access_tech_context_complete_and_free (ctx, error, FALSE);
         return;
     }
 
@@ -2187,6 +2203,7 @@ access_tech_qcdm_gsm_ready (MMQcdmSerialPort *port,
     result = qcdm_cmd_gsm_subsys_state_info_result ((const gchar *) response->data,
                                                     response->len,
                                                     &err);
+    g_byte_array_unref (response);
     if (!result) {
         error = g_error_new (MM_CORE_ERROR,
                              MM_CORE_ERROR_FAILED,
@@ -2208,27 +2225,30 @@ access_tech_qcdm_gsm_ready (MMQcdmSerialPort *port,
     cmd->len = qcdm_cmd_wcdma_subsys_state_info_new ((char *) cmd->data, 50);
     g_assert (cmd->len);
 
-    mm_qcdm_serial_port_queue_command (port,
-                                       cmd,
-                                       3,
-                                       NULL,
-                                       (MMQcdmSerialResponseFn) access_tech_qcdm_wcdma_ready,
-                                       ctx);
+    mm_port_serial_qcdm_command (port,
+                                 cmd,
+                                 3,
+                                 NULL,
+                                 (GAsyncReadyCallback)access_tech_qcdm_wcdma_ready,
+                                 ctx);
+    g_byte_array_unref (cmd);
 }
 
 static void
-access_tech_qcdm_hdr_ready (MMQcdmSerialPort *port,
-                            GByteArray *response,
-                            GError *error,
+access_tech_qcdm_hdr_ready (MMPortSerialQcdm *port,
+                            GAsyncResult *res,
                             AccessTechContext *ctx)
 {
     QcdmResult *result;
     gint err = QCDM_SUCCESS;
     guint8 session = 0;
     guint8 almp = 0;
+    GError *error = NULL;
+    GByteArray *response;
 
+    response = mm_port_serial_qcdm_command_finish (port, res, &error);
     if (error) {
-        access_tech_context_complete_and_free (ctx, g_error_copy (error), FALSE);
+        access_tech_context_complete_and_free (ctx, error, FALSE);
         return;
     }
 
@@ -2236,6 +2256,7 @@ access_tech_qcdm_hdr_ready (MMQcdmSerialPort *port,
     result = qcdm_cmd_hdr_subsys_state_info_result ((const gchar *) response->data,
                                                     response->len,
                                                     &err);
+    g_byte_array_unref (response);
     if (result) {
         qcdm_result_get_u8 (result, QCDM_CMD_HDR_SUBSYS_STATE_INFO_ITEM_SESSION_STATE, &session);
         qcdm_result_get_u8 (result, QCDM_CMD_HDR_SUBSYS_STATE_INFO_ITEM_ALMP_STATE, &almp);
@@ -2251,18 +2272,20 @@ access_tech_qcdm_hdr_ready (MMQcdmSerialPort *port,
 }
 
 static void
-access_tech_qcdm_cdma_ready (MMQcdmSerialPort *port,
-                             GByteArray *response,
-                             GError *error,
+access_tech_qcdm_cdma_ready (MMPortSerialQcdm *port,
+                             GAsyncResult *res,
                              AccessTechContext *ctx)
 {
     GByteArray *cmd;
     QcdmResult *result;
     gint err = QCDM_SUCCESS;
     guint32 hybrid;
+    GError *error = NULL;
+    GByteArray *response;
 
+    response = mm_port_serial_qcdm_command_finish (port, res, &error);
     if (error) {
-        access_tech_context_complete_and_free (ctx, g_error_copy (error), FALSE);
+        access_tech_context_complete_and_free (ctx, error, FALSE);
         return;
     }
 
@@ -2270,6 +2293,7 @@ access_tech_qcdm_cdma_ready (MMQcdmSerialPort *port,
     result = qcdm_cmd_cm_subsys_state_info_result ((const gchar *) response->data,
                                                    response->len,
                                                    &err);
+    g_byte_array_unref (response);
     if (!result) {
         error = g_error_new (MM_CORE_ERROR,
                              MM_CORE_ERROR_FAILED,
@@ -2291,12 +2315,13 @@ access_tech_qcdm_cdma_ready (MMQcdmSerialPort *port,
     cmd->len = qcdm_cmd_hdr_subsys_state_info_new ((char *) cmd->data, 50);
     g_assert (cmd->len);
 
-    mm_qcdm_serial_port_queue_command (port,
-                                       cmd,
-                                       3,
-                                       NULL,
-                                       (MMQcdmSerialResponseFn) access_tech_qcdm_hdr_ready,
-                                       ctx);
+    mm_port_serial_qcdm_command (port,
+                                 cmd,
+                                 3,
+                                 NULL,
+                                 (GAsyncReadyCallback)access_tech_qcdm_hdr_ready,
+                                 ctx);
+    g_byte_array_unref (cmd);
 }
 
 static void
@@ -2373,25 +2398,32 @@ modem_load_access_technologies (MMIfaceModem *self,
         cmd->len = qcdm_cmd_gsm_subsys_state_info_new ((char *) cmd->data, 50);
         g_assert (cmd->len);
 
-        mm_qcdm_serial_port_queue_command (ctx->port,
-                                           cmd,
-                                           3,
-                                           NULL,
-                                           (MMQcdmSerialResponseFn) access_tech_qcdm_gsm_ready,
-                                           ctx);
-    } else if (mm_iface_modem_is_cdma (self)) {
+        mm_port_serial_qcdm_command (ctx->port,
+                                     cmd,
+                                     3,
+                                     NULL,
+                                     (GAsyncReadyCallback)access_tech_qcdm_gsm_ready,
+                                     ctx);
+        g_byte_array_unref (cmd);
+        return;
+    }
+
+    if (mm_iface_modem_is_cdma (self)) {
         cmd = g_byte_array_sized_new (50);
         cmd->len = qcdm_cmd_cm_subsys_state_info_new ((char *) cmd->data, 50);
         g_assert (cmd->len);
 
-        mm_qcdm_serial_port_queue_command (ctx->port,
-                                           cmd,
-                                           3,
-                                           NULL,
-                                           (MMQcdmSerialResponseFn) access_tech_qcdm_cdma_ready,
-                                           ctx);
-    } else
-        g_assert_not_reached ();
+        mm_port_serial_qcdm_command (ctx->port,
+                                     cmd,
+                                     3,
+                                     NULL,
+                                     (GAsyncReadyCallback)access_tech_qcdm_cdma_ready,
+                                     ctx);
+        g_byte_array_unref (cmd);
+        return;
+    }
+
+    g_assert_not_reached ();
 }
 
 /*****************************************************************************/
@@ -2406,7 +2438,7 @@ modem_3gpp_setup_cleanup_unsolicited_events_finish (MMIfaceModem3gpp *self,
 }
 
 static void
-ciev_received (MMAtSerialPort *port,
+ciev_received (MMPortSerialAt *port,
                GMatchInfo *info,
                MMBroadbandModem *self)
 {
@@ -2447,7 +2479,7 @@ static void
 set_unsolicited_events_handlers (MMBroadbandModem *self,
                                  gboolean enable)
 {
-    MMAtSerialPort *ports[2];
+    MMPortSerialAt *ports[2];
     GRegex *ciev_regex;
     guint i;
 
@@ -2464,10 +2496,10 @@ set_unsolicited_events_handlers (MMBroadbandModem *self,
         mm_dbg ("(%s) %s 3GPP unsolicited events handlers",
                 mm_port_get_device (MM_PORT (ports[i])),
                 enable ? "Setting" : "Removing");
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             ciev_regex,
-            enable ? (MMAtSerialUnsolicitedMsgFn) ciev_received : NULL,
+            enable ? (MMPortSerialAtUnsolicitedMsgFn) ciev_received : NULL,
             enable ? self : NULL,
             NULL);
     }
@@ -2659,7 +2691,7 @@ unsolicited_events_setup_ready (MMBroadbandModem *self,
 static void
 run_unsolicited_events_setup (UnsolicitedEventsContext *ctx)
 {
-    MMAtSerialPort *port = NULL;
+    MMPortSerialAt *port = NULL;
 
     if (!ctx->cmer_primary_done) {
         ctx->cmer_primary_done = TRUE;
@@ -3467,16 +3499,9 @@ modem_3gpp_load_subscription_state (MMIfaceModem3gpp *self,
                                         user_data,
                                         modem_3gpp_load_subscription_state);
 
-   /* Reloading subscription state only occurs on a successfully registered
-    * modem. (Although the 3GPP interface does not reflect this until after
-    * loading operator information completes.)
-    * By default, we can assume that successful registration implies a
-    * provisioned SIM.
-    */
-    mm_dbg ("Load subscription state: Marking the SIM as provisioned.");
     g_simple_async_result_set_op_res_gpointer (
         result,
-        GUINT_TO_POINTER (MM_MODEM_3GPP_SUBSCRIPTION_STATE_PROVISIONED),
+        GUINT_TO_POINTER (MM_MODEM_3GPP_SUBSCRIPTION_STATE_UNKNOWN),
         NULL);
 
     g_simple_async_result_complete_in_idle (result);
@@ -3495,7 +3520,7 @@ modem_3gpp_setup_unsolicited_registration_events_finish (MMIfaceModem3gpp *self,
 }
 
 static void
-registration_state_changed (MMAtSerialPort *port,
+registration_state_changed (MMPortSerialAt *port,
                             GMatchInfo *match_info,
                             MMBroadbandModem *self)
 {
@@ -3546,7 +3571,7 @@ modem_3gpp_setup_unsolicited_registration_events (MMIfaceModem3gpp *self,
                                                   gpointer user_data)
 {
     GSimpleAsyncResult *result;
-    MMAtSerialPort *ports[2];
+    MMPortSerialAt *ports[2];
     GPtrArray *array;
     guint i;
     guint j;
@@ -3568,10 +3593,10 @@ modem_3gpp_setup_unsolicited_registration_events (MMIfaceModem3gpp *self,
         mm_dbg ("(%s) setting up 3GPP unsolicited registration messages handlers",
                 mm_port_get_device (MM_PORT (ports[i])));
         for (j = 0; j < array->len; j++) {
-            mm_at_serial_port_add_unsolicited_msg_handler (
-                MM_AT_SERIAL_PORT (ports[i]),
+            mm_port_serial_at_add_unsolicited_msg_handler (
+                MM_PORT_SERIAL_AT (ports[i]),
                 (GRegex *) g_ptr_array_index (array, j),
-                (MMAtSerialUnsolicitedMsgFn)registration_state_changed,
+                (MMPortSerialAtUnsolicitedMsgFn)registration_state_changed,
                 self,
                 NULL);
         }
@@ -3600,7 +3625,7 @@ modem_3gpp_cleanup_unsolicited_registration_events (MMIfaceModem3gpp *self,
                                                     gpointer user_data)
 {
     GSimpleAsyncResult *result;
-    MMAtSerialPort *ports[2];
+    MMPortSerialAt *ports[2];
     GPtrArray *array;
     guint i;
     guint j;
@@ -3623,8 +3648,8 @@ modem_3gpp_cleanup_unsolicited_registration_events (MMIfaceModem3gpp *self,
                 mm_port_get_device (MM_PORT (ports[i])));
 
         for (j = 0; j < array->len; j++) {
-            mm_at_serial_port_add_unsolicited_msg_handler (
-                MM_AT_SERIAL_PORT (ports[i]),
+            mm_port_serial_at_add_unsolicited_msg_handler (
+                MM_PORT_SERIAL_AT (ports[i]),
                 (GRegex *) g_ptr_array_index (array, j),
                 NULL,
                 NULL,
@@ -4124,7 +4149,7 @@ unsolicited_registration_events_sequence_ready (MMBroadbandModem *self,
 {
     GError *error = NULL;
     GVariant *command;
-    MMAtSerialPort *secondary;
+    MMPortSerialAt *secondary;
 
     /* Only one must be running */
     g_assert ((ctx->running_cs ? 1 : 0) +
@@ -4841,7 +4866,7 @@ cusd_process_string (MMBroadbandModem *self,
 }
 
 static void
-cusd_received (MMAtSerialPort *port,
+cusd_received (MMPortSerialAt *port,
                GMatchInfo *info,
                MMBroadbandModem *self)
 {
@@ -4860,7 +4885,7 @@ set_unsolicited_result_code_handlers (MMIfaceModem3gppUssd *self,
                                       gpointer user_data)
 {
     GSimpleAsyncResult *result;
-    MMAtSerialPort *ports[2];
+    MMPortSerialAt *ports[2];
     GRegex *cusd_regex;
     guint i;
 
@@ -4881,10 +4906,10 @@ set_unsolicited_result_code_handlers (MMIfaceModem3gppUssd *self,
         mm_dbg ("(%s) %s unsolicited result code handlers",
                 mm_port_get_device (MM_PORT (ports[i])),
                 enable ? "Setting" : "Removing");
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             cusd_regex,
-            enable ? (MMAtSerialUnsolicitedMsgFn) cusd_received : NULL,
+            enable ? (MMPortSerialAtUnsolicitedMsgFn) cusd_received : NULL,
             enable ? self : NULL,
             NULL);
     }
@@ -5657,7 +5682,7 @@ indication_lock_storages_ready (MMBroadbandModem *self,
 }
 
 static void
-cmti_received (MMAtSerialPort *port,
+cmti_received (MMPortSerialAt *port,
                GMatchInfo *info,
                MMBroadbandModem *self)
 {
@@ -5701,7 +5726,7 @@ cmti_received (MMAtSerialPort *port,
 }
 
 static void
-cds_received (MMAtSerialPort *port,
+cds_received (MMPortSerialAt *port,
               GMatchInfo *info,
               MMBroadbandModem *self)
 {
@@ -5740,7 +5765,7 @@ set_messaging_unsolicited_events_handlers (MMIfaceModemMessaging *self,
                                            gpointer user_data)
 {
     GSimpleAsyncResult *result;
-    MMAtSerialPort *ports[2];
+    MMPortSerialAt *ports[2];
     GRegex *cmti_regex;
     GRegex *cds_regex;
     guint i;
@@ -5764,16 +5789,16 @@ set_messaging_unsolicited_events_handlers (MMIfaceModemMessaging *self,
         mm_dbg ("(%s) %s messaging unsolicited events handlers",
                 mm_port_get_device (MM_PORT (ports[i])),
                 enable ? "Setting" : "Removing");
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             cmti_regex,
-            enable ? (MMAtSerialUnsolicitedMsgFn) cmti_received : NULL,
+            enable ? (MMPortSerialAtUnsolicitedMsgFn) cmti_received : NULL,
             enable ? self : NULL,
             NULL);
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             cds_regex,
-            enable ? (MMAtSerialUnsolicitedMsgFn) cds_received : NULL,
+            enable ? (MMPortSerialAtUnsolicitedMsgFn) cds_received : NULL,
             enable ? self : NULL,
             NULL);
     }
@@ -5956,6 +5981,7 @@ sms_text_part_list_ready (MMBroadbandModem *self,
                                          MM_CORE_ERROR_INVALID_ARGS,
                                          "Couldn't parse SMS list response");
         list_parts_context_complete_and_free (ctx);
+        g_match_info_free (match_info);
         g_regex_unref (r);
         return;
     }
@@ -6168,10 +6194,10 @@ modem_messaging_load_initial_sms_parts (MMIfaceModemMessaging *self,
 /*****************************************************************************/
 /* Create SMS (Messaging interface) */
 
-static MMSms *
+static MMBaseSms *
 modem_messaging_create_sms (MMIfaceModemMessaging *self)
 {
-    return mm_sms_new (MM_BASE_MODEM (self));
+    return mm_base_sms_new (MM_BASE_MODEM (self));
 }
 
 /*****************************************************************************/
@@ -6257,7 +6283,7 @@ typedef struct {
 typedef struct {
     MMBroadbandModem *self;
     GSimpleAsyncResult *result;
-    MMQcdmSerialPort *qcdm;
+    MMPortSerialQcdm *qcdm;
 } HdrStateContext;
 
 static void
@@ -6291,15 +6317,17 @@ modem_cdma_get_hdr_state_finish (MMIfaceModemCdma *self,
 }
 
 static void
-hdr_subsys_state_info_ready (MMQcdmSerialPort *port,
-                             GByteArray *response,
-                             GError *error,
+hdr_subsys_state_info_ready (MMPortSerialQcdm *port,
+                             GAsyncResult *res,
                              HdrStateContext *ctx)
 {
     QcdmResult *result;
     HdrStateResults *results;
     gint err = QCDM_SUCCESS;
+    GError *error = NULL;
+    GByteArray *response;
 
+    response = mm_port_serial_qcdm_command_finish (port, res, &error);
     if (error) {
         g_simple_async_result_set_from_error (ctx->result, error);
         hdr_state_context_complete_and_free (ctx);
@@ -6338,7 +6366,7 @@ modem_cdma_get_hdr_state (MMIfaceModemCdma *self,
                           GAsyncReadyCallback callback,
                           gpointer user_data)
 {
-    MMQcdmSerialPort *qcdm;
+    MMPortSerialQcdm *qcdm;
     HdrStateContext *ctx;
     GByteArray *hdrstate;
 
@@ -6367,12 +6395,13 @@ modem_cdma_get_hdr_state (MMIfaceModemCdma *self,
     hdrstate->len = qcdm_cmd_hdr_subsys_state_info_new ((gchar *) hdrstate->data, 25);
     g_assert (hdrstate->len);
 
-    mm_qcdm_serial_port_queue_command (ctx->qcdm,
-                                       hdrstate,
-                                       3,
-                                       NULL,
-                                       (MMQcdmSerialResponseFn)hdr_subsys_state_info_ready,
-                                       ctx);
+    mm_port_serial_qcdm_command (ctx->qcdm,
+                                 hdrstate,
+                                 3,
+                                 NULL,
+                                 (GAsyncReadyCallback)hdr_subsys_state_info_ready,
+                                 ctx);
+    g_byte_array_unref (hdrstate);
 }
 
 /*****************************************************************************/
@@ -6386,7 +6415,7 @@ typedef struct {
 typedef struct {
     MMBroadbandModem *self;
     GSimpleAsyncResult *result;
-    MMQcdmSerialPort *qcdm;
+    MMPortSerialQcdm *qcdm;
 } CallManagerStateContext;
 
 static void
@@ -6418,17 +6447,19 @@ modem_cdma_get_call_manager_state_finish (MMIfaceModemCdma *self,
 }
 
 static void
-cm_subsys_state_info_ready (MMQcdmSerialPort *port,
-                            GByteArray *response,
-                            GError *error,
+cm_subsys_state_info_ready (MMPortSerialQcdm *port,
+                            GAsyncResult *res,
                             CallManagerStateContext *ctx)
 {
     QcdmResult *result;
     CallManagerStateResults *results;
     gint err = QCDM_SUCCESS;
+    GError *error = NULL;
+    GByteArray *response;
 
+    response = mm_port_serial_qcdm_command_finish (port, res, &error);
     if (error) {
-        g_simple_async_result_set_from_error (ctx->result, error);
+        g_simple_async_result_take_error (ctx->result, error);
         call_manager_state_context_complete_and_free (ctx);
         return;
     }
@@ -6437,6 +6468,7 @@ cm_subsys_state_info_ready (MMQcdmSerialPort *port,
     result = qcdm_cmd_cm_subsys_state_info_result ((const gchar *) response->data,
                                                    response->len,
                                                    &err);
+    g_byte_array_unref (response);
     if (!result) {
         g_simple_async_result_set_error (ctx->result,
                                          MM_CORE_ERROR,
@@ -6462,7 +6494,7 @@ modem_cdma_get_call_manager_state (MMIfaceModemCdma *self,
                                    GAsyncReadyCallback callback,
                                    gpointer user_data)
 {
-    MMQcdmSerialPort *qcdm;
+    MMPortSerialQcdm *qcdm;
     CallManagerStateContext *ctx;
     GByteArray *cmstate;
 
@@ -6491,12 +6523,13 @@ modem_cdma_get_call_manager_state (MMIfaceModemCdma *self,
     cmstate->len = qcdm_cmd_cm_subsys_state_info_new ((gchar *) cmstate->data, 25);
     g_assert (cmstate->len);
 
-    mm_qcdm_serial_port_queue_command (ctx->qcdm,
-                                       cmstate,
-                                       3,
-                                       NULL,
-                                       (MMQcdmSerialResponseFn)cm_subsys_state_info_ready,
-                                       ctx);
+    mm_port_serial_qcdm_command (ctx->qcdm,
+                                 cmstate,
+                                 3,
+                                 NULL,
+                                 (GAsyncReadyCallback)cm_subsys_state_info_ready,
+                                 ctx);
+    g_byte_array_unref (cmstate);
 }
 
 /*****************************************************************************/
@@ -6512,7 +6545,7 @@ typedef struct {
 typedef struct {
     MMBroadbandModem *self;
     GSimpleAsyncResult *result;
-    MMQcdmSerialPort *qcdm;
+    MMPortSerialQcdm *qcdm;
 } Cdma1xServingSystemContext;
 
 static void
@@ -6686,18 +6719,20 @@ css_query_ready (MMIfaceModemCdma *self,
 }
 
 static void
-qcdm_cdma_status_ready (MMQcdmSerialPort *port,
-                        GByteArray *response,
-                        GError *error,
+qcdm_cdma_status_ready (MMPortSerialQcdm *port,
+                        GAsyncResult *res,
                         Cdma1xServingSystemContext *ctx)
 {
     Cdma1xServingSystemResults *results;
-    QcdmResult *result;
+    QcdmResult *result = NULL;
     guint32 sid = MM_MODEM_CDMA_SID_UNKNOWN;
     guint32 nid = MM_MODEM_CDMA_NID_UNKNOWN;
     guint32 rxstate = 0;
     gint err = QCDM_SUCCESS;
+    GError *error = NULL;
+    GByteArray *response;
 
+    response = mm_port_serial_qcdm_command_finish (port, res, &error);
     if (error ||
         (result = qcdm_cmd_cdma_status_result ((const gchar *) response->data,
                                                response->len,
@@ -6711,8 +6746,14 @@ qcdm_cdma_status_ready (MMQcdmSerialPort *port,
                                   FALSE,
                                   (GAsyncReadyCallback)css_query_ready,
                                   ctx);
+        if (error)
+            g_error_free (error);
+        if (response)
+            g_byte_array_unref (response);
         return;
     }
+
+    g_byte_array_unref (response);
 
     qcdm_result_get_u32 (result, QCDM_CMD_CDMA_STATUS_ITEM_RX_STATE, &rxstate);
     qcdm_result_get_u32 (result, QCDM_CMD_CDMA_STATUS_ITEM_SID, &sid);
@@ -6764,12 +6805,13 @@ modem_cdma_get_cdma1x_serving_system (MMIfaceModemCdma *self,
         cdma_status = g_byte_array_sized_new (25);
         cdma_status->len = qcdm_cmd_cdma_status_new ((char *) cdma_status->data, 25);
         g_assert (cdma_status->len);
-        mm_qcdm_serial_port_queue_command (ctx->qcdm,
-                                           cdma_status,
-                                           3,
-                                           NULL,
-                                           (MMQcdmSerialResponseFn)qcdm_cdma_status_ready,
-                                           ctx);
+        mm_port_serial_qcdm_command (ctx->qcdm,
+                                     cdma_status,
+                                     3,
+                                     NULL,
+                                     (GAsyncReadyCallback)qcdm_cdma_status_ready,
+                                     ctx);
+        g_byte_array_unref (cdma_status);
         return;
     }
 
@@ -6860,7 +6902,7 @@ typedef struct {
 typedef struct {
     MMBroadbandModem *self;
     GSimpleAsyncResult *result;
-    MMAtSerialPort *port;
+    MMPortSerialAt *port;
     MMModemCdmaRegistrationState cdma1x_state;
     MMModemCdmaRegistrationState evdo_state;
     GError *error;
@@ -7005,7 +7047,7 @@ modem_cdma_get_detailed_registration_state (MMIfaceModemCdma *self,
                                             GAsyncReadyCallback callback,
                                             gpointer user_data)
 {
-    MMAtSerialPort *port;
+    MMPortSerialAt *port;
     GError *error = NULL;
     DetailedRegistrationStateContext *ctx;
 
@@ -7493,7 +7535,7 @@ static const gchar *secondary_init_sequence[] = {
 static void
 setup_ports (MMBroadbandModem *self)
 {
-    MMAtSerialPort *ports[2];
+    MMPortSerialAt *ports[2];
     GRegex *regex;
     GPtrArray *array;
     gint i, j;
@@ -7503,12 +7545,12 @@ setup_ports (MMBroadbandModem *self)
 
     if (ports[0])
         g_object_set (ports[0],
-                      MM_AT_SERIAL_PORT_INIT_SEQUENCE, primary_init_sequence,
+                      MM_PORT_SERIAL_AT_INIT_SEQUENCE, primary_init_sequence,
                       NULL);
 
     if (ports[1])
         g_object_set (ports[1],
-                      MM_AT_SERIAL_PORT_INIT_SEQUENCE, secondary_init_sequence,
+                      MM_PORT_SERIAL_AT_INIT_SEQUENCE, secondary_init_sequence,
                       NULL);
 
     /* Cleanup all unsolicited message handlers in all AT ports */
@@ -7520,7 +7562,7 @@ setup_ports (MMBroadbandModem *self)
             continue;
 
         for (j = 0; j < array->len; j++) {
-            mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (ports[i]),
+            mm_port_serial_at_add_unsolicited_msg_handler (MM_PORT_SERIAL_AT (ports[i]),
                                                            (GRegex *)g_ptr_array_index (array, j),
                                                            NULL,
                                                            NULL,
@@ -7535,7 +7577,7 @@ setup_ports (MMBroadbandModem *self)
         if (!ports[i])
             continue;
 
-        mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (ports[i]),
+        mm_port_serial_at_add_unsolicited_msg_handler (MM_PORT_SERIAL_AT (ports[i]),
                                                        regex,
                                                        NULL,
                                                        NULL,
@@ -7549,7 +7591,7 @@ setup_ports (MMBroadbandModem *self)
         if (!ports[i])
             continue;
 
-        mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (ports[i]),
+        mm_port_serial_at_add_unsolicited_msg_handler (MM_PORT_SERIAL_AT (ports[i]),
                                                        regex,
                                                        NULL,
                                                        NULL,
@@ -7563,7 +7605,7 @@ setup_ports (MMBroadbandModem *self)
         if (!ports[i])
             continue;
 
-        mm_at_serial_port_add_unsolicited_msg_handler (MM_AT_SERIAL_PORT (ports[i]),
+        mm_port_serial_at_add_unsolicited_msg_handler (MM_PORT_SERIAL_AT (ports[i]),
                                                        regex,
                                                        NULL,
                                                        NULL,
@@ -7578,11 +7620,11 @@ setup_ports (MMBroadbandModem *self)
 struct _PortsContext {
     volatile gint ref_count;
 
-    MMAtSerialPort *primary;
+    MMPortSerialAt *primary;
     gboolean primary_open;
-    MMAtSerialPort *secondary;
+    MMPortSerialAt *secondary;
     gboolean secondary_open;
-    MMQcdmSerialPort *qcdm;
+    MMPortSerialQcdm *qcdm;
     gboolean qcdm_open;
 };
 
@@ -7599,17 +7641,17 @@ ports_context_unref (PortsContext *ctx)
     if (g_atomic_int_dec_and_test (&ctx->ref_count)) {
         if (ctx->primary) {
             if (ctx->primary_open)
-                mm_serial_port_close (MM_SERIAL_PORT (ctx->primary));
+                mm_port_serial_close (MM_PORT_SERIAL (ctx->primary));
             g_object_unref (ctx->primary);
         }
         if (ctx->secondary) {
             if (ctx->secondary_open)
-                mm_serial_port_close (MM_SERIAL_PORT (ctx->secondary));
+                mm_port_serial_close (MM_PORT_SERIAL (ctx->secondary));
             g_object_unref (ctx->secondary);
         }
         if (ctx->qcdm) {
             if (ctx->qcdm_open)
-                mm_serial_port_close (MM_SERIAL_PORT (ctx->qcdm));
+                mm_port_serial_close (MM_PORT_SERIAL (ctx->qcdm));
             g_object_unref (ctx->qcdm);
         }
         g_free (ctx);
@@ -7679,7 +7721,7 @@ open_ports_initialization (MMBroadbandModem *self,
      * We do keep the primary port open during the whole initialization
      * sequence. Note that this port is not really passed to the interfaces,
      * they will get the primary port themselves. */
-    if (!mm_serial_port_open (MM_SERIAL_PORT (ctx->primary), error)) {
+    if (!mm_port_serial_open (MM_PORT_SERIAL (ctx->primary), error)) {
         g_prefix_error (error, "Couldn't open primary port: ");
         return FALSE;
     }
@@ -7807,14 +7849,14 @@ enabling_after_modem_init_timeout (EnablingStartedContext *ctx)
 {
     /* Reset init sequence enabled flags and run them explicitly */
     g_object_set (ctx->ports->primary,
-                  MM_AT_SERIAL_PORT_INIT_SEQUENCE_ENABLED, TRUE,
+                  MM_PORT_SERIAL_AT_INIT_SEQUENCE_ENABLED, TRUE,
                   NULL);
-    mm_at_serial_port_run_init_sequence (ctx->ports->primary);
+    mm_port_serial_at_run_init_sequence (ctx->ports->primary);
     if (ctx->ports->secondary) {
         g_object_set (ctx->ports->secondary,
-                      MM_AT_SERIAL_PORT_INIT_SEQUENCE_ENABLED, TRUE,
+                      MM_PORT_SERIAL_AT_INIT_SEQUENCE_ENABLED, TRUE,
                       NULL);
-        mm_at_serial_port_run_init_sequence (ctx->ports->secondary);
+        mm_port_serial_at_run_init_sequence (ctx->ports->secondary);
     }
 
     /* Store enabled ports context and complete */
@@ -7846,17 +7888,18 @@ enabling_modem_init_ready (MMBroadbandModem *self,
 }
 
 static void
-enabling_flash_done (MMSerialPort *port,
-                     GError *error,
+enabling_flash_done (MMPortSerial *port,
+                     GAsyncResult *res,
                      EnablingStartedContext *ctx)
 {
-    if (error) {
+    GError *error = NULL;
+
+    if (!mm_port_serial_flash_finish (port, res, &error)) {
         g_prefix_error (&error, "Primary port flashing failed: ");
-        g_simple_async_result_set_from_error (ctx->result, error);
+        g_simple_async_result_take_error (ctx->result, error);
         enabling_started_context_complete_and_free (ctx);
         return;
     }
-
 
     if (ctx->modem_init_required) {
         mm_dbg ("Running modem initialization sequence...");
@@ -7891,11 +7934,11 @@ open_ports_enabling (MMBroadbandModem *self,
     /* If we'll need to run modem initialization, disable port init sequence */
     if (modem_init_required)
         g_object_set (ctx->primary,
-                      MM_AT_SERIAL_PORT_INIT_SEQUENCE_ENABLED, FALSE,
+                      MM_PORT_SERIAL_AT_INIT_SEQUENCE_ENABLED, FALSE,
                       NULL);
 
 
-    if (!mm_serial_port_open (MM_SERIAL_PORT (ctx->primary), error)) {
+    if (!mm_port_serial_open (MM_PORT_SERIAL (ctx->primary), error)) {
         g_prefix_error (error, "Couldn't open primary port: ");
         return FALSE;
     }
@@ -7908,9 +7951,9 @@ open_ports_enabling (MMBroadbandModem *self,
         /* If we'll need to run modem initialization, disable port init sequence */
         if (modem_init_required)
             g_object_set (ctx->secondary,
-                          MM_AT_SERIAL_PORT_INIT_SEQUENCE_ENABLED, FALSE,
+                          MM_PORT_SERIAL_AT_INIT_SEQUENCE_ENABLED, FALSE,
                           NULL);
-        if (!mm_serial_port_open (MM_SERIAL_PORT (ctx->secondary), error)) {
+        if (!mm_port_serial_open (MM_PORT_SERIAL (ctx->secondary), error)) {
             g_prefix_error (error, "Couldn't open secondary port: ");
             return FALSE;
         }
@@ -7920,7 +7963,7 @@ open_ports_enabling (MMBroadbandModem *self,
     /* Open qcdm (optional) */
     ctx->qcdm = mm_base_modem_get_port_qcdm (MM_BASE_MODEM (self));
     if (ctx->qcdm) {
-        if (!mm_serial_port_open (MM_SERIAL_PORT (ctx->qcdm), error)) {
+        if (!mm_port_serial_open (MM_PORT_SERIAL (ctx->qcdm), error)) {
             g_prefix_error (error, "Couldn't open QCDM port: ");
             return FALSE;
         }
@@ -7971,10 +8014,10 @@ enabling_started (MMBroadbandModem *self,
 
     /* Ports were correctly opened, now flash the primary port */
     mm_dbg ("Flashing primary AT port before enabling...");
-    mm_serial_port_flash (MM_SERIAL_PORT (ctx->ports->primary),
+    mm_port_serial_flash (MM_PORT_SERIAL (ctx->ports->primary),
                           100,
                           FALSE,
-                          (MMSerialFlashFn)enabling_flash_done,
+                          (GAsyncReadyCallback)enabling_flash_done,
                           ctx);
 }
 
@@ -8682,11 +8725,11 @@ enable (MMBaseModem *self,
     /* Check state before launching modem enabling */
     switch (MM_BROADBAND_MODEM (self)->priv->modem_state) {
     case MM_MODEM_STATE_UNKNOWN:
-    case MM_MODEM_STATE_FAILED:
-        /* We should never have a UNKNOWN|FAILED->ENABLED transition */
+        /* We should never have a UNKNOWN->ENABLED transition */
         g_assert_not_reached ();
         break;
 
+    case MM_MODEM_STATE_FAILED:
     case MM_MODEM_STATE_INITIALIZING:
         g_simple_async_result_set_error (result,
                                          MM_CORE_ERROR,
@@ -9249,6 +9292,12 @@ mm_broadband_modem_take_and_convert_to_current_charset (MMBroadbandModem *self,
     return mm_utf8_take_and_convert_to_charset (str, self->priv->modem_current_charset);
 }
 
+MMModemCharset
+mm_broadband_modem_get_current_charset (MMBroadbandModem *self)
+{
+    return self->priv->modem_current_charset;
+}
+
 gchar *
 mm_broadband_modem_create_device_identifier (MMBroadbandModem *self,
                                              const gchar *ati,
@@ -9498,7 +9547,7 @@ static void
 mm_broadband_modem_init (MMBroadbandModem *self)
 {
     /* Initialize private data */
-    self->priv = G_TYPE_INSTANCE_GET_PRIVATE ((self),
+    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
                                               MM_TYPE_BROADBAND_MODEM,
                                               MMBroadbandModemPrivate);
     self->priv->modem_state = MM_MODEM_STATE_UNKNOWN;

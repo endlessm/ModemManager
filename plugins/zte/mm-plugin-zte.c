@@ -30,6 +30,10 @@
 #include "mm-broadband-modem-qmi.h"
 #endif
 
+#if defined WITH_MBIM
+#include "mm-broadband-modem-mbim.h"
+#endif
+
 G_DEFINE_TYPE (MMPluginZte, mm_plugin_zte, MM_TYPE_PLUGIN)
 
 int mm_plugin_major_version = MM_PLUGIN_MAJOR_VERSION;
@@ -75,6 +79,17 @@ create_modem (MMPlugin *self,
     }
 #endif
 
+#if defined WITH_MBIM
+    if (mm_port_probe_list_has_mbim_port (probes)) {
+        mm_dbg ("MBIM-powered ZTE modem found...");
+        return MM_BASE_MODEM (mm_broadband_modem_mbim_new (sysfs_path,
+                                                           drivers,
+                                                           mm_plugin_get_name (self),
+                                                           vendor,
+                                                           product));
+    }
+#endif
+
     if (mm_port_probe_list_is_icera (probes))
         return MM_BASE_MODEM (mm_broadband_modem_zte_icera_new (sysfs_path,
                                                                 drivers,
@@ -96,7 +111,7 @@ grab_port (MMPlugin *self,
            GError **error)
 {
     GUdevDevice *port;
-    MMAtPortFlag pflags = MM_AT_PORT_FLAG_NONE;
+    MMPortSerialAtFlag pflags = MM_PORT_SERIAL_AT_FLAG_NONE;
     MMPortType ptype;
 
     port = mm_port_probe_peek_port (probe);
@@ -117,12 +132,12 @@ grab_port (MMPlugin *self,
             mm_dbg ("ZTE: AT port '%s/%s' flagged as primary",
                     mm_port_probe_get_port_subsys (probe),
                     mm_port_probe_get_port_name (probe));
-            pflags = MM_AT_PORT_FLAG_PRIMARY;
+            pflags = MM_PORT_SERIAL_AT_FLAG_PRIMARY;
         } else if (g_udev_device_get_property_as_boolean (port, "ID_MM_ZTE_PORT_TYPE_AUX")) {
             mm_dbg ("ZTE: AT port '%s/%s' flagged as secondary",
                     mm_port_probe_get_port_subsys (probe),
                     mm_port_probe_get_port_name (probe));
-            pflags = MM_AT_PORT_FLAG_SECONDARY;
+            pflags = MM_PORT_SERIAL_AT_FLAG_SECONDARY;
         }
     }
 
@@ -136,6 +151,7 @@ grab_port (MMPlugin *self,
     return mm_base_modem_grab_port (modem,
                                     mm_port_probe_get_port_subsys (probe),
                                     mm_port_probe_get_port_name (probe),
+                                    mm_port_probe_get_parent_path (probe),
                                     ptype,
                                     pflags,
                                     error);
@@ -158,6 +174,7 @@ mm_plugin_create (void)
                       MM_PLUGIN_ALLOWED_AT,         TRUE,
                       MM_PLUGIN_ALLOWED_QCDM,       TRUE,
                       MM_PLUGIN_ALLOWED_QMI,        TRUE,
+                      MM_PLUGIN_ALLOWED_MBIM,       TRUE,
                       MM_PLUGIN_ICERA_PROBE,        TRUE,
                       NULL));
 }

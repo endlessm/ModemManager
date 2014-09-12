@@ -293,6 +293,7 @@ typedef enum { /*< underscore_name=mm_modem_mode >*/
  * @MM_MODEM_BAND_EUTRAN_XLI: E-UTRAN band XLI.
  * @MM_MODEM_BAND_EUTRAN_XLII: E-UTRAN band XLII.
  * @MM_MODEM_BAND_EUTRAN_XLIII: E-UTRAN band XLIII.
+ * @MM_MODEM_BAND_EUTRAN_XLIV: E-UTRAN band XLIV.
  * @MM_MODEM_BAND_CDMA_BC0_CELLULAR_800: CDMA Band Class 0 (US Cellular 850MHz).
  * @MM_MODEM_BAND_CDMA_BC1_PCS_1900: CDMA Band Class 1 (US PCS 1900MHz).
  * @MM_MODEM_BAND_CDMA_BC2_TACS: CDMA Band Class 2 (UK TACS 900MHz).
@@ -369,6 +370,7 @@ typedef enum { /*< underscore_name=mm_modem_band >*/
     MM_MODEM_BAND_EUTRAN_XLI     = 71,
     MM_MODEM_BAND_EUTRAN_XLII    = 72,
     MM_MODEM_BAND_EUTRAN_XLIII   = 73,
+    MM_MODEM_BAND_EUTRAN_XLIV    = 74,
     /* CDMA Band Classes (see 3GPP2 C.S0057-C) */
     MM_MODEM_BAND_CDMA_BC0_CELLULAR_800   = 128,
     MM_MODEM_BAND_CDMA_BC1_PCS_1900       = 129,
@@ -816,15 +818,17 @@ typedef enum { /*< underscore_name=mm_sms_cdma_service_category >*/
  * @MM_MODEM_LOCATION_SOURCE_GPS_RAW: GPS location given by predefined keys.
  * @MM_MODEM_LOCATION_SOURCE_GPS_NMEA: GPS location given as NMEA traces.
  * @MM_MODEM_LOCATION_SOURCE_CDMA_BS: CDMA base station position.
+ * @MM_MODEM_LOCATION_SOURCE_GPS_UNMANAGED: No location given, just GPS module setup.
  *
  * Sources of location information supported by the modem.
  */
 typedef enum { /*< underscore_name=mm_modem_location_source >*/
-    MM_MODEM_LOCATION_SOURCE_NONE        = 0,
-    MM_MODEM_LOCATION_SOURCE_3GPP_LAC_CI = 1 << 0,
-    MM_MODEM_LOCATION_SOURCE_GPS_RAW     = 1 << 1,
-    MM_MODEM_LOCATION_SOURCE_GPS_NMEA    = 1 << 2,
-    MM_MODEM_LOCATION_SOURCE_CDMA_BS     = 1 << 3,
+    MM_MODEM_LOCATION_SOURCE_NONE          = 0,
+    MM_MODEM_LOCATION_SOURCE_3GPP_LAC_CI   = 1 << 0,
+    MM_MODEM_LOCATION_SOURCE_GPS_RAW       = 1 << 1,
+    MM_MODEM_LOCATION_SOURCE_GPS_NMEA      = 1 << 2,
+    MM_MODEM_LOCATION_SOURCE_CDMA_BS       = 1 << 3,
+    MM_MODEM_LOCATION_SOURCE_GPS_UNMANAGED = 1 << 4,
 } MMModemLocationSource;
 
 /**
@@ -847,8 +851,12 @@ typedef enum { /*< underscore_name=mm_modem_contacts_storage >*/
  * MMBearerIpMethod:
  * @MM_BEARER_IP_METHOD_UNKNOWN: Unknown method.
  * @MM_BEARER_IP_METHOD_PPP: Use PPP to get the address.
- * @MM_BEARER_IP_METHOD_STATIC: Use the provided static IP configuration given by the modem to configure the IP data interface.
- * @MM_BEARER_IP_METHOD_DHCP: Begin DHCP on the data interface to obtain necessary IP configuration details.
+ * @MM_BEARER_IP_METHOD_STATIC: Use the provided static IP configuration given
+ * by the modem to configure the IP data interface.
+ * @MM_BEARER_IP_METHOD_DHCP: Begin DHCP or IPv6 SLAAC on the data interface to
+ * obtain necessary IP configuration details.  For IPv4 bearers DHCP should
+ * be used.  For IPv6 bearers SLAAC should be used to determine the prefix and
+ * any additional details.
  *
  * Type of IP method configuration to be used in a given Bearer.
  */

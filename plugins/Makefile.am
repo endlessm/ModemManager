@@ -1,3 +1,4 @@
+
 include $(top_srcdir)/gtester.make
 
 # Common CPPFLAGS and LDFLAGS
@@ -37,20 +38,80 @@ udevrules_DATA =
 # Unit tests
 noinst_PROGRAMS =
 
+# Helper libs
+noinst_LTLIBRARIES =
+
+########################################
+
+# Common service test support
+
+noinst_LTLIBRARIES += libmm-test-common.la
+
+libmm_test_common_la_SOURCES = \
+	tests/test-fixture.h \
+	tests/test-fixture.c \
+	tests/test-port-context.h \
+	tests/test-port-context.c
+
+libmm_test_common_la_CPPFLAGS = \
+	$(MM_CFLAGS) \
+	-I$(top_srcdir)/include \
+	-I$(top_builddir)/include \
+	-I$(top_srcdir)/libmm-glib \
+	-I$(top_srcdir)/libmm-glib/generated \
+	-I$(top_builddir)/libmm-glib/generated \
+	-I$(top_builddir)/libmm-glib/generated/tests \
+	-DTEST_SERVICES=\""$(abs_top_builddir)/data/tests"\"
+
+libmm_test_common_la_LIBADD = \
+	${top_builddir}/libmm-glib/generated/tests/libmm-test-generated.la \
+	$(top_builddir)/libmm-glib/libmm-glib.la
+
+TEST_COMMON_COMPILER_FLAGS = \
+	$(MM_CFLAGS) \
+	-I$(top_srcdir)/plugins/tests \
+	-I$(top_srcdir)/include \
+	-I$(top_builddir)/include \
+	-I$(top_srcdir)/libmm-glib \
+	-I$(top_srcdir)/libmm-glib/generated \
+	-I$(top_builddir)/libmm-glib/generated \
+	-I$(top_builddir)/libmm-glib/generated/tests \
+	-DCOMMON_GSM_PORT_CONF=\""$(abs_top_srcdir)/plugins/tests/gsm-port.conf"\"
+
+TEST_COMMON_LIBADD_FLAGS = \
+	$(builddir)/libmm-test-common.la \
+	$(top_builddir)/libmm-glib/libmm-glib.la
+
+
 ########################################
 
 # Icera-specific support
-noinst_LTLIBRARIES = libmm-utils-icera.la
+noinst_LTLIBRARIES += libmm-utils-icera.la
 libmm_utils_icera_la_SOURCES = \
 	icera/mm-broadband-modem-icera.h \
 	icera/mm-broadband-modem-icera.c \
 	icera/mm-broadband-bearer-icera.h \
-	icera/mm-broadband-bearer-icera.c
+	icera/mm-broadband-bearer-icera.c \
+	icera/mm-modem-helpers-icera.c \
+	icera/mm-modem-helpers-icera.h
 libmm_utils_icera_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
 libmm_utils_icera_la_LIBADD = $(GUDEV_LIBS) $(MM_LIBS)
 
 ICERA_COMMON_COMPILER_FLAGS = -I$(top_srcdir)/plugins/icera
 ICERA_COMMON_LIBADD_FLAGS = $(builddir)/libmm-utils-icera.la
+
+noinst_PROGRAMS += test-modem-helpers-icera
+test_modem_helpers_icera_SOURCES = \
+	icera/mm-modem-helpers-icera.c \
+	icera/mm-modem-helpers-icera.h \
+	icera/tests/test-modem-helpers-icera.c
+test_modem_helpers_icera_CPPFLAGS = \
+	-I$(top_srcdir)/plugins/icera \
+	$(PLUGIN_COMMON_COMPILER_FLAGS)
+test_modem_helpers_icera_LDADD = \
+       $(top_builddir)/libmm-glib/libmm-glib.la \
+       $(top_builddir)/src/libmodem-helpers.la
+test_modem_helpers_icera_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
 ########################################
 
@@ -89,6 +150,12 @@ libmm_plugin_generic_la_SOURCES = \
 	generic/mm-plugin-generic.h
 libmm_plugin_generic_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
 libmm_plugin_generic_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
+
+noinst_PROGRAMS += test-service-generic
+test_service_generic_SOURCES = generic/tests/test-service-generic.c
+test_service_generic_CPPFLAGS = $(TEST_COMMON_COMPILER_FLAGS)
+test_service_generic_LDADD = $(TEST_COMMON_LIBADD_FLAGS)
+test_service_generic_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
 ## Motorola
 libmm_plugin_motorola_la_SOURCES = \
@@ -146,11 +213,26 @@ libmm_plugin_mbm_la_SOURCES = \
 	mbm/mm-broadband-modem-mbm.h \
 	mbm/mm-broadband-bearer-mbm.c \
 	mbm/mm-broadband-bearer-mbm.h \
+	mbm/mm-modem-helpers-mbm.c \
+	mbm/mm-modem-helpers-mbm.h \
 	mbm/mm-sim-mbm.c \
 	mbm/mm-sim-mbm.h
 libmm_plugin_mbm_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
 libmm_plugin_mbm_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 udevrules_DATA += mbm/77-mm-ericsson-mbm.rules
+
+noinst_PROGRAMS += test-modem-helpers-mbm
+test_modem_helpers_mbm_SOURCES = \
+	mbm/mm-modem-helpers-mbm.c \
+	mbm/mm-modem-helpers-mbm.h \
+	mbm/tests/test-modem-helpers-mbm.c
+test_modem_helpers_mbm_CPPFLAGS = \
+	-I$(top_srcdir)/plugins/mbm \
+	$(PLUGIN_COMMON_COMPILER_FLAGS)
+test_modem_helpers_mbm_LDADD = \
+       $(top_builddir)/libmm-glib/libmm-glib.la \
+       $(top_builddir)/src/libmodem-helpers.la
+test_modem_helpers_mbm_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
 # Option
 libmm_plugin_option_la_SOURCES = \
@@ -309,10 +391,36 @@ libmm_plugin_samsung_la_LIBADD = $(ICERA_COMMON_LIBADD_FLAGS)
 libmm_plugin_cinterion_la_SOURCES = \
 	cinterion/mm-plugin-cinterion.c \
 	cinterion/mm-plugin-cinterion.h \
+	cinterion/mm-modem-helpers-cinterion.c \
+	cinterion/mm-modem-helpers-cinterion.h \
+	cinterion/mm-common-cinterion.c \
+	cinterion/mm-common-cinterion.h \
 	cinterion/mm-broadband-modem-cinterion.c \
 	cinterion/mm-broadband-modem-cinterion.h
+
+if WITH_QMI
+libmm_plugin_cinterion_la_SOURCES += \
+	cinterion/mm-broadband-modem-qmi-cinterion.c \
+	cinterion/mm-broadband-modem-qmi-cinterion.h
+endif
+
 libmm_plugin_cinterion_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
 libmm_plugin_cinterion_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
+
+udevrules_DATA += cinterion/77-mm-cinterion-port-types.rules
+
+noinst_PROGRAMS += test-modem-helpers-cinterion
+test_modem_helpers_cinterion_SOURCES = \
+	cinterion/mm-modem-helpers-cinterion.c \
+	cinterion/mm-modem-helpers-cinterion.h \
+	cinterion/tests/test-modem-helpers-cinterion.c
+test_modem_helpers_cinterion_CPPFLAGS = \
+	-I$(top_srcdir)/plugins/cinterion \
+	$(PLUGIN_COMMON_COMPILER_FLAGS)
+test_modem_helpers_cinterion_LDADD = \
+       $(top_builddir)/libmm-glib/libmm-glib.la \
+       $(top_builddir)/src/libmodem-helpers.la
+test_modem_helpers_cinterion_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
 # Iridium modem
 libmm_plugin_iridium_la_SOURCES = \
@@ -406,7 +514,8 @@ udevrules_DATA += mtk/77-mm-mtk-port-types.rules
 
 # Additional files to include in the distribution
 EXTRA_DIST += \
-	$(udevrules_DATA)
+	$(udevrules_DATA) \
+	tests/gsm-port.conf
 
 # Unit tests
 TEST_PROGS += $(noinst_PROGRAMS)

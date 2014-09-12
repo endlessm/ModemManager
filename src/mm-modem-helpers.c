@@ -495,7 +495,7 @@ mm_3gpp_cusd_regex_get (void)
 GRegex *
 mm_3gpp_cmti_regex_get (void)
 {
-    return g_regex_new ("\\r\\n\\+CMTI: \"(\\S+)\",(\\d+)\\r\\n",
+    return g_regex_new ("\\r\\n\\+CMTI:\\s*\"(\\S+)\",\\s*(\\d+)\\r\\n",
                         G_REGEX_RAW | G_REGEX_OPTIMIZE,
                         0,
                         NULL);
@@ -847,7 +847,7 @@ mm_3gpp_parse_cgdcont_read_response (const gchar *reply,
     GMatchInfo *match_info;
     GList *list;
 
-    if (!reply[0])
+    if (!reply || !reply[0])
         /* No APNs configured, all done */
         return NULL;
 
@@ -1188,6 +1188,9 @@ mm_3gpp_parse_cpms_test_response (const gchar *reply,
     GRegex *r;
     gchar **split;
     guint i;
+    GArray *tmp1 = NULL;
+    GArray *tmp2 = NULL;
+    GArray *tmp3 = NULL;
 
     g_assert (mem1 != NULL);
     g_assert (mem2 != NULL);
@@ -1228,27 +1231,42 @@ mm_3gpp_parse_cpms_test_response (const gchar *reply,
                 g_match_info_next (match_info, NULL);
             }
 
-            if (!*mem1)
-                *mem1 = array;
-            else if (!*mem2)
-                *mem2 = array;
-            else if (!*mem3)
-                *mem3 = array;
+            if (!tmp1)
+                tmp1 = array;
+            else if (!tmp2)
+                tmp2 = array;
+            else if (!tmp3)
+                tmp3 = array;
         }
         g_match_info_free (match_info);
 
-        if (*mem3 != NULL)
+        if (tmp3 != NULL)
             break; /* once we got the last group, exit... */
     }
 
     g_strfreev (split);
     g_regex_unref (r);
 
-    g_warn_if_fail (*mem1 != NULL);
-    g_warn_if_fail (*mem2 != NULL);
-    g_warn_if_fail (*mem3 != NULL);
+    g_warn_if_fail (tmp1 != NULL);
+    g_warn_if_fail (tmp2 != NULL);
+    g_warn_if_fail (tmp3 != NULL);
 
-    return (*mem1 && *mem2 && *mem3);
+    /* Only return TRUE if all sets have been parsed correctly */
+    if (tmp1 && tmp2 && tmp3) {
+        *mem1 = tmp1;
+        *mem2 = tmp2;
+        *mem3 = tmp3;
+        return TRUE;
+    }
+
+    /* Otherwise, cleanup and return FALSE */
+    if (tmp1)
+        g_array_unref (tmp1);
+    if (tmp2)
+        g_array_unref (tmp2);
+    if (tmp3)
+        g_array_unref (tmp3);
+    return FALSE;
 }
 
 /*************************************************************************/
@@ -1814,20 +1832,20 @@ mm_3gpp_parse_operator (const gchar *reply,
 
     if (reply && !strncmp (reply, "+COPS: ", 7)) {
         /* Got valid reply */
-		GRegex *r;
-		GMatchInfo *match_info;
+        GRegex *r;
+        GMatchInfo *match_info;
 
-		reply += 7;
-		r = g_regex_new ("(\\d),(\\d),\"(.+)\"", G_REGEX_UNGREEDY, 0, NULL);
-		if (!r)
+        reply += 7;
+        r = g_regex_new ("(\\d),(\\d),\"(.+)\"", G_REGEX_UNGREEDY, 0, NULL);
+        if (!r)
             return NULL;
 
-		g_regex_match (r, reply, 0, &match_info);
-		if (g_match_info_matches (match_info))
+        g_regex_match (r, reply, 0, &match_info);
+        if (g_match_info_matches (match_info))
             operator = g_match_info_fetch (match_info, 3);
 
-		g_match_info_free (match_info);
-		g_regex_unref (r);
+        g_match_info_free (match_info);
+        g_regex_unref (r);
     }
 
     if (operator) {
