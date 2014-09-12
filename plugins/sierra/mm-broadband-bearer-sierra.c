@@ -34,6 +34,16 @@
 
 G_DEFINE_TYPE (MMBroadbandBearerSierra, mm_broadband_bearer_sierra, MM_TYPE_BROADBAND_BEARER);
 
+struct _MMBroadbandBearerSierraPrivate {
+    gboolean is_icera;
+};
+
+enum {
+    PROP_0,
+    PROP_IS_ICERA,
+    PROP_LAST
+};
+
 /*****************************************************************************/
 /* 3GPP Dialing (sub-step of the 3GPP Connection sequence) */
 
@@ -48,7 +58,7 @@ typedef enum {
 typedef struct {
     MMBroadbandBearerSierra *self;
     MMBaseModem *modem;
-    MMAtSerialPort *primary;
+    MMPortSerialAt *primary;
     guint cid;
     GCancellable *cancellable;
     GSimpleAsyncResult *result;
@@ -109,7 +119,7 @@ scact_ready (MMBaseModem *modem,
 {
     GError *error = NULL;
 
-    if (!mm_base_modem_at_command_full_finish (MM_BASE_MODEM (modem), res, &error)) {
+    if (!mm_base_modem_at_command_full_finish (modem, res, &error)) {
         g_simple_async_result_take_error (ctx->result, error);
         dial_3gpp_context_complete_and_free (ctx);
         return;
@@ -127,7 +137,7 @@ authenticate_ready (MMBaseModem *modem,
 {
     GError *error = NULL;
 
-    if (!mm_base_modem_at_command_full_finish (MM_BASE_MODEM (modem), res, &error)) {
+    if (!mm_base_modem_at_command_full_finish (modem, res, &error)) {
         g_simple_async_result_take_error (ctx->result, error);
         dial_3gpp_context_complete_and_free (ctx);
         return;
@@ -145,7 +155,7 @@ cgatt_ready (MMBaseModem *modem,
 {
     GError *error = NULL;
 
-    if (!mm_base_modem_at_command_full_finish (MM_BASE_MODEM (modem), res, &error)) {
+    if (!mm_base_modem_at_command_full_finish (modem, res, &error)) {
         g_simple_async_result_take_error (ctx->result, error);
         dial_3gpp_context_complete_and_free (ctx);
         return;
@@ -174,7 +184,7 @@ dial_3gpp_context_step (Dial3gppContext *ctx)
         ctx->step++;
 
     case DIAL_3GPP_STEP_PS_ATTACH:
-        mm_base_modem_at_command_full (MM_BASE_MODEM (ctx->modem),
+        mm_base_modem_at_command_full (ctx->modem,
                                        ctx->primary,
                                        "+CGATT=1",
                                        10,
@@ -186,19 +196,22 @@ dial_3gpp_context_step (Dial3gppContext *ctx)
         return;
 
     case DIAL_3GPP_STEP_AUTHENTICATE:
-        if (!MM_IS_AT_SERIAL_PORT (ctx->data)) {
+        if (!MM_IS_PORT_SERIAL_AT (ctx->data)) {
             gchar *command;
             const gchar *user;
             const gchar *password;
             MMBearerAllowedAuth allowed_auth;
 
-            user = mm_bearer_properties_get_user (mm_bearer_peek_config (MM_BEARER (ctx->self)));
-            password = mm_bearer_properties_get_password (mm_bearer_peek_config (MM_BEARER (ctx->self)));
-            allowed_auth = mm_bearer_properties_get_allowed_auth (mm_bearer_peek_config (MM_BEARER (ctx->self)));
+            user = mm_bearer_properties_get_user (mm_base_bearer_peek_config (MM_BASE_BEARER (ctx->self)));
+            password = mm_bearer_properties_get_password (mm_base_bearer_peek_config (MM_BASE_BEARER (ctx->self)));
+            allowed_auth = mm_bearer_properties_get_allowed_auth (mm_base_bearer_peek_config (MM_BASE_BEARER (ctx->self)));
 
             if (!user || !password || allowed_auth == MM_BEARER_ALLOWED_AUTH_NONE) {
                 mm_dbg ("Not using authentication");
-                command = g_strdup_printf ("$QCPDPP=%d,0", ctx->cid);
+                if (ctx->self->priv->is_icera)
+                    command = g_strdup_printf ("%%IPDPCFG=%d,0,0,\"\",\"\"", ctx->cid);
+                else
+                    command = g_strdup_printf ("$QCPDPP=%d,0", ctx->cid);
             } else {
                 gchar *quoted_user;
                 gchar *quoted_password;
@@ -228,13 +241,22 @@ dial_3gpp_context_step (Dial3gppContext *ctx)
                     return;
                 }
 
-                quoted_user = mm_at_serial_port_quote_string (user);
-                quoted_password = mm_at_serial_port_quote_string (password);
-                command = g_strdup_printf ("$QCPDPP=%d,%u,%s,%s",
-                                           ctx->cid,
-                                           sierra_auth,
-                                           quoted_password,
-                                           quoted_user);
+                quoted_user = mm_port_serial_at_quote_string (user);
+                quoted_password = mm_port_serial_at_quote_string (password);
+                if (ctx->self->priv->is_icera) {
+                    command = g_strdup_printf ("%%IPDPCFG=%d,0,%u,%s,%s",
+                                               ctx->cid,
+                                               sierra_auth,
+                                               quoted_user,
+                                               quoted_password);
+                } else {
+                    /* Yes, password comes first... */
+                    command = g_strdup_printf ("$QCPDPP=%d,%u,%s,%s",
+                                               ctx->cid,
+                                               sierra_auth,
+                                               quoted_password,
+                                               quoted_user);
+                }
                 g_free (quoted_user);
                 g_free (quoted_password);
             }
@@ -298,7 +320,7 @@ dial_3gpp_context_step (Dial3gppContext *ctx)
 static void
 dial_3gpp (MMBroadbandBearer *self,
            MMBaseModem *modem,
-           MMAtSerialPort *primary,
+           MMPortSerialAt *primary,
            guint cid,
            GCancellable *cancellable,
            GAsyncReadyCallback callback,
@@ -359,7 +381,7 @@ disconnect_scact_ready (MMBaseModem *modem,
     GError *error = NULL;
 
     /* Ignore errors for now */
-    mm_base_modem_at_command_full_finish (MM_BASE_MODEM (modem), res, &error);
+    mm_base_modem_at_command_full_finish (modem, res, &error);
     if (error) {
         mm_dbg ("Disconnection failed (not fatal): %s", error->message);
         g_error_free (error);
@@ -373,8 +395,8 @@ disconnect_scact_ready (MMBaseModem *modem,
 static void
 disconnect_3gpp (MMBroadbandBearer *self,
                  MMBroadbandModem *modem,
-                 MMAtSerialPort *primary,
-                 MMAtSerialPort *secondary,
+                 MMPortSerialAt *primary,
+                 MMPortSerialAt *secondary,
                  MMPort *data,
                  guint cid,
                  GAsyncReadyCallback callback,
@@ -389,7 +411,7 @@ disconnect_3gpp (MMBroadbandBearer *self,
                                         user_data,
                                         disconnect_3gpp);
 
-    if (!MM_IS_AT_SERIAL_PORT (data)) {
+    if (!MM_IS_PORT_SERIAL_AT (data)) {
         gchar *command;
 
         /* Use specific CID */
@@ -421,7 +443,9 @@ disconnect_3gpp (MMBroadbandBearer *self,
 
 /*****************************************************************************/
 
-MMBearer *
+#define MM_BROADBAND_BEARER_SIERRA_IS_ICERA "is-icera"
+
+MMBaseBearer *
 mm_broadband_bearer_sierra_new_finish (GAsyncResult *res,
                                        GError **error)
 {
@@ -436,14 +460,15 @@ mm_broadband_bearer_sierra_new_finish (GAsyncResult *res,
         return NULL;
 
     /* Only export valid bearers */
-    mm_bearer_export (MM_BEARER (bearer));
+    mm_base_bearer_export (MM_BASE_BEARER (bearer));
 
-    return MM_BEARER (bearer);
+    return MM_BASE_BEARER (bearer);
 }
 
 void
-mm_broadband_bearer_sierra_new (MMBroadbandModemSierra *modem,
+mm_broadband_bearer_sierra_new (MMBroadbandModem *modem,
                                 MMBearerProperties *config,
+                                gboolean is_icera,
                                 GCancellable *cancellable,
                                 GAsyncReadyCallback callback,
                                 gpointer user_data)
@@ -454,23 +479,76 @@ mm_broadband_bearer_sierra_new (MMBroadbandModemSierra *modem,
         cancellable,
         callback,
         user_data,
-        MM_BEARER_MODEM, modem,
-        MM_BEARER_CONFIG, config,
+        MM_BASE_BEARER_MODEM, modem,
+        MM_BASE_BEARER_CONFIG, config,
+        MM_BROADBAND_BEARER_SIERRA_IS_ICERA, is_icera,
         NULL);
+}
+
+static void
+set_property (GObject *object,
+              guint prop_id,
+              const GValue *value,
+              GParamSpec *pspec)
+{
+    MMBroadbandBearerSierra *self = MM_BROADBAND_BEARER_SIERRA (object);
+
+    switch (prop_id) {
+    case PROP_IS_ICERA:
+        self->priv->is_icera = g_value_get_boolean (value);
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        break;
+    }
+}
+
+static void
+get_property (GObject *object,
+              guint prop_id,
+              GValue *value,
+              GParamSpec *pspec)
+{
+    MMBroadbandBearerSierra *self = MM_BROADBAND_BEARER_SIERRA (object);
+
+    switch (prop_id) {
+    case PROP_IS_ICERA:
+        g_value_set_boolean (value, self->priv->is_icera);
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        break;
+    }
 }
 
 static void
 mm_broadband_bearer_sierra_init (MMBroadbandBearerSierra *self)
 {
+    /* Initialize private data */
+    self->priv = G_TYPE_INSTANCE_GET_PRIVATE ((self),
+                                              MM_TYPE_BROADBAND_BEARER_SIERRA,
+                                              MMBroadbandBearerSierraPrivate);
 }
 
 static void
 mm_broadband_bearer_sierra_class_init (MMBroadbandBearerSierraClass *klass)
 {
+    GObjectClass *object_class = G_OBJECT_CLASS (klass);
     MMBroadbandBearerClass *broadband_bearer_class = MM_BROADBAND_BEARER_CLASS (klass);
 
+    g_type_class_add_private (object_class, sizeof (MMBroadbandBearerSierraPrivate));
+
+    object_class->set_property = set_property;
+    object_class->get_property = get_property;
     broadband_bearer_class->dial_3gpp = dial_3gpp;
     broadband_bearer_class->dial_3gpp_finish = dial_3gpp_finish;
     broadband_bearer_class->disconnect_3gpp = disconnect_3gpp;
     broadband_bearer_class->disconnect_3gpp_finish = disconnect_3gpp_finish;
+
+    g_object_class_install_property (object_class, PROP_IS_ICERA,
+        g_param_spec_boolean (MM_BROADBAND_BEARER_SIERRA_IS_ICERA,
+                              "IsIcera",
+                              "Whether the modem uses Icera commands or not.",
+                              FALSE,
+                              G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 }

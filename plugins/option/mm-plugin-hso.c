@@ -51,7 +51,7 @@ hso_custom_init_finish (MMPortProbe *probe,
 
 static void
 hso_custom_init (MMPortProbe *probe,
-                 MMAtSerialPort *port,
+                 MMPortSerialAt *port,
                  GCancellable *cancellable,
                  GAsyncReadyCallback callback,
                  gpointer user_data)
@@ -70,6 +70,7 @@ hso_custom_init (MMPortProbe *probe,
 
         hsotype_path = g_build_filename (sysfs_path, "hsotype", NULL);
         if (g_file_get_contents (hsotype_path, &contents, NULL, NULL)) {
+            mm_dbg ("HSO port type %s: %s", hsotype_path, contents);
             if (g_str_has_prefix (contents, "Control")) {
                 g_object_set_data (G_OBJECT (probe), TAG_HSO_AT_CONTROL, GUINT_TO_POINTER (TRUE));
                 mm_port_probe_set_result_at (probe, TRUE);
@@ -134,24 +135,23 @@ grab_port (MMPlugin *self,
            MMPortProbe *probe,
            GError **error)
 {
-    const gchar *name, *subsys;
-    MMAtPortFlag pflags = MM_AT_PORT_FLAG_NONE;
+    const gchar *subsys;
+    MMPortSerialAtFlag pflags = MM_PORT_SERIAL_AT_FLAG_NONE;
     MMPortType port_type;
 
     subsys = mm_port_probe_get_port_subsys (probe);
-    name = mm_port_probe_get_port_name (probe);
     port_type = mm_port_probe_get_port_type (probe);
 
     /* Detect AT port types */
     if (g_str_equal (subsys, "tty")) {
         if (g_object_get_data (G_OBJECT (probe), TAG_HSO_AT_CONTROL))
-            pflags = MM_AT_PORT_FLAG_PRIMARY;
+            pflags = MM_PORT_SERIAL_AT_FLAG_PRIMARY;
         else if (g_object_get_data (G_OBJECT (probe), TAG_HSO_AT_APP))
-            pflags = MM_AT_PORT_FLAG_SECONDARY;
+            pflags = MM_PORT_SERIAL_AT_FLAG_SECONDARY;
         else if (g_object_get_data (G_OBJECT (probe), TAG_HSO_AT_GPS_CONTROL))
-            pflags = MM_AT_PORT_FLAG_GPS_CONTROL;
+            pflags = MM_PORT_SERIAL_AT_FLAG_GPS_CONTROL;
         else if (g_object_get_data (G_OBJECT (probe), TAG_HSO_AT_MODEM))
-            pflags = MM_AT_PORT_FLAG_PPP;
+            pflags = MM_PORT_SERIAL_AT_FLAG_PPP;
         else if (g_object_get_data (G_OBJECT (probe), TAG_HSO_GPS)) {
             /* Not an AT port, but the port to grab GPS traces */
             g_assert (port_type == MM_PORT_TYPE_UNKNOWN);
@@ -161,7 +161,8 @@ grab_port (MMPlugin *self,
 
     return mm_base_modem_grab_port (modem,
                                     subsys,
-                                    name,
+                                    mm_port_probe_get_port_name (probe),
+                                    mm_port_probe_get_parent_path (probe),
                                     port_type,
                                     pflags,
                                     error);

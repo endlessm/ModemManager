@@ -88,7 +88,7 @@ mm_iface_modem_messaging_bind_simple_status (MMIfaceModemMessaging *self,
 
 /*****************************************************************************/
 
-MMSms *
+MMBaseSms *
 mm_iface_modem_messaging_create_sms (MMIfaceModemMessaging *self)
 {
     g_assert (MM_IFACE_MODEM_MESSAGING_GET_INTERFACE (self)->create_sms != NULL);
@@ -271,7 +271,7 @@ handle_create_auth_ready (MMBaseModem *self,
     MMSmsList *list = NULL;
     GError *error = NULL;
     MMSmsProperties *properties;
-    MMSms *sms;
+    MMBaseSms *sms;
 
     if (!mm_base_modem_authorize_finish (self, res, &error)) {
         g_dbus_method_invocation_take_error (ctx->invocation, error);
@@ -300,9 +300,9 @@ handle_create_auth_ready (MMBaseModem *self,
         return;
     }
 
-    sms = mm_sms_new_from_properties (MM_BASE_MODEM (self),
-                                      properties,
-                                      &error);
+    sms = mm_base_sms_new_from_properties (MM_BASE_MODEM (self),
+                                           properties,
+                                           &error);
     if (!sms) {
         g_object_unref (properties);
         g_dbus_method_invocation_take_error (ctx->invocation, error);
@@ -330,7 +330,7 @@ handle_create_auth_ready (MMBaseModem *self,
     /* Complete the DBus call */
     mm_gdbus_modem_messaging_complete_create (ctx->skeleton,
                                               ctx->invocation,
-                                              mm_sms_get_path (sms));
+                                              mm_base_sms_get_path (sms));
     g_object_unref (sms);
 
     g_object_unref (properties);
@@ -808,10 +808,12 @@ load_initial_sms_parts_from_storages (EnablingContext *ctx)
 
     if (!storage_ctx->supported_mem1 || ctx->mem1_storage_index >= storage_ctx->supported_mem1->len)
         all_loaded = TRUE;
-    /* We'll skip the 'MT' storage, as that is a combination of 'SM' and 'ME' */
-    else if (g_array_index (storage_ctx->supported_mem1,
-                            MMSmsStorage,
-                            ctx->mem1_storage_index) == MM_SMS_STORAGE_MT) {
+    /* We'll skip the 'MT' storage, as that is a combination of 'SM' and 'ME'; but only if
+     * this is not the only one in the list. */
+    else if ((g_array_index (storage_ctx->supported_mem1,
+                             MMSmsStorage,
+                             ctx->mem1_storage_index) == MM_SMS_STORAGE_MT) &&
+             (storage_ctx->supported_mem1->len > 1)) {
         ctx->mem1_storage_index++;
         if (ctx->mem1_storage_index >= storage_ctx->supported_mem1->len)
             all_loaded = TRUE;

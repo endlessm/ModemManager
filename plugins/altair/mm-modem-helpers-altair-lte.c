@@ -14,6 +14,7 @@
  *
  */
 
+#include <stdlib.h>
 #include <string.h>
 
 #include <ModemManager.h>
@@ -21,6 +22,47 @@
 #include <libmm-glib.h>
 
 #include "mm-modem-helpers-altair-lte.h"
+
+#define MM_ALTAIR_IMS_PDN_CID           1
+#define MM_ALTAIR_INTERNET_PDN_CID      3
+
+/*****************************************************************************/
+/* Bands response parser */
+
+GArray *
+mm_altair_parse_bands_response (const gchar *response)
+{
+    gchar **split;
+    GArray *bands;
+    guint i;
+
+    /*
+     * Response is "<band>[,<band>...]"
+     */
+    split = g_strsplit_set (response, ",", -1);
+    if (!split)
+        return NULL;
+
+    bands = g_array_sized_new (FALSE, FALSE, sizeof (MMModemBand), g_strv_length (split));
+
+    for (i = 0; split[i]; i++) {
+        guint32 band_value;
+        MMModemBand band;
+
+        band_value = (guint32)strtoul (split[i], NULL, 10);
+        band = MM_MODEM_BAND_EUTRAN_I - 1 + band_value;
+
+        /* Due to a firmware issue, the modem may incorrectly includes 0 in the
+         * bands response. We thus ignore any band value outside the range of
+         * E-UTRAN operating bands. */
+        if (band >= MM_MODEM_BAND_EUTRAN_I && band <= MM_MODEM_BAND_EUTRAN_XLIV)
+            g_array_append_val (bands, band);
+    }
+
+    g_strfreev (split);
+
+    return bands;
+}
 
 /*****************************************************************************/
 /* +CEER response parser */
@@ -80,6 +122,7 @@ mm_altair_parse_cid (const gchar *response, GError **error)
     regex = g_regex_new ("\\%CGINFO:\\s*(\\d+)", G_REGEX_RAW, 0, NULL);
     g_assert (regex);
     if (!g_regex_match_full (regex, response, strlen (response), 0, 0, &match_info, error)) {
+        g_match_info_free (match_info);
         g_regex_unref (regex);
         return -1;
     }
@@ -97,6 +140,13 @@ mm_altair_parse_cid (const gchar *response, GError **error)
 
 /*****************************************************************************/
 /* %PCOINFO response parser */
+
+typedef enum {
+    MM_VZW_PCO_PROVISIONED = 0,
+    MM_VZW_PCO_LIMIT_REACHED = 1,
+    MM_VZW_PCO_OUT_OF_DATA = 3,
+    MM_VZW_PCO_UNPROVISIONED = 5
+} MMVzwPco;
 
 static guint
 altair_extract_vzw_pco_value (const gchar *pco_payload, GError **error)
@@ -116,8 +166,11 @@ altair_extract_vzw_pco_value (const gchar *pco_payload, GError **error)
                              0,
                              0,
                              &match_info,
-                             error))
+                             error)) {
+        g_match_info_free (match_info);
+        g_regex_unref (regex);
         return -1;
+    }
 
     if (!g_match_info_matches (match_info) ||
         !mm_get_uint_from_match_info (match_info, 1, &pco_value))
@@ -134,9 +187,7 @@ altair_extract_vzw_pco_value (const gchar *pco_payload, GError **error)
 }
 
 guint
-mm_altair_parse_vendor_pco_info (const gchar *pco_info,
-                                 guint cid,
-                                 GError **error)
+mm_altair_parse_vendor_pco_info (const gchar *pco_info, GError **error)
 {
     GRegex *regex;
     GMatchInfo *match_info;
@@ -156,8 +207,11 @@ mm_altair_parse_vendor_pco_info (const gchar *pco_info,
                          G_REGEX_DOLLAR_ENDONLY | G_REGEX_RAW,
                          0, NULL);
     g_assert (regex);
-    if (!g_regex_match_full (regex, pco_info, strlen (pco_info), 0, 0, &match_info, error))
+    if (!g_regex_match_full (regex, pco_info, strlen (pco_info), 0, 0, &match_info, error)) {
+        g_match_info_free (match_info);
+        g_regex_unref (regex);
         return -1;
+    }
 
     num_matches = g_match_info_get_match_count (match_info);
     if (num_matches != 5) {
@@ -166,6 +220,8 @@ mm_altair_parse_vendor_pco_info (const gchar *pco_info,
                      MM_CORE_ERROR_FAILED,
                      "Failed to parse substrings, number of matches: %d",
                      num_matches);
+        g_match_info_free (match_info);
+        g_regex_unref (regex);
         return -1;
     }
 
@@ -183,11 +239,6 @@ mm_altair_parse_vendor_pco_info (const gchar *pco_info,
             break;
         }
 
-        if (pco_cid != cid) {
-            g_match_info_next (match_info, error);
-            continue;
-        }
-
         pco_id = mm_get_string_unquoted_from_match_info (match_info, 3);
         if (!pco_id) {
             g_set_error (error,
@@ -198,9 +249,11 @@ mm_altair_parse_vendor_pco_info (const gchar *pco_info,
         }
 
         if (g_strcmp0 (pco_id, "FF00")) {
+            g_free (pco_id);
             g_match_info_next (match_info, error);
             continue;
         }
+        g_free (pco_id);
 
         pco_payload = mm_get_string_unquoted_from_match_info (match_info, 4);
         if (!pco_payload) {
@@ -213,7 +266,15 @@ mm_altair_parse_vendor_pco_info (const gchar *pco_info,
         }
 
         pco_value = altair_extract_vzw_pco_value (pco_payload, error);
-        break;
+        g_free (pco_payload);
+
+        /* We are only interested in IMS and Internet PDN PCO. */
+        if (pco_cid == MM_ALTAIR_IMS_PDN_CID || pco_cid == MM_ALTAIR_INTERNET_PDN_CID) {
+            break;
+        }
+
+        pco_value = -1;
+        g_match_info_next (match_info, error);
     }
 
     g_match_info_free (match_info);

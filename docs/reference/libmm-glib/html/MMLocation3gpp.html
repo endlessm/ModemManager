@@ -2,32 +2,27 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>MMLocation3gpp</title>
+<title>libmm-glib Reference Manual: MMLocation3gpp</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
 <link rel="up" href="ch03s03.html" title="Location support">
 <link rel="prev" href="MMModemLocation.html" title="MMModemLocation">
 <link rel="next" href="MMLocationGpsNmea.html" title="MMLocationGpsNmea">
-<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
-<td><a accesskey="p" href="MMModemLocation.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="ch03s03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">libmm-glib Reference Manual</th>
-<td><a accesskey="n" href="MMLocationGpsNmea.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts">
-<a href="#MMLocation3gpp.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#MMLocation3gpp.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#MMLocation3gpp.object-hierarchy" class="shortcut">Object Hierarchy</a>
-</td></tr>
-</table>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
+                  <a href="#MMLocation3gpp.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
+                  <a href="#MMLocation3gpp.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch03s03.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="MMModemLocation.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="MMLocationGpsNmea.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
 <div class="refentry">
 <a name="MMLocation3gpp"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
@@ -35,153 +30,203 @@
 <h2><span class="refentrytitle"><a name="MMLocation3gpp.top_of_page"></a>MMLocation3gpp</span></h2>
 <p>MMLocation3gpp — Helper object to handle 3GPP location information.</p>
 </td>
-<td valign="top" align="right"></td>
+<td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
-<a name="MMLocation3gpp.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">struct              <a class="link" href="MMLocation3gpp.html#MMLocation3gpp-struct" title="struct MMLocation3gpp">MMLocation3gpp</a>;
-
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMLocation3gpp.html#mm-location-3gpp-get-mobile-country-code" title="mm_location_3gpp_get_mobile_country_code ()">mm_location_3gpp_get_mobile_country_code</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a> *self</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMLocation3gpp.html#mm-location-3gpp-get-mobile-network-code" title="mm_location_3gpp_get_mobile_network_code ()">mm_location_3gpp_get_mobile_network_code</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a> *self</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"><span class="returnvalue">gulong</span></a>              <a class="link" href="MMLocation3gpp.html#mm-location-3gpp-get-location-area-code" title="mm_location_3gpp_get_location_area_code ()">mm_location_3gpp_get_location_area_code</a>
-                                                        (<em class="parameter"><code><a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a> *self</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"><span class="returnvalue">gulong</span></a>              <a class="link" href="MMLocation3gpp.html#mm-location-3gpp-get-cell-id" title="mm_location_3gpp_get_cell_id ()">mm_location_3gpp_get_cell_id</a>        (<em class="parameter"><code><a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a> *self</code></em>);
-</pre>
+<div class="refsect1">
+<a name="MMLocation3gpp.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMLocation3gpp.html#mm-location-3gpp-get-mobile-country-code" title="mm_location_3gpp_get_mobile_country_code ()">mm_location_3gpp_get_mobile_country_code</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMLocation3gpp.html#mm-location-3gpp-get-mobile-network-code" title="mm_location_3gpp_get_mobile_network_code ()">mm_location_3gpp_get_mobile_network_code</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"><span class="returnvalue">gulong</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMLocation3gpp.html#mm-location-3gpp-get-location-area-code" title="mm_location_3gpp_get_location_area_code ()">mm_location_3gpp_get_location_area_code</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"><span class="returnvalue">gulong</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMLocation3gpp.html#mm-location-3gpp-get-cell-id" title="mm_location_3gpp_get_cell_id ()">mm_location_3gpp_get_cell_id</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="MMLocation3gpp.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody><tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="MMLocation3gpp.html#MMLocation3gpp-struct" title="struct MMLocation3gpp">MMLocation3gpp</a></td>
+</tr></tbody>
+</table></div>
 </div>
 <div class="refsect1">
 <a name="MMLocation3gpp.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="synopsis">
-  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-   +----MMLocation3gpp
+<pre class="screen">    <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> MMLocation3gpp
 </pre>
 </div>
 <div class="refsect1">
 <a name="MMLocation3gpp.description"></a><h2>Description</h2>
-<p>
-The <a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a> is an object handling the location information of the
-modem when this is reported by the 3GPP network.
-</p>
-<p>
-This object is retrieved with either <a class="link" href="MMModemLocation.html#mm-modem-location-get-3gpp" title="mm_modem_location_get_3gpp ()"><code class="function">mm_modem_location_get_3gpp()</code></a>,
-<a class="link" href="MMModemLocation.html#mm-modem-location-get-3gpp-sync" title="mm_modem_location_get_3gpp_sync ()"><code class="function">mm_modem_location_get_3gpp_sync()</code></a>, <a class="link" href="MMModemLocation.html#mm-modem-location-get-full" title="mm_modem_location_get_full ()"><code class="function">mm_modem_location_get_full()</code></a> or
-<a class="link" href="MMModemLocation.html#mm-modem-location-get-full-sync" title="mm_modem_location_get_full_sync ()"><code class="function">mm_modem_location_get_full_sync()</code></a>.
-</p>
+<p>The <a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a> is an object handling the location information of the
+modem when this is reported by the 3GPP network.</p>
+<p>This object is retrieved with either <a class="link" href="MMModemLocation.html#mm-modem-location-get-3gpp" title="mm_modem_location_get_3gpp ()"><code class="function">mm_modem_location_get_3gpp()</code></a>,
+<a class="link" href="MMModemLocation.html#mm-modem-location-get-3gpp-sync" title="mm_modem_location_get_3gpp_sync ()"><code class="function">mm_modem_location_get_3gpp_sync()</code></a>, <a class="link" href="MMModemLocation.html#mm-modem-location-get-full" title="mm_modem_location_get_full ()"><code class="function">mm_modem_location_get_full()</code></a> or
+<a class="link" href="MMModemLocation.html#mm-modem-location-get-full-sync" title="mm_modem_location_get_full_sync ()"><code class="function">mm_modem_location_get_full_sync()</code></a>.</p>
 </div>
 <div class="refsect1">
-<a name="MMLocation3gpp.details"></a><h2>Details</h2>
+<a name="MMLocation3gpp.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="mm-location-3gpp-get-mobile-country-code"></a><h3>mm_location_3gpp_get_mobile_country_code ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+mm_location_3gpp_get_mobile_country_code
+                               (<em class="parameter"><code><a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a> *self</code></em>);</pre>
+<p>Gets the Mobile Country Code of the 3GPP network.</p>
+<div class="refsect3">
+<a name="id-1.2.4.5.3.7.2.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.5.3.7.2.6"></a><h4>Returns</h4>
+<p> the MCC, or 0 if unknown.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-location-3gpp-get-mobile-network-code"></a><h3>mm_location_3gpp_get_mobile_network_code ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+mm_location_3gpp_get_mobile_network_code
+                               (<em class="parameter"><code><a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a> *self</code></em>);</pre>
+<p>Gets the Mobile Network Code of the 3GPP network.</p>
+<div class="refsect3">
+<a name="id-1.2.4.5.3.7.3.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.5.3.7.3.6"></a><h4>Returns</h4>
+<p> the MNC, or 0 if unknown.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-location-3gpp-get-location-area-code"></a><h3>mm_location_3gpp_get_location_area_code ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"><span class="returnvalue">gulong</span></a>
+mm_location_3gpp_get_location_area_code
+                               (<em class="parameter"><code><a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a> *self</code></em>);</pre>
+<p>Gets the location area code of the 3GPP network.</p>
+<div class="refsect3">
+<a name="id-1.2.4.5.3.7.4.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.5.3.7.4.6"></a><h4>Returns</h4>
+<p> the location area code, or 0 if unknown.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-location-3gpp-get-cell-id"></a><h3>mm_location_3gpp_get_cell_id ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"><span class="returnvalue">gulong</span></a>
+mm_location_3gpp_get_cell_id (<em class="parameter"><code><a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a> *self</code></em>);</pre>
+<p>Gets the cell ID of the 3GPP network.</p>
+<div class="refsect3">
+<a name="id-1.2.4.5.3.7.5.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.5.3.7.5.6"></a><h4>Returns</h4>
+<p> the cell ID, or 0 if unknown.</p>
+<p></p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="MMLocation3gpp.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
 <a name="MMLocation3gpp-struct"></a><h3>struct MMLocation3gpp</h3>
 <pre class="programlisting">struct MMLocation3gpp;</pre>
-<p>
-The <a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a> structure contains private data and should
-only be accessed using the provided API.
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-location-3gpp-get-mobile-country-code"></a><h3>mm_location_3gpp_get_mobile_country_code ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_location_3gpp_get_mobile_country_code
-                                                        (<em class="parameter"><code><a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a> *self</code></em>);</pre>
-<p>
-Gets the Mobile Country Code of the 3GPP network.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the MCC, or 0 if unknown.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-location-3gpp-get-mobile-network-code"></a><h3>mm_location_3gpp_get_mobile_network_code ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_location_3gpp_get_mobile_network_code
-                                                        (<em class="parameter"><code><a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a> *self</code></em>);</pre>
-<p>
-Gets the Mobile Network Code of the 3GPP network.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the MNC, or 0 if unknown.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-location-3gpp-get-location-area-code"></a><h3>mm_location_3gpp_get_location_area_code ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"><span class="returnvalue">gulong</span></a>              mm_location_3gpp_get_location_area_code
-                                                        (<em class="parameter"><code><a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a> *self</code></em>);</pre>
-<p>
-Gets the location area code of the 3GPP network.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the location area code, or 0 if unknown.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-location-3gpp-get-cell-id"></a><h3>mm_location_3gpp_get_cell_id ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"><span class="returnvalue">gulong</span></a>              mm_location_3gpp_get_cell_id        (<em class="parameter"><code><a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a> *self</code></em>);</pre>
-<p>
-Gets the cell ID of the 3GPP network.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the cell ID, or 0 if unknown.</td>
-</tr>
-</tbody>
-</table></div>
+<p>The <a class="link" href="MMLocation3gpp.html" title="MMLocation3gpp"><span class="type">MMLocation3gpp</span></a> structure contains private data and should
+only be accessed using the provided API.</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.19</div>
+          Generated by GTK-Doc V1.20</div>
 </body>
 </html>

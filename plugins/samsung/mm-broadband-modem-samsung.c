@@ -38,7 +38,7 @@ G_DEFINE_TYPE (MMBroadbandModemSamsung, mm_broadband_modem_samsung, MM_TYPE_BROA
 static void
 setup_ports (MMBroadbandModem *self)
 {
-    MMAtSerialPort *ports[2];
+    MMPortSerialAt *ports[2];
     guint i;
 
     /* Call parent's setup ports first always */
@@ -53,7 +53,7 @@ setup_ports (MMBroadbandModem *self)
             continue;
 
         g_object_set (ports[i],
-                      MM_SERIAL_PORT_SEND_DELAY, (guint64) 0,
+                      MM_PORT_SERIAL_SEND_DELAY, (guint64) 0,
                       NULL);
     }
 }

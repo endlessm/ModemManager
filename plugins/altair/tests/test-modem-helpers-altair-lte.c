@@ -20,7 +20,35 @@
 #include <glib-object.h>
 #include <locale.h>
 
+#include <ModemManager.h>
+#define _LIBMM_INSIDE_MM
+#include <libmm-glib.h>
+
 #include "mm-modem-helpers-altair-lte.h"
+
+/*****************************************************************************/
+/* Test bands response parsing */
+
+static void
+test_parse_bands (void)
+{
+    GArray *bands;
+
+    bands = mm_altair_parse_bands_response ("");
+    g_assert (bands != NULL);
+    g_assert_cmpuint (bands->len, ==, 0);
+    g_array_free (bands, TRUE);
+
+    /* 0 and 45 are outside the range of E-UTRAN operating bands and should be ignored. */
+    bands = mm_altair_parse_bands_response ("0, 0, 1, 4,13,44,45");
+    g_assert (bands != NULL);
+    g_assert_cmpuint (bands->len, ==, 4);
+    g_assert_cmpuint (g_array_index (bands, MMModemBand, 0), ==, MM_MODEM_BAND_EUTRAN_I);
+    g_assert_cmpuint (g_array_index (bands, MMModemBand, 1), ==, MM_MODEM_BAND_EUTRAN_IV);
+    g_assert_cmpuint (g_array_index (bands, MMModemBand, 2), ==, MM_MODEM_BAND_EUTRAN_XIII);
+    g_assert_cmpuint (g_array_index (bands, MMModemBand, 3), ==, MM_MODEM_BAND_EUTRAN_XLIV);
+    g_array_free (bands, TRUE);
+}
 
 /*****************************************************************************/
 /* Test +CEER responses */
@@ -75,26 +103,38 @@ test_parse_vendor_pco_info (void)
     guint pco_value;
 
     /* Valid PCO values */
-    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: 1,3,FF00,13018400", 3, NULL);
+    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: 1,1,FF00,13018400", NULL);
     g_assert (pco_value == 0);
-    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: 1,3,FF00,13018403", 3, NULL);
+    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: 1,1,FF00,13018403", NULL);
     g_assert (pco_value == 3);
-    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: 1,3,FF00,13018405", 3, NULL);
+    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: 1,1,FF00,13018405", NULL);
+    g_assert (pco_value == 5);
+    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: 1,3,FF00,13018400", NULL);
+    g_assert (pco_value == 0);
+    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: 1,3,FF00,13018403", NULL);
+    g_assert (pco_value == 3);
+    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: 1,3,FF00,13018405", NULL);
+    g_assert (pco_value == 5);
+    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO:1,FF00,13018400", NULL);
+    g_assert (pco_value == 0);
+    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO:1,FF00,13018403", NULL);
+    g_assert (pco_value == 3);
+    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO:1,FF00,13018405", NULL);
     g_assert (pco_value == 5);
     /* Different container */
-    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: 1,3,F000,13018401", 3, NULL);
+    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: 1,3,F000,13018401", NULL);
     g_assert (pco_value == -1);
-    /* Different CID */
-    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: 1,3,FF00,13018401", 1, NULL);
+    /* Invalid CID */
+    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: 1,2,FF00,13018401", NULL);
     g_assert (pco_value == -1);
     /* Different payload */
-    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: 1,3,FF00,13018501", 1, NULL);
+    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: 1,3,FF00,13018501", NULL);
     g_assert (pco_value == -1);
     /* Bad PCO info */
-    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: blah,blah,FF00,13018401", 1, NULL);
+    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: blah,blah,FF00,13018401", NULL);
     g_assert (pco_value == -1);
     /* Multiline PCO info */
-    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: 1,1,FF00,13018400\r\n%PCOINFO: 1,3,FF00,13018403", 3, NULL);
+    pco_value = mm_altair_parse_vendor_pco_info ("%PCOINFO: 1,2,FF00,13018400\r\n%PCOINFO: 1,3,FF00,13018403", NULL);
     g_assert (pco_value == 3);
 }
 
@@ -105,6 +145,7 @@ int main (int argc, char **argv)
     g_type_init ();
     g_test_init (&argc, &argv, NULL);
 
+    g_test_add_func ("/MM/altair/parse_bands", test_parse_bands);
     g_test_add_func ("/MM/altair/ceer", test_ceer);
     g_test_add_func ("/MM/altair/parse_cid", test_parse_cid);
     g_test_add_func ("/MM/altair/parse_vendor_pco_info", test_parse_vendor_pco_info);

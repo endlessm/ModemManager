@@ -59,7 +59,7 @@ static const MMPortProbeAtCommand custom_at_probe[] = {
 
 typedef struct {
     MMPortProbe *probe;
-    MMAtSerialPort *port;
+    MMPortSerialAt *port;
     GCancellable *cancellable;
     GSimpleAsyncResult *result;
     guint nwdmat_retries;
@@ -90,17 +90,20 @@ novatel_custom_init_finish (MMPortProbe *probe,
 static void custom_init_step (CustomInitContext *ctx);
 
 static void
-nwdmat_ready (MMAtSerialPort *port,
-              GString *response,
-              GError *error,
+nwdmat_ready (MMPortSerialAt *port,
+              GAsyncResult *res,
               CustomInitContext *ctx)
 {
+    const gchar *response;
+    GError *error = NULL;
+
+    response = mm_port_serial_at_command_finish (port, res, &error);
     if (error) {
         if (g_error_matches (error,
                              MM_SERIAL_ERROR,
                              MM_SERIAL_ERROR_RESPONSE_TIMEOUT)) {
             custom_init_step (ctx);
-            return;
+            goto out;
         }
 
         mm_dbg ("(Novatel) Error flipping secondary ports to AT mode: %s", error->message);
@@ -109,6 +112,10 @@ nwdmat_ready (MMAtSerialPort *port,
     /* Finish custom_init */
     g_simple_async_result_set_op_res_gboolean (ctx->result, TRUE);
     custom_init_context_complete_and_free (ctx);
+
+out:
+    if (error)
+        g_error_free (error);
 }
 
 static gboolean
@@ -147,13 +154,14 @@ custom_init_step (CustomInitContext *ctx)
 
     if (ctx->nwdmat_retries > 0) {
         ctx->nwdmat_retries--;
-        mm_at_serial_port_queue_command (ctx->port,
-                                         "$NWDMAT=1",
-                                         3,
-                                         FALSE, /* raw */
-                                         ctx->cancellable,
-                                         (MMAtSerialResponseFn)nwdmat_ready,
-                                         ctx);
+        mm_port_serial_at_command (ctx->port,
+                                   "$NWDMAT=1",
+                                   3,
+                                   FALSE, /* raw */
+                                   FALSE, /* allow_cached */
+                                   ctx->cancellable,
+                                   (GAsyncReadyCallback)nwdmat_ready,
+                                   ctx);
         return;
     }
 
@@ -166,7 +174,7 @@ custom_init_step (CustomInitContext *ctx)
 
 static void
 novatel_custom_init (MMPortProbe *probe,
-                     MMAtSerialPort *port,
+                     MMPortSerialAt *port,
                      GCancellable *cancellable,
                      GAsyncReadyCallback callback,
                      gpointer user_data)

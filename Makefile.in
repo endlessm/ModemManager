@@ -81,9 +81,9 @@ subdir = .
 DIST_COMMON = INSTALL NEWS README AUTHORS ChangeLog \
 	$(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/configure $(am__configure_deps) \
-	$(srcdir)/config.h.in ABOUT-NLS COPYING TODO compile \
-	config.guess config.rpath config.sub install-sh missing \
-	ltmain.sh
+	$(srcdir)/config.h.in ABOUT-NLS COPYING COPYING.LIB TODO \
+	compile config.guess config.rpath config.sub install-sh \
+	missing ltmain.sh
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/compiler_warnings.m4 \
 	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
@@ -231,14 +231,15 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+GDBUS_CODEGEN = @GDBUS_CODEGEN@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
-GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
 GLIB_MKENUMS = @GLIB_MKENUMS@
 GMSGFMT = @GMSGFMT@
 GMSGFMT_015 = @GMSGFMT_015@
 GREP = @GREP@
 GTKDOC_CHECK = @GTKDOC_CHECK@
+GTKDOC_CHECK_PATH = @GTKDOC_CHECK_PATH@
 GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
 GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
 GTKDOC_MKPDF = @GTKDOC_MKPDF@
@@ -396,7 +397,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUBDIRS = . build-aux data include libqcdm libwmc libmm-glib src plugins cli vapi introspection uml290 po test docs
+SUBDIRS = . build-aux data include libqcdm libwmc libmm-glib src plugins cli vapi introspection uml290 po test examples docs
 DISTCHECK_CONFIGURE_FLAGS = \
 	--with-udev-base-dir="$$dc_install_base" \
 	--with-systemdsystemunitdir="$$dc_install_base/$(SYSTEMD_UNIT_DIR)" \
@@ -416,7 +417,8 @@ DISTCLEANFILES = \
 EXTRA_DIST = \
 	$(INTLTOOL_FILES) \
 	autogen.sh \
-	gtester.make
+	gtester.make \
+	COPYING.LIB
 
 ACLOCAL_AMFLAGS = -I m4
 all: config.h

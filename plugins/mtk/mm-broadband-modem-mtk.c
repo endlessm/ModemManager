@@ -218,7 +218,7 @@ get_supported_modes_ready (MMBaseModem *self,
             G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
     g_assert (r != NULL);
 
-    if(!g_regex_match_full (r, response, strlen (response), 0, 0, &match_info, &match_error)) {
+    if (!g_regex_match_full (r, response, strlen (response), 0, 0, &match_info, &match_error)) {
         if (match_error) {
             g_propagate_error (&error, match_error);
         } else {
@@ -228,8 +228,9 @@ get_supported_modes_ready (MMBaseModem *self,
                          "Failed to match EGMR response: %s", response);
         }
 
+        g_match_info_free (match_info);
         g_regex_unref (r);
-            return;
+        return;
     }
 
     if (!mm_get_int_from_match_info (match_info, 1, &device_type)) {
@@ -571,7 +572,7 @@ set_current_modes (MMIfaceModem *self,
 /* Setup/Cleanup unsolicited events (3GPP interface) */
 
 static void
-mtk_80_signal_changed (MMAtSerialPort *port,
+mtk_80_signal_changed (MMPortSerialAt *port,
                        GMatchInfo *match_info,
                        MMBroadbandModemMtk *self)
 {
@@ -590,7 +591,7 @@ mtk_80_signal_changed (MMAtSerialPort *port,
 }
 
 static void
-mtk_90_2g_signal_changed (MMAtSerialPort *port,
+mtk_90_2g_signal_changed (MMPortSerialAt *port,
                           GMatchInfo *match_info,
                           MMBroadbandModemMtk *self)
 {
@@ -609,7 +610,7 @@ mtk_90_2g_signal_changed (MMAtSerialPort *port,
 }
 
 static void
-mtk_90_3g_signal_changed (MMAtSerialPort *port,
+mtk_90_3g_signal_changed (MMPortSerialAt *port,
                           GMatchInfo *match_info,
                           MMBroadbandModemMtk *self)
 {
@@ -625,7 +626,7 @@ mtk_90_3g_signal_changed (MMAtSerialPort *port,
 }
 
 static void
-mtk_90_4g_signal_changed (MMAtSerialPort *port,
+mtk_90_4g_signal_changed (MMPortSerialAt *port,
                           GMatchInfo *match_info,
                           MMBroadbandModemMtk *self)
 {
@@ -644,7 +645,7 @@ static void
 set_unsolicited_events_handlers (MMBroadbandModemMtk *self,
                                  gboolean enable)
 {
-    MMAtSerialPort *ports[2];
+    MMPortSerialAt *ports[2];
     guint i;
 
     ports[0] = mm_base_modem_peek_port_primary (MM_BASE_MODEM (self));
@@ -655,38 +656,38 @@ set_unsolicited_events_handlers (MMBroadbandModemMtk *self,
         if(!ports[i])
             continue;
 
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->ecsqg_regex,
-            enable ? (MMAtSerialUnsolicitedMsgFn)mtk_80_signal_changed : NULL,
+            enable ? (MMPortSerialAtUnsolicitedMsgFn)mtk_80_signal_changed : NULL,
             enable ? self : NULL,
             NULL);
 
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->ecsqu_regex,
-            enable ? (MMAtSerialUnsolicitedMsgFn)mtk_80_signal_changed : NULL,
+            enable ? (MMPortSerialAtUnsolicitedMsgFn)mtk_80_signal_changed : NULL,
             enable ? self : NULL,
             NULL);
 
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->ecsqeg_regex,
-            enable ? (MMAtSerialUnsolicitedMsgFn)mtk_90_2g_signal_changed:NULL,
+            enable ? (MMPortSerialAtUnsolicitedMsgFn)mtk_90_2g_signal_changed:NULL,
             enable ? self : NULL,
             NULL);
 
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->ecsqeu_regex,
-            enable ? (MMAtSerialUnsolicitedMsgFn)mtk_90_3g_signal_changed:NULL,
+            enable ? (MMPortSerialAtUnsolicitedMsgFn)mtk_90_3g_signal_changed:NULL,
             enable ? self : NULL,
             NULL);
 
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->ecsqel_regex,
-            enable ? (MMAtSerialUnsolicitedMsgFn)mtk_90_4g_signal_changed:NULL,
+            enable ? (MMPortSerialAtUnsolicitedMsgFn)mtk_90_4g_signal_changed:NULL,
             enable ? self : NULL,
             NULL);
     }
@@ -1033,4 +1034,3 @@ mm_broadband_modem_mtk_class_init (MMBroadbandModemMtkClass *klass)
     object_class->finalize = finalize;
     broadband_modem_class->setup_ports = setup_ports;
 }
-

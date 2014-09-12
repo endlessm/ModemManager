@@ -34,9 +34,12 @@ typedef struct _MMDevice MMDevice;
 typedef struct _MMDeviceClass MMDeviceClass;
 typedef struct _MMDevicePrivate MMDevicePrivate;
 
+#define MM_DEVICE_PATH        "path"
 #define MM_DEVICE_UDEV_DEVICE "udev-device"
 #define MM_DEVICE_PLUGIN      "plugin"
 #define MM_DEVICE_MODEM       "modem"
+#define MM_DEVICE_HOTPLUGGED  "hotplugged"
+#define MM_DEVICE_VIRTUAL     "virtual"
 
 #define MM_DEVICE_PORT_GRABBED  "port-grabbed"
 #define MM_DEVICE_PORT_RELEASED "port-released"
@@ -58,7 +61,8 @@ struct _MMDeviceClass {
 
 GType mm_device_get_type (void);
 
-MMDevice *mm_device_new (GUdevDevice *udev_device, gboolean hotplugged);
+MMDevice *mm_device_new (GUdevDevice *udev_device,
+                         gboolean hotplugged);
 
 void     mm_device_grab_port    (MMDevice    *self,
                                  GUdevDevice *udev_port);
@@ -97,5 +101,14 @@ GList       *mm_device_get_port_probe_list  (MMDevice *self);
 const gchar *mm_device_utils_get_port_driver (GUdevDevice *udev_port);
 
 gboolean    mm_device_get_hotplugged     (MMDevice *self);
+
+
+/* For testing purposes */
+MMDevice     *mm_device_virtual_new        (const gchar *path,
+                                            gboolean hotplugged);
+void          mm_device_virtual_grab_ports (MMDevice *self,
+                                            const gchar **ports);
+const gchar **mm_device_virtual_peek_ports (MMDevice *self);
+gboolean      mm_device_is_virtual         (MMDevice *self);
 
 #endif /* MM_DEVICE_H */

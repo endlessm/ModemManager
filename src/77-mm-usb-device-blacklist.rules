@@ -88,6 +88,12 @@ ATTRS{idVendor}=="1b4f", ATTRS{idProduct}=="9208", ENV{ID_MM_DEVICE_IGNORE}="1"
 ATTRS{idVendor}=="239a", ATTRS{idProduct}=="0004", ENV{ID_MM_DEVICE_IGNORE}="1"
 ATTRS{idVendor}=="239a", ATTRS{idProduct}=="8004", ENV{ID_MM_DEVICE_IGNORE}="1"
 
+# All devices from Pololu Corporation
+# except some possible future products.
+ATTRS{idVendor}=="1ffb", ENV{ID_MM_DEVICE_IGNORE}="1"
+ATTRS{idVendor}=="1ffb", ATTRS{idProduct}=="00ad", ENV{ID_MM_DEVICE_IGNORE}="0"
+ATTRS{idVendor}=="1ffb", ATTRS{idProduct}=="00ae", ENV{ID_MM_DEVICE_IGNORE}="0"
+
 # Altair U-Boot device
 ATTRS{idVendor}=="0216", ATTRS{idProduct}=="0051", ENV{ID_MM_DEVICE_IGNORE}="1"
 
@@ -112,5 +118,14 @@ DRIVERS=="cypress_m8", ENV{ID_MM_DEVICE_IGNORE}="1"
 
 # All devices in the Openmoko vendor ID
 ATTRS{idVendor}=="1d50", ENV{ID_MM_DEVICE_IGNORE}="1"
+
+# All devices from 3D Robotics
+ATTRS{idVendor}=="26ac", ENV{ID_MM_DEVICE_IGNORE}="1"
+
+# empiriKit science lab controller device
+ATTRS{idVendor}=="0425", ATTRS{idProduct}=="0408", ENV{ID_MM_DEVICE_IGNORE}="1"
+
+# Infineon Flashloader used by Intel XMM modem bootloader
+ATTRS{idVendor}=="8087", ATTRS{idProduct}=="0716", ENV{ID_MM_DEVICE_IGNORE}="1"
 
 LABEL="mm_usb_device_blacklist_end"

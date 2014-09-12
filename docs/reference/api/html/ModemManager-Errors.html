@@ -2,30 +2,27 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Errors</title>
+<title>ModemManager Reference Manual: Errors</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="ModemManager Reference Manual">
 <link rel="up" href="ref-common-types.html" title="Part II. Common types and definitions">
 <link rel="prev" href="ModemManager-Flags-and-Enumerations.html" title="Flags and Enumerations">
 <link rel="next" href="ref-dbus.html" title="Part III. D-Bus Reference">
-<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
-<td><a accesskey="p" href="ModemManager-Flags-and-Enumerations.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="ref-common-types.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">ModemManager Reference Manual</th>
-<td><a accesskey="n" href="ref-dbus.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts">
-<a href="#ModemManager-Errors.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#ModemManager-Errors.description" class="shortcut">Description</a>
-</td></tr>
-</table>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
+                  <a href="#ModemManager-Errors.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
+                  <a href="#ModemManager-Errors.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ref-common-types.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="ModemManager-Flags-and-Enumerations.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="ref-dbus.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
 <div class="refentry">
 <a name="ModemManager-Errors"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
@@ -33,832 +30,982 @@
 <h2><span class="refentrytitle"><a name="ModemManager-Errors.top_of_page"></a>Errors</span></h2>
 <p>Errors — Common errors in the API.</p>
 </td>
-<td valign="top" align="right"></td>
+<td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
-<a name="ModemManager-Errors.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">enum                <a class="link" href="ModemManager-Errors.html#MMConnectionError" title="enum MMConnectionError">MMConnectionError</a>;
-enum                <a class="link" href="ModemManager-Errors.html#MMCoreError" title="enum MMCoreError">MMCoreError</a>;
-enum                <a class="link" href="ModemManager-Errors.html#MMMessageError" title="enum MMMessageError">MMMessageError</a>;
-enum                <a class="link" href="ModemManager-Errors.html#MMMobileEquipmentError" title="enum MMMobileEquipmentError">MMMobileEquipmentError</a>;
-enum                <a class="link" href="ModemManager-Errors.html#MMSerialError" title="enum MMSerialError">MMSerialError</a>;
-enum                <a class="link" href="ModemManager-Errors.html#MMCdmaActivationError" title="enum MMCdmaActivationError">MMCdmaActivationError</a>;
+<div class="refsect1">
+<a name="ModemManager-Errors.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="ModemManager-Errors.html#MMConnectionError" title="enum MMConnectionError">MMConnectionError</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="ModemManager-Errors.html#MMCoreError" title="enum MMCoreError">MMCoreError</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="ModemManager-Errors.html#MMMessageError" title="enum MMMessageError">MMMessageError</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="ModemManager-Errors.html#MMMobileEquipmentError" title="enum MMMobileEquipmentError">MMMobileEquipmentError</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="ModemManager-Errors.html#MMSerialError" title="enum MMSerialError">MMSerialError</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="ModemManager-Errors.html#MMCdmaActivationError" title="enum MMCdmaActivationError">MMCdmaActivationError</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="ModemManager-Errors.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">
 </pre>
 </div>
 <div class="refsect1">
 <a name="ModemManager-Errors.description"></a><h2>Description</h2>
-<p>
-This section defines errors that may be reported when using methods from the
-ModemManager interface.
-</p>
+<p>This section defines errors that may be reported when using methods from the
+ModemManager interface.</p>
 </div>
 <div class="refsect1">
-<a name="ModemManager-Errors.details"></a><h2>Details</h2>
+<a name="ModemManager-Errors.functions_details"></a><h2>Functions</h2>
+</div>
+<div class="refsect1">
+<a name="ModemManager-Errors.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
 <a name="MMConnectionError"></a><h3>enum MMConnectionError</h3>
-<pre class="programlisting">typedef enum {
- /*&lt; underscore_name=mm_connection_error &gt;*/
-    MM_CONNECTION_ERROR_UNKNOWN     = 0, /*&lt; nick=Unknown    &gt;*/
-    MM_CONNECTION_ERROR_NO_CARRIER  = 1, /*&lt; nick=NoCarrier  &gt;*/
-    MM_CONNECTION_ERROR_NO_DIALTONE = 2, /*&lt; nick=NoDialtone &gt;*/
-    MM_CONNECTION_ERROR_BUSY        = 3, /*&lt; nick=Busy       &gt;*/
-    MM_CONNECTION_ERROR_NO_ANSWER   = 4, /*&lt; nick=NoAnswer   &gt;*/
-} MMConnectionError;
-</pre>
-<p>
-Connection errors that may be reported by ModemManager.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<p>Connection errors that may be reported by ModemManager.</p>
+<div class="refsect3">
+<a name="id-1.3.4.7.2.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="MM-CONNECTION-ERROR-UNKNOWN:CAPS"></a><span class="term"><code class="literal">MM_CONNECTION_ERROR_UNKNOWN</code></span></p></td>
-<td>Unknown connection error.
+<td class="enum_member_name"><p><a name="MM-CONNECTION-ERROR-UNKNOWN:CAPS"></a>MM_CONNECTION_ERROR_UNKNOWN</p></td>
+<td class="enum_member_description">
+<p>Unknown connection error.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CONNECTION-ERROR-NO-CARRIER:CAPS"></a><span class="term"><code class="literal">MM_CONNECTION_ERROR_NO_CARRIER</code></span></p></td>
-<td>No carrier.
+<td class="enum_member_name"><p><a name="MM-CONNECTION-ERROR-NO-CARRIER:CAPS"></a>MM_CONNECTION_ERROR_NO_CARRIER</p></td>
+<td class="enum_member_description">
+<p>No carrier.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CONNECTION-ERROR-NO-DIALTONE:CAPS"></a><span class="term"><code class="literal">MM_CONNECTION_ERROR_NO_DIALTONE</code></span></p></td>
-<td>No dialtone.
+<td class="enum_member_name"><p><a name="MM-CONNECTION-ERROR-NO-DIALTONE:CAPS"></a>MM_CONNECTION_ERROR_NO_DIALTONE</p></td>
+<td class="enum_member_description">
+<p>No dialtone.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CONNECTION-ERROR-BUSY:CAPS"></a><span class="term"><code class="literal">MM_CONNECTION_ERROR_BUSY</code></span></p></td>
-<td>Busy.
+<td class="enum_member_name"><p><a name="MM-CONNECTION-ERROR-BUSY:CAPS"></a>MM_CONNECTION_ERROR_BUSY</p></td>
+<td class="enum_member_description">
+<p>Busy.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CONNECTION-ERROR-NO-ANSWER:CAPS"></a><span class="term"><code class="literal">MM_CONNECTION_ERROR_NO_ANSWER</code></span></p></td>
-<td>No answer.
+<td class="enum_member_name"><p><a name="MM-CONNECTION-ERROR-NO-ANSWER:CAPS"></a>MM_CONNECTION_ERROR_NO_ANSWER</p></td>
+<td class="enum_member_description">
+<p>No answer.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="MMCoreError"></a><h3>enum MMCoreError</h3>
-<pre class="programlisting">typedef enum {
- /*&lt; underscore_name=mm_core_error &gt;*/
-    MM_CORE_ERROR_FAILED       = 0,  /*&lt; nick=Failed       &gt;*/
-    MM_CORE_ERROR_CANCELLED    = 1,  /*&lt; nick=Cancelled    &gt;*/
-    MM_CORE_ERROR_ABORTED      = 2,  /*&lt; nick=Aborted      &gt;*/
-    MM_CORE_ERROR_UNSUPPORTED  = 3,  /*&lt; nick=Unsupported  &gt;*/
-    MM_CORE_ERROR_NO_PLUGINS   = 4,  /*&lt; nick=NoPlugins    &gt;*/
-    MM_CORE_ERROR_UNAUTHORIZED = 5,  /*&lt; nick=Unauthorized &gt;*/
-    MM_CORE_ERROR_INVALID_ARGS = 6,  /*&lt; nick=InvalidArgs  &gt;*/
-    MM_CORE_ERROR_IN_PROGRESS  = 7,  /*&lt; nick=InProgress   &gt;*/
-    MM_CORE_ERROR_WRONG_STATE  = 8,  /*&lt; nick=WrongState   &gt;*/
-    MM_CORE_ERROR_CONNECTED    = 9,  /*&lt; nick=Connected    &gt;*/
-    MM_CORE_ERROR_TOO_MANY     = 10, /*&lt; nick=TooMany      &gt;*/
-    MM_CORE_ERROR_NOT_FOUND    = 11, /*&lt; nick=NotFound     &gt;*/
-    MM_CORE_ERROR_RETRY        = 12, /*&lt; nick=Retry        &gt;*/
-    MM_CORE_ERROR_EXISTS       = 13, /*&lt; nick=Exists       &gt;*/
-} MMCoreError;
-</pre>
-<p>
-Common errors that may be reported by ModemManager.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<p>Common errors that may be reported by ModemManager.</p>
+<div class="refsect3">
+<a name="id-1.3.4.7.3.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="MM-CORE-ERROR-FAILED:CAPS"></a><span class="term"><code class="literal">MM_CORE_ERROR_FAILED</code></span></p></td>
-<td>Operation failed.
+<td class="enum_member_name"><p><a name="MM-CORE-ERROR-FAILED:CAPS"></a>MM_CORE_ERROR_FAILED</p></td>
+<td class="enum_member_description">
+<p>Operation failed.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CORE-ERROR-CANCELLED:CAPS"></a><span class="term"><code class="literal">MM_CORE_ERROR_CANCELLED</code></span></p></td>
-<td>Operation was cancelled.
+<td class="enum_member_name"><p><a name="MM-CORE-ERROR-CANCELLED:CAPS"></a>MM_CORE_ERROR_CANCELLED</p></td>
+<td class="enum_member_description">
+<p>Operation was cancelled.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CORE-ERROR-ABORTED:CAPS"></a><span class="term"><code class="literal">MM_CORE_ERROR_ABORTED</code></span></p></td>
-<td>Operation was aborted.
+<td class="enum_member_name"><p><a name="MM-CORE-ERROR-ABORTED:CAPS"></a>MM_CORE_ERROR_ABORTED</p></td>
+<td class="enum_member_description">
+<p>Operation was aborted.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CORE-ERROR-UNSUPPORTED:CAPS"></a><span class="term"><code class="literal">MM_CORE_ERROR_UNSUPPORTED</code></span></p></td>
-<td>Operation is not supported.
+<td class="enum_member_name"><p><a name="MM-CORE-ERROR-UNSUPPORTED:CAPS"></a>MM_CORE_ERROR_UNSUPPORTED</p></td>
+<td class="enum_member_description">
+<p>Operation is not supported.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CORE-ERROR-NO-PLUGINS:CAPS"></a><span class="term"><code class="literal">MM_CORE_ERROR_NO_PLUGINS</code></span></p></td>
-<td>Cannot operate without valid plugins.
+<td class="enum_member_name"><p><a name="MM-CORE-ERROR-NO-PLUGINS:CAPS"></a>MM_CORE_ERROR_NO_PLUGINS</p></td>
+<td class="enum_member_description">
+<p>Cannot operate without valid plugins.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CORE-ERROR-UNAUTHORIZED:CAPS"></a><span class="term"><code class="literal">MM_CORE_ERROR_UNAUTHORIZED</code></span></p></td>
-<td>Authorization is required to perform the operation.
+<td class="enum_member_name"><p><a name="MM-CORE-ERROR-UNAUTHORIZED:CAPS"></a>MM_CORE_ERROR_UNAUTHORIZED</p></td>
+<td class="enum_member_description">
+<p>Authorization is required to perform the operation.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CORE-ERROR-INVALID-ARGS:CAPS"></a><span class="term"><code class="literal">MM_CORE_ERROR_INVALID_ARGS</code></span></p></td>
-<td>Invalid arguments given.
+<td class="enum_member_name"><p><a name="MM-CORE-ERROR-INVALID-ARGS:CAPS"></a>MM_CORE_ERROR_INVALID_ARGS</p></td>
+<td class="enum_member_description">
+<p>Invalid arguments given.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CORE-ERROR-IN-PROGRESS:CAPS"></a><span class="term"><code class="literal">MM_CORE_ERROR_IN_PROGRESS</code></span></p></td>
-<td>Operation is already in progress.
+<td class="enum_member_name"><p><a name="MM-CORE-ERROR-IN-PROGRESS:CAPS"></a>MM_CORE_ERROR_IN_PROGRESS</p></td>
+<td class="enum_member_description">
+<p>Operation is already in progress.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CORE-ERROR-WRONG-STATE:CAPS"></a><span class="term"><code class="literal">MM_CORE_ERROR_WRONG_STATE</code></span></p></td>
-<td>Operation cannot be executed in the current state.
+<td class="enum_member_name"><p><a name="MM-CORE-ERROR-WRONG-STATE:CAPS"></a>MM_CORE_ERROR_WRONG_STATE</p></td>
+<td class="enum_member_description">
+<p>Operation cannot be executed in the current state.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CORE-ERROR-CONNECTED:CAPS"></a><span class="term"><code class="literal">MM_CORE_ERROR_CONNECTED</code></span></p></td>
-<td>Operation cannot be executed while being connected.
+<td class="enum_member_name"><p><a name="MM-CORE-ERROR-CONNECTED:CAPS"></a>MM_CORE_ERROR_CONNECTED</p></td>
+<td class="enum_member_description">
+<p>Operation cannot be executed while being connected.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CORE-ERROR-TOO-MANY:CAPS"></a><span class="term"><code class="literal">MM_CORE_ERROR_TOO_MANY</code></span></p></td>
-<td>Too many items.
+<td class="enum_member_name"><p><a name="MM-CORE-ERROR-TOO-MANY:CAPS"></a>MM_CORE_ERROR_TOO_MANY</p></td>
+<td class="enum_member_description">
+<p>Too many items.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CORE-ERROR-NOT-FOUND:CAPS"></a><span class="term"><code class="literal">MM_CORE_ERROR_NOT_FOUND</code></span></p></td>
-<td>Item not found.
+<td class="enum_member_name"><p><a name="MM-CORE-ERROR-NOT-FOUND:CAPS"></a>MM_CORE_ERROR_NOT_FOUND</p></td>
+<td class="enum_member_description">
+<p>Item not found.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CORE-ERROR-RETRY:CAPS"></a><span class="term"><code class="literal">MM_CORE_ERROR_RETRY</code></span></p></td>
-<td>Operation cannot yet be performed, retry later.
+<td class="enum_member_name"><p><a name="MM-CORE-ERROR-RETRY:CAPS"></a>MM_CORE_ERROR_RETRY</p></td>
+<td class="enum_member_description">
+<p>Operation cannot yet be performed, retry later.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CORE-ERROR-EXISTS:CAPS"></a><span class="term"><code class="literal">MM_CORE_ERROR_EXISTS</code></span></p></td>
-<td>Item already exists.
+<td class="enum_member_name"><p><a name="MM-CORE-ERROR-EXISTS:CAPS"></a>MM_CORE_ERROR_EXISTS</p></td>
+<td class="enum_member_description">
+<p>Item already exists.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="MMMessageError"></a><h3>enum MMMessageError</h3>
-<pre class="programlisting">typedef enum {
- /*&lt; underscore_name=mm_message_error &gt;*/
-    /* 0 -&gt; 127 per 3GPP TS 24.011 [6] clause E.2 */
-    /* 128 -&gt; 255 per 3GPP TS 23.040 [3] clause 9.2.3.22 */
-    MM_MESSAGE_ERROR_ME_FAILURE             = 300, /*&lt; nick=MeFailure            &gt;*/
-    MM_MESSAGE_ERROR_SMS_SERVICE_RESERVED   = 301, /*&lt; nick=SmsServiceReserved   &gt;*/
-    MM_MESSAGE_ERROR_NOT_ALLOWED            = 302, /*&lt; nick=NotAllowed           &gt;*/
-    MM_MESSAGE_ERROR_NOT_SUPPORTED          = 303, /*&lt; nick=NotSupported         &gt;*/
-    MM_MESSAGE_ERROR_INVALID_PDU_PARAMETER  = 304, /*&lt; nick=InvalidPduParameter  &gt;*/
-    MM_MESSAGE_ERROR_INVALID_TEXT_PARAMETER = 305, /*&lt; nick=InvalidTextParameter &gt;*/
-    MM_MESSAGE_ERROR_SIM_NOT_INSERTED       = 310, /*&lt; nick=SimNotInserted       &gt;*/
-    MM_MESSAGE_ERROR_SIM_PIN                = 311, /*&lt; nick=SimPin               &gt;*/
-    MM_MESSAGE_ERROR_PH_SIM_PIN             = 312, /*&lt; nick=PhSimPin             &gt;*/
-    MM_MESSAGE_ERROR_SIM_FAILURE            = 313, /*&lt; nick=SimFailure           &gt;*/
-    MM_MESSAGE_ERROR_SIM_BUSY               = 314, /*&lt; nick=SimBusy              &gt;*/
-    MM_MESSAGE_ERROR_SIM_WRONG              = 315, /*&lt; nick=SimWrong             &gt;*/
-    MM_MESSAGE_ERROR_SIM_PUK                = 316, /*&lt; nick=SimPuk               &gt;*/
-    MM_MESSAGE_ERROR_SIM_PIN2               = 317, /*&lt; nick=SimPin2              &gt;*/
-    MM_MESSAGE_ERROR_SIM_PUK2               = 318, /*&lt; nick=SimPuk2              &gt;*/
-    MM_MESSAGE_ERROR_MEMORY_FAILURE         = 320, /*&lt; nick=MemoryFailure        &gt;*/
-    MM_MESSAGE_ERROR_INVALID_INDEX          = 321, /*&lt; nick=InvalidIndex         &gt;*/
-    MM_MESSAGE_ERROR_MEMORY_FULL            = 322, /*&lt; nick=MemoryFull           &gt;*/
-    MM_MESSAGE_ERROR_SMSC_ADDRESS_UNKNOWN   = 330, /*&lt; nick=SmscAddressUnknown   &gt;*/
-    MM_MESSAGE_ERROR_NO_NETWORK             = 331, /*&lt; nick=NoNetwork            &gt;*/
-    MM_MESSAGE_ERROR_NETWORK_TIMEOUT        = 332, /*&lt; nick=NetworkTimeout       &gt;*/
-    MM_MESSAGE_ERROR_NO_CNMA_ACK_EXPECTED   = 340, /*&lt; nick=NoCnmaAckExpected    &gt;*/
-    MM_MESSAGE_ERROR_UNKNOWN                = 500  /*&lt; nick=Unknown              &gt;*/
-} MMMessageError;
-</pre>
-<p>
-Enumeration of message errors, as defined in 3GPP TS 27.005 version 10 section 3.2.5.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<p>Enumeration of message errors, as defined in 3GPP TS 27.005 version 10 section 3.2.5.</p>
+<div class="refsect3">
+<a name="id-1.3.4.7.4.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-ME-FAILURE:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_ME_FAILURE</code></span></p></td>
-<td>ME failure.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-ME-FAILURE:CAPS"></a>MM_MESSAGE_ERROR_ME_FAILURE</p></td>
+<td class="enum_member_description">
+<p>ME failure.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-SMS-SERVICE-RESERVED:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_SMS_SERVICE_RESERVED</code></span></p></td>
-<td>SMS service reserved.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-SMS-SERVICE-RESERVED:CAPS"></a>MM_MESSAGE_ERROR_SMS_SERVICE_RESERVED</p></td>
+<td class="enum_member_description">
+<p>SMS service reserved.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-NOT-ALLOWED:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_NOT_ALLOWED</code></span></p></td>
-<td>Operation not allowed.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-NOT-ALLOWED:CAPS"></a>MM_MESSAGE_ERROR_NOT_ALLOWED</p></td>
+<td class="enum_member_description">
+<p>Operation not allowed.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-NOT-SUPPORTED:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_NOT_SUPPORTED</code></span></p></td>
-<td>Operation not supported.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-NOT-SUPPORTED:CAPS"></a>MM_MESSAGE_ERROR_NOT_SUPPORTED</p></td>
+<td class="enum_member_description">
+<p>Operation not supported.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-INVALID-PDU-PARAMETER:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_INVALID_PDU_PARAMETER</code></span></p></td>
-<td>Invalid PDU mode parameter.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-INVALID-PDU-PARAMETER:CAPS"></a>MM_MESSAGE_ERROR_INVALID_PDU_PARAMETER</p></td>
+<td class="enum_member_description">
+<p>Invalid PDU mode parameter.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-INVALID-TEXT-PARAMETER:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_INVALID_TEXT_PARAMETER</code></span></p></td>
-<td>Invalid text mode parameter.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-INVALID-TEXT-PARAMETER:CAPS"></a>MM_MESSAGE_ERROR_INVALID_TEXT_PARAMETER</p></td>
+<td class="enum_member_description">
+<p>Invalid text mode parameter.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-SIM-NOT-INSERTED:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_SIM_NOT_INSERTED</code></span></p></td>
-<td>SIM not inserted.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-SIM-NOT-INSERTED:CAPS"></a>MM_MESSAGE_ERROR_SIM_NOT_INSERTED</p></td>
+<td class="enum_member_description">
+<p>SIM not inserted.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-SIM-PIN:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_SIM_PIN</code></span></p></td>
-<td>SIM PIN required.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-SIM-PIN:CAPS"></a>MM_MESSAGE_ERROR_SIM_PIN</p></td>
+<td class="enum_member_description">
+<p>SIM PIN required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-PH-SIM-PIN:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_PH_SIM_PIN</code></span></p></td>
-<td>PH-SIM PIN required.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-PH-SIM-PIN:CAPS"></a>MM_MESSAGE_ERROR_PH_SIM_PIN</p></td>
+<td class="enum_member_description">
+<p>PH-SIM PIN required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-SIM-FAILURE:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_SIM_FAILURE</code></span></p></td>
-<td>SIM failure.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-SIM-FAILURE:CAPS"></a>MM_MESSAGE_ERROR_SIM_FAILURE</p></td>
+<td class="enum_member_description">
+<p>SIM failure.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-SIM-BUSY:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_SIM_BUSY</code></span></p></td>
-<td>SIM busy.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-SIM-BUSY:CAPS"></a>MM_MESSAGE_ERROR_SIM_BUSY</p></td>
+<td class="enum_member_description">
+<p>SIM busy.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-SIM-WRONG:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_SIM_WRONG</code></span></p></td>
-<td>SIM wrong.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-SIM-WRONG:CAPS"></a>MM_MESSAGE_ERROR_SIM_WRONG</p></td>
+<td class="enum_member_description">
+<p>SIM wrong.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-SIM-PUK:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_SIM_PUK</code></span></p></td>
-<td>SIM PUK required.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-SIM-PUK:CAPS"></a>MM_MESSAGE_ERROR_SIM_PUK</p></td>
+<td class="enum_member_description">
+<p>SIM PUK required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-SIM-PIN2:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_SIM_PIN2</code></span></p></td>
-<td>SIM PIN2 required.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-SIM-PIN2:CAPS"></a>MM_MESSAGE_ERROR_SIM_PIN2</p></td>
+<td class="enum_member_description">
+<p>SIM PIN2 required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-SIM-PUK2:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_SIM_PUK2</code></span></p></td>
-<td>SIM PUK2 required.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-SIM-PUK2:CAPS"></a>MM_MESSAGE_ERROR_SIM_PUK2</p></td>
+<td class="enum_member_description">
+<p>SIM PUK2 required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-MEMORY-FAILURE:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_MEMORY_FAILURE</code></span></p></td>
-<td>Memory failure.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-MEMORY-FAILURE:CAPS"></a>MM_MESSAGE_ERROR_MEMORY_FAILURE</p></td>
+<td class="enum_member_description">
+<p>Memory failure.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-INVALID-INDEX:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_INVALID_INDEX</code></span></p></td>
-<td>Invalid index.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-INVALID-INDEX:CAPS"></a>MM_MESSAGE_ERROR_INVALID_INDEX</p></td>
+<td class="enum_member_description">
+<p>Invalid index.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-MEMORY-FULL:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_MEMORY_FULL</code></span></p></td>
-<td>Memory full.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-MEMORY-FULL:CAPS"></a>MM_MESSAGE_ERROR_MEMORY_FULL</p></td>
+<td class="enum_member_description">
+<p>Memory full.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-SMSC-ADDRESS-UNKNOWN:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_SMSC_ADDRESS_UNKNOWN</code></span></p></td>
-<td>SMSC address unknown.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-SMSC-ADDRESS-UNKNOWN:CAPS"></a>MM_MESSAGE_ERROR_SMSC_ADDRESS_UNKNOWN</p></td>
+<td class="enum_member_description">
+<p>SMSC address unknown.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-NO-NETWORK:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_NO_NETWORK</code></span></p></td>
-<td>No network.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-NO-NETWORK:CAPS"></a>MM_MESSAGE_ERROR_NO_NETWORK</p></td>
+<td class="enum_member_description">
+<p>No network.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-NETWORK-TIMEOUT:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_NETWORK_TIMEOUT</code></span></p></td>
-<td>Network timeout.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-NETWORK-TIMEOUT:CAPS"></a>MM_MESSAGE_ERROR_NETWORK_TIMEOUT</p></td>
+<td class="enum_member_description">
+<p>Network timeout.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-NO-CNMA-ACK-EXPECTED:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_NO_CNMA_ACK_EXPECTED</code></span></p></td>
-<td>No CNMA Acknowledgement expected.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-NO-CNMA-ACK-EXPECTED:CAPS"></a>MM_MESSAGE_ERROR_NO_CNMA_ACK_EXPECTED</p></td>
+<td class="enum_member_description">
+<p>No CNMA Acknowledgement expected.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MESSAGE-ERROR-UNKNOWN:CAPS"></a><span class="term"><code class="literal">MM_MESSAGE_ERROR_UNKNOWN</code></span></p></td>
-<td>Unknown error.
+<td class="enum_member_name"><p><a name="MM-MESSAGE-ERROR-UNKNOWN:CAPS"></a>MM_MESSAGE_ERROR_UNKNOWN</p></td>
+<td class="enum_member_description">
+<p>Unknown error.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="MMMobileEquipmentError"></a><h3>enum MMMobileEquipmentError</h3>
-<pre class="programlisting">typedef enum {
- /*&lt; underscore_name=mm_mobile_equipment_error &gt;*/
-    /* General errors */
-    MM_MOBILE_EQUIPMENT_ERROR_PHONE_FAILURE        = 0,   /*&lt; nick=PhoneFailure &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_NO_CONNECTION        = 1,   /*&lt; nick=NoConnection &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_LINK_RESERVED        = 2,   /*&lt; nick=LinkReserved &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_NOT_ALLOWED          = 3,   /*&lt; nick=NotAllowed &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_NOT_SUPPORTED        = 4,   /*&lt; nick=NotSupported &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_PH_SIM_PIN           = 5,   /*&lt; nick=PhSimPin &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_PH_FSIM_PIN          = 6,   /*&lt; nick=PhFsimPin &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_PH_FSIM_PUK          = 7,   /*&lt; nick=PhFsimPuk &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_SIM_NOT_INSERTED     = 10,  /*&lt; nick=SimNotInserted &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_SIM_PIN              = 11,  /*&lt; nick=SimPin &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_SIM_PUK              = 12,  /*&lt; nick=SimPuk &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_SIM_FAILURE          = 13,  /*&lt; nick=SimFailure &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_SIM_BUSY             = 14,  /*&lt; nick=SimBusy &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_SIM_WRONG            = 15,  /*&lt; nick=SimWrong &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_INCORRECT_PASSWORD   = 16,  /*&lt; nick=IncorrectPassword &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_SIM_PIN2             = 17,  /*&lt; nick=SimPin2 &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_SIM_PUK2             = 18,  /*&lt; nick=SimPuk2 &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_MEMORY_FULL          = 20,  /*&lt; nick=MemoryFull &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_INVALID_INDEX        = 21,  /*&lt; nick=InvalidIndex &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_NOT_FOUND            = 22,  /*&lt; nick=NotFound &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_MEMORY_FAILURE       = 23,  /*&lt; nick=MemoryFailure &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_TEXT_TOO_LONG        = 24,  /*&lt; nick=TextTooLong &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_INVALID_CHARS        = 25,  /*&lt; nick=InvalidChars &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_DIAL_STRING_TOO_LONG = 26,  /*&lt; nick=DialStringTooLong &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_DIAL_STRING_INVALID  = 27,  /*&lt; nick=DialStringInvalid &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_NO_NETWORK           = 30,  /*&lt; nick=NoNetwork &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_NETWORK_TIMEOUT      = 31,  /*&lt; nick=NetworkTimeout &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_NETWORK_NOT_ALLOWED  = 32,  /*&lt; nick=NetworkNotAllowed &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_NETWORK_PIN          = 40,  /*&lt; nick=NetworkPin &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_NETWORK_PUK          = 41,  /*&lt; nick=NetworkPuk &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_NETWORK_SUBSET_PIN   = 42,  /*&lt; nick=NetworkSubsetPin &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_NETWORK_SUBSET_PUK   = 43,  /*&lt; nick=NetworkSubsetPuk &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_SERVICE_PIN          = 44,  /*&lt; nick=ServicePin &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_SERVICE_PUK          = 45,  /*&lt; nick=ServicePuk &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_CORP_PIN             = 46,  /*&lt; nick=CorpPin &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_CORP_PUK             = 47,  /*&lt; nick=CorpPuk &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_UNKNOWN              = 100, /*&lt; nick=Unknown &gt;*/
-    /* GPRS related errors */
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_IMSI_UNKNOWN_IN_HLR           = 102, /*&lt; nick=GprsImsiUnknownInHlr           &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_ILLEGAL_MS                    = 103, /*&lt; nick=GprsIllegalMs                  &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_IMSI_UNKNOWN_IN_VLR           = 104, /*&lt; nick=GprsImsiUnknownInVlr           &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_ILLEGAL_ME                    = 106, /*&lt; nick=GprsIllegalMe                  &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_NOT_ALLOWED           = 107, /*&lt; nick=GprsServiceNotAllowed          &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_PLMN_NOT_ALLOWED              = 111, /*&lt; nick=GprsPlmnNotAllowed             &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_LOCATION_NOT_ALLOWED          = 112, /*&lt; nick=GprsLocationNotAllowed         &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_ROAMING_NOT_ALLOWED           = 113, /*&lt; nick=GprsRomaingNotAllowed          &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_NO_CELLS_IN_LOCATION_AREA     = 115, /*&lt; nick=GprsNoCellsInLocationArea      &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_NETWORK_FAILURE               = 117, /*&lt; nick=GprsNetworkFailure             &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_CONGESTION                    = 122, /*&lt; nick=GprsCongestion                 &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_OPTION_NOT_SUPPORTED  = 132, /*&lt; nick=GprsServiceOptionNotSupported  &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_OPTION_NOT_SUBSCRIBED = 133, /*&lt; nick=GprsServiceOptionNotSubscribed &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_OPTION_OUT_OF_ORDER   = 134, /*&lt; nick=GprsServiceOptionOutOfOrder    &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_UNKNOWN                       = 148, /*&lt; nick=GprsUnknown                    &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_PDP_AUTH_FAILURE              = 149, /*&lt; nick=GprsPdpAuthFailure             &gt;*/
-    MM_MOBILE_EQUIPMENT_ERROR_GPRS_INVALID_MOBILE_CLASS          = 150, /*&lt; nick=GprsInvalidMobileClass         &gt;*/
-} MMMobileEquipmentError;
-</pre>
-<p>
-Enumeration of Mobile Equipment errors, as defined in 3GPP TS 07.07 version 7.8.0.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<p>Enumeration of Mobile Equipment errors, as defined in 3GPP TS 07.07 version 7.8.0.</p>
+<div class="refsect3">
+<a name="id-1.3.4.7.5.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-PHONE-FAILURE:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_PHONE_FAILURE</code></span></p></td>
-<td>Phone failure.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-PHONE-FAILURE:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_PHONE_FAILURE</p></td>
+<td class="enum_member_description">
+<p>Phone failure.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NO-CONNECTION:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_NO_CONNECTION</code></span></p></td>
-<td>No connection to phone.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NO-CONNECTION:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_NO_CONNECTION</p></td>
+<td class="enum_member_description">
+<p>No connection to phone.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-LINK-RESERVED:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_LINK_RESERVED</code></span></p></td>
-<td>Phone-adaptor link reserved.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-LINK-RESERVED:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_LINK_RESERVED</p></td>
+<td class="enum_member_description">
+<p>Phone-adaptor link reserved.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NOT-ALLOWED:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_NOT_ALLOWED</code></span></p></td>
-<td>Operation not allowed.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NOT-ALLOWED:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_NOT_ALLOWED</p></td>
+<td class="enum_member_description">
+<p>Operation not allowed.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NOT-SUPPORTED:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_NOT_SUPPORTED</code></span></p></td>
-<td>Operation not supported.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NOT-SUPPORTED:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_NOT_SUPPORTED</p></td>
+<td class="enum_member_description">
+<p>Operation not supported.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-PH-SIM-PIN:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_PH_SIM_PIN</code></span></p></td>
-<td>PH-SIM PIN required.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-PH-SIM-PIN:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_PH_SIM_PIN</p></td>
+<td class="enum_member_description">
+<p>PH-SIM PIN required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-PH-FSIM-PIN:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_PH_FSIM_PIN</code></span></p></td>
-<td>PH-FSIM PIN required.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-PH-FSIM-PIN:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_PH_FSIM_PIN</p></td>
+<td class="enum_member_description">
+<p>PH-FSIM PIN required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-PH-FSIM-PUK:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_PH_FSIM_PUK</code></span></p></td>
-<td>PH-FSIM PUK required.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-PH-FSIM-PUK:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_PH_FSIM_PUK</p></td>
+<td class="enum_member_description">
+<p>PH-FSIM PUK required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SIM-NOT-INSERTED:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_SIM_NOT_INSERTED</code></span></p></td>
-<td>SIM not inserted.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SIM-NOT-INSERTED:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_SIM_NOT_INSERTED</p></td>
+<td class="enum_member_description">
+<p>SIM not inserted.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SIM-PIN:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_SIM_PIN</code></span></p></td>
-<td>SIM PIN required.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SIM-PIN:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_SIM_PIN</p></td>
+<td class="enum_member_description">
+<p>SIM PIN required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SIM-PUK:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_SIM_PUK</code></span></p></td>
-<td>SIM PUK required.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SIM-PUK:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_SIM_PUK</p></td>
+<td class="enum_member_description">
+<p>SIM PUK required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SIM-FAILURE:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_SIM_FAILURE</code></span></p></td>
-<td>SIM failure.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SIM-FAILURE:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_SIM_FAILURE</p></td>
+<td class="enum_member_description">
+<p>SIM failure.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SIM-BUSY:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_SIM_BUSY</code></span></p></td>
-<td>SIM busy.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SIM-BUSY:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_SIM_BUSY</p></td>
+<td class="enum_member_description">
+<p>SIM busy.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SIM-WRONG:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_SIM_WRONG</code></span></p></td>
-<td>SIM wrong.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SIM-WRONG:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_SIM_WRONG</p></td>
+<td class="enum_member_description">
+<p>SIM wrong.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-INCORRECT-PASSWORD:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_INCORRECT_PASSWORD</code></span></p></td>
-<td>Incorrect password.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-INCORRECT-PASSWORD:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_INCORRECT_PASSWORD</p></td>
+<td class="enum_member_description">
+<p>Incorrect password.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SIM-PIN2:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_SIM_PIN2</code></span></p></td>
-<td>SIM PIN2 required.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SIM-PIN2:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_SIM_PIN2</p></td>
+<td class="enum_member_description">
+<p>SIM PIN2 required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SIM-PUK2:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_SIM_PUK2</code></span></p></td>
-<td>SIM PUK2 required.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SIM-PUK2:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_SIM_PUK2</p></td>
+<td class="enum_member_description">
+<p>SIM PUK2 required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-MEMORY-FULL:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_MEMORY_FULL</code></span></p></td>
-<td>Memory full.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-MEMORY-FULL:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_MEMORY_FULL</p></td>
+<td class="enum_member_description">
+<p>Memory full.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-INVALID-INDEX:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_INVALID_INDEX</code></span></p></td>
-<td>Invalid index.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-INVALID-INDEX:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_INVALID_INDEX</p></td>
+<td class="enum_member_description">
+<p>Invalid index.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NOT-FOUND:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_NOT_FOUND</code></span></p></td>
-<td>Not found.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NOT-FOUND:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_NOT_FOUND</p></td>
+<td class="enum_member_description">
+<p>Not found.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-MEMORY-FAILURE:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_MEMORY_FAILURE</code></span></p></td>
-<td>Memory failure.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-MEMORY-FAILURE:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_MEMORY_FAILURE</p></td>
+<td class="enum_member_description">
+<p>Memory failure.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-TEXT-TOO-LONG:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_TEXT_TOO_LONG</code></span></p></td>
-<td>Text string too long.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-TEXT-TOO-LONG:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_TEXT_TOO_LONG</p></td>
+<td class="enum_member_description">
+<p>Text string too long.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-INVALID-CHARS:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_INVALID_CHARS</code></span></p></td>
-<td>Invalid characters in text string.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-INVALID-CHARS:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_INVALID_CHARS</p></td>
+<td class="enum_member_description">
+<p>Invalid characters in text string.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-DIAL-STRING-TOO-LONG:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_DIAL_STRING_TOO_LONG</code></span></p></td>
-<td>Dial string too long.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-DIAL-STRING-TOO-LONG:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_DIAL_STRING_TOO_LONG</p></td>
+<td class="enum_member_description">
+<p>Dial string too long.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-DIAL-STRING-INVALID:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_DIAL_STRING_INVALID</code></span></p></td>
-<td>Invalid characters in dial string.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-DIAL-STRING-INVALID:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_DIAL_STRING_INVALID</p></td>
+<td class="enum_member_description">
+<p>Invalid characters in dial string.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NO-NETWORK:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_NO_NETWORK</code></span></p></td>
-<td>No network service.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NO-NETWORK:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_NO_NETWORK</p></td>
+<td class="enum_member_description">
+<p>No network service.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NETWORK-TIMEOUT:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_NETWORK_TIMEOUT</code></span></p></td>
-<td>Network timeout.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NETWORK-TIMEOUT:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_NETWORK_TIMEOUT</p></td>
+<td class="enum_member_description">
+<p>Network timeout.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NETWORK-NOT-ALLOWED:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_NETWORK_NOT_ALLOWED</code></span></p></td>
-<td>Network not allowed - Emergency calls only.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NETWORK-NOT-ALLOWED:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_NETWORK_NOT_ALLOWED</p></td>
+<td class="enum_member_description">
+<p>Network not allowed - Emergency calls only.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NETWORK-PIN:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_NETWORK_PIN</code></span></p></td>
-<td>Network personalisation PIN required.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NETWORK-PIN:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_NETWORK_PIN</p></td>
+<td class="enum_member_description">
+<p>Network personalisation PIN required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NETWORK-PUK:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_NETWORK_PUK</code></span></p></td>
-<td>Network personalisation PUK required.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NETWORK-PUK:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_NETWORK_PUK</p></td>
+<td class="enum_member_description">
+<p>Network personalisation PUK required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NETWORK-SUBSET-PIN:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_NETWORK_SUBSET_PIN</code></span></p></td>
-<td>Network subset personalisation PIN required.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NETWORK-SUBSET-PIN:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_NETWORK_SUBSET_PIN</p></td>
+<td class="enum_member_description">
+<p>Network subset personalisation PIN required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NETWORK-SUBSET-PUK:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_NETWORK_SUBSET_PUK</code></span></p></td>
-<td>Network subset personalisation PUK required.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-NETWORK-SUBSET-PUK:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_NETWORK_SUBSET_PUK</p></td>
+<td class="enum_member_description">
+<p>Network subset personalisation PUK required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SERVICE-PIN:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_SERVICE_PIN</code></span></p></td>
-<td>Service provider personalisation PIN required.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SERVICE-PIN:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_SERVICE_PIN</p></td>
+<td class="enum_member_description">
+<p>Service provider personalisation PIN required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SERVICE-PUK:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_SERVICE_PUK</code></span></p></td>
-<td>Service provider personalisation PUK required.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-SERVICE-PUK:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_SERVICE_PUK</p></td>
+<td class="enum_member_description">
+<p>Service provider personalisation PUK required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-CORP-PIN:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_CORP_PIN</code></span></p></td>
-<td>Corporate personalisation PIN required.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-CORP-PIN:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_CORP_PIN</p></td>
+<td class="enum_member_description">
+<p>Corporate personalisation PIN required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-CORP-PUK:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_CORP_PUK</code></span></p></td>
-<td>Corporate personalisation PUK required.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-CORP-PUK:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_CORP_PUK</p></td>
+<td class="enum_member_description">
+<p>Corporate personalisation PUK required.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-UNKNOWN:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_UNKNOWN</code></span></p></td>
-<td>Unknown.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-UNKNOWN:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_UNKNOWN</p></td>
+<td class="enum_member_description">
+<p>Unknown.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-IMSI-UNKNOWN-IN-HLR:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_GPRS_IMSI_UNKNOWN_IN_HLR</code></span></p></td>
-<td>IMSI unknown in HLR.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-IMSI-UNKNOWN-IN-HLR:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_IMSI_UNKNOWN_IN_HLR</p></td>
+<td class="enum_member_description">
+<p>IMSI unknown in HLR.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-ILLEGAL-MS:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_GPRS_ILLEGAL_MS</code></span></p></td>
-<td>Illegal MS.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-ILLEGAL-MS:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_ILLEGAL_MS</p></td>
+<td class="enum_member_description">
+<p>Illegal MS.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-IMSI-UNKNOWN-IN-VLR:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_GPRS_IMSI_UNKNOWN_IN_VLR</code></span></p></td>
-<td>IMSI unknown in VLR.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-IMSI-UNKNOWN-IN-VLR:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_IMSI_UNKNOWN_IN_VLR</p></td>
+<td class="enum_member_description">
+<p>IMSI unknown in VLR.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-ILLEGAL-ME:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_GPRS_ILLEGAL_ME</code></span></p></td>
-<td>Illegal ME.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-ILLEGAL-ME:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_ILLEGAL_ME</p></td>
+<td class="enum_member_description">
+<p>Illegal ME.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-SERVICE-NOT-ALLOWED:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_NOT_ALLOWED</code></span></p></td>
-<td>GPRS service not allowed.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-SERVICE-NOT-ALLOWED:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_NOT_ALLOWED</p></td>
+<td class="enum_member_description">
+<p>GPRS service not allowed.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-PLMN-NOT-ALLOWED:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_GPRS_PLMN_NOT_ALLOWED</code></span></p></td>
-<td>PLMN not allowed.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-PLMN-NOT-ALLOWED:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_PLMN_NOT_ALLOWED</p></td>
+<td class="enum_member_description">
+<p>PLMN not allowed.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-LOCATION-NOT-ALLOWED:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_GPRS_LOCATION_NOT_ALLOWED</code></span></p></td>
-<td>Location area not allowed.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-LOCATION-NOT-ALLOWED:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_LOCATION_NOT_ALLOWED</p></td>
+<td class="enum_member_description">
+<p>Location area not allowed.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-ROAMING-NOT-ALLOWED:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_GPRS_ROAMING_NOT_ALLOWED</code></span></p></td>
-<td>Roaming not allowed in this location area.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-ROAMING-NOT-ALLOWED:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_ROAMING_NOT_ALLOWED</p></td>
+<td class="enum_member_description">
+<p>Roaming not allowed in this location area.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-NO-CELLS-IN-LOCATION-AREA:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_GPRS_NO_CELLS_IN_LOCATION_AREA</code></span></p></td>
-<td>No cells in this location area.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-NO-CELLS-IN-LOCATION-AREA:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_NO_CELLS_IN_LOCATION_AREA</p></td>
+<td class="enum_member_description">
+<p>No cells in this location area.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-NETWORK-FAILURE:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_GPRS_NETWORK_FAILURE</code></span></p></td>
-<td>Network failure.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-NETWORK-FAILURE:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_NETWORK_FAILURE</p></td>
+<td class="enum_member_description">
+<p>Network failure.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-CONGESTION:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_GPRS_CONGESTION</code></span></p></td>
-<td>Congestion.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-CONGESTION:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_CONGESTION</p></td>
+<td class="enum_member_description">
+<p>Congestion.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-SERVICE-OPTION-NOT-SUPPORTED:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_OPTION_NOT_SUPPORTED</code></span></p></td>
-<td>Service option not supported.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-INSUFFICIENT-RESOURCES:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_INSUFFICIENT_RESOURCES</p></td>
+<td class="enum_member_description">
+<p>Insufficient resources.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-SERVICE-OPTION-NOT-SUBSCRIBED:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_OPTION_NOT_SUBSCRIBED</code></span></p></td>
-<td>Requested service option not subscribed.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-MISSING-OR-UNKNOWN-APN:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_MISSING_OR_UNKNOWN_APN</p></td>
+<td class="enum_member_description">
+<p>Missing or unknown APN.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-SERVICE-OPTION-OUT-OF-ORDER:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_OPTION_OUT_OF_ORDER</code></span></p></td>
-<td>Service option temporarily out of order.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-USER-AUTHENTICATION-FAILED:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_USER_AUTHENTICATION_FAILED</p></td>
+<td class="enum_member_description">
+<p>User authentication failed.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-UNKNOWN:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_GPRS_UNKNOWN</code></span></p></td>
-<td>Unspecified GPRS error.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-SERVICE-OPTION-NOT-SUPPORTED:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_OPTION_NOT_SUPPORTED</p></td>
+<td class="enum_member_description">
+<p>Service option not supported.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-PDP-AUTH-FAILURE:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_GPRS_PDP_AUTH_FAILURE</code></span></p></td>
-<td>PDP authentication failure.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-SERVICE-OPTION-NOT-SUBSCRIBED:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_OPTION_NOT_SUBSCRIBED</p></td>
+<td class="enum_member_description">
+<p>Requested service option not subscribed.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-INVALID-MOBILE-CLASS:CAPS"></a><span class="term"><code class="literal">MM_MOBILE_EQUIPMENT_ERROR_GPRS_INVALID_MOBILE_CLASS</code></span></p></td>
-<td>Invalid mobile class.
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-SERVICE-OPTION-OUT-OF-ORDER:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_SERVICE_OPTION_OUT_OF_ORDER</p></td>
+<td class="enum_member_description">
+<p>Service option temporarily out of order.</p>
 </td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-UNKNOWN:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_UNKNOWN</p></td>
+<td class="enum_member_description">
+<p>Unspecified GPRS error.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-PDP-AUTH-FAILURE:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_PDP_AUTH_FAILURE</p></td>
+<td class="enum_member_description">
+<p>PDP authentication failure.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-MOBILE-EQUIPMENT-ERROR-GPRS-INVALID-MOBILE-CLASS:CAPS"></a>MM_MOBILE_EQUIPMENT_ERROR_GPRS_INVALID_MOBILE_CLASS</p></td>
+<td class="enum_member_description">
+<p>Invalid mobile class.</p>
+</td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="MMSerialError"></a><h3>enum MMSerialError</h3>
-<pre class="programlisting">typedef enum {
- /*&lt; underscore_name=mm_serial_error &gt;*/
-    MM_SERIAL_ERROR_UNKNOWN               = 0, /*&lt; nick=Unknown            &gt;*/
-    MM_SERIAL_ERROR_OPEN_FAILED           = 1, /*&lt; nick=OpenFailed         &gt;*/
-    MM_SERIAL_ERROR_SEND_FAILED           = 2, /*&lt; nick=SendFailed         &gt;*/
-    MM_SERIAL_ERROR_RESPONSE_TIMEOUT      = 3, /*&lt; nick=ResponseTimeout    &gt;*/
-    MM_SERIAL_ERROR_OPEN_FAILED_NO_DEVICE = 4, /*&lt; nick=OpenFailedNoDevice &gt;*/
-    MM_SERIAL_ERROR_FLASH_FAILED          = 5, /*&lt; nick=FlashFailed        &gt;*/
-    MM_SERIAL_ERROR_NOT_OPEN              = 6, /*&lt; nick=NotOpen            &gt;*/
-    MM_SERIAL_ERROR_PARSE_FAILED          = 7, /*&lt; nick=ParseFailed        &gt;*/
-} MMSerialError;
-</pre>
-<p>
-Serial errors that may be reported by ModemManager.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<p>Serial errors that may be reported by ModemManager.</p>
+<div class="refsect3">
+<a name="id-1.3.4.7.6.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="MM-SERIAL-ERROR-UNKNOWN:CAPS"></a><span class="term"><code class="literal">MM_SERIAL_ERROR_UNKNOWN</code></span></p></td>
-<td>Unknown serial error.
+<td class="enum_member_name"><p><a name="MM-SERIAL-ERROR-UNKNOWN:CAPS"></a>MM_SERIAL_ERROR_UNKNOWN</p></td>
+<td class="enum_member_description">
+<p>Unknown serial error.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-SERIAL-ERROR-OPEN-FAILED:CAPS"></a><span class="term"><code class="literal">MM_SERIAL_ERROR_OPEN_FAILED</code></span></p></td>
-<td>Could not open the serial device.
+<td class="enum_member_name"><p><a name="MM-SERIAL-ERROR-OPEN-FAILED:CAPS"></a>MM_SERIAL_ERROR_OPEN_FAILED</p></td>
+<td class="enum_member_description">
+<p>Could not open the serial device.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-SERIAL-ERROR-SEND-FAILED:CAPS"></a><span class="term"><code class="literal">MM_SERIAL_ERROR_SEND_FAILED</code></span></p></td>
-<td>Could not write to the serial device.
+<td class="enum_member_name"><p><a name="MM-SERIAL-ERROR-SEND-FAILED:CAPS"></a>MM_SERIAL_ERROR_SEND_FAILED</p></td>
+<td class="enum_member_description">
+<p>Could not write to the serial device.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-SERIAL-ERROR-RESPONSE-TIMEOUT:CAPS"></a><span class="term"><code class="literal">MM_SERIAL_ERROR_RESPONSE_TIMEOUT</code></span></p></td>
-<td>A response was not received on time.
+<td class="enum_member_name"><p><a name="MM-SERIAL-ERROR-RESPONSE-TIMEOUT:CAPS"></a>MM_SERIAL_ERROR_RESPONSE_TIMEOUT</p></td>
+<td class="enum_member_description">
+<p>A response was not received on time.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-SERIAL-ERROR-OPEN-FAILED-NO-DEVICE:CAPS"></a><span class="term"><code class="literal">MM_SERIAL_ERROR_OPEN_FAILED_NO_DEVICE</code></span></p></td>
-<td>Could not open the serial port, no device.
+<td class="enum_member_name"><p><a name="MM-SERIAL-ERROR-OPEN-FAILED-NO-DEVICE:CAPS"></a>MM_SERIAL_ERROR_OPEN_FAILED_NO_DEVICE</p></td>
+<td class="enum_member_description">
+<p>Could not open the serial port, no device.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-SERIAL-ERROR-FLASH-FAILED:CAPS"></a><span class="term"><code class="literal">MM_SERIAL_ERROR_FLASH_FAILED</code></span></p></td>
-<td>Could not flash the device.
+<td class="enum_member_name"><p><a name="MM-SERIAL-ERROR-FLASH-FAILED:CAPS"></a>MM_SERIAL_ERROR_FLASH_FAILED</p></td>
+<td class="enum_member_description">
+<p>Could not flash the device.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-SERIAL-ERROR-NOT-OPEN:CAPS"></a><span class="term"><code class="literal">MM_SERIAL_ERROR_NOT_OPEN</code></span></p></td>
-<td>The serial port is not open.
+<td class="enum_member_name"><p><a name="MM-SERIAL-ERROR-NOT-OPEN:CAPS"></a>MM_SERIAL_ERROR_NOT_OPEN</p></td>
+<td class="enum_member_description">
+<p>The serial port is not open.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-SERIAL-ERROR-PARSE-FAILED:CAPS"></a><span class="term"><code class="literal">MM_SERIAL_ERROR_PARSE_FAILED</code></span></p></td>
-<td>The serial port specific parsing failed.
+<td class="enum_member_name"><p><a name="MM-SERIAL-ERROR-PARSE-FAILED:CAPS"></a>MM_SERIAL_ERROR_PARSE_FAILED</p></td>
+<td class="enum_member_description">
+<p>The serial port specific parsing failed.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
+</div>
 <hr>
 <div class="refsect2">
 <a name="MMCdmaActivationError"></a><h3>enum MMCdmaActivationError</h3>
-<pre class="programlisting">typedef enum {
- /*&lt; underscore_name=mm_cdma_activation_error &gt;*/
-    MM_CDMA_ACTIVATION_ERROR_NONE                           = 0, /*&lt; nick=None                         &gt;*/
-    MM_CDMA_ACTIVATION_ERROR_UNKNOWN                        = 1, /*&lt; nick=Unknown                      &gt;*/
-    MM_CDMA_ACTIVATION_ERROR_ROAMING                        = 2, /*&lt; nick=Roaming                      &gt;*/
-    MM_CDMA_ACTIVATION_ERROR_WRONG_RADIO_INTERFACE          = 3, /*&lt; nick=WrongRadioInterface          &gt;*/
-    MM_CDMA_ACTIVATION_ERROR_COULD_NOT_CONNECT              = 4, /*&lt; nick=CouldNotConnect              &gt;*/
-    MM_CDMA_ACTIVATION_ERROR_SECURITY_AUTHENTICATION_FAILED = 5, /*&lt; nick=SecurityAuthenticationFailed &gt;*/
-    MM_CDMA_ACTIVATION_ERROR_PROVISIONING_FAILED            = 6, /*&lt; nick=ProvisioningFailed           &gt;*/
-    MM_CDMA_ACTIVATION_ERROR_NO_SIGNAL                      = 7, /*&lt; nick=NoSignal                     &gt;*/
-    MM_CDMA_ACTIVATION_ERROR_TIMED_OUT                      = 8, /*&lt; nick=TimedOut                     &gt;*/
-    MM_CDMA_ACTIVATION_ERROR_START_FAILED                   = 9  /*&lt; nick=StartFailed                  &gt;*/
-} MMCdmaActivationError;
-</pre>
-<p>
-CDMA Activation errors.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
+<p>CDMA Activation errors.</p>
+<div class="refsect3">
+<a name="id-1.3.4.7.7.4"></a><h4>Members</h4>
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
-<col align="left" valign="top">
-<col>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
 </colgroup>
 <tbody>
 <tr>
-<td><p><a name="MM-CDMA-ACTIVATION-ERROR-NONE:CAPS"></a><span class="term"><code class="literal">MM_CDMA_ACTIVATION_ERROR_NONE</code></span></p></td>
-<td>No error.
+<td class="enum_member_name"><p><a name="MM-CDMA-ACTIVATION-ERROR-NONE:CAPS"></a>MM_CDMA_ACTIVATION_ERROR_NONE</p></td>
+<td class="enum_member_description">
+<p>No error.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CDMA-ACTIVATION-ERROR-UNKNOWN:CAPS"></a><span class="term"><code class="literal">MM_CDMA_ACTIVATION_ERROR_UNKNOWN</code></span></p></td>
-<td>An error occurred.
+<td class="enum_member_name"><p><a name="MM-CDMA-ACTIVATION-ERROR-UNKNOWN:CAPS"></a>MM_CDMA_ACTIVATION_ERROR_UNKNOWN</p></td>
+<td class="enum_member_description">
+<p>An error occurred.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CDMA-ACTIVATION-ERROR-ROAMING:CAPS"></a><span class="term"><code class="literal">MM_CDMA_ACTIVATION_ERROR_ROAMING</code></span></p></td>
-<td>Device cannot activate while roaming.
+<td class="enum_member_name"><p><a name="MM-CDMA-ACTIVATION-ERROR-ROAMING:CAPS"></a>MM_CDMA_ACTIVATION_ERROR_ROAMING</p></td>
+<td class="enum_member_description">
+<p>Device cannot activate while roaming.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CDMA-ACTIVATION-ERROR-WRONG-RADIO-INTERFACE:CAPS"></a><span class="term"><code class="literal">MM_CDMA_ACTIVATION_ERROR_WRONG_RADIO_INTERFACE</code></span></p></td>
-<td>Device cannot activate on this network type (eg EVDO vs 1xRTT).
+<td class="enum_member_name"><p><a name="MM-CDMA-ACTIVATION-ERROR-WRONG-RADIO-INTERFACE:CAPS"></a>MM_CDMA_ACTIVATION_ERROR_WRONG_RADIO_INTERFACE</p></td>
+<td class="enum_member_description">
+<p>Device cannot activate on this network type (eg EVDO vs 1xRTT).</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CDMA-ACTIVATION-ERROR-COULD-NOT-CONNECT:CAPS"></a><span class="term"><code class="literal">MM_CDMA_ACTIVATION_ERROR_COULD_NOT_CONNECT</code></span></p></td>
-<td>Device could not connect to the network for activation.
+<td class="enum_member_name"><p><a name="MM-CDMA-ACTIVATION-ERROR-COULD-NOT-CONNECT:CAPS"></a>MM_CDMA_ACTIVATION_ERROR_COULD_NOT_CONNECT</p></td>
+<td class="enum_member_description">
+<p>Device could not connect to the network for activation.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CDMA-ACTIVATION-ERROR-SECURITY-AUTHENTICATION-FAILED:CAPS"></a><span class="term"><code class="literal">MM_CDMA_ACTIVATION_ERROR_SECURITY_AUTHENTICATION_FAILED</code></span></p></td>
-<td>Device could not authenticate to the network for activation.
+<td class="enum_member_name"><p><a name="MM-CDMA-ACTIVATION-ERROR-SECURITY-AUTHENTICATION-FAILED:CAPS"></a>MM_CDMA_ACTIVATION_ERROR_SECURITY_AUTHENTICATION_FAILED</p></td>
+<td class="enum_member_description">
+<p>Device could not authenticate to the network for activation.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CDMA-ACTIVATION-ERROR-PROVISIONING-FAILED:CAPS"></a><span class="term"><code class="literal">MM_CDMA_ACTIVATION_ERROR_PROVISIONING_FAILED</code></span></p></td>
-<td>Later stages of device provisioning failed.
+<td class="enum_member_name"><p><a name="MM-CDMA-ACTIVATION-ERROR-PROVISIONING-FAILED:CAPS"></a>MM_CDMA_ACTIVATION_ERROR_PROVISIONING_FAILED</p></td>
+<td class="enum_member_description">
+<p>Later stages of device provisioning failed.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CDMA-ACTIVATION-ERROR-NO-SIGNAL:CAPS"></a><span class="term"><code class="literal">MM_CDMA_ACTIVATION_ERROR_NO_SIGNAL</code></span></p></td>
-<td>No signal available.
+<td class="enum_member_name"><p><a name="MM-CDMA-ACTIVATION-ERROR-NO-SIGNAL:CAPS"></a>MM_CDMA_ACTIVATION_ERROR_NO_SIGNAL</p></td>
+<td class="enum_member_description">
+<p>No signal available.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CDMA-ACTIVATION-ERROR-TIMED-OUT:CAPS"></a><span class="term"><code class="literal">MM_CDMA_ACTIVATION_ERROR_TIMED_OUT</code></span></p></td>
-<td>Activation timed out.
+<td class="enum_member_name"><p><a name="MM-CDMA-ACTIVATION-ERROR-TIMED-OUT:CAPS"></a>MM_CDMA_ACTIVATION_ERROR_TIMED_OUT</p></td>
+<td class="enum_member_description">
+<p>Activation timed out.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
-<td><p><a name="MM-CDMA-ACTIVATION-ERROR-START-FAILED:CAPS"></a><span class="term"><code class="literal">MM_CDMA_ACTIVATION_ERROR_START_FAILED</code></span></p></td>
-<td>API call for initial activation failed.
+<td class="enum_member_name"><p><a name="MM-CDMA-ACTIVATION-ERROR-START-FAILED:CAPS"></a>MM_CDMA_ACTIVATION_ERROR_START_FAILED</p></td>
+<td class="enum_member_description">
+<p>API call for initial activation failed.</p>
 </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
+</div>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.19</div>
+          Generated by GTK-Doc V1.20</div>
 </body>
 </html>

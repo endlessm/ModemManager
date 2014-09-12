@@ -29,12 +29,21 @@
 #include "mm-iface-modem.h"
 #include "mm-bearer-qmi.h"
 #include "mm-modem-helpers-qmi.h"
-#include "mm-serial-enums-types.h"
+#include "mm-port-enums-types.h"
 #include "mm-log.h"
+#include "mm-modem-helpers.h"
 
-G_DEFINE_TYPE (MMBearerQmi, mm_bearer_qmi, MM_TYPE_BEARER);
+G_DEFINE_TYPE (MMBearerQmi, mm_bearer_qmi, MM_TYPE_BASE_BEARER)
 
 #define GLOBAL_PACKET_DATA_HANDLE 0xFFFFFFFF
+
+enum {
+    PROP_0,
+    PROP_FORCE_DHCP,
+    PROP_LAST
+};
+
+static GParamSpec *properties[PROP_LAST];
 
 struct _MMBearerQmiPrivate {
     /* State kept while connected */
@@ -43,6 +52,7 @@ struct _MMBearerQmiPrivate {
     MMPort *data;
     guint32 packet_data_handle_ipv4;
     guint32 packet_data_handle_ipv6;
+    gboolean force_dhcp;
 };
 
 /*****************************************************************************/
@@ -70,7 +80,7 @@ typedef struct {
     GCancellable *cancellable;
     ConnectStep step;
     MMPort *data;
-    MMQmiPort *qmi;
+    MMPortQmi *qmi;
     gchar *user;
     gchar *password;
     gchar *apn;
@@ -82,12 +92,14 @@ typedef struct {
     gboolean running_ipv4;
     QmiClientWds *client_ipv4;
     guint32 packet_data_handle_ipv4;
+    MMBearerIpConfig *ipv4_config;
     GError *error_ipv4;
 
     gboolean ipv6;
     gboolean running_ipv6;
     QmiClientWds *client_ipv6;
     guint32 packet_data_handle_ipv6;
+    MMBearerIpConfig *ipv6_config;
     GError *error_ipv6;
 } ConnectContext;
 
@@ -99,14 +111,12 @@ connect_context_complete_and_free (ConnectContext *ctx)
     g_free (ctx->apn);
     g_free (ctx->user);
     g_free (ctx->password);
-    if (ctx->error_ipv4)
-        g_error_free (ctx->error_ipv4);
-    if (ctx->error_ipv6)
-        g_error_free (ctx->error_ipv6);
-    if (ctx->client_ipv4)
-        g_object_unref (ctx->client_ipv4);
-    if (ctx->client_ipv6)
-        g_object_unref (ctx->client_ipv6);
+    g_clear_error (&ctx->error_ipv4);
+    g_clear_error (&ctx->error_ipv6);
+    g_clear_object (&ctx->client_ipv4);
+    g_clear_object (&ctx->client_ipv6);
+    g_clear_object (&ctx->ipv4_config);
+    g_clear_object (&ctx->ipv6_config);
     g_object_unref (ctx->data);
     g_object_unref (ctx->qmi);
     g_object_unref (ctx->cancellable);
@@ -115,7 +125,7 @@ connect_context_complete_and_free (ConnectContext *ctx)
 }
 
 static MMBearerConnectResult *
-connect_finish (MMBearer *self,
+connect_finish (MMBaseBearer *self,
                 GAsyncResult *res,
                 GError **error)
 {
@@ -218,7 +228,7 @@ build_start_network_input (ConnectContext *ctx)
 
     input = qmi_message_wds_start_network_input_new ();
 
-    if (ctx->apn)
+    if (ctx->apn && ctx->apn[0])
         qmi_message_wds_start_network_input_set_apn (input, ctx->apn, NULL);
 
     if (ctx->auth != QMI_WDS_AUTHENTICATION_NONE) {
@@ -247,51 +257,203 @@ build_start_network_input (ConnectContext *ctx)
 }
 
 static void
-print_address4 (gboolean success, const char *tag, guint32 address, GError *error)
+qmi_inet4_ntop (guint32 address, char *buf, const gsize buflen)
 {
     struct in_addr a = { .s_addr = GUINT32_TO_BE (address) };
-    char buf[INET_ADDRSTRLEN + 1];
 
-    if (success) {
-        memset (buf, 0, sizeof (buf));
-        if (inet_ntop (AF_INET, &a, buf, sizeof (buf) - 1))
-            mm_dbg ("    %s: %s", tag, buf);
-        else
-            mm_dbg ("    %s: failed (address conversion error)", tag);
-        return;
+    g_assert (buflen >= INET_ADDRSTRLEN);
+
+    /* We can ignore inet_ntop() return value if 'buf' is
+     * at least INET_ADDRSTRLEN in size. */
+    memset (buf, 0, buflen);
+    g_assert (inet_ntop (AF_INET, &a, buf, buflen));
+}
+
+static MMBearerIpConfig *
+get_ipv4_config (MMBearerQmi *self,
+                 QmiMessageWdsGetCurrentSettingsOutput *output,
+                 guint32 mtu)
+{
+    MMBearerIpConfig *config;
+    char buf[INET_ADDRSTRLEN];
+    char buf2[INET_ADDRSTRLEN];
+    const gchar *dns[3] = { 0 };
+    guint dns_idx = 0;
+    guint32 addr = 0;
+    GError *error = NULL;
+    guint32 prefix = 0;
+
+    /* IPv4 subnet mask */
+    if (!qmi_message_wds_get_current_settings_output_get_ipv4_gateway_subnet_mask (output, &addr, &error)) {
+        mm_dbg ("Failed to read IPv4 netmask (%s)", error->message);
+        g_clear_error (&error);
+        return NULL;
     }
-    mm_dbg ("    %s: failed (%s)", tag, error ? error->message : "unknown");
+    qmi_inet4_ntop (addr, buf, sizeof (buf));
+    prefix = mm_netmask_to_cidr (buf);
+
+    /* IPv4 address */
+    if (!qmi_message_wds_get_current_settings_output_get_ipv4_address (output, &addr, &error)) {
+        mm_dbg ("IPv4 family but no IPv4 address (%s)", error->message);
+        g_clear_error (&error);
+        return NULL;
+    }
+
+    mm_dbg ("QMI IPv4 Settings:");
+
+    config = mm_bearer_ip_config_new ();
+    if (self->priv->force_dhcp)
+        mm_bearer_ip_config_set_method (config, MM_BEARER_IP_METHOD_DHCP);
+    else {
+        mm_bearer_ip_config_set_method (config, MM_BEARER_IP_METHOD_STATIC);        
+
+        /* IPv4 address */
+        qmi_inet4_ntop (addr, buf, sizeof (buf));
+        mm_bearer_ip_config_set_address (config, buf);
+        mm_bearer_ip_config_set_prefix (config, prefix);
+        mm_dbg ("    Address: %s/%d", buf, prefix);
+
+        /* IPv4 gateway address */
+        if (qmi_message_wds_get_current_settings_output_get_ipv4_gateway_address (output, &addr, &error)) {
+            qmi_inet4_ntop (addr, buf, sizeof (buf));
+            mm_bearer_ip_config_set_gateway (config, buf);
+            mm_dbg ("    Gateway: %s", buf);
+        } else {
+            mm_dbg ("    Gateway: failed (%s)", error->message);
+            g_clear_error (&error);
+        }
+
+        /* IPv4 DNS #1 */
+        if (qmi_message_wds_get_current_settings_output_get_primary_ipv4_dns_address (output, &addr, &error)) {
+            qmi_inet4_ntop (addr, buf, sizeof (buf));
+            dns[dns_idx++] = buf;
+            mm_dbg ("    DNS #1: %s", buf);
+        } else {
+            mm_dbg ("    DNS #1: failed (%s)", error->message);
+            g_clear_error (&error);
+        }
+
+        /* IPv6 DNS #2 */
+        if (qmi_message_wds_get_current_settings_output_get_secondary_ipv4_dns_address (output, &addr, &error)) {
+            qmi_inet4_ntop (addr, buf2, sizeof (buf2));
+            dns[dns_idx++] = buf2;
+            mm_dbg ("    DNS #2: %s", buf2);
+        } else {
+            mm_dbg ("    DNS #2: failed (%s)", error->message);
+            g_clear_error (&error);
+        }
+
+        if (dns_idx > 0)
+            mm_bearer_ip_config_set_dns (config, (const gchar **) &dns);
+    }
+
+    if (mtu) {
+        mm_bearer_ip_config_set_mtu (config, mtu);
+        mm_dbg ("       MTU: %d", mtu);
+    }
+
+    return config;
 }
 
 static void
-print_address6 (gboolean success,
-                const char *tag,
-                GArray *array,
-                guint32 prefix,
-                GError *error)
+qmi_inet6_ntop (GArray *array, char *buf, const gsize buflen)
 {
     struct in6_addr a;
-    char buf[INET6_ADDRSTRLEN + 1];
     guint32 i;
 
-    if (success) {
-        g_assert (array);
-        g_assert (array->len == 8);
+    g_assert (array);
+    g_assert (array->len == 8);
+    g_assert (buflen >= INET6_ADDRSTRLEN);
 
-        memset (buf, 0, sizeof (buf));
-        for (i = 0; i < array->len; i++)
-            a.s6_addr16[i] = GUINT16_TO_BE (g_array_index (array, guint16, i));
+    for (i = 0; i < array->len; i++)
+        a.s6_addr16[i] = GUINT16_TO_BE (g_array_index (array, guint16, i));
 
-        if (inet_ntop (AF_INET6, &a, buf, sizeof (buf) - 1))
-            mm_dbg ("    %s: %s/%d", tag, buf, prefix);
-        else
-            mm_dbg ("    %s: failed (address conversion error)", tag);
+    /* We can ignore inet_ntop() return value if 'buf' is
+     * at least INET6_ADDRSTRLEN in size. */
+    memset (buf, 0, buflen);
+    g_assert (inet_ntop (AF_INET6, &a, buf, buflen));
+}
 
-        g_array_free (array, TRUE);
-        return;
+static MMBearerIpConfig *
+get_ipv6_config (MMBearerQmi *self,
+                 QmiMessageWdsGetCurrentSettingsOutput *output,
+                 guint32 mtu)
+{
+    MMBearerIpConfig *config;
+    char buf[INET6_ADDRSTRLEN];
+    char buf2[INET6_ADDRSTRLEN];
+    const gchar *dns[3] = { 0 };
+    guint dns_idx = 0;
+    GArray *array;
+    GError *error = NULL;
+    guint8 prefix = 0;
+
+    /* If the message has an IPv6 address, create an IPv6 bearer config */
+    if (!qmi_message_wds_get_current_settings_output_get_ipv6_address (output, &array, &prefix, &error)) {
+        mm_dbg ("IPv6 family but no IPv6 address (%s)", error->message);
+        g_clear_error (&error);
+        return NULL;
     }
 
-    mm_dbg ("    %s: failed (%s)", tag, error ? error->message : "unknown");
+    mm_dbg ("QMI IPv6 Settings:");
+
+    config = mm_bearer_ip_config_new ();
+    if (self->priv->force_dhcp)
+        /* Force DHCP, but still set the static IPv6 config details if we get them */
+        mm_bearer_ip_config_set_method (config, MM_BEARER_IP_METHOD_DHCP);
+    else
+        mm_bearer_ip_config_set_method (config, MM_BEARER_IP_METHOD_STATIC);
+
+    /* IPv6 address */
+    qmi_inet6_ntop (array, buf, sizeof (buf));
+    g_array_unref (array);
+
+    mm_bearer_ip_config_set_address (config, buf);
+    mm_bearer_ip_config_set_prefix (config, prefix);
+    mm_dbg ("    Address: %s/%d", buf, prefix);
+
+    /* IPv6 gateway address */
+    if (qmi_message_wds_get_current_settings_output_get_ipv6_gateway_address (output, &array, &prefix, &error)) {
+        qmi_inet6_ntop (array, buf, sizeof (buf));
+        mm_bearer_ip_config_set_gateway (config, buf);
+        mm_dbg ("    Gateway: %s", buf);
+        g_array_unref (array);
+    } else {
+        mm_dbg ("    Gateway: failed (%s)", error->message);
+        g_clear_error (&error);
+    }
+
+    /* IPv6 DNS #1 */
+    if (qmi_message_wds_get_current_settings_output_get_ipv6_primary_dns_address (output, &array, &error)) {
+        qmi_inet6_ntop (array, buf, sizeof (buf));
+        dns[dns_idx++] = buf;
+        mm_dbg ("    DNS #1: %s", buf);
+        g_array_unref (array);
+    } else {
+        mm_dbg ("    DNS #1: failed (%s)", error->message);
+        g_clear_error (&error);
+    }
+
+    /* IPv6 DNS #2 */
+    if (qmi_message_wds_get_current_settings_output_get_ipv6_secondary_dns_address (output, &array, &error)) {
+        qmi_inet6_ntop (array, buf2, sizeof (buf2));
+        dns[dns_idx++] = buf2;
+        mm_dbg ("    DNS #2: %s", buf2);
+        g_array_unref (array);
+    } else {
+        mm_dbg ("    DNS #2: failed (%s)", error->message);
+        g_clear_error (&error);
+    }
+
+    if (dns_idx > 0)
+        mm_bearer_ip_config_set_dns (config, (const gchar **) &dns);
+
+    if (mtu) {
+        mm_bearer_ip_config_set_mtu (config, mtu);
+        mm_dbg ("       MTU: %d", mtu);
+    }
+
+    return config;
 }
 
 static void
@@ -312,73 +474,33 @@ get_current_settings_ready (QmiClientWds *client,
         mm_info ("error: couldn't get current settings: %s", error->message);
         g_error_free (error);
     } else {
-        gboolean success;
-        guint32 addr, mtu, i;
+        QmiWdsIpFamily ip_family = QMI_WDS_IP_FAMILY_UNSPECIFIED;
+        guint32 mtu = 0;
         GArray *array;
-        guint8 prefix;
 
-        /* If the message has an IPv4 address, print IPv4 settings */
-        if (qmi_message_wds_get_current_settings_output_get_ipv4_address (output, &addr, &error)) {
-            mm_dbg ("QMI IPv4 Settings:");
-
-            /* IPv4 address */
-            print_address4 (TRUE, "Address", addr, error);
+        if (!qmi_message_wds_get_current_settings_output_get_ip_family (output, &ip_family, &error)) {
+            mm_dbg (" IP Family: failed (%s); assuming IPv4", error->message);
             g_clear_error (&error);
+            ip_family = QMI_WDS_IP_FAMILY_IPV4;
+        }
+        mm_dbg (" IP Family: %s",
+                (ip_family == QMI_WDS_IP_FAMILY_IPV4) ? "IPv4" :
+                   (ip_family == QMI_WDS_IP_FAMILY_IPV6) ? "IPv6" : "unknown");
 
-            /* IPv4 gateway address */
-            success = qmi_message_wds_get_current_settings_output_get_ipv4_gateway_address (output, &addr, &error);
-            print_address4 (success, "Gateway", addr, error);
-            g_clear_error (&error);
-
-            /* IPv4 subnet mask */
-            success = qmi_message_wds_get_current_settings_output_get_ipv4_gateway_subnet_mask (output, &addr, &error);
-            print_address4 (success, "Netmask", addr, error);
-            g_clear_error (&error);
-
-            /* IPv4 DNS #1 */
-            success = qmi_message_wds_get_current_settings_output_get_primary_ipv4_dns_address (output, &addr, &error);
-            print_address4 (success, " DNS #1", addr, error);
-            g_clear_error (&error);
-
-            /* IPv4 DNS #2 */
-            success = qmi_message_wds_get_current_settings_output_get_secondary_ipv4_dns_address (output, &addr, &error);
-            print_address4 (success, " DNS #2", addr, error);
-            g_clear_error (&error);
-        } else {
-            /* no IPv4 configuration */
+        if (!qmi_message_wds_get_current_settings_output_get_mtu (output, &mtu, &error)) {
+            mm_dbg ("       MTU: failed (%s)", error->message);
             g_clear_error (&error);
         }
 
-        /* If the message has an IPv6 address, print IPv6 settings */
-        if (qmi_message_wds_get_current_settings_output_get_ipv6_address (output, &array, &prefix, &error)) {
-            mm_dbg ("QMI IPv6 Settings:");
-
-            /* IPv6 address */
-            print_address6 (TRUE, "Address", array, prefix, error);
-            g_clear_error (&error);
-
-            /* IPv6 gateway address */
-            success = qmi_message_wds_get_current_settings_output_get_ipv6_gateway_address (output, &array, &prefix, &error);
-            print_address6 (success, "Gateway", array, prefix, error);
-            g_clear_error (&error);
-
-            /* IPv6 DNS #1 */
-            success = qmi_message_wds_get_current_settings_output_get_ipv6_primary_dns_address (output, &array, &error);
-            print_address6 (success, " DNS #1", array, 0, error);
-            g_clear_error (&error);
-
-            /* IPv6 DNS #2 */
-            success = qmi_message_wds_get_current_settings_output_get_ipv6_secondary_dns_address (output, &array, &error);
-            print_address6 (success, " DNS #2", array, 0, error);
-            g_clear_error (&error);
-        } else {
-            /* no IPv6 configuration */
-            g_clear_error (&error);
-        }
+        if (ip_family == QMI_WDS_IP_FAMILY_IPV4)
+            ctx->ipv4_config = get_ipv4_config (ctx->self, output, mtu);
+        else if (ip_family == QMI_WDS_IP_FAMILY_IPV6)
+            ctx->ipv6_config = get_ipv6_config (ctx->self, output, mtu);
 
         /* Domain names */
         if (qmi_message_wds_get_current_settings_output_get_domain_name_list (output, &array, &error)) {
             GString *s = g_string_sized_new (array ? (array->len * 20) : 1);
+            guint i;
 
             for (i = 0; array && (i < array->len); i++) {
                 if (s->len)
@@ -389,13 +511,6 @@ get_current_settings_ready (QmiClientWds *client,
             g_string_free (s, TRUE);
         } else {
             mm_dbg ("   Domains: failed (%s)", error ? error->message : "unknown");
-            g_clear_error (&error);
-        }
-
-        if (qmi_message_wds_get_current_settings_output_get_mtu (output, &mtu, &error))
-            mm_dbg ("       MTU: %d", mtu);
-        else {
-            mm_dbg ("       MTU: failed (%s)", error ? error->message : "unknown");
             g_clear_error (&error);
         }
     }
@@ -468,7 +583,7 @@ set_ip_family_ready (QmiClientWds *client,
 }
 
 static void
-qmi_port_allocate_client_ready (MMQmiPort *qmi,
+qmi_port_allocate_client_ready (MMPortQmi *qmi,
                                 GAsyncResult *res,
                                 ConnectContext *ctx)
 {
@@ -477,20 +592,20 @@ qmi_port_allocate_client_ready (MMQmiPort *qmi,
     g_assert (ctx->running_ipv4 || ctx->running_ipv6);
     g_assert (!(ctx->running_ipv4 && ctx->running_ipv6));
 
-    if (!mm_qmi_port_allocate_client_finish (qmi, res, &error)) {
+    if (!mm_port_qmi_allocate_client_finish (qmi, res, &error)) {
         g_simple_async_result_take_error (ctx->result, error);
         connect_context_complete_and_free (ctx);
         return;
     }
 
     if (ctx->running_ipv4)
-        ctx->client_ipv4 = QMI_CLIENT_WDS (mm_qmi_port_get_client (qmi,
+        ctx->client_ipv4 = QMI_CLIENT_WDS (mm_port_qmi_get_client (qmi,
                                                                    QMI_SERVICE_WDS,
-                                                                   MM_QMI_PORT_FLAG_WDS_IPV4));
+                                                                   MM_PORT_QMI_FLAG_WDS_IPV4));
     else
-        ctx->client_ipv6 = QMI_CLIENT_WDS (mm_qmi_port_get_client (qmi,
+        ctx->client_ipv6 = QMI_CLIENT_WDS (mm_port_qmi_get_client (qmi,
                                                                    QMI_SERVICE_WDS,
-                                                                   MM_QMI_PORT_FLAG_WDS_IPV6));
+                                                                   MM_PORT_QMI_FLAG_WDS_IPV6));
 
     /* Keep on */
     ctx->step++;
@@ -498,13 +613,13 @@ qmi_port_allocate_client_ready (MMQmiPort *qmi,
 }
 
 static void
-qmi_port_open_ready (MMQmiPort *qmi,
+qmi_port_open_ready (MMPortQmi *qmi,
                      GAsyncResult *res,
                      ConnectContext *ctx)
 {
     GError *error = NULL;
 
-    if (!mm_qmi_port_open_finish (qmi, res, &error)) {
+    if (!mm_port_qmi_open_finish (qmi, res, &error)) {
         g_simple_async_result_take_error (ctx->result, error);
         connect_context_complete_and_free (ctx);
         return;
@@ -537,8 +652,8 @@ connect_context_step (ConnectContext *ctx)
         ctx->step++;
 
     case CONNECT_STEP_OPEN_QMI_PORT:
-        if (!mm_qmi_port_is_open (ctx->qmi)) {
-            mm_qmi_port_open (ctx->qmi,
+        if (!mm_port_qmi_is_open (ctx->qmi)) {
+            mm_port_qmi_open (ctx->qmi,
                               TRUE,
                               ctx->cancellable,
                               (GAsyncReadyCallback)qmi_port_open_ready,
@@ -567,14 +682,14 @@ connect_context_step (ConnectContext *ctx)
     case CONNECT_STEP_WDS_CLIENT_IPV4: {
         QmiClient *client;
 
-        client = mm_qmi_port_get_client (ctx->qmi,
+        client = mm_port_qmi_get_client (ctx->qmi,
                                          QMI_SERVICE_WDS,
-                                         MM_QMI_PORT_FLAG_WDS_IPV4);
+                                         MM_PORT_QMI_FLAG_WDS_IPV4);
         if (!client) {
             mm_dbg ("Allocating IPv4-specific WDS client");
-            mm_qmi_port_allocate_client (ctx->qmi,
+            mm_port_qmi_allocate_client (ctx->qmi,
                                          QMI_SERVICE_WDS,
-                                         MM_QMI_PORT_FLAG_WDS_IPV4,
+                                         MM_PORT_QMI_FLAG_WDS_IPV4,
                                          ctx->cancellable,
                                          (GAsyncReadyCallback)qmi_port_allocate_client_ready,
                                          ctx);
@@ -654,14 +769,14 @@ connect_context_step (ConnectContext *ctx)
     case CONNECT_STEP_WDS_CLIENT_IPV6: {
         QmiClient *client;
 
-        client = mm_qmi_port_get_client (ctx->qmi,
+        client = mm_port_qmi_get_client (ctx->qmi,
                                          QMI_SERVICE_WDS,
-                                         MM_QMI_PORT_FLAG_WDS_IPV6);
+                                         MM_PORT_QMI_FLAG_WDS_IPV6);
         if (!client) {
             mm_dbg ("Allocating IPv6-specific WDS client");
-            mm_qmi_port_allocate_client (ctx->qmi,
+            mm_port_qmi_allocate_client (ctx->qmi,
                                          QMI_SERVICE_WDS,
-                                         MM_QMI_PORT_FLAG_WDS_IPV6,
+                                         MM_PORT_QMI_FLAG_WDS_IPV6,
                                          ctx->cancellable,
                                          (GAsyncReadyCallback)qmi_port_allocate_client_ready,
                                          ctx);
@@ -728,8 +843,6 @@ connect_context_step (ConnectContext *ctx)
     case CONNECT_STEP_LAST:
         /* If one of IPv4 or IPv6 succeeds, we're connected */
         if (ctx->packet_data_handle_ipv4 || ctx->packet_data_handle_ipv6) {
-            MMBearerIpConfig *config;
-
             /* Port is connected; update the state */
             mm_port_set_connected (MM_PORT (ctx->data), TRUE);
 
@@ -751,19 +864,11 @@ connect_context_step (ConnectContext *ctx)
                 ctx->self->priv->client_ipv6 = g_object_ref (ctx->client_ipv6);
             }
 
-            /* Build IP config; always DHCP based */
-            config = mm_bearer_ip_config_new ();
-            mm_bearer_ip_config_set_method (config, MM_BEARER_IP_METHOD_DHCP);
-
             /* Set operation result */
             g_simple_async_result_set_op_res_gpointer (
                 ctx->result,
-                mm_bearer_connect_result_new (
-                    ctx->data,
-                    ctx->packet_data_handle_ipv4 ? config : NULL,
-                    ctx->packet_data_handle_ipv6 ? config : NULL),
+                mm_bearer_connect_result_new (ctx->data, ctx->ipv4_config, ctx->ipv6_config),
                 (GDestroyNotify)mm_bearer_connect_result_unref);
-            g_object_unref (config);
         } else {
             GError *error;
 
@@ -785,7 +890,7 @@ connect_context_step (ConnectContext *ctx)
 }
 
 static void
-_connect (MMBearer *self,
+_connect (MMBaseBearer *self,
           GCancellable *cancellable,
           GAsyncReadyCallback callback,
           gpointer user_data)
@@ -794,12 +899,12 @@ _connect (MMBearer *self,
     ConnectContext *ctx;
     MMBaseModem *modem  = NULL;
     MMPort *data;
-    MMQmiPort *qmi;
+    MMPortQmi *qmi;
     GError *error = NULL;
     const gchar *apn;
 
     g_object_get (self,
-                  MM_BEARER_MODEM, &modem,
+                  MM_BASE_BEARER_MODEM, &modem,
                   NULL);
     g_assert (modem);
 
@@ -831,7 +936,7 @@ _connect (MMBearer *self,
     }
 
     /* Check whether we have an APN */
-    apn = mm_bearer_properties_get_apn (mm_bearer_peek_config (MM_BEARER (self)));
+    apn = mm_bearer_properties_get_apn (mm_base_bearer_peek_config (MM_BASE_BEARER (self)));
 
     /* Is this a 3GPP only modem and no APN was given? If so, error */
     if (mm_iface_modem_is_3gpp_only (MM_IFACE_MODEM (modem)) && !apn) {
@@ -879,7 +984,7 @@ _connect (MMBearer *self,
                                              connect);
 
     g_object_get (self,
-                  MM_BEARER_CONFIG, &properties,
+                  MM_BASE_BEARER_CONFIG, &properties,
                   NULL);
 
     if (properties) {
@@ -895,7 +1000,7 @@ _connect (MMBearer *self,
             ip_family == MM_BEARER_IP_FAMILY_ANY) {
             gchar *ip_family_str;
 
-            ip_family = mm_bearer_get_default_ip_family (self);
+            ip_family = mm_base_bearer_get_default_ip_family (self);
             ip_family_str = mm_bearer_ip_family_build_string_from_mask (ip_family);
             mm_dbg ("No specific IP family requested, defaulting to %s",
                     ip_family_str);
@@ -1004,7 +1109,7 @@ disconnect_context_complete_and_free (DisconnectContext *ctx)
 }
 
 static gboolean
-disconnect_finish (MMBearer *self,
+disconnect_finish (MMBaseBearer *self,
                    GAsyncResult *res,
                    GError **error)
 {
@@ -1152,7 +1257,7 @@ disconnect_context_step (DisconnectContext *ctx)
 }
 
 static void
-disconnect (MMBearer *_self,
+disconnect (MMBaseBearer *_self,
             GAsyncReadyCallback callback,
             gpointer user_data)
 {
@@ -1192,7 +1297,7 @@ disconnect (MMBearer *_self,
 /*****************************************************************************/
 
 static void
-report_connection_status (MMBearer *self,
+report_connection_status (MMBaseBearer *self,
                           MMBearerConnectionStatus status)
 {
     if (status == MM_BEARER_CONNECTION_STATUS_DISCONNECTED)
@@ -1200,27 +1305,29 @@ report_connection_status (MMBearer *self,
         reset_bearer_connection (MM_BEARER_QMI (self), TRUE, TRUE);
 
     /* Chain up parent's report_connection_status() */
-    MM_BEARER_CLASS (mm_bearer_qmi_parent_class)->report_connection_status (self, status);
+    MM_BASE_BEARER_CLASS (mm_bearer_qmi_parent_class)->report_connection_status (self, status);
 }
 
 /*****************************************************************************/
 
-MMBearer *
+MMBaseBearer *
 mm_bearer_qmi_new (MMBroadbandModemQmi *modem,
-                   MMBearerProperties *config)
+                   MMBearerProperties *config,
+                   gboolean force_dhcp)
 {
-    MMBearer *bearer;
+    MMBaseBearer *bearer;
 
-    /* The Qmi bearer inherits from MMBearer (so it's not a MMBroadbandBearer)
+    /* The Qmi bearer inherits from MMBaseBearer (so it's not a MMBroadbandBearer)
      * and that means that the object is not async-initable, so we just use
      * g_object_new() here */
     bearer = g_object_new (MM_TYPE_BEARER_QMI,
-                           MM_BEARER_MODEM, modem,
-                           MM_BEARER_CONFIG, config,
+                           MM_BASE_BEARER_MODEM, modem,
+                           MM_BASE_BEARER_CONFIG, config,
+                           MM_BEARER_QMI_FORCE_DHCP, force_dhcp,
                            NULL);
 
     /* Only export valid bearers */
-    mm_bearer_export (bearer);
+    mm_base_bearer_export (bearer);
 
     return bearer;
 }
@@ -1229,9 +1336,45 @@ static void
 mm_bearer_qmi_init (MMBearerQmi *self)
 {
     /* Initialize private data */
-    self->priv = G_TYPE_INSTANCE_GET_PRIVATE ((self),
+    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
                                               MM_TYPE_BEARER_QMI,
                                               MMBearerQmiPrivate);
+}
+
+static void
+set_property (GObject *object,
+              guint prop_id,
+              const GValue *value,
+              GParamSpec *pspec)
+{
+    MMBearerQmi *self = MM_BEARER_QMI (object);
+
+    switch (prop_id) {
+    case PROP_FORCE_DHCP:
+        self->priv->force_dhcp = g_value_get_boolean (value);
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        break;
+    }
+}
+
+static void
+get_property (GObject *object,
+              guint prop_id,
+              GValue *value,
+              GParamSpec *pspec)
+{
+    MMBearerQmi *self = MM_BEARER_QMI (object);
+
+    switch (prop_id) {
+    case PROP_FORCE_DHCP:
+        g_value_set_boolean (value, self->priv->force_dhcp);
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        break;
+    }
 }
 
 static void
@@ -1250,16 +1393,27 @@ static void
 mm_bearer_qmi_class_init (MMBearerQmiClass *klass)
 {
     GObjectClass *object_class = G_OBJECT_CLASS (klass);
-    MMBearerClass *bearer_class = MM_BEARER_CLASS (klass);
+    MMBaseBearerClass *base_bearer_class = MM_BASE_BEARER_CLASS (klass);
 
     g_type_class_add_private (object_class, sizeof (MMBearerQmiPrivate));
 
     /* Virtual methods */
     object_class->dispose = dispose;
+    object_class->get_property = get_property;
+    object_class->set_property = set_property;
 
-    bearer_class->connect = _connect;
-    bearer_class->connect_finish = connect_finish;
-    bearer_class->disconnect = disconnect;
-    bearer_class->disconnect_finish = disconnect_finish;
-    bearer_class->report_connection_status = report_connection_status;
+    base_bearer_class->connect = _connect;
+    base_bearer_class->connect_finish = connect_finish;
+    base_bearer_class->disconnect = disconnect;
+    base_bearer_class->disconnect_finish = disconnect_finish;
+    base_bearer_class->report_connection_status = report_connection_status;
+
+    /* Properties */
+    properties[PROP_FORCE_DHCP] =
+        g_param_spec_boolean (MM_BEARER_QMI_FORCE_DHCP,
+                              "Force DHCP",
+                              "Never setup static IP config, always DHCP.",
+                              FALSE,
+                              G_PARAM_READWRITE);
+    g_object_class_install_property (object_class, PROP_FORCE_DHCP, properties[PROP_FORCE_DHCP]);
 }

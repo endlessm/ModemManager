@@ -39,6 +39,7 @@
 #include "mm-broadband-bearer-mbm.h"
 #include "mm-log.h"
 #include "mm-modem-helpers.h"
+#include "mm-modem-helpers-mbm.h"
 #include "mm-daemon-enums-types.h"
 
 G_DEFINE_TYPE (MMBroadbandBearerMbm, mm_broadband_bearer_mbm, MM_TYPE_BROADBAND_BEARER);
@@ -55,7 +56,7 @@ struct _MMBroadbandBearerMbmPrivate {
 typedef struct {
     MMBroadbandBearerMbm *self;
     MMBaseModem *modem;
-    MMAtSerialPort *primary;
+    MMPortSerialAt *primary;
     guint cid;
     GCancellable *cancellable;
     MMPort *data;
@@ -116,7 +117,7 @@ dial_3gpp_finish (MMBroadbandBearer *self,
 }
 
 static void
-report_connection_status (MMBearer *bearer,
+report_connection_status (MMBaseBearer *bearer,
                           MMBearerConnectionStatus status)
 {
     MMBroadbandBearerMbm *self = MM_BROADBAND_BEARER_MBM (bearer);
@@ -139,7 +140,7 @@ report_connection_status (MMBearer *bearer,
         if (status == MM_BEARER_CONNECTION_STATUS_DISCONNECTED) {
             /* If no connection attempt on-going, make sure we mark ourselves as
              * disconnected */
-            MM_BEARER_CLASS (mm_broadband_bearer_mbm_parent_class)->report_connection_status (
+            MM_BASE_BEARER_CLASS (mm_broadband_bearer_mbm_parent_class)->report_connection_status (
                 bearer,
                 status);
         }
@@ -387,8 +388,8 @@ authenticate (Dial3gppContext *ctx)
     const gchar *user;
     const gchar *password;
 
-    user = mm_bearer_properties_get_user (mm_bearer_peek_config (MM_BEARER (ctx->self)));
-    password = mm_bearer_properties_get_password (mm_bearer_peek_config (MM_BEARER (ctx->self)));
+    user = mm_bearer_properties_get_user (mm_base_bearer_peek_config (MM_BASE_BEARER (ctx->self)));
+    password = mm_bearer_properties_get_password (mm_base_bearer_peek_config (MM_BASE_BEARER (ctx->self)));
 
     /* Both user and password are required; otherwise firmware returns an error */
     if (user || password) {
@@ -401,7 +402,7 @@ authenticate (Dial3gppContext *ctx)
         encoded_password = mm_broadband_modem_take_and_convert_to_current_charset (MM_BROADBAND_MODEM (ctx->modem),
                                                                                    g_strdup (password));
 
-		command = g_strdup_printf ("AT*EIAAUW=%d,1,\"%s\",\"%s\"",
+        command = g_strdup_printf ("AT*EIAAUW=%d,1,\"%s\",\"%s\"",
                                    ctx->cid,
                                    encoded_user ? encoded_user : "",
                                    encoded_password ? encoded_password : "");
@@ -428,7 +429,7 @@ authenticate (Dial3gppContext *ctx)
 static void
 dial_3gpp (MMBroadbandBearer *self,
            MMBaseModem *modem,
-           MMAtSerialPort *primary,
+           MMPortSerialAt *primary,
            guint cid,
            GCancellable *cancellable,
            GAsyncReadyCallback callback,
@@ -466,12 +467,170 @@ dial_3gpp (MMBroadbandBearer *self,
 }
 
 /*****************************************************************************/
+/* 3GPP IP config retrieval (sub-step of the 3GPP Connection sequence) */
+
+typedef struct {
+    MMBroadbandBearerMbm *self;
+    MMBaseModem *modem;
+    MMPortSerialAt *primary;
+    MMBearerIpFamily family;
+    GSimpleAsyncResult *result;
+} GetIpConfig3gppContext;
+
+static GetIpConfig3gppContext *
+get_ip_config_3gpp_context_new (MMBroadbandBearerMbm *self,
+                                MMBaseModem *modem,
+                                MMPortSerialAt *primary,
+                                MMBearerIpFamily family,
+                                GAsyncReadyCallback callback,
+                                gpointer user_data)
+{
+    GetIpConfig3gppContext *ctx;
+
+    ctx = g_new0 (GetIpConfig3gppContext, 1);
+    ctx->self = g_object_ref (self);
+    ctx->modem = g_object_ref (modem);
+    ctx->primary = g_object_ref (primary);
+    ctx->family = family;
+    ctx->result = g_simple_async_result_new (G_OBJECT (self),
+                                             callback,
+                                             user_data,
+                                             get_ip_config_3gpp_context_new);
+    return ctx;
+}
+
+static void
+get_ip_config_context_complete_and_free (GetIpConfig3gppContext *ctx)
+{
+    g_simple_async_result_complete_in_idle (ctx->result);
+    g_object_unref (ctx->result);
+    g_object_unref (ctx->primary);
+    g_object_unref (ctx->modem);
+    g_object_unref (ctx->self);
+    g_free (ctx);
+}
+
+static gboolean
+get_ip_config_3gpp_finish (MMBroadbandBearer *self,
+                           GAsyncResult *res,
+                           MMBearerIpConfig **ipv4_config,
+                           MMBearerIpConfig **ipv6_config,
+                           GError **error)
+{
+    MMBearerConnectResult *configs;
+    MMBearerIpConfig *ipv4, *ipv6;
+
+    if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
+        return FALSE;
+
+    configs = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res));
+    g_assert (configs);
+
+    ipv4 = mm_bearer_connect_result_peek_ipv4_config (configs);
+    ipv6 = mm_bearer_connect_result_peek_ipv6_config (configs);
+    g_assert (ipv4 || ipv6);
+    if (ipv4_config && ipv4)
+        *ipv4_config = g_object_ref (ipv4);
+    if (ipv6_config && ipv6)
+        *ipv6_config = g_object_ref (ipv6);
+
+    return TRUE;
+}
+
+static void
+ip_config_ready (MMBaseModem *modem,
+                 GAsyncResult *res,
+                 GetIpConfig3gppContext *ctx)
+{
+    MMBearerIpConfig *ipv4_config = NULL;
+    MMBearerIpConfig *ipv6_config = NULL;
+    const gchar *response;
+    GError *error = NULL;
+    MMBearerConnectResult *connect_result;
+
+    response = mm_base_modem_at_command_full_finish (modem, res, &error);
+    if (error) {
+        g_error_free (error);
+
+        /* Fall back to DHCP configuration; early devices don't support *E2IPCFG */
+        if (ctx->family == MM_BEARER_IP_FAMILY_IPV4 || ctx->family == MM_BEARER_IP_FAMILY_IPV4V6) {
+            ipv4_config = mm_bearer_ip_config_new ();
+            mm_bearer_ip_config_set_method (ipv4_config, MM_BEARER_IP_METHOD_DHCP);
+        }
+        if (ctx->family == MM_BEARER_IP_FAMILY_IPV6 || ctx->family == MM_BEARER_IP_FAMILY_IPV4V6) {
+            ipv6_config = mm_bearer_ip_config_new ();
+            mm_bearer_ip_config_set_method (ipv6_config, MM_BEARER_IP_METHOD_DHCP);
+        }
+    } else {
+        if (!mm_mbm_parse_e2ipcfg_response (response,
+                                            &ipv4_config,
+                                            &ipv6_config,
+                                            &error)) {
+            g_simple_async_result_take_error (ctx->result, error);
+            goto out;
+        }
+
+        if (!ipv4_config && !ipv6_config) {
+            g_simple_async_result_set_error (ctx->result,
+                                             MM_CORE_ERROR,
+                                             MM_CORE_ERROR_FAILED,
+                                             "Couldn't get IP config: couldn't parse response '%s'",
+                                             response);
+            goto out;
+        }
+    }
+
+    connect_result = mm_bearer_connect_result_new (MM_PORT (ctx->primary),
+                                                   ipv4_config,
+                                                   ipv6_config);
+    g_simple_async_result_set_op_res_gpointer (ctx->result,
+                                               connect_result,
+                                               (GDestroyNotify)mm_bearer_connect_result_unref);
+
+out:
+    g_clear_object (&ipv4_config);
+    g_clear_object (&ipv6_config);
+    get_ip_config_context_complete_and_free (ctx);
+}
+
+static void
+get_ip_config_3gpp (MMBroadbandBearer *self,
+                    MMBroadbandModem *modem,
+                    MMPortSerialAt *primary,
+                    MMPortSerialAt *secondary,
+                    MMPort *data,
+                    guint cid,
+                    MMBearerIpFamily ip_family,
+                    GAsyncReadyCallback callback,
+                    gpointer user_data)
+{
+    GetIpConfig3gppContext *ctx;
+
+    ctx = get_ip_config_3gpp_context_new (MM_BROADBAND_BEARER_MBM (self),
+                                          MM_BASE_MODEM (modem),
+                                          primary,
+                                          ip_family,
+                                          callback,
+                                          user_data);
+
+    mm_base_modem_at_command_full (MM_BASE_MODEM (modem),
+                                   primary,
+                                   "*E2IPCFG?",
+                                   3,
+                                   FALSE,
+                                   FALSE, /* raw */
+                                   NULL, /* cancellable */
+                                   (GAsyncReadyCallback)ip_config_ready,
+                                   ctx);
+}
+
+/*****************************************************************************/
 /* 3GPP disconnect */
 
 typedef struct {
     MMBroadbandBearerMbm *self;
     MMBaseModem *modem;
-    MMAtSerialPort *primary;
+    MMPortSerialAt *primary;
     GSimpleAsyncResult *result;
 } DisconnectContext;
 
@@ -502,7 +661,7 @@ disconnect_enap_ready (MMBaseModem *modem,
     GError *error = NULL;
 
     /* Ignore errors for now */
-    mm_base_modem_at_command_full_finish (MM_BASE_MODEM (modem), res, &error);
+    mm_base_modem_at_command_full_finish (modem, res, &error);
     if (error) {
         mm_dbg ("Disconnection failed (not fatal): %s", error->message);
         g_error_free (error);
@@ -515,8 +674,8 @@ disconnect_enap_ready (MMBaseModem *modem,
 static void
 disconnect_3gpp (MMBroadbandBearer *self,
                  MMBroadbandModem *modem,
-                 MMAtSerialPort *primary,
-                 MMAtSerialPort *secondary,
+                 MMPortSerialAt *primary,
+                 MMPortSerialAt *secondary,
                  MMPort *data,
                  guint cid,
                  GAsyncReadyCallback callback,
@@ -548,7 +707,7 @@ disconnect_3gpp (MMBroadbandBearer *self,
 
 /*****************************************************************************/
 
-MMBearer *
+MMBaseBearer *
 mm_broadband_bearer_mbm_new_finish (GAsyncResult *res,
                                     GError **error)
 {
@@ -563,9 +722,9 @@ mm_broadband_bearer_mbm_new_finish (GAsyncResult *res,
         return NULL;
 
     /* Only export valid bearers */
-    mm_bearer_export (MM_BEARER (bearer));
+    mm_base_bearer_export (MM_BASE_BEARER (bearer));
 
-    return MM_BEARER (bearer);
+    return MM_BASE_BEARER (bearer);
 }
 
 void
@@ -581,8 +740,8 @@ mm_broadband_bearer_mbm_new (MMBroadbandModemMbm *modem,
         cancellable,
         callback,
         user_data,
-        MM_BEARER_MODEM, modem,
-        MM_BEARER_CONFIG, config,
+        MM_BASE_BEARER_MODEM, modem,
+        MM_BASE_BEARER_CONFIG, config,
         NULL);
 }
 
@@ -590,7 +749,7 @@ static void
 mm_broadband_bearer_mbm_init (MMBroadbandBearerMbm *self)
 {
     /* Initialize private data */
-    self->priv = G_TYPE_INSTANCE_GET_PRIVATE ((self),
+    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
                                               MM_TYPE_BROADBAND_BEARER_MBM,
                                               MMBroadbandBearerMbmPrivate);
 }
@@ -600,14 +759,16 @@ mm_broadband_bearer_mbm_class_init (MMBroadbandBearerMbmClass *klass)
 {
     GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-    MMBearerClass *bearer_class = MM_BEARER_CLASS (klass);
+    MMBaseBearerClass *base_bearer_class = MM_BASE_BEARER_CLASS (klass);
     MMBroadbandBearerClass *broadband_bearer_class = MM_BROADBAND_BEARER_CLASS (klass);
 
     g_type_class_add_private (object_class, sizeof (MMBroadbandBearerMbmPrivate));
 
-    bearer_class->report_connection_status = report_connection_status;
+    base_bearer_class->report_connection_status = report_connection_status;
     broadband_bearer_class->dial_3gpp = dial_3gpp;
     broadband_bearer_class->dial_3gpp_finish = dial_3gpp_finish;
+    broadband_bearer_class->get_ip_config_3gpp = get_ip_config_3gpp;
+    broadband_bearer_class->get_ip_config_3gpp_finish = get_ip_config_3gpp_finish;
     broadband_bearer_class->disconnect_3gpp = disconnect_3gpp;
     broadband_bearer_class->disconnect_3gpp_finish = disconnect_3gpp_finish;
 }

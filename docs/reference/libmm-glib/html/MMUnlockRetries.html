@@ -2,32 +2,27 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>MMUnlockRetries</title>
+<title>libmm-glib Reference Manual: MMUnlockRetries</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
 <link rel="up" href="ch03.html#id-1.2.4.3" title="Generic interfaces">
 <link rel="prev" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties">
 <link rel="next" href="ch03s02.html" title="Simple interface support">
-<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.20 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
-<td><a accesskey="p" href="MMCdmaManualActivationProperties.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="ch03.html#id-1.2.4.3"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">libmm-glib Reference Manual</th>
-<td><a accesskey="n" href="ch03s02.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts">
-<a href="#MMUnlockRetries.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#MMUnlockRetries.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#MMUnlockRetries.object-hierarchy" class="shortcut">Object Hierarchy</a>
-</td></tr>
-</table>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="10"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description"> <span class="dim">|</span> 
+                  <a href="#MMUnlockRetries.description" class="shortcut">Description</a></span><span id="nav_hierarchy"> <span class="dim">|</span> 
+                  <a href="#MMUnlockRetries.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch03.html#id-1.2.4.3"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="MMCdmaManualActivationProperties.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="ch03s02.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
 <div class="refentry">
 <a name="MMUnlockRetries"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
@@ -35,155 +30,209 @@
 <h2><span class="refentrytitle"><a name="MMUnlockRetries.top_of_page"></a>MMUnlockRetries</span></h2>
 <p>MMUnlockRetries — Helper object to report unlock retries.</p>
 </td>
-<td valign="top" align="right"></td>
+<td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
-<a name="MMUnlockRetries.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">struct              <a class="link" href="MMUnlockRetries.html#MMUnlockRetries-struct" title="struct MMUnlockRetries">MMUnlockRetries</a>;
-#define             <a class="link" href="MMUnlockRetries.html#MM-UNLOCK-RETRIES-UNKNOWN:CAPS" title="MM_UNLOCK_RETRIES_UNKNOWN">MM_UNLOCK_RETRIES_UNKNOWN</a>
-
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="MMUnlockRetries.html#mm-unlock-retries-get" title="mm_unlock_retries_get ()">mm_unlock_retries_get</a>               (<em class="parameter"><code><a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><span class="type">MMModemLock</span> lock</code></em>);
-<span class="returnvalue">void</span>                (<a class="link" href="MMUnlockRetries.html#MMUnlockRetriesForeachCb" title="MMUnlockRetriesForeachCb ()">*MMUnlockRetriesForeachCb</a>)         (<em class="parameter"><code><span class="type">MMModemLock</span> lock</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> count</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="MMUnlockRetries.html#mm-unlock-retries-foreach" title="mm_unlock_retries_foreach ()">mm_unlock_retries_foreach</a>           (<em class="parameter"><code><a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="MMUnlockRetries.html#MMUnlockRetriesForeachCb" title="MMUnlockRetriesForeachCb ()"><span class="type">MMUnlockRetriesForeachCb</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
-</pre>
+<div class="refsect1">
+<a name="MMUnlockRetries.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="MMUnlockRetries.html#mm-unlock-retries-get" title="mm_unlock_retries_get ()">mm_unlock_retries_get</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<span class="c_punctuation">(</span><a class="link" href="MMUnlockRetries.html#MMUnlockRetriesForeachCb" title="MMUnlockRetriesForeachCb ()">*MMUnlockRetriesForeachCb</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MMUnlockRetries.html#mm-unlock-retries-foreach" title="mm_unlock_retries_foreach ()">mm_unlock_retries_foreach</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="MMUnlockRetries.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="MMUnlockRetries.html#MMUnlockRetries-struct" title="struct MMUnlockRetries">MMUnlockRetries</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="MMUnlockRetries.html#MM-UNLOCK-RETRIES-UNKNOWN:CAPS" title="MM_UNLOCK_RETRIES_UNKNOWN">MM_UNLOCK_RETRIES_UNKNOWN</a></td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <div class="refsect1">
 <a name="MMUnlockRetries.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="synopsis">
-  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-   +----MMUnlockRetries
+<pre class="screen">    <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+    <span class="lineart">╰──</span> MMUnlockRetries
 </pre>
 </div>
 <div class="refsect1">
 <a name="MMUnlockRetries.description"></a><h2>Description</h2>
-<p>
-The <a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> is an object exposing the unlock retry counts for
-different <span class="type">MMModemLock</span> values.
-</p>
-<p>
-This object is retrieved from the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> object with either
-<a class="link" href="MMModem.html#mm-modem-get-unlock-retries" title="mm_modem_get_unlock_retries ()"><code class="function">mm_modem_get_unlock_retries()</code></a> or <a class="link" href="MMModem.html#mm-modem-peek-unlock-retries" title="mm_modem_peek_unlock_retries ()"><code class="function">mm_modem_peek_unlock_retries()</code></a>.
-</p>
+<p>The <a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> is an object exposing the unlock retry counts for
+different <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a> values.</p>
+<p>This object is retrieved from the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> object with either
+<a class="link" href="MMModem.html#mm-modem-get-unlock-retries" title="mm_modem_get_unlock_retries ()"><code class="function">mm_modem_get_unlock_retries()</code></a> or <a class="link" href="MMModem.html#mm-modem-peek-unlock-retries" title="mm_modem_peek_unlock_retries ()"><code class="function">mm_modem_peek_unlock_retries()</code></a>.</p>
 </div>
 <div class="refsect1">
-<a name="MMUnlockRetries.details"></a><h2>Details</h2>
+<a name="MMUnlockRetries.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="mm-unlock-retries-get"></a><h3>mm_unlock_retries_get ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+mm_unlock_retries_get (<em class="parameter"><code><a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> *self</code></em>,
+                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a> lock</code></em>);</pre>
+<p>Gets the unlock retries for the given <em class="parameter"><code>lock</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.7.7.2.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>lock</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="id-1.2.4.3.7.7.2.6"></a><h4>Returns</h4>
+<p> the unlock retries or <a class="link" href="MMUnlockRetries.html#MM-UNLOCK-RETRIES-UNKNOWN:CAPS" title="MM_UNLOCK_RETRIES_UNKNOWN"><code class="literal">MM_UNLOCK_RETRIES_UNKNOWN</code></a> if unknown.</p>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMUnlockRetriesForeachCb"></a><h3>MMUnlockRetriesForeachCb ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+<span class="c_punctuation">(</span>*MMUnlockRetriesForeachCb<span class="c_punctuation">)</span> (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a> lock</code></em>,
+                             <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> count</code></em>,
+                             <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>Specifies the type of function passed to <a class="link" href="MMUnlockRetries.html#mm-unlock-retries-foreach" title="mm_unlock_retries_foreach ()"><code class="function">mm_unlock_retries_foreach()</code></a>.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.7.7.3.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>lock</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>count</p></td>
+<td class="parameter_description"><p>the number of retries left for <em class="parameter"><code>lock</code></em>
+.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>data passed to the function.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-unlock-retries-foreach"></a><h3>mm_unlock_retries_foreach ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_unlock_retries_foreach (<em class="parameter"><code><a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> *self</code></em>,
+                           <em class="parameter"><code><a class="link" href="MMUnlockRetries.html#MMUnlockRetriesForeachCb" title="MMUnlockRetriesForeachCb ()"><span class="type">MMUnlockRetriesForeachCb</span></a> callback</code></em>,
+                           <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>Executes <em class="parameter"><code>callback</code></em>
+ for each lock information found in <em class="parameter"><code>self</code></em>
+.</p>
+<div class="refsect3">
+<a name="id-1.2.4.3.7.7.4.5"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <em class="parameter"><code>MMUnlockRetries</code></em>
+.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>callback</p></td>
+<td class="parameter_description"><p> callback to call for each available lock. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="The callback is valid only during the call to the method."><span class="acronym">scope call</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p> data to pass to <em class="parameter"><code>callback</code></em>
+. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="This parameter is a 'user_data', for callbacks; many bindings can pass NULL here."><span class="acronym">closure</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="MMUnlockRetries.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
 <a name="MMUnlockRetries-struct"></a><h3>struct MMUnlockRetries</h3>
 <pre class="programlisting">struct MMUnlockRetries;</pre>
-<p>
-The <a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> structure contains private data and should only be accessed
-using the provided API.
-</p>
+<p>The <a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> structure contains private data and should only be accessed
+using the provided API.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="MM-UNLOCK-RETRIES-UNKNOWN:CAPS"></a><h3>MM_UNLOCK_RETRIES_UNKNOWN</h3>
 <pre class="programlisting">#define MM_UNLOCK_RETRIES_UNKNOWN 999
 </pre>
-<p>
-Identifier for reporting unknown unlock retries.
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-unlock-retries-get"></a><h3>mm_unlock_retries_get ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               mm_unlock_retries_get               (<em class="parameter"><code><a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><span class="type">MMModemLock</span> lock</code></em>);</pre>
-<p>
-Gets the unlock retries for the given <em class="parameter"><code>lock</code></em>.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>lock</code></em> :</span></p></td>
-<td>a <span class="type">MMModemLock</span>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the unlock retries or <a class="link" href="MMUnlockRetries.html#MM-UNLOCK-RETRIES-UNKNOWN:CAPS" title="MM_UNLOCK_RETRIES_UNKNOWN"><code class="literal">MM_UNLOCK_RETRIES_UNKNOWN</code></a> if unknown.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="MMUnlockRetriesForeachCb"></a><h3>MMUnlockRetriesForeachCb ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                (*MMUnlockRetriesForeachCb)         (<em class="parameter"><code><span class="type">MMModemLock</span> lock</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> count</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
-<p>
-Specifies the type of function passed to <a class="link" href="MMUnlockRetries.html#mm-unlock-retries-foreach" title="mm_unlock_retries_foreach ()"><code class="function">mm_unlock_retries_foreach()</code></a>.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>lock</code></em> :</span></p></td>
-<td>a <span class="type">MMModemLock</span>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
-<td>the number of retries left for <em class="parameter"><code>lock</code></em>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
-<td>data passed to the function.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-unlock-retries-foreach"></a><h3>mm_unlock_retries_foreach ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                mm_unlock_retries_foreach           (<em class="parameter"><code><a class="link" href="MMUnlockRetries.html" title="MMUnlockRetries"><span class="type">MMUnlockRetries</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="MMUnlockRetries.html#MMUnlockRetriesForeachCb" title="MMUnlockRetriesForeachCb ()"><span class="type">MMUnlockRetriesForeachCb</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
-<p>
-Executes <em class="parameter"><code>callback</code></em> for each lock information found in <em class="parameter"><code>self</code></em>.
-</p>
-<div class="variablelist"><table border="0" class="variablelist">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <em class="parameter"><code>MMUnlockRetries</code></em>.</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
-<td>callback to call for each available lock. <span class="annotation">[<acronym title="The callback is valid only during the call to the method."><span class="acronym">scope call</span></acronym>]</span>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
-<td>data to pass to <em class="parameter"><code>callback</code></em>. <span class="annotation">[<acronym title="This parameter is a 'user_data', for callbacks; many bindings can pass NULL here."><span class="acronym">closure</span></acronym>]</span>
-</td>
-</tr>
-</tbody>
-</table></div>
+<p>Identifier for reporting unknown unlock retries.</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.19</div>
+          Generated by GTK-Doc V1.20</div>
 </body>
 </html>

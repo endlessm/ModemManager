@@ -204,14 +204,15 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+GDBUS_CODEGEN = @GDBUS_CODEGEN@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
-GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
 GLIB_MKENUMS = @GLIB_MKENUMS@
 GMSGFMT = @GMSGFMT@
 GMSGFMT_015 = @GMSGFMT_015@
 GREP = @GREP@
 GTKDOC_CHECK = @GTKDOC_CHECK@
+GTKDOC_CHECK_PATH = @GTKDOC_CHECK_PATH@
 GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
 GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
 GTKDOC_MKPDF = @GTKDOC_MKPDF@
@@ -375,10 +376,6 @@ GTESTER_REPORT = gtester-report
 # initialize variables for unconditional += appending
 EXTRA_DIST = 
 TEST_PROGS = $(noinst_PROGRAMS)
-INCLUDES = \
-	-I$(top_srcdir)/libwmc/src \
-	-I$(top_srcdir)/src
-
 test_wmc_SOURCES = \
 	test-wmc-crc.c \
 	test-wmc-crc.h \
@@ -390,7 +387,11 @@ test_wmc_SOURCES = \
 	test-wmc-com.h \
 	test-wmc.c
 
-test_wmc_CPPFLAGS = $(MM_CFLAGS)
+test_wmc_CPPFLAGS = \
+	$(MM_CFLAGS) \
+	-I$(top_srcdir)/libwmc/src \
+	-I$(top_srcdir)/src
+
 test_wmc_LDADD = $(MM_LIBS) $(am__append_1) $(am__append_2)
 all: all-am
 

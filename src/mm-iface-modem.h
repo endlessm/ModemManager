@@ -23,9 +23,9 @@
 #include <libmm-glib.h>
 
 #include "mm-charsets.h"
-#include "mm-at-serial-port.h"
-#include "mm-bearer.h"
-#include "mm-sim.h"
+#include "mm-port-serial-at.h"
+#include "mm-base-bearer.h"
+#include "mm-base-sim.h"
 
 #define MM_TYPE_IFACE_MODEM            (mm_iface_modem_get_type ())
 #define MM_IFACE_MODEM(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MM_TYPE_IFACE_MODEM, MMIfaceModem))
@@ -304,22 +304,29 @@ struct _MMIfaceModem {
                                          GAsyncResult *res,
                                          GError **error);
 
+    /* Asynchronous modem power-off operation */
+    void (*modem_power_off) (MMIfaceModem *self,
+                             GAsyncReadyCallback callback,
+                             gpointer user_data);
+    gboolean (*modem_power_off_finish) (MMIfaceModem *self,
+                                        GAsyncResult *res,
+                                        GError **error);
     /* Create SIM */
     void (*create_sim) (MMIfaceModem *self,
                         GAsyncReadyCallback callback,
                         gpointer user_data);
-    MMSim * (*create_sim_finish) (MMIfaceModem *self,
-                                  GAsyncResult *res,
-                                  GError **error);
+    MMBaseSim * (*create_sim_finish) (MMIfaceModem *self,
+                                      GAsyncResult *res,
+                                      GError **error);
 
     /* Create bearer */
     void (*create_bearer) (MMIfaceModem *self,
                            MMBearerProperties *properties,
                            GAsyncReadyCallback callback,
                            gpointer user_data);
-    MMBearer * (*create_bearer_finish) (MMIfaceModem *self,
-                                        GAsyncResult *res,
-                                        GError **error);
+    MMBaseBearer * (*create_bearer_finish) (MMIfaceModem *self,
+                                            GAsyncResult *res,
+                                            GError **error);
 };
 
 GType mm_iface_modem_get_type (void);
@@ -428,6 +435,9 @@ void mm_iface_modem_update_access_technologies (MMIfaceModem *self,
                                                 MMModemAccessTechnology access_tech,
                                                 guint32 mask);
 
+/* Allow requesting to refresh access tech */
+void mm_iface_modem_refresh_access_technologies (MMIfaceModem *self);
+
 /* Allow updating signal quality */
 void mm_iface_modem_update_signal_quality (MMIfaceModem *self,
                                            guint signal_quality);
@@ -452,13 +462,13 @@ gboolean mm_iface_modem_set_current_bands_finish (MMIfaceModem *self,
                                                   GError **error);
 
 /* Allow creating bearers */
-void     mm_iface_modem_create_bearer         (MMIfaceModem *self,
-                                               MMBearerProperties *properties,
-                                               GAsyncReadyCallback callback,
-                                               gpointer user_data);
-MMBearer *mm_iface_modem_create_bearer_finish (MMIfaceModem *self,
-                                               GAsyncResult *res,
-                                               GError **error);
+void          mm_iface_modem_create_bearer         (MMIfaceModem *self,
+                                                    MMBearerProperties *properties,
+                                                    GAsyncReadyCallback callback,
+                                                    gpointer user_data);
+MMBaseBearer *mm_iface_modem_create_bearer_finish  (MMIfaceModem *self,
+                                                    GAsyncResult *res,
+                                                    GError **error);
 
 /* Helper method to wait for a final state */
 void         mm_iface_modem_wait_for_final_state        (MMIfaceModem *self,

@@ -33,6 +33,7 @@
 #include "mm-modem-helpers.h"
 #include "mm-error-helpers.h"
 #include "mm-daemon-enums-types.h"
+#include "mm-modem-helpers-icera.h"
 
 G_DEFINE_TYPE (MMBroadbandBearerIcera, mm_broadband_bearer_icera, MM_TYPE_BROADBAND_BEARER);
 
@@ -64,7 +65,7 @@ struct _MMBroadbandBearerIceraPrivate {
 typedef struct {
     MMBroadbandBearerIcera *self;
     MMBaseModem *modem;
-    MMAtSerialPort *primary;
+    MMPortSerialAt *primary;
     guint cid;
     GSimpleAsyncResult *result;
 } GetIpConfig3gppContext;
@@ -72,7 +73,7 @@ typedef struct {
 static GetIpConfig3gppContext *
 get_ip_config_3gpp_context_new (MMBroadbandBearerIcera *self,
                                 MMBaseModem *modem,
-                                MMAtSerialPort *primary,
+                                MMPortSerialAt *primary,
                                 guint cid,
                                 GAsyncReadyCallback callback,
                                 gpointer user_data)
@@ -109,166 +110,82 @@ get_ip_config_3gpp_finish (MMBroadbandBearer *self,
                            MMBearerIpConfig **ipv6_config,
                            GError **error)
 {
-    MMBearerIpConfig *ip_config;
+    MMBearerConnectResult *configs;
+    MMBearerIpConfig *ipv4, *ipv6;
 
     if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
         return FALSE;
 
-    /* No IPv6 for now */
-    ip_config = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res));
-    *ipv4_config = g_object_ref (ip_config);
-    *ipv6_config = NULL;
+    configs = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res));
+    g_assert (configs);
+
+    ipv4 = mm_bearer_connect_result_peek_ipv4_config (configs);
+    ipv6 = mm_bearer_connect_result_peek_ipv6_config (configs);
+    g_assert (ipv4 || ipv6);
+    if (ipv4_config && ipv4)
+        *ipv4_config = g_object_ref (ipv4);
+    if (ipv6_config && ipv6)
+        *ipv6_config = g_object_ref (ipv6);
+
     return TRUE;
 }
-
-#define IPDPADDR_TAG "%IPDPADDR: "
 
 static void
 ip_config_ready (MMBaseModem *modem,
                  GAsyncResult *res,
                  GetIpConfig3gppContext *ctx)
 {
-    MMBearerIpConfig *ip_config = NULL;
+    MMBearerIpConfig *ipv4_config = NULL;
+    MMBearerIpConfig *ipv6_config = NULL;
     const gchar *response;
     GError *error = NULL;
-    gchar **items;
-    gchar *dns[3] = { 0 };
-    guint i;
-    guint dns_i;
+    MMBearerConnectResult *connect_result;
 
-    response = mm_base_modem_at_command_full_finish (MM_BASE_MODEM (modem), res, &error);
+    response = mm_base_modem_at_command_full_finish (modem, res, &error);
     if (error) {
         g_simple_async_result_take_error (ctx->result, error);
-        get_ip_config_context_complete_and_free (ctx);
-        return;
+        goto out;
     }
 
-    /* TODO: use a regex to parse this */
+    if (!mm_icera_parse_ipdpaddr_response (response,
+                                           ctx->cid,
+                                           &ipv4_config,
+                                           &ipv6_config,
+                                           &error)) {
+        g_simple_async_result_take_error (ctx->result, error);
+        goto out;
+    }
 
-    /* Check result */
-    if (!g_str_has_prefix (response, IPDPADDR_TAG)) {
+    if (!ipv4_config && !ipv6_config) {
         g_simple_async_result_set_error (ctx->result,
                                          MM_CORE_ERROR,
                                          MM_CORE_ERROR_FAILED,
-                                         "Couldn't get IP config: invalid response '%s'",
+                                         "Couldn't get IP config: couldn't parse response '%s'",
                                          response);
-        get_ip_config_context_complete_and_free (ctx);
-        return;
+        goto out;
     }
 
-    /* %IPDPADDR: <cid>,<ip>,<gw>,<dns1>,<dns2>[,<nbns1>,<nbns2>[,<??>,<netmask>,<gw>]]
-     *
-     * Sierra USB305: %IPDPADDR: 2, 21.93.217.11, 21.93.217.10, 10.177.0.34, 10.161.171.220, 0.0.0.0, 0.0.0.0
-     * K3805-Z: %IPDPADDR: 2, 21.93.217.11, 21.93.217.10, 10.177.0.34, 10.161.171.220, 0.0.0.0, 0.0.0.0, 255.0.0.0, 255.255.255.0, 21.93.217.10,
-     */
-    response = mm_strip_tag (response, IPDPADDR_TAG);
-    items = g_strsplit (response, ", ", 0);
+    connect_result = mm_bearer_connect_result_new (MM_PORT (ctx->primary),
+                                                   ipv4_config,
+                                                   ipv6_config);
+    g_simple_async_result_set_op_res_gpointer (ctx->result,
+                                               connect_result,
+                                               (GDestroyNotify)mm_bearer_connect_result_unref);
 
-    ip_config = mm_bearer_ip_config_new ();
-
-    for (i = 0, dns_i = 0; items[i]; i++) {
-        if (i == 0) { /* CID */
-            gint num;
-
-            if (!mm_get_int_from_str (items[i], &num) ||
-                num != ctx->cid) {
-                error = g_error_new (MM_CORE_ERROR,
-                                     MM_CORE_ERROR_FAILED,
-                                     "Unknown CID in IPDPADDR response ("
-                                     "got %d, expected %d)",
-                                     (guint) num,
-                                     ctx->cid);
-                break;
-            }
-        } else if (i == 1) { /* IP address */
-            guint32 tmp = 0;
-
-            if (!inet_pton (AF_INET, items[i], &tmp)) {
-                mm_warn ("Couldn't parse IP address '%s'", items[i]);
-                g_clear_object (&ip_config);
-                break;
-            }
-
-            mm_bearer_ip_config_set_method (ip_config, MM_BEARER_IP_METHOD_STATIC);
-            mm_bearer_ip_config_set_address (ip_config,  items[i]);
-        } else if (i == 2) { /* Gateway */
-            guint32 tmp = 0;
-
-            if (!inet_pton (AF_INET, items[i], &tmp)) {
-                mm_warn ("Couldn't parse gateway address '%s'", items[i]);
-                g_clear_object (&ip_config);
-                break;
-            }
-
-            if (tmp)
-                mm_bearer_ip_config_set_gateway (ip_config, items[i]);
-        } else if (i == 3 || i == 4) { /* DNS entries */
-            guint32 tmp = 0;
-
-            if (!inet_pton (AF_INET, items[i], &tmp)) {
-                mm_warn ("Couldn't parse DNS address '%s'", items[i]);
-                g_clear_object (&ip_config);
-                break;
-            }
-
-            if (tmp)
-                dns[dns_i++] = items[i];
-        } else if (i == 8) { /* Netmask */
-            guint32 tmp = 0;
-
-            if (!inet_pton (AF_INET, items[i], &tmp)) {
-                mm_warn ("Couldn't parse netmask '%s'", items[i]);
-                g_clear_object (&ip_config);
-                break;
-            }
-
-            mm_bearer_ip_config_set_prefix (ip_config, mm_netmask_to_cidr (items[i]));
-        } else if (i == 9) { /* Duplicate Gateway */
-            if (!mm_bearer_ip_config_get_gateway (ip_config)) {
-                guint32 tmp = 0;
-
-                if (!inet_pton (AF_INET, items[i], &tmp)) {
-                    mm_warn ("Couldn't parse (duplicate) gateway address '%s'", items[i]);
-                    g_clear_object (&ip_config);
-                    break;
-                }
-
-                if (tmp)
-                    mm_bearer_ip_config_set_gateway (ip_config, items[i]);
-            }
-        }
-    }
-
-    if (!ip_config) {
-        if (error)
-            g_simple_async_result_take_error (ctx->result, error);
-        else
-            g_simple_async_result_set_error (ctx->result,
-                                             MM_CORE_ERROR,
-                                             MM_CORE_ERROR_FAILED,
-                                             "Couldn't get IP config: couldn't parse response '%s'",
-                                             response);
-    } else {
-        /* If we got DNS entries, set them in the IP config */
-        if (dns[0])
-            mm_bearer_ip_config_set_dns (ip_config, (const gchar **)dns);
-
-        g_simple_async_result_set_op_res_gpointer (ctx->result,
-                                                   ip_config,
-                                                   (GDestroyNotify)g_object_unref);
-    }
-
+out:
+    g_clear_object (&ipv4_config);
+    g_clear_object (&ipv6_config);
     get_ip_config_context_complete_and_free (ctx);
-    g_strfreev (items);
 }
 
 static void
 get_ip_config_3gpp (MMBroadbandBearer *self,
                     MMBroadbandModem *modem,
-                    MMAtSerialPort *primary,
-                    MMAtSerialPort *secondary,
+                    MMPortSerialAt *primary,
+                    MMPortSerialAt *secondary,
                     MMPort *data,
                     guint cid,
+                    MMBearerIpFamily ip_family,
                     GAsyncReadyCallback callback,
                     gpointer user_data)
 {
@@ -284,7 +201,7 @@ get_ip_config_3gpp (MMBroadbandBearer *self,
     if (ctx->self->priv->default_ip_method == MM_BEARER_IP_METHOD_STATIC) {
         gchar *command;
 
-        command = g_strdup_printf ("%%IPDPADDR=%d", cid);
+        command = g_strdup_printf ("%%IPDPADDR=%u", cid);
         mm_base_modem_at_command_full (MM_BASE_MODEM (modem),
                                        primary,
                                        command,
@@ -300,13 +217,28 @@ get_ip_config_3gpp (MMBroadbandBearer *self,
 
     /* Otherwise, DHCP */
     if (ctx->self->priv->default_ip_method == MM_BEARER_IP_METHOD_DHCP) {
-        MMBearerIpConfig *ip_config;
+        MMBearerConnectResult *connect_result;
+        MMBearerIpConfig *ipv4_config = NULL, *ipv6_config = NULL;
 
-        ip_config = mm_bearer_ip_config_new ();
-        mm_bearer_ip_config_set_method (ip_config, MM_BEARER_IP_METHOD_DHCP);
+        if (ip_family & MM_BEARER_IP_FAMILY_IPV4 || ip_family & MM_BEARER_IP_FAMILY_IPV4V6) {
+            ipv4_config = mm_bearer_ip_config_new ();
+            mm_bearer_ip_config_set_method (ipv4_config, MM_BEARER_IP_METHOD_DHCP);
+        }
+        if (ip_family & MM_BEARER_IP_FAMILY_IPV6 || ip_family & MM_BEARER_IP_FAMILY_IPV4V6) {
+            ipv6_config = mm_bearer_ip_config_new ();
+            mm_bearer_ip_config_set_method (ipv6_config, MM_BEARER_IP_METHOD_DHCP);
+        }
+        g_assert (ipv4_config || ipv6_config);
+
+        connect_result = mm_bearer_connect_result_new (MM_PORT (ctx->primary),
+                                                       ipv4_config,
+                                                       ipv6_config);
+        g_clear_object (&ipv4_config);
+        g_clear_object (&ipv6_config);
+
         g_simple_async_result_set_op_res_gpointer (ctx->result,
-                                                   ip_config,
-                                                   (GDestroyNotify)g_object_unref);
+                                                   connect_result,
+                                                   (GDestroyNotify)mm_bearer_connect_result_unref);
         get_ip_config_context_complete_and_free (ctx);
         return;
     }
@@ -422,7 +354,7 @@ disconnect_ipdpact_ready (MMBaseModem *modem,
         return;
     }
 
-    mm_base_modem_at_command_full_finish (MM_BASE_MODEM (modem), res, &error);
+    mm_base_modem_at_command_full_finish (modem, res, &error);
     if (error) {
         self->priv->disconnect_pending = NULL;
         g_simple_async_result_take_error (ctx->result, error);
@@ -439,8 +371,8 @@ disconnect_ipdpact_ready (MMBaseModem *modem,
 static void
 disconnect_3gpp (MMBroadbandBearer *bearer,
                  MMBroadbandModem *modem,
-                 MMAtSerialPort *primary,
-                 MMAtSerialPort *secondary,
+                 MMPortSerialAt *primary,
+                 MMPortSerialAt *secondary,
                  MMPort *data,
                  guint cid,
                  GAsyncReadyCallback callback,
@@ -486,7 +418,7 @@ disconnect_3gpp (MMBroadbandBearer *bearer,
 typedef struct {
     MMBroadbandBearerIcera *self;
     MMBaseModem *modem;
-    MMAtSerialPort *primary;
+    MMPortSerialAt *primary;
     guint cid;
     GCancellable *cancellable;
     GSimpleAsyncResult *result;
@@ -640,12 +572,12 @@ connect_cancelled_cb (GCancellable *cancellable,
 }
 
 static void
-forced_close_cb (MMSerialPort *port,
+forced_close_cb (MMPortSerial *port,
                  MMBroadbandBearerIcera *self)
 {
     /* Just treat the forced close event as any other unsolicited message */
-    mm_bearer_report_connection_status (MM_BEARER (self),
-                                        MM_BEARER_CONNECTION_STATUS_CONNECTION_FAILED);
+    mm_base_bearer_report_connection_status (MM_BASE_BEARER (self),
+                                             MM_BEARER_CONNECTION_STATUS_CONNECTION_FAILED);
 }
 
 static void
@@ -923,14 +855,14 @@ authenticate (Dial3gppContext *ctx)
     const gchar *password;
     MMBearerAllowedAuth allowed_auth;
 
-    user = mm_bearer_properties_get_user (mm_bearer_peek_config (MM_BEARER (ctx->self)));
-    password = mm_bearer_properties_get_password (mm_bearer_peek_config (MM_BEARER (ctx->self)));
-    allowed_auth = mm_bearer_properties_get_allowed_auth (mm_bearer_peek_config (MM_BEARER (ctx->self)));
+    user = mm_bearer_properties_get_user (mm_base_bearer_peek_config (MM_BASE_BEARER (ctx->self)));
+    password = mm_bearer_properties_get_password (mm_base_bearer_peek_config (MM_BASE_BEARER (ctx->self)));
+    allowed_auth = mm_bearer_properties_get_allowed_auth (mm_base_bearer_peek_config (MM_BASE_BEARER (ctx->self)));
 
     /* Both user and password are required; otherwise firmware returns an error */
     if (!user || !password || allowed_auth == MM_BEARER_ALLOWED_AUTH_NONE) {
         mm_dbg ("Not using authentication");
-		command = g_strdup_printf ("%%IPDPCFG=%d,0,0,\"\",\"\"", ctx->cid);
+        command = g_strdup_printf ("%%IPDPCFG=%d,0,0,\"\",\"\"", ctx->cid);
     } else {
         gchar *quoted_user;
         gchar *quoted_password;
@@ -960,8 +892,8 @@ authenticate (Dial3gppContext *ctx)
             return;
         }
 
-        quoted_user = mm_at_serial_port_quote_string (user);
-        quoted_password = mm_at_serial_port_quote_string (password);
+        quoted_user = mm_port_serial_at_quote_string (user);
+        quoted_password = mm_port_serial_at_quote_string (password);
         command = g_strdup_printf ("%%IPDPCFG=%d,0,%u,%s,%s",
                                    ctx->cid, icera_auth, quoted_user, quoted_password);
         g_free (quoted_user);
@@ -983,7 +915,7 @@ authenticate (Dial3gppContext *ctx)
 static void
 dial_3gpp (MMBroadbandBearer *self,
            MMBaseModem *modem,
-           MMAtSerialPort *primary,
+           MMPortSerialAt *primary,
            guint cid,
            GCancellable *cancellable,
            GAsyncReadyCallback callback,
@@ -1022,7 +954,7 @@ dial_3gpp (MMBroadbandBearer *self,
 /*****************************************************************************/
 
 static void
-report_connection_status (MMBearer *bearer,
+report_connection_status (MMBaseBearer *bearer,
                           MMBearerConnectionStatus status)
 {
     MMBroadbandBearerIcera *self = MM_BROADBAND_BEARER_ICERA (bearer);
@@ -1047,7 +979,7 @@ report_connection_status (MMBearer *bearer,
         status == MM_BEARER_CONNECTION_STATUS_CONNECTION_FAILED) {
         /* If no connection/disconnection attempt on-going, make sure we mark ourselves as
          * disconnected. Make sure we only pass 'DISCONNECTED' to the parent */
-        MM_BEARER_CLASS (mm_broadband_bearer_icera_parent_class)->report_connection_status (
+        MM_BASE_BEARER_CLASS (mm_broadband_bearer_icera_parent_class)->report_connection_status (
             bearer,
             MM_BEARER_CONNECTION_STATUS_DISCONNECTED);
     }
@@ -1055,7 +987,7 @@ report_connection_status (MMBearer *bearer,
 
 /*****************************************************************************/
 
-MMBearer *
+MMBaseBearer *
 mm_broadband_bearer_icera_new_finish (GAsyncResult *res,
                                       GError **error)
 {
@@ -1070,9 +1002,9 @@ mm_broadband_bearer_icera_new_finish (GAsyncResult *res,
         return NULL;
 
     /* Only export valid bearers */
-    mm_bearer_export (MM_BEARER (bearer));
+    mm_base_bearer_export (MM_BASE_BEARER (bearer));
 
-    return MM_BEARER (bearer);
+    return MM_BASE_BEARER (bearer);
 }
 
 void
@@ -1089,8 +1021,8 @@ mm_broadband_bearer_icera_new (MMBroadbandModem *modem,
         cancellable,
         callback,
         user_data,
-        MM_BEARER_MODEM, modem,
-        MM_BEARER_CONFIG, config,
+        MM_BASE_BEARER_MODEM, modem,
+        MM_BASE_BEARER_CONFIG, config,
         MM_BROADBAND_BEARER_ICERA_DEFAULT_IP_METHOD, ip_method,
         NULL);
 }
@@ -1135,7 +1067,7 @@ static void
 mm_broadband_bearer_icera_init (MMBroadbandBearerIcera *self)
 {
     /* Initialize private data */
-    self->priv = G_TYPE_INSTANCE_GET_PRIVATE ((self),
+    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
                                               MM_TYPE_BROADBAND_BEARER_ICERA,
                                               MMBroadbandBearerIceraPrivate);
 
@@ -1147,14 +1079,14 @@ static void
 mm_broadband_bearer_icera_class_init (MMBroadbandBearerIceraClass *klass)
 {
     GObjectClass *object_class = G_OBJECT_CLASS (klass);
-    MMBearerClass *bearer_class = MM_BEARER_CLASS (klass);
+    MMBaseBearerClass *base_bearer_class = MM_BASE_BEARER_CLASS (klass);
     MMBroadbandBearerClass *broadband_bearer_class = MM_BROADBAND_BEARER_CLASS (klass);
 
     g_type_class_add_private (object_class, sizeof (MMBroadbandBearerIceraPrivate));
 
     object_class->get_property = get_property;
     object_class->set_property = set_property;
-    bearer_class->report_connection_status = report_connection_status;
+    base_bearer_class->report_connection_status = report_connection_status;
     broadband_bearer_class->dial_3gpp = dial_3gpp;
     broadband_bearer_class->dial_3gpp_finish = dial_3gpp_finish;
     broadband_bearer_class->get_ip_config_3gpp = get_ip_config_3gpp;

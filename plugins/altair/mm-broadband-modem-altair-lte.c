@@ -59,6 +59,10 @@ struct _MMBroadbandModemAltairLtePrivate {
      * This indicates that there are no more SIM refreshes and we should
      * reregister the device.*/
     guint sim_refresh_timer_id;
+    /* Flag indicating that we are detaching from the network to process SIM
+     * refresh.  This is used to prevent connect requests while we're in this
+     * state.*/
+    gboolean sim_refresh_detach_in_progress;
     /* Regex for bearer related notifications */
     GRegex *statcm_regex;
     /* Regex for PCO notifications */
@@ -95,12 +99,12 @@ modem_power_down (MMIfaceModem *self,
 /*****************************************************************************/
 /* Create Bearer (Modem interface) */
 
-static MMBearer *
+static MMBaseBearer *
 modem_create_bearer_finish (MMIfaceModem *self,
                             GAsyncResult *res,
                             GError **error)
 {
-    MMBearer *bearer;
+    MMBaseBearer *bearer;
 
     if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
         return NULL;
@@ -115,7 +119,7 @@ broadband_bearer_new_ready (GObject *source,
                             GAsyncResult *res,
                             GSimpleAsyncResult *simple)
 {
-    MMBearer *bearer = NULL;
+    MMBaseBearer *bearer = NULL;
     GError *error = NULL;
 
     bearer = mm_broadband_bearer_altair_lte_new_finish (res, &error);
@@ -260,37 +264,6 @@ load_current_capabilities (MMIfaceModem *self,
 }
 
 /*****************************************************************************/
-/* supported/current Bands helpers*/
-
-static GArray *
-parse_bands_response (const gchar *response)
-{
-    guint32 bandval;
-    MMModemBand band;
-    gchar **split;
-    guint i, num_of_bands;
-    GArray *bands;
-
-    split = g_strsplit_set (response, ",", -1);
-    if (!split)
-        return NULL;
-
-    num_of_bands = g_strv_length (split);
-
-    bands = g_array_sized_new (FALSE, FALSE, sizeof (MMModemBand), num_of_bands);
-
-    for (i = 0; split[i]; i++) {
-        bandval = (guint32)strtoul (split[i], NULL, 10);
-        band = MM_MODEM_BAND_EUTRAN_I - 1 + bandval;
-        g_array_append_val (bands, band);
-    }
-
-    g_strfreev (split);
-
-    return bands;
-}
-
-/*****************************************************************************/
 /* Load supported bands (Modem interface) */
 
 static GArray *
@@ -330,7 +303,7 @@ load_supported_bands_done (MMIfaceModem *self,
      */
     response = mm_strip_tag (response, BANDCAP_TAG);
 
-    bands = parse_bands_response (response);
+    bands = mm_altair_parse_bands_response (response);
     if (!bands) {
         mm_dbg ("Failed to parse supported bands response");
         g_simple_async_result_set_error (
@@ -411,7 +384,7 @@ load_current_bands_done (MMIfaceModem *self,
      */
     response = mm_strip_tag (response, CFGBANDS_TAG);
 
-    bands = parse_bands_response (response);
+    bands = mm_altair_parse_bands_response (response);
     if (!bands) {
         mm_dbg ("Failed to parse current bands response");
         g_simple_async_result_set_error (
@@ -639,6 +612,7 @@ altair_reregister_ready (MMBaseModem *self,
     } else {
         mm_dbg ("Modem reregistered successfully");
     }
+    MM_BROADBAND_MODEM_ALTAIR_LTE (self)->priv->sim_refresh_detach_in_progress = FALSE;
 }
 
 static void
@@ -648,6 +622,7 @@ altair_deregister_ready (MMBaseModem *self,
 {
     if (!mm_base_modem_at_command_finish (self, res, NULL)) {
         mm_dbg ("Deregister modem failed");
+        MM_BROADBAND_MODEM_ALTAIR_LTE (self)->priv->sim_refresh_detach_in_progress = FALSE;
         return;
     }
 
@@ -681,6 +656,10 @@ altair_load_own_numbers_ready (MMIfaceModem *iface_modem,
         g_strfreev (str_list);
     }
 
+    /* Set this flag to prevent connect requests from being processed while we
+     * detach from the network.*/
+    self->priv->sim_refresh_detach_in_progress = TRUE;
+
     /* Deregister */
     mm_dbg ("Reregistering modem");
     mm_base_modem_at_command (
@@ -703,13 +682,13 @@ altair_sim_refresh_timer_expired (MMBroadbandModemAltairLte *self)
         MM_IFACE_MODEM (self),
         (GAsyncReadyCallback)altair_load_own_numbers_ready,
         self);
-
     self->priv->sim_refresh_timer_id = 0;
+
     return FALSE;
 }
 
 static void
-altair_sim_refresh_changed (MMAtSerialPort *port,
+altair_sim_refresh_changed (MMPortSerialAt *port,
                             GMatchInfo *match_info,
                             MMBroadbandModemAltairLte *self)
 {
@@ -731,18 +710,18 @@ typedef enum {
 } MMStatcmAltair;
 
 static void
-bearer_list_report_disconnect_status_foreach (MMBearer *bearer,
+bearer_list_report_disconnect_status_foreach (MMBaseBearer *bearer,
                                               gpointer *user_data)
 {
-    mm_bearer_report_connection_status (bearer,
-                                        MM_BEARER_CONNECTION_STATUS_DISCONNECTED);
+    mm_base_bearer_report_connection_status (bearer,
+                                             MM_BEARER_CONNECTION_STATUS_DISCONNECTED);
 }
 
 /*****************************************************************************/
 /* STATCM unsolicited event handler */
 
 static void
-altair_statcm_changed (MMAtSerialPort *port,
+altair_statcm_changed (MMPortSerialAt *port,
                        GMatchInfo *match_info,
                        MMBroadbandModemAltairLte *self)
 {
@@ -776,7 +755,7 @@ altair_statcm_changed (MMAtSerialPort *port,
 /* Setup/Cleanup unsolicited events (3GPP interface) */
 
 static void
-altair_pco_info_changed (MMAtSerialPort *port,
+altair_pco_info_changed (MMPortSerialAt *port,
                          GMatchInfo *match_info,
                          MMBroadbandModemAltairLte *self);
 
@@ -784,7 +763,7 @@ static void
 set_3gpp_unsolicited_events_handlers (MMBroadbandModemAltairLte *self,
                                       gboolean enable)
 {
-    MMAtSerialPort *ports[2];
+    MMPortSerialAt *ports[2];
     guint i;
 
     ports[0] = mm_base_modem_peek_port_primary (MM_BASE_MODEM (self));
@@ -796,26 +775,26 @@ set_3gpp_unsolicited_events_handlers (MMBroadbandModemAltairLte *self,
             continue;
 
         /* SIM refresh handler */
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->sim_refresh_regex,
-            enable ? (MMAtSerialUnsolicitedMsgFn)altair_sim_refresh_changed : NULL,
+            enable ? (MMPortSerialAtUnsolicitedMsgFn)altair_sim_refresh_changed : NULL,
             enable ? self : NULL,
             NULL);
 
         /* bearer mode related */
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->statcm_regex,
-            enable ? (MMAtSerialUnsolicitedMsgFn)altair_statcm_changed : NULL,
+            enable ? (MMPortSerialAtUnsolicitedMsgFn)altair_statcm_changed : NULL,
             enable ? self : NULL,
             NULL);
 
         /* PCO info handler */
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->pcoinfo_regex,
-            enable ? (MMAtSerialUnsolicitedMsgFn)altair_pco_info_changed : NULL,
+            enable ? (MMPortSerialAtUnsolicitedMsgFn)altair_pco_info_changed : NULL,
             enable ? self : NULL,
             NULL);
     }
@@ -1211,33 +1190,15 @@ modem_3gpp_load_subscription_state_finish (MMIfaceModem3gpp *self,
 }
 
 static void
-altair_load_internet_cid_ready (MMIfaceModem3gpp *self,
-                                GAsyncResult *res,
-                                LoadSubscriptionStateContext *ctx)
+altair_get_subscription_state (MMIfaceModem3gpp *self,
+                               LoadSubscriptionStateContext *ctx)
 {
-    const gchar *response;
-    GError *error = NULL;
-    guint cid;
     guint pco_value = -1;
+    GError *error = NULL;
     MMModem3gppSubscriptionState subscription_state;
 
-    response = mm_base_modem_at_command_finish (MM_BASE_MODEM (self), res, &error);
-    if (error) {
-        mm_dbg ("Failed to load internet CID.");
-        g_simple_async_result_take_error (ctx->result, error);
-        load_subscription_state_context_complete_and_free (ctx);
-        return;
-    }
-
-    cid = mm_altair_parse_cid (response, &error);
-    if (error) {
-        g_simple_async_result_take_error (ctx->result, error);
-        load_subscription_state_context_complete_and_free (ctx);
-        return;
-    }
-
     mm_dbg ("Parsing vendor PCO info: %s", ctx->pco_info);
-    pco_value = mm_altair_parse_vendor_pco_info (ctx->pco_info, cid, &error);
+    pco_value = mm_altair_parse_vendor_pco_info (ctx->pco_info, &error);
     if (error) {
         g_simple_async_result_take_error (ctx->result, error);
         load_subscription_state_context_complete_and_free (ctx);
@@ -1246,30 +1207,8 @@ altair_load_internet_cid_ready (MMIfaceModem3gpp *self,
     mm_dbg ("PCO value = %d", pco_value);
 
     subscription_state = altair_vzw_pco_value_to_mm_modem_3gpp_subscription_state (pco_value);
-    if (subscription_state == MM_MODEM_3GPP_SUBSCRIPTION_STATE_UNKNOWN) {
-        /* The PCO value is loaded after the modem has successfully registered
-         * with the network.  So even if the PCO value is unknown here,
-         * the successful registration indicates a provisioned SIM.
-         */
-        subscription_state = MM_MODEM_3GPP_SUBSCRIPTION_STATE_PROVISIONED;
-    }
-
     g_simple_async_result_set_op_res_gpointer (ctx->result, GUINT_TO_POINTER (subscription_state), NULL);
     load_subscription_state_context_complete_and_free (ctx);
-}
-
-static void
-altair_get_subscription_state (MMIfaceModem3gpp *self,
-                               LoadSubscriptionStateContext *ctx)
-{
-    /* Get the latest internet CID first */
-    mm_dbg ("Loading internet CID...");
-    mm_base_modem_at_command (MM_BASE_MODEM (self),
-                              "%CGINFO=\"cid\",1",
-                              6,
-                              FALSE,
-                              (GAsyncReadyCallback)altair_load_internet_cid_ready,
-                              ctx);
 }
 
 static void
@@ -1333,11 +1272,12 @@ altair_get_subscription_state_ready (MMBroadbandModemAltairLte *self,
     }
 
     subscription_state = GPOINTER_TO_UINT (g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res)));
-    mm_iface_modem_3gpp_update_subscription_state (MM_IFACE_MODEM_3GPP (self), subscription_state);
+    if (subscription_state != MM_MODEM_3GPP_SUBSCRIPTION_STATE_UNKNOWN)
+        mm_iface_modem_3gpp_update_subscription_state (MM_IFACE_MODEM_3GPP (self), subscription_state);
 }
 
 static void
-altair_pco_info_changed (MMAtSerialPort *port,
+altair_pco_info_changed (MMPortSerialAt *port,
                          GMatchInfo *match_info,
                          MMBroadbandModemAltairLte *self)
 {
@@ -1368,7 +1308,7 @@ static const gchar *primary_init_sequence[] = {
 static void
 setup_ports (MMBroadbandModem *self)
 {
-    MMAtSerialPort *primary;
+    MMPortSerialAt *primary;
 
     /* Call parent's setup ports first always */
     MM_BROADBAND_MODEM_CLASS (mm_broadband_modem_altair_lte_parent_class)->setup_ports (self);
@@ -1378,9 +1318,9 @@ setup_ports (MMBroadbandModem *self)
         return;
 
     g_object_set (primary,
-                  MM_SERIAL_PORT_SEND_DELAY, (guint64) 0,
-                  MM_AT_SERIAL_PORT_SEND_LF, TRUE,
-                  MM_AT_SERIAL_PORT_INIT_SEQUENCE, primary_init_sequence,
+                  MM_PORT_SERIAL_SEND_DELAY, (guint64) 0,
+                  MM_PORT_SERIAL_AT_SEND_LF, TRUE,
+                  MM_PORT_SERIAL_AT_INIT_SEQUENCE, primary_init_sequence,
                   NULL);
 }
 
@@ -1408,6 +1348,12 @@ mm_broadband_modem_altair_lte_new (const gchar *device,
                          NULL);
 }
 
+gboolean
+mm_broadband_modem_altair_lte_is_sim_refresh_detach_in_progress (MMBroadbandModem *self)
+{
+    return MM_BROADBAND_MODEM_ALTAIR_LTE (self)->priv->sim_refresh_detach_in_progress;
+}
+
 static void
 mm_broadband_modem_altair_lte_init (MMBroadbandModemAltairLte *self)
 {
@@ -1417,8 +1363,9 @@ mm_broadband_modem_altair_lte_init (MMBroadbandModemAltairLte *self)
                                               MM_TYPE_BROADBAND_MODEM_ALTAIR_LTE,
                                               MMBroadbandModemAltairLtePrivate);
 
-    self->priv->sim_refresh_regex = g_regex_new ("\\r\\n\\%NOTIFYEV:\\s*SIMREFRESH,?(\\d*)\\r+\\n",
+    self->priv->sim_refresh_regex = g_regex_new ("\\r\\n\\%NOTIFYEV:\\s*\"?SIMREFRESH\"?,?(\\d*)\\r+\\n",
                                                  G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);
+    self->priv->sim_refresh_detach_in_progress = FALSE;
     self->priv->sim_refresh_timer_id = 0;
     self->priv->statcm_regex = g_regex_new ("\\r\\n\\%STATCM:\\s*(\\d*),?(\\d*)\\r+\\n",
                                             G_REGEX_RAW | G_REGEX_OPTIMIZE, 0, NULL);

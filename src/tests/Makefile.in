@@ -124,7 +124,7 @@ test_at_serial_port_OBJECTS = $(am_test_at_serial_port_OBJECTS)
 am__DEPENDENCIES_1 =
 @WITH_QMI_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1)
 test_at_serial_port_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(top_builddir)/src/libserial.la \
+	$(top_builddir)/src/libport.la \
 	$(top_builddir)/src/libmodem-helpers.la $(am__DEPENDENCIES_2)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -150,7 +150,7 @@ am_test_qcdm_serial_port_OBJECTS =  \
 	test_qcdm_serial_port-test-qcdm-serial-port.$(OBJEXT)
 test_qcdm_serial_port_OBJECTS = $(am_test_qcdm_serial_port_OBJECTS)
 test_qcdm_serial_port_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(top_builddir)/src/libserial.la \
+	$(top_builddir)/src/libport.la \
 	$(top_builddir)/src/libmodem-helpers.la \
 	$(top_builddir)/libqcdm/src/libqcdm.la $(am__DEPENDENCIES_2)
 am_test_sms_part_3gpp_OBJECTS =  \
@@ -262,14 +262,15 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+GDBUS_CODEGEN = @GDBUS_CODEGEN@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
-GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
 GLIB_MKENUMS = @GLIB_MKENUMS@
 GMSGFMT = @GMSGFMT@
 GMSGFMT_015 = @GMSGFMT_015@
 GREP = @GREP@
 GTKDOC_CHECK = @GTKDOC_CHECK@
+GTKDOC_CHECK_PATH = @GTKDOC_CHECK_PATH@
 GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
 GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
 GTKDOC_MKPDF = @GTKDOC_MKPDF@
@@ -489,7 +490,7 @@ test_qcdm_serial_port_CPPFLAGS = $(MM_CFLAGS) -I$(top_srcdir) \
 	-I$(top_srcdir)/libmm-glib/generated \
 	-I$(top_builddir)/libmm-glib/generated $(am__append_6)
 test_qcdm_serial_port_LDADD = $(MM_LIBS) \
-	$(top_builddir)/src/libserial.la \
+	$(top_builddir)/src/libport.la \
 	$(top_builddir)/src/libmodem-helpers.la \
 	$(top_builddir)/libqcdm/src/libqcdm.la -lutil $(am__append_7)
 
@@ -502,8 +503,7 @@ test_at_serial_port_CPPFLAGS = $(MM_CFLAGS) -I$(top_srcdir) \
 	-I$(top_builddir)/include -I$(top_srcdir)/libmm-glib \
 	-I$(top_srcdir)/libmm-glib/generated \
 	-I$(top_builddir)/libmm-glib/generated $(am__append_8)
-test_at_serial_port_LDADD = $(MM_LIBS) \
-	$(top_builddir)/src/libserial.la \
+test_at_serial_port_LDADD = $(MM_LIBS) $(top_builddir)/src/libport.la \
 	$(top_builddir)/src/libmodem-helpers.la -lutil $(am__append_9)
 
 ################

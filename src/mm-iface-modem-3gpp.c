@@ -260,6 +260,8 @@ run_registration_checks_ready (MMIfaceModem3gpp *self,
     /* If we got registered, end registration checks */
     if (current_registration_state == MM_MODEM_3GPP_REGISTRATION_STATE_HOME ||
         current_registration_state == MM_MODEM_3GPP_REGISTRATION_STATE_ROAMING) {
+        /* Request immediate access tech update */
+        mm_iface_modem_refresh_access_technologies (MM_IFACE_MODEM (ctx->self));
         mm_dbg ("Modem is currently registered in a 3GPP network");
         g_simple_async_result_set_op_res_gboolean (ctx->result, TRUE);
         register_in_network_context_complete_and_free (ctx);
@@ -1864,7 +1866,7 @@ initialization_context_complete_and_free_if_cancelled (InitializationContext *ct
 }
 
 static void
-sim_pin_lock_enabled_cb (MMSim *self,
+sim_pin_lock_enabled_cb (MMBaseSim *self,
                          gboolean enabled,
                          MmGdbusModem3gpp *skeleton)
 {
@@ -1894,7 +1896,7 @@ load_enabled_facility_locks_ready (MMIfaceModem3gpp *self,
         mm_warn ("couldn't load facility locks: '%s'", error->message);
         g_error_free (error);
     } else {
-        MMSim *sim = NULL;
+        MMBaseSim *sim = NULL;
 
         /* We loaded the initial list of facility locks; but we do need to update
          * the SIM PIN lock status when that changes. We'll connect to the signal
@@ -1904,7 +1906,7 @@ load_enabled_facility_locks_ready (MMIfaceModem3gpp *self,
                       MM_IFACE_MODEM_SIM, &sim,
                       NULL);
         g_signal_connect (sim,
-                          MM_SIM_PIN_LOCK_ENABLED,
+                          MM_BASE_SIM_PIN_LOCK_ENABLED,
                           G_CALLBACK (sim_pin_lock_enabled_cb),
                           ctx->skeleton);
         g_object_unref (sim);

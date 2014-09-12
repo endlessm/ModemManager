@@ -54,7 +54,7 @@ grab_port (MMPlugin *self,
            MMPortProbe *probe,
            GError **error)
 {
-    MMAtPortFlag pflags = MM_AT_PORT_FLAG_NONE;
+    MMPortSerialAtFlag pflags = MM_PORT_SERIAL_AT_FLAG_NONE;
     GUdevDevice *port;
     gint usbif;
 
@@ -75,11 +75,12 @@ grab_port (MMPlugin *self,
      */
     usbif = g_udev_device_get_property_as_int (port, "ID_USB_INTERFACE_NUM");
     if (usbif == 0)
-        pflags = MM_AT_PORT_FLAG_PRIMARY | MM_AT_PORT_FLAG_PPP;
+        pflags = MM_PORT_SERIAL_AT_FLAG_PRIMARY | MM_PORT_SERIAL_AT_FLAG_PPP;
 
     return mm_base_modem_grab_port (modem,
                                     mm_port_probe_get_port_subsys (probe),
                                     mm_port_probe_get_port_name (probe),
+                                    mm_port_probe_get_parent_path (probe),
                                     MM_PORT_TYPE_AT, /* we only allow AT ports here */
                                     pflags,
                                     error);

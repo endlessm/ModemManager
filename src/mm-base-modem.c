@@ -27,10 +27,11 @@
 #include <mm-errors-types.h>
 #include <mm-gdbus-modem.h>
 
+#include "mm-context.h"
 #include "mm-base-modem.h"
 
 #include "mm-log.h"
-#include "mm-serial-enums-types.h"
+#include "mm-port-enums-types.h"
 #include "mm-serial-parsers.h"
 #include "mm-modem-helpers.h"
 
@@ -77,15 +78,15 @@ struct _MMBaseModemPrivate {
     GCancellable *authp_cancellable;
 
     GHashTable *ports;
-    MMAtSerialPort *primary;
-    MMAtSerialPort *secondary;
-    MMQcdmSerialPort *qcdm;
+    MMPortSerialAt *primary;
+    MMPortSerialAt *secondary;
+    MMPortSerialQcdm *qcdm;
     GList *data;
 
     /* GPS-enabled modems will have an AT port for control, and a raw serial
      * port to receive all GPS traces */
-    MMAtSerialPort *gps_control;
-    MMGpsSerialPort *gps;
+    MMPortSerialAt *gps_control;
+    MMPortSerialGps *gps;
 
 #if defined WITH_QMI
     /* QMI ports */
@@ -138,7 +139,7 @@ mm_base_modem_owns_port (MMBaseModem *self,
 }
 
 static void
-serial_port_timed_out_cb (MMSerialPort *port,
+serial_port_timed_out_cb (MMPortSerial *port,
                           guint n_consecutive_timeouts,
                           gpointer user_data)
 {
@@ -161,8 +162,9 @@ gboolean
 mm_base_modem_grab_port (MMBaseModem *self,
                          const gchar *subsys,
                          const gchar *name,
+                         const gchar *parent_path,
                          MMPortType ptype,
-                         MMAtPortFlag at_pflags,
+                         MMPortSerialAtFlag at_pflags,
                          GError **error)
 {
     MMPort *port;
@@ -175,7 +177,8 @@ mm_base_modem_grab_port (MMBaseModem *self,
     /* Only allow 'tty', 'net' and 'cdc-wdm' ports */
     if (!g_str_equal (subsys, "net") &&
         !g_str_equal (subsys, "tty") &&
-        !(g_str_has_prefix (subsys, "usb") && g_str_has_prefix (name, "cdc-wdm"))) {
+        !(g_str_has_prefix (subsys, "usb") && g_str_has_prefix (name, "cdc-wdm")) &&
+        !g_str_equal (subsys, "virtual")) {
         g_set_error (error,
                      MM_CORE_ERROR,
                      MM_CORE_ERROR_UNSUPPORTED,
@@ -203,21 +206,21 @@ mm_base_modem_grab_port (MMBaseModem *self,
     if (g_str_equal (subsys, "tty")) {
         if (ptype == MM_PORT_TYPE_QCDM)
             /* QCDM port */
-            port = MM_PORT (mm_qcdm_serial_port_new (name));
+            port = MM_PORT (mm_port_serial_qcdm_new (name));
         else if (ptype == MM_PORT_TYPE_AT) {
             /* AT port */
-            port = MM_PORT (mm_at_serial_port_new (name));
+            port = MM_PORT (mm_port_serial_at_new (name, MM_PORT_SUBSYS_TTY));
 
             /* Set common response parser */
-            mm_at_serial_port_set_response_parser (MM_AT_SERIAL_PORT (port),
+            mm_port_serial_at_set_response_parser (MM_PORT_SERIAL_AT (port),
                                                    mm_serial_parser_v1_parse,
                                                    mm_serial_parser_v1_new (),
                                                    mm_serial_parser_v1_destroy);
             /* Store flags already */
-            mm_at_serial_port_set_flags (MM_AT_SERIAL_PORT (port), at_pflags);
+            mm_port_serial_at_set_flags (MM_PORT_SERIAL_AT (port), at_pflags);
         } else if (ptype == MM_PORT_TYPE_GPS) {
             /* Raw GPS port */
-            port = MM_PORT (mm_gps_serial_port_new (name));
+            port = MM_PORT (mm_port_serial_gps_new (name));
         } else {
             g_set_error (error,
                          MM_CORE_ERROR,
@@ -248,12 +251,26 @@ mm_base_modem_grab_port (MMBaseModem *self,
              g_str_has_prefix (name, "cdc-wdm")) {
 #if defined WITH_QMI
         if (ptype == MM_PORT_TYPE_QMI)
-            port = MM_PORT (mm_qmi_port_new (name));
+            port = MM_PORT (mm_port_qmi_new (name));
 #endif
 #if defined WITH_MBIM
         if (!port && ptype == MM_PORT_TYPE_MBIM)
-            port = MM_PORT (mm_mbim_port_new (name));
+            port = MM_PORT (mm_port_mbim_new (name));
 #endif
+
+        /* Non-serial AT port */
+        if (!port && ptype == MM_PORT_TYPE_AT) {
+            port = MM_PORT (mm_port_serial_at_new (name, MM_PORT_SUBSYS_USB));
+
+            /* Set common response parser */
+            mm_port_serial_at_set_response_parser (MM_PORT_SERIAL_AT (port),
+                                                   mm_serial_parser_v1_parse,
+                                                   mm_serial_parser_v1_new (),
+                                                   mm_serial_parser_v1_destroy);
+            /* Store flags already */
+            mm_port_serial_at_set_flags (MM_PORT_SERIAL_AT (port), at_pflags);
+        }
+
         if (!port) {
             g_set_error (error,
                          MM_CORE_ERROR,
@@ -264,6 +281,18 @@ mm_base_modem_grab_port (MMBaseModem *self,
             g_free (key);
             return FALSE;
         }
+    }
+    /* Virtual ports... */
+    else if (g_str_equal (subsys, "virtual")) {
+        port = MM_PORT (mm_port_serial_at_new (name, MM_PORT_SUBSYS_UNIX));
+
+        /* Set common response parser */
+        mm_port_serial_at_set_response_parser (MM_PORT_SERIAL_AT (port),
+                                               mm_serial_parser_v1_parse,
+                                               mm_serial_parser_v1_new (),
+                                               mm_serial_parser_v1_destroy);
+        /* Store flags already */
+        mm_port_serial_at_set_flags (MM_PORT_SERIAL_AT (port), at_pflags);
     }
     else
         /* We already filter out before all non-tty, non-net, non-cdc-wdm ports */
@@ -277,6 +306,11 @@ mm_base_modem_grab_port (MMBaseModem *self,
     /* Add it to the tracking HT.
      * Note: 'key' and 'port' now owned by the HT. */
     g_hash_table_insert (self->priv->ports, key, port);
+
+    /* Store parent path */
+    g_object_set (port,
+                  MM_PORT_PARENT_PATH, parent_path,
+                  NULL);
 
     return TRUE;
 }
@@ -296,7 +330,8 @@ mm_base_modem_release_port (MMBaseModem *self,
 
     if (!g_str_equal (subsys, "tty") &&
         !g_str_equal (subsys, "net") &&
-        !(g_str_has_prefix (subsys, "usb") && g_str_has_prefix (name, "cdc-wdm")))
+        !(g_str_has_prefix (subsys, "usb") && g_str_has_prefix (name, "cdc-wdm")) &&
+        !g_str_equal (subsys, "virtual"))
         return;
 
     key = get_hash_key (subsys, name);
@@ -487,7 +522,7 @@ mm_base_modem_get_cancellable  (MMBaseModem *self)
     return g_object_ref (self->priv->cancellable);
 }
 
-MMAtSerialPort *
+MMPortSerialAt *
 mm_base_modem_get_port_primary (MMBaseModem *self)
 {
     g_return_val_if_fail (MM_IS_BASE_MODEM (self), NULL);
@@ -495,7 +530,7 @@ mm_base_modem_get_port_primary (MMBaseModem *self)
     return (self->priv->primary ? g_object_ref (self->priv->primary) : NULL);
 }
 
-MMAtSerialPort *
+MMPortSerialAt *
 mm_base_modem_peek_port_primary (MMBaseModem *self)
 {
     g_return_val_if_fail (MM_IS_BASE_MODEM (self), NULL);
@@ -503,7 +538,7 @@ mm_base_modem_peek_port_primary (MMBaseModem *self)
     return self->priv->primary;
 }
 
-MMAtSerialPort *
+MMPortSerialAt *
 mm_base_modem_get_port_secondary (MMBaseModem *self)
 {
     g_return_val_if_fail (MM_IS_BASE_MODEM (self), NULL);
@@ -511,7 +546,7 @@ mm_base_modem_get_port_secondary (MMBaseModem *self)
     return (self->priv->secondary ? g_object_ref (self->priv->secondary) : NULL);
 }
 
-MMAtSerialPort *
+MMPortSerialAt *
 mm_base_modem_peek_port_secondary (MMBaseModem *self)
 {
     g_return_val_if_fail (MM_IS_BASE_MODEM (self), NULL);
@@ -519,7 +554,7 @@ mm_base_modem_peek_port_secondary (MMBaseModem *self)
     return self->priv->secondary;
 }
 
-MMQcdmSerialPort *
+MMPortSerialQcdm *
 mm_base_modem_get_port_qcdm (MMBaseModem *self)
 {
     g_return_val_if_fail (MM_IS_BASE_MODEM (self), NULL);
@@ -527,7 +562,7 @@ mm_base_modem_get_port_qcdm (MMBaseModem *self)
     return (self->priv->qcdm ? g_object_ref (self->priv->qcdm) : NULL);
 }
 
-MMQcdmSerialPort *
+MMPortSerialQcdm *
 mm_base_modem_peek_port_qcdm (MMBaseModem *self)
 {
     g_return_val_if_fail (MM_IS_BASE_MODEM (self), NULL);
@@ -535,7 +570,7 @@ mm_base_modem_peek_port_qcdm (MMBaseModem *self)
     return self->priv->qcdm;
 }
 
-MMAtSerialPort *
+MMPortSerialAt *
 mm_base_modem_get_port_gps_control (MMBaseModem *self)
 {
     g_return_val_if_fail (MM_IS_BASE_MODEM (self), NULL);
@@ -543,7 +578,7 @@ mm_base_modem_get_port_gps_control (MMBaseModem *self)
     return (self->priv->gps_control ? g_object_ref (self->priv->gps_control) : NULL);
 }
 
-MMAtSerialPort *
+MMPortSerialAt *
 mm_base_modem_peek_port_gps_control (MMBaseModem *self)
 {
     g_return_val_if_fail (MM_IS_BASE_MODEM (self), NULL);
@@ -551,7 +586,7 @@ mm_base_modem_peek_port_gps_control (MMBaseModem *self)
     return self->priv->gps_control;
 }
 
-MMGpsSerialPort *
+MMPortSerialGps *
 mm_base_modem_get_port_gps (MMBaseModem *self)
 {
     g_return_val_if_fail (MM_IS_BASE_MODEM (self), NULL);
@@ -559,7 +594,7 @@ mm_base_modem_get_port_gps (MMBaseModem *self)
     return (self->priv->gps ? g_object_ref (self->priv->gps) : NULL);
 }
 
-MMGpsSerialPort *
+MMPortSerialGps *
 mm_base_modem_peek_port_gps (MMBaseModem *self)
 {
     g_return_val_if_fail (MM_IS_BASE_MODEM (self), NULL);
@@ -569,302 +604,148 @@ mm_base_modem_peek_port_gps (MMBaseModem *self)
 
 #if defined WITH_QMI
 
-MMQmiPort *
+MMPortQmi *
 mm_base_modem_get_port_qmi (MMBaseModem *self)
 {
     g_return_val_if_fail (MM_IS_BASE_MODEM (self), NULL);
 
     /* First QMI port in the list is the primary one always */
-    return (self->priv->qmi ? ((MMQmiPort *)g_object_ref (self->priv->qmi->data)) : NULL);
+    return (self->priv->qmi ? ((MMPortQmi *)g_object_ref (self->priv->qmi->data)) : NULL);
 }
 
-MMQmiPort *
+MMPortQmi *
 mm_base_modem_peek_port_qmi (MMBaseModem *self)
 {
     g_return_val_if_fail (MM_IS_BASE_MODEM (self), NULL);
 
     /* First QMI port in the list is the primary one always */
-    return (self->priv->qmi ? (MMQmiPort *)self->priv->qmi->data : NULL);
+    return (self->priv->qmi ? (MMPortQmi *)self->priv->qmi->data : NULL);
 }
 
-MMQmiPort *
+MMPortQmi *
 mm_base_modem_get_port_qmi_for_data (MMBaseModem *self,
                                      MMPort *data,
                                      GError **error)
 {
-    MMQmiPort *qmi;
+    MMPortQmi *qmi;
 
     qmi = mm_base_modem_peek_port_qmi_for_data (self, data, error);
-    return (qmi ? (MMQmiPort *)g_object_ref (qmi) : NULL);
+    return (qmi ? (MMPortQmi *)g_object_ref (qmi) : NULL);
 }
 
-MMQmiPort *
+MMPortQmi *
 mm_base_modem_peek_port_qmi_for_data (MMBaseModem *self,
                                       MMPort *data,
                                       GError **error)
 {
-    MMQmiPort *found;
-    GUdevClient *client;
-    GUdevDevice *data_device;
-    GUdevDevice *data_device_parent;
-    GList *l;
+    GList *cdc_wdm_qmi_ports, *l;
+    const gchar *net_port_parent_path;
 
-    if (mm_port_get_subsys (data) != MM_PORT_SUBSYS_NET) {
-        g_set_error (error,
-                     MM_CORE_ERROR,
-                     MM_CORE_ERROR_UNSUPPORTED,
-                     "Cannot look for QMI port associated to a non-net data port");
-        return NULL;
-    }
-
-    /* don't listen for uevents */
-    client = g_udev_client_new (NULL);
-
-    /* Get udev device for the data port */
-    data_device = (g_udev_client_query_by_subsystem_and_name (
-                       client,
-                       "net",
-                       mm_port_get_device (data)));
-    if (!data_device) {
+    g_warn_if_fail (mm_port_get_subsys (data) == MM_PORT_SUBSYS_NET);
+    net_port_parent_path = mm_port_get_parent_path (data);
+    if (!net_port_parent_path) {
         g_set_error (error,
                      MM_CORE_ERROR,
                      MM_CORE_ERROR_FAILED,
-                     "Couldn't find udev device for port 'net/%s'",
+                     "No parent path for 'net/%s'",
                      mm_port_get_device (data));
-        g_object_unref (client);
         return NULL;
     }
 
-    /* Get parent of the data device */
-    data_device_parent = g_udev_device_get_parent (data_device);
-    if (!data_device_parent) {
-        g_set_error (error,
-                     MM_CORE_ERROR,
-                     MM_CORE_ERROR_FAILED,
-                     "Couldn't get udev device parent for port 'net/%s'",
-                     mm_port_get_device (data));
-        g_object_unref (data_device);
-        g_object_unref (client);
-        return NULL;
+    /* Find the CDC-WDM port on the same USB interface as the given net port */
+    cdc_wdm_qmi_ports = mm_base_modem_find_ports (MM_BASE_MODEM (self),
+                                                  MM_PORT_SUBSYS_USB,
+                                                  MM_PORT_TYPE_QMI,
+                                                  NULL);
+    for (l = cdc_wdm_qmi_ports; l; l = g_list_next (l)) {
+        const gchar *wdm_port_parent_path;
+
+        g_assert (MM_IS_PORT_QMI (l->data));
+        wdm_port_parent_path = mm_port_get_parent_path (MM_PORT (l->data));
+        if (wdm_port_parent_path && g_str_equal (wdm_port_parent_path, net_port_parent_path))
+            return MM_PORT_QMI (l->data);
     }
 
-    /* Now walk the list of QMI ports looking for a match */
-    found = NULL;
-    for (l = self->priv->qmi; l && !found; l = g_list_next (l)) {
-        GUdevDevice *qmi_device;
-        GUdevDevice *qmi_device_parent;
-
-        /* Get udev device for the QMI port */
-        qmi_device = (g_udev_client_query_by_subsystem_and_name (
-                          client,
-                          "usb",
-                          mm_port_get_device (MM_PORT (l->data))));
-        if (!qmi_device) {
-            qmi_device = (g_udev_client_query_by_subsystem_and_name (
-                              client,
-                              "usbmisc",
-                              mm_port_get_device (MM_PORT (l->data))));
-            if (!qmi_device) {
-                mm_warn ("Couldn't get udev device for QMI port '%s'",
-                         mm_port_get_device (MM_PORT (l->data)));
-                continue;
-            }
-        }
-
-        /* Get parent of the QMI device */
-        qmi_device_parent = g_udev_device_get_parent (qmi_device);
-        g_object_unref (qmi_device);
-
-        if (!qmi_device_parent) {
-            mm_warn ("Couldn't get udev device parent for QMI port '%s'",
-                     mm_port_get_device (MM_PORT (l->data)));
-            continue;
-        }
-
-        if (g_str_equal (g_udev_device_get_sysfs_path (data_device_parent),
-                         g_udev_device_get_sysfs_path (qmi_device_parent)))
-            found = MM_QMI_PORT (l->data);
-
-        g_object_unref (qmi_device_parent);
-    }
-
-    g_object_unref (data_device_parent);
-    g_object_unref (data_device);
-    g_object_unref (client);
-
-    if (!found) {
-        /* For the case where we have only 1 data port and 1 QMI port and they
-         * don't match with the previous rules (e.g. in some Huawei modems),
-         * just return the found one */
-        if (g_list_length (self->priv->data) == 1 &&
-            g_list_length (self->priv->qmi) == 1 &&
-            self->priv->data->data == data) {
-            mm_info ("Assuming QMI port '%s' is associated to net/%s",
-                     mm_port_get_device (MM_PORT (self->priv->qmi->data)),
-                     mm_port_get_device (data));
-            found = MM_QMI_PORT (self->priv->qmi->data);
-        } else {
-            g_set_error (error,
-                         MM_CORE_ERROR,
-                         MM_CORE_ERROR_NOT_FOUND,
-                         "Couldn't find associated QMI port for 'net/%s'",
-                         mm_port_get_device (data));
-            return NULL;
-        }
-    }
-
-    return found;
+    g_set_error (error,
+                 MM_CORE_ERROR,
+                 MM_CORE_ERROR_NOT_FOUND,
+                 "Couldn't find associated QMI port for 'net/%s'",
+                 mm_port_get_device (data));
+    return NULL;
 }
 
 #endif /* WITH_QMI */
 
 #if defined WITH_MBIM
 
-MMMbimPort *
+MMPortMbim *
 mm_base_modem_get_port_mbim (MMBaseModem *self)
 {
     g_return_val_if_fail (MM_IS_BASE_MODEM (self), NULL);
 
     /* First MBIM port in the list is the primary one always */
-    return (self->priv->mbim ? ((MMMbimPort *)g_object_ref (self->priv->mbim->data)) : NULL);
+    return (self->priv->mbim ? ((MMPortMbim *)g_object_ref (self->priv->mbim->data)) : NULL);
 }
 
-MMMbimPort *
+MMPortMbim *
 mm_base_modem_peek_port_mbim (MMBaseModem *self)
 {
     g_return_val_if_fail (MM_IS_BASE_MODEM (self), NULL);
 
     /* First MBIM port in the list is the primary one always */
-    return (self->priv->mbim ? (MMMbimPort *)self->priv->mbim->data : NULL);
+    return (self->priv->mbim ? (MMPortMbim *)self->priv->mbim->data : NULL);
 }
 
-MMMbimPort *
+MMPortMbim *
 mm_base_modem_get_port_mbim_for_data (MMBaseModem *self,
                                       MMPort *data,
                                       GError **error)
 {
-    MMMbimPort *mbim;
+    MMPortMbim *mbim;
 
     mbim = mm_base_modem_peek_port_mbim_for_data (self, data, error);
-    return (mbim ? (MMMbimPort *)g_object_ref (mbim) : NULL);
+    return (mbim ? (MMPortMbim *)g_object_ref (mbim) : NULL);
 }
 
-MMMbimPort *
+MMPortMbim *
 mm_base_modem_peek_port_mbim_for_data (MMBaseModem *self,
                                        MMPort *data,
                                        GError **error)
 {
-    MMMbimPort *found;
-    GUdevClient *client;
-    GUdevDevice *data_device;
-    GUdevDevice *data_device_parent;
-    GList *l;
+    GList *cdc_wdm_mbim_ports, *l;
+    const gchar *net_port_parent_path;
 
-    if (mm_port_get_subsys (data) != MM_PORT_SUBSYS_NET) {
-        g_set_error (error,
-                     MM_CORE_ERROR,
-                     MM_CORE_ERROR_UNSUPPORTED,
-                     "Cannot look for MBIM port associated to a non-net data port");
-        return NULL;
-    }
-
-    /* don't listen for uevents */
-    client = g_udev_client_new (NULL);
-
-    /* Get udev device for the data port */
-    data_device = (g_udev_client_query_by_subsystem_and_name (
-                       client,
-                       "net",
-                       mm_port_get_device (data)));
-    if (!data_device) {
+    g_warn_if_fail (mm_port_get_subsys (data) == MM_PORT_SUBSYS_NET);
+    net_port_parent_path = mm_port_get_parent_path (data);
+    if (!net_port_parent_path) {
         g_set_error (error,
                      MM_CORE_ERROR,
                      MM_CORE_ERROR_FAILED,
-                     "Couldn't find udev device for port 'net/%s'",
+                     "No parent path for 'net/%s'",
                      mm_port_get_device (data));
-        g_object_unref (client);
         return NULL;
     }
 
-    /* Get parent of the data device */
-    data_device_parent = g_udev_device_get_parent (data_device);
-    if (!data_device_parent) {
-        g_set_error (error,
-                     MM_CORE_ERROR,
-                     MM_CORE_ERROR_FAILED,
-                     "Couldn't get udev device parent for port 'net/%s'",
-                     mm_port_get_device (data));
-        g_object_unref (data_device);
-        g_object_unref (client);
-        return NULL;
+    /* Find the CDC-WDM port on the same USB interface as the given net port */
+    cdc_wdm_mbim_ports = mm_base_modem_find_ports (MM_BASE_MODEM (self),
+                                                  MM_PORT_SUBSYS_USB,
+                                                  MM_PORT_TYPE_MBIM,
+                                                  NULL);
+    for (l = cdc_wdm_mbim_ports; l; l = g_list_next (l)) {
+        const gchar *wdm_port_parent_path;
+
+        g_assert (MM_IS_PORT_MBIM (l->data));
+        wdm_port_parent_path = mm_port_get_parent_path (MM_PORT (l->data));
+        if (wdm_port_parent_path && g_str_equal (wdm_port_parent_path, net_port_parent_path))
+            return MM_PORT_MBIM (l->data);
     }
 
-    /* Now walk the list of MBIM ports looking for a match */
-    found = NULL;
-    for (l = self->priv->mbim; l && !found; l = g_list_next (l)) {
-        GUdevDevice *mbim_device;
-        GUdevDevice *mbim_device_parent;
-
-        /* Get udev device for the MBIM port */
-        mbim_device = (g_udev_client_query_by_subsystem_and_name (
-                          client,
-                          "usb",
-                          mm_port_get_device (MM_PORT (l->data))));
-        if (!mbim_device) {
-            mbim_device = (g_udev_client_query_by_subsystem_and_name (
-                              client,
-                              "usbmisc",
-                              mm_port_get_device (MM_PORT (l->data))));
-            if (!mbim_device) {
-                mm_warn ("Couldn't get udev device for MBIM port '%s'",
-                         mm_port_get_device (MM_PORT (l->data)));
-                continue;
-            }
-        }
-
-        /* Get parent of the MBIM device */
-        mbim_device_parent = g_udev_device_get_parent (mbim_device);
-        g_object_unref (mbim_device);
-
-        if (!mbim_device_parent) {
-            mm_warn ("Couldn't get udev device parent for MBIM port '%s'",
-                     mm_port_get_device (MM_PORT (l->data)));
-            continue;
-        }
-
-        if (g_str_equal (g_udev_device_get_sysfs_path (data_device_parent),
-                         g_udev_device_get_sysfs_path (mbim_device_parent)))
-            found = MM_MBIM_PORT (l->data);
-
-        g_object_unref (mbim_device_parent);
-    }
-
-    g_object_unref (data_device_parent);
-    g_object_unref (data_device);
-    g_object_unref (client);
-
-    if (!found) {
-        /* For the case where we have only 1 data port and 1 MBIM port and they
-         * don't match with the previous rules (e.g. in some Huawei modems),
-         * just return the found one */
-        if (g_list_length (self->priv->data) == 1 &&
-            g_list_length (self->priv->mbim) == 1 &&
-            self->priv->data->data == data) {
-            mm_info ("Assuming MBIM port '%s' is associated to net/%s",
-                     mm_port_get_device (MM_PORT (self->priv->mbim->data)),
-                     mm_port_get_device (data));
-            found = MM_MBIM_PORT (self->priv->mbim->data);
-        } else {
-            g_set_error (error,
-                         MM_CORE_ERROR,
-                         MM_CORE_ERROR_NOT_FOUND,
-                         "Couldn't find associated MBIM port for 'net/%s'",
-                         mm_port_get_device (data));
-            return NULL;
-        }
-    }
-
-    return found;
+    g_set_error (error,
+                 MM_CORE_ERROR,
+                 MM_CORE_ERROR_NOT_FOUND,
+                 "Couldn't find associated MBIM port for 'net/%s'",
+                 mm_port_get_device (data));
+    return NULL;
 }
 
 #endif /* WITH_MBIM */
@@ -919,17 +800,17 @@ mm_base_modem_peek_data_ports (MMBaseModem *self)
     return self->priv->data;
 }
 
-MMAtSerialPort *
+MMPortSerialAt *
 mm_base_modem_get_best_at_port (MMBaseModem *self,
                                 GError **error)
 {
-    MMAtSerialPort *best;
+    MMPortSerialAt *best;
 
     best = mm_base_modem_peek_best_at_port (self, error);
     return (best ? g_object_ref (best) : NULL);
 }
 
-MMAtSerialPort *
+MMPortSerialAt *
 mm_base_modem_peek_best_at_port (MMBaseModem *self,
                                  GError **error)
 {
@@ -962,7 +843,7 @@ mm_base_modem_has_at_port (MMBaseModem *self)
     /* We'll iterate the ht of ports, looking for any port which is AT */
     g_hash_table_iter_init (&iter, self->priv->ports);
     while (g_hash_table_iter_next (&iter, &key, &value)) {
-        if (MM_IS_AT_SERIAL_PORT (value))
+        if (MM_IS_PORT_SERIAL_AT (value))
             return TRUE;
     }
 
@@ -1016,6 +897,38 @@ mm_base_modem_get_port_infos (MMBaseModem *self,
     return port_infos;
 }
 
+GList *
+mm_base_modem_find_ports (MMBaseModem *self,
+                          MMPortSubsys subsys,
+                          MMPortType type,
+                          const gchar *name)
+{
+    GList *out = NULL;
+    GHashTableIter iter;
+    gpointer value;
+    gpointer key;
+
+    /* We'll iterate the ht of ports, looking for any port which is matches
+     * the compare function */
+    g_hash_table_iter_init (&iter, self->priv->ports);
+    while (g_hash_table_iter_next (&iter, &key, &value)) {
+        MMPort *port = MM_PORT (value);
+
+        if (subsys != MM_PORT_SUBSYS_UNKNOWN && mm_port_get_subsys (port) != subsys)
+            continue;
+
+        if (type != MM_PORT_TYPE_UNKNOWN && mm_port_get_port_type (port) != type)
+            continue;
+
+        if (name != NULL && !g_str_equal (mm_port_get_device (port), name))
+            continue;
+
+        out = g_list_append (out, g_object_ref (port));
+    }
+
+    return out;
+}
+
 static void
 initialize_ready (MMBaseModem *self,
                   GAsyncResult *res)
@@ -1064,14 +977,14 @@ mm_base_modem_organize_ports (MMBaseModem *self,
 {
     GHashTableIter iter;
     MMPort *candidate;
-    MMAtPortFlag flags;
-    MMAtSerialPort *backup_primary = NULL;
-    MMAtSerialPort *primary = NULL;
-    MMAtSerialPort *secondary = NULL;
-    MMAtSerialPort *backup_secondary = NULL;
-    MMQcdmSerialPort *qcdm = NULL;
-    MMAtSerialPort *gps_control = NULL;
-    MMGpsSerialPort *gps = NULL;
+    MMPortSerialAtFlag flags;
+    MMPortSerialAt *backup_primary = NULL;
+    MMPortSerialAt *primary = NULL;
+    MMPortSerialAt *secondary = NULL;
+    MMPortSerialAt *backup_secondary = NULL;
+    MMPortSerialQcdm *qcdm = NULL;
+    MMPortSerialAt *gps_control = NULL;
+    MMPortSerialGps *gps = NULL;
     MMPort *data_primary = NULL;
     GList *data = NULL;
 #if defined WITH_QMI
@@ -1095,22 +1008,22 @@ mm_base_modem_organize_ports (MMBaseModem *self,
         switch (mm_port_get_port_type (candidate)) {
 
         case MM_PORT_TYPE_AT:
-            g_assert (MM_IS_AT_SERIAL_PORT (candidate));
-            flags = mm_at_serial_port_get_flags (MM_AT_SERIAL_PORT (candidate));
+            g_assert (MM_IS_PORT_SERIAL_AT (candidate));
+            flags = mm_port_serial_at_get_flags (MM_PORT_SERIAL_AT (candidate));
 
-            if (flags & MM_AT_PORT_FLAG_PRIMARY) {
+            if (flags & MM_PORT_SERIAL_AT_FLAG_PRIMARY) {
                 if (!primary)
-                    primary = MM_AT_SERIAL_PORT (candidate);
+                    primary = MM_PORT_SERIAL_AT (candidate);
                 else if (!backup_primary) {
                     /* Just in case the plugin gave us more than one primary
                      * and no secondaries, treat additional primary ports as
                      * secondary.
                      */
-                    backup_primary = MM_AT_SERIAL_PORT (candidate);
+                    backup_primary = MM_PORT_SERIAL_AT (candidate);
                 }
             }
 
-            if (flags & MM_AT_PORT_FLAG_PPP) {
+            if (flags & MM_PORT_SERIAL_AT_FLAG_PPP) {
                 if (!data_primary)
                     data_primary = candidate;
                 else
@@ -1118,35 +1031,35 @@ mm_base_modem_organize_ports (MMBaseModem *self,
             }
 
             /* Explicitly flagged secondary ports trump NONE ports for secondary */
-            if (flags & MM_AT_PORT_FLAG_SECONDARY) {
-                if (!secondary || !(mm_at_serial_port_get_flags (secondary) & MM_AT_PORT_FLAG_SECONDARY))
-                    secondary = MM_AT_SERIAL_PORT (candidate);
+            if (flags & MM_PORT_SERIAL_AT_FLAG_SECONDARY) {
+                if (!secondary || !(mm_port_serial_at_get_flags (secondary) & MM_PORT_SERIAL_AT_FLAG_SECONDARY))
+                    secondary = MM_PORT_SERIAL_AT (candidate);
             }
 
-            if (flags & MM_AT_PORT_FLAG_GPS_CONTROL) {
+            if (flags & MM_PORT_SERIAL_AT_FLAG_GPS_CONTROL) {
                 if (!gps_control)
-                    gps_control = MM_AT_SERIAL_PORT (candidate);
+                    gps_control = MM_PORT_SERIAL_AT (candidate);
             }
 
             /* Fallback secondary */
-            if (flags == MM_AT_PORT_FLAG_NONE) {
+            if (flags == MM_PORT_SERIAL_AT_FLAG_NONE) {
                 if (!secondary)
-                    secondary = MM_AT_SERIAL_PORT (candidate);
+                    secondary = MM_PORT_SERIAL_AT (candidate);
                 else if (!backup_secondary)
-                    backup_secondary = MM_AT_SERIAL_PORT (candidate);
+                    backup_secondary = MM_PORT_SERIAL_AT (candidate);
             }
             break;
 
         case MM_PORT_TYPE_QCDM:
-            g_assert (MM_IS_QCDM_SERIAL_PORT (candidate));
+            g_assert (MM_IS_PORT_SERIAL_QCDM (candidate));
             if (!qcdm)
-                qcdm = MM_QCDM_SERIAL_PORT (candidate);
+                qcdm = MM_PORT_SERIAL_QCDM (candidate);
             break;
 
         case MM_PORT_TYPE_NET:
             if (!data_primary)
                 data_primary = candidate;
-            else if (MM_IS_AT_SERIAL_PORT (data_primary)) {
+            else if (MM_IS_PORT_SERIAL_AT (data_primary)) {
                 /* Net device (if any) is the preferred data port */
                 data = g_list_append (data, data_primary);
                 data_primary = candidate;
@@ -1157,9 +1070,9 @@ mm_base_modem_organize_ports (MMBaseModem *self,
             break;
 
         case MM_PORT_TYPE_GPS:
-            g_assert (MM_IS_GPS_SERIAL_PORT (candidate));
+            g_assert (MM_IS_PORT_SERIAL_GPS (candidate));
             if (!gps)
-                gps = MM_GPS_SERIAL_PORT (candidate);
+                gps = MM_PORT_SERIAL_GPS (candidate);
             break;
 
 #if defined WITH_QMI
@@ -1188,9 +1101,18 @@ mm_base_modem_organize_ports (MMBaseModem *self,
         }
     }
 
-    /* Fall back to a secondary port if we didn't find a primary port */
     if (!primary) {
-        if (!secondary) {
+        /* Fall back to a secondary port if we didn't find a primary port */
+        if (secondary) {
+            primary = secondary;
+            secondary = NULL;
+        }
+        /* Fallback to a data port if no primary or secondary */
+        else if (data_primary && MM_IS_PORT_SERIAL_AT (data_primary)) {
+            primary = MM_PORT_SERIAL_AT (data_primary);
+            data_primary = NULL;
+        }
+        else {
             gboolean allow_modem_without_at_port = FALSE;
 
 #if defined WITH_QMI
@@ -1210,9 +1132,6 @@ mm_base_modem_organize_ports (MMBaseModem *self,
                                      "Failed to find primary AT port");
                 return FALSE;
             }
-        } else  {
-            primary = secondary;
-            secondary = NULL;
         }
     }
 
@@ -1252,17 +1171,17 @@ mm_base_modem_organize_ports (MMBaseModem *self,
     /* Reset flags on all ports; clear data port first since it might also
      * be the primary or secondary port.
      */
-    if (MM_IS_AT_SERIAL_PORT (data_primary))
-        mm_at_serial_port_set_flags (MM_AT_SERIAL_PORT (data_primary), MM_AT_PORT_FLAG_NONE);
+    if (MM_IS_PORT_SERIAL_AT (data_primary))
+        mm_port_serial_at_set_flags (MM_PORT_SERIAL_AT (data_primary), MM_PORT_SERIAL_AT_FLAG_NONE);
 
     if (primary)
-        mm_at_serial_port_set_flags (primary, MM_AT_PORT_FLAG_PRIMARY);
+        mm_port_serial_at_set_flags (primary, MM_PORT_SERIAL_AT_FLAG_PRIMARY);
     if (secondary)
-        mm_at_serial_port_set_flags (secondary, MM_AT_PORT_FLAG_SECONDARY);
+        mm_port_serial_at_set_flags (secondary, MM_PORT_SERIAL_AT_FLAG_SECONDARY);
 
-    if (MM_IS_AT_SERIAL_PORT (data_primary)) {
-        flags = mm_at_serial_port_get_flags (MM_AT_SERIAL_PORT (data_primary));
-        mm_at_serial_port_set_flags (MM_AT_SERIAL_PORT (data_primary), flags | MM_AT_PORT_FLAG_PPP);
+    if (MM_IS_PORT_SERIAL_AT (data_primary)) {
+        flags = mm_port_serial_at_get_flags (MM_PORT_SERIAL_AT (data_primary));
+        mm_port_serial_at_set_flags (MM_PORT_SERIAL_AT (data_primary), flags | MM_PORT_SERIAL_AT_FLAG_PPP);
     }
 
     log_port (self, MM_PORT (primary),      "at (primary)");
@@ -1362,6 +1281,15 @@ mm_base_modem_authorize (MMBaseModem *self,
                                         callback,
                                         user_data,
                                         mm_base_modem_authorize);
+
+    /* When running in the session bus for tests, default to always allow */
+    if (mm_context_get_test_session ()) {
+        g_simple_async_result_set_op_res_gboolean (result, TRUE);
+        g_simple_async_result_complete_in_idle (result);
+        g_object_unref (result);
+        return;
+    }
+
     mm_auth_provider_authorize (self->priv->authp,
                                 invocation,
                                 authorization,
@@ -1439,7 +1367,7 @@ static void
 mm_base_modem_init (MMBaseModem *self)
 {
     /* Initialize private data */
-    self->priv = G_TYPE_INSTANCE_GET_PRIVATE ((self),
+    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
                                               MM_TYPE_BASE_MODEM,
                                               MMBaseModemPrivate);
 
@@ -1593,13 +1521,13 @@ dispose (GObject *object)
      * otherwise the allocated CIDs will be kept allocated, and if we end up
      * allocating too many newer allocations will fail with client-ids-exhausted
      * errors. */
-    g_list_foreach (self->priv->qmi, (GFunc)mm_qmi_port_close, NULL);
+    g_list_foreach (self->priv->qmi, (GFunc)mm_port_qmi_close, NULL);
     g_list_free_full (self->priv->qmi, g_object_unref);
     self->priv->qmi = NULL;
 #endif
 #if defined WITH_MBIM
     /* We need to close the MBIM port cleanly when disposing the modem object */
-    g_list_foreach (self->priv->mbim, (GFunc)mm_mbim_port_close, NULL);
+    g_list_foreach (self->priv->mbim, (GFunc)mm_port_mbim_close, NULL);
     g_list_free_full (self->priv->mbim, g_object_unref);
     self->priv->mbim = NULL;
 #endif

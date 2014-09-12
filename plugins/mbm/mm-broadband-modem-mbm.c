@@ -80,15 +80,15 @@ struct _MMBroadbandModemMbmPrivate {
 /*****************************************************************************/
 /* Create Bearer (Modem interface) */
 
-static MMBearer *
+static MMBaseBearer *
 modem_create_bearer_finish (MMIfaceModem *self,
                             GAsyncResult *res,
                             GError **error)
 {
-    MMBearer *bearer;
+    MMBaseBearer *bearer;
 
     bearer = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res));
-    mm_dbg ("New MBM bearer created at DBus path '%s'", mm_bearer_get_path (bearer));
+    mm_dbg ("New MBM bearer created at DBus path '%s'", mm_base_bearer_get_path (bearer));
 
     return g_object_ref (bearer);
 }
@@ -98,7 +98,7 @@ broadband_bearer_mbm_new_ready (GObject *source,
                                 GAsyncResult *res,
                                 GSimpleAsyncResult *simple)
 {
-    MMBearer *bearer = NULL;
+    MMBaseBearer *bearer = NULL;
     GError *error = NULL;
 
     bearer = mm_broadband_bearer_mbm_new_finish (res, &error);
@@ -136,7 +136,7 @@ modem_create_bearer (MMIfaceModem *self,
 /*****************************************************************************/
 /* Create SIM (Modem interface) */
 
-static MMSim *
+static MMBaseSim *
 create_sim_finish (MMIfaceModem *self,
                    GAsyncResult *res,
                    GError **error)
@@ -801,14 +801,14 @@ typedef struct {
 } BearerListReportStatusForeachContext;
 
 static void
-bearer_list_report_status_foreach (MMBearer *bearer,
+bearer_list_report_status_foreach (MMBaseBearer *bearer,
                                    BearerListReportStatusForeachContext *ctx)
 {
-    mm_bearer_report_connection_status (bearer, ctx->status);
+    mm_base_bearer_report_connection_status (bearer, ctx->status);
 }
 
 static void
-e2nap_received (MMAtSerialPort *port,
+e2nap_received (MMPortSerialAt *port,
                 GMatchInfo *info,
                 MMBroadbandModemMbm *self)
 {
@@ -856,7 +856,7 @@ e2nap_received (MMAtSerialPort *port,
 }
 
 static void
-erinfo_received (MMAtSerialPort *port,
+erinfo_received (MMPortSerialAt *port,
                  GMatchInfo *info,
                  MMBroadbandModemMbm *self)
 {
@@ -902,7 +902,7 @@ static void
 set_unsolicited_events_handlers (MMBroadbandModemMbm *self,
                                  gboolean enable)
 {
-    MMAtSerialPort *ports[2];
+    MMPortSerialAt *ports[2];
     guint i;
 
     ports[0] = mm_base_modem_peek_port_primary (MM_BASE_MODEM (self));
@@ -914,24 +914,24 @@ set_unsolicited_events_handlers (MMBroadbandModemMbm *self,
             continue;
 
         /* Access technology related */
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->erinfo_regex,
-            enable ? (MMAtSerialUnsolicitedMsgFn)erinfo_received : NULL,
+            enable ? (MMPortSerialAtUnsolicitedMsgFn)erinfo_received : NULL,
             enable ? self : NULL,
             NULL);
 
         /* Connection related */
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->e2nap_regex,
-            enable ? (MMAtSerialUnsolicitedMsgFn)e2nap_received : NULL,
+            enable ? (MMPortSerialAtUnsolicitedMsgFn)e2nap_received : NULL,
             enable ? self : NULL,
             NULL);
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->e2nap_ext_regex,
-            enable ? (MMAtSerialUnsolicitedMsgFn)e2nap_received : NULL,
+            enable ? (MMPortSerialAtUnsolicitedMsgFn)e2nap_received : NULL,
             enable ? self : NULL,
             NULL);
     }
@@ -1179,7 +1179,7 @@ modem_3gpp_disable_unsolicited_events (MMIfaceModem3gpp *self,
 /* Setup ports (Broadband modem class) */
 
 static void
-emrdy_received (MMAtSerialPort *port,
+emrdy_received (MMPortSerialAt *port,
                 GMatchInfo *info,
                 MMBroadbandModemMbm *self)
 {
@@ -1190,7 +1190,7 @@ static void
 setup_ports (MMBroadbandModem *_self)
 {
     MMBroadbandModemMbm *self = MM_BROADBAND_MODEM_MBM (_self);
-    MMAtSerialPort *ports[2];
+    MMPortSerialAt *ports[2];
     guint i;
 
     /* Call parent's setup ports first always */
@@ -1209,32 +1209,34 @@ setup_ports (MMBroadbandModem *_self)
          * command mode.  F5521gw R2A07 resets port properties like echo when
          * flashed, leading to confusion.  bgo #650740
          */
-        g_object_set (G_OBJECT (ports[i]), MM_SERIAL_PORT_FLASH_OK, FALSE, NULL);
+        g_object_set (G_OBJECT (ports[i]),
+                      MM_PORT_SERIAL_FLASH_OK, FALSE,
+                      NULL);
 
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->emrdy_regex,
-            (MMAtSerialUnsolicitedMsgFn)emrdy_received,
+            (MMPortSerialAtUnsolicitedMsgFn)emrdy_received,
             self,
             NULL);
 
         /* Several unsolicited messages to always ignore... */
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->pacsp_regex,
             NULL, NULL, NULL);
 
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->estksmenu_regex,
             NULL, NULL, NULL);
 
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->estksms_regex,
             NULL, NULL, NULL);
 
-        mm_at_serial_port_add_unsolicited_msg_handler (
+        mm_port_serial_at_add_unsolicited_msg_handler (
             ports[i],
             self->priv->emwi_regex,
             NULL, NULL, NULL);
@@ -1266,7 +1268,7 @@ static void
 mm_broadband_modem_mbm_init (MMBroadbandModemMbm *self)
 {
     /* Initialize private data */
-    self->priv = G_TYPE_INSTANCE_GET_PRIVATE ((self),
+    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
                                               MM_TYPE_BROADBAND_MODEM_MBM,
                                               MMBroadbandModemMbmPrivate);
 

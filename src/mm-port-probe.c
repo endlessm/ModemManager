@@ -26,22 +26,22 @@
 
 #include "mm-port-probe.h"
 #include "mm-log.h"
-#include "mm-at-serial-port.h"
-#include "mm-serial-port.h"
+#include "mm-port-serial-at.h"
+#include "mm-port-serial.h"
 #include "mm-serial-parsers.h"
 #include "mm-port-probe-at.h"
 #include "libqcdm/src/commands.h"
 #include "libqcdm/src/utils.h"
 #include "libqcdm/src/errors.h"
-#include "mm-qcdm-serial-port.h"
+#include "mm-port-serial-qcdm.h"
 #include "mm-daemon-enums-types.h"
 
 #if defined WITH_QMI
-#include "mm-qmi-port.h"
+#include "mm-port-qmi.h"
 #endif
 
 #if defined WITH_MBIM
-#include "mm-mbim-port.h"
+#include "mm-port-mbim.h"
 #endif
 
 /*
@@ -82,7 +82,7 @@ typedef struct {
     /* ---- Serial probing specific context ---- */
 
     guint buffer_full_id;
-    MMSerialPort *serial;
+    MMPortSerial *serial;
 
     /* ---- AT probing specific context ---- */
 
@@ -109,12 +109,12 @@ typedef struct {
 
 #if defined WITH_QMI
     /* ---- QMI probing specific context ---- */
-    MMQmiPort *qmi_port;
+    MMPortQmi *port_qmi;
 #endif
 
 #if defined WITH_MBIM
     /* ---- MBIM probing specific context ---- */
-    MMMbimPort *mbim_port;
+    MMPortMbim *mbim_port;
 #endif
 
 } PortProbeRunTask;
@@ -123,6 +123,7 @@ struct _MMPortProbePrivate {
     /* Properties */
     MMDevice *device;
     GUdevDevice *port;
+    GUdevDevice *parent;
 
     /* Probing results */
     guint32 flags;
@@ -329,26 +330,26 @@ port_probe_run_task_free (PortProbeRunTask *task)
 
     if (task->serial) {
         if (task->buffer_full_id) {
-            g_warn_if_fail (MM_IS_AT_SERIAL_PORT (task->serial));
+            g_warn_if_fail (MM_IS_PORT_SERIAL_AT (task->serial));
             g_signal_handler_disconnect (task->serial, task->buffer_full_id);
         }
-        if (mm_serial_port_is_open (task->serial))
-            mm_serial_port_close (task->serial);
+        if (mm_port_serial_is_open (task->serial))
+            mm_port_serial_close (task->serial);
         g_object_unref (task->serial);
     }
 
 #if defined WITH_QMI
-    if (task->qmi_port) {
-        if (mm_qmi_port_is_open (task->qmi_port))
-            mm_qmi_port_close (task->qmi_port);
-        g_object_unref (task->qmi_port);
+    if (task->port_qmi) {
+        if (mm_port_qmi_is_open (task->port_qmi))
+            mm_port_qmi_close (task->port_qmi);
+        g_object_unref (task->port_qmi);
     }
 #endif
 
 #if defined WITH_MBIM
     if (task->mbim_port) {
         /* We should have closed it cleanly before */
-        g_assert (!mm_mbim_port_is_open (task->mbim_port));
+        g_assert (!mm_port_mbim_is_open (task->mbim_port));
         g_object_unref (task->mbim_port);
     }
 #endif
@@ -416,7 +417,7 @@ static gboolean wdm_probe (MMPortProbe *self);
 #if defined WITH_QMI
 
 static void
-qmi_port_open_ready (MMQmiPort *qmi_port,
+port_qmi_open_ready (MMPortQmi *port_qmi,
                      GAsyncResult *res,
                      MMPortProbe *self)
 {
@@ -424,7 +425,7 @@ qmi_port_open_ready (MMQmiPort *qmi_port,
     GError *error = NULL;
     gboolean is_qmi;
 
-    is_qmi = mm_qmi_port_open_finish (qmi_port, res, &error);
+    is_qmi = mm_port_qmi_open_finish (port_qmi, res, &error);
     if (!is_qmi) {
         mm_dbg ("(%s/%s) error checking QMI support: '%s'",
                 g_udev_device_get_subsystem (self->priv->port),
@@ -436,7 +437,7 @@ qmi_port_open_ready (MMQmiPort *qmi_port,
     /* Set probing result */
     mm_port_probe_set_result_qmi (self, is_qmi);
 
-    mm_qmi_port_close (qmi_port);
+    mm_port_qmi_close (port_qmi);
 
     /* Keep on */
     task->source_id = g_idle_add ((GSourceFunc)wdm_probe, self);
@@ -455,11 +456,11 @@ wdm_probe_qmi (MMPortProbe *self)
             g_udev_device_get_name (self->priv->port));
 
     /* Create a port and try to open it */
-    task->qmi_port = mm_qmi_port_new (g_udev_device_get_name (self->priv->port));
-    mm_qmi_port_open (task->qmi_port,
+    task->port_qmi = mm_port_qmi_new (g_udev_device_get_name (self->priv->port));
+    mm_port_qmi_open (task->port_qmi,
                       FALSE,
                       NULL,
-                      (GAsyncReadyCallback)qmi_port_open_ready,
+                      (GAsyncReadyCallback)port_qmi_open_ready,
                       self);
 #else
     /* If not compiled with QMI support, just assume we won't have any QMI port */
@@ -471,20 +472,20 @@ wdm_probe_qmi (MMPortProbe *self)
 #if defined WITH_MBIM
 
 static void
-mbim_port_close_ready (MMMbimPort *mbim_port,
+mbim_port_close_ready (MMPortMbim *mbim_port,
                        GAsyncResult *res,
                        MMPortProbe *self)
 {
     PortProbeRunTask *task = self->priv->task;
 
-    mm_mbim_port_close_finish (mbim_port, res, NULL);
+    mm_port_mbim_close_finish (mbim_port, res, NULL);
 
     /* Keep on */
     task->source_id = g_idle_add ((GSourceFunc)wdm_probe, self);
 }
 
 static void
-mbim_port_open_ready (MMMbimPort *mbim_port,
+mbim_port_open_ready (MMPortMbim *mbim_port,
                       GAsyncResult *res,
                       MMPortProbe *self)
 {
@@ -492,7 +493,7 @@ mbim_port_open_ready (MMMbimPort *mbim_port,
     GError *error = NULL;
     gboolean is_mbim;
 
-    is_mbim = mm_mbim_port_open_finish (mbim_port, res, &error);
+    is_mbim = mm_port_mbim_open_finish (mbim_port, res, &error);
     if (!is_mbim) {
         mm_dbg ("(%s/%s) error checking MBIM support: '%s'",
                 g_udev_device_get_subsystem (self->priv->port),
@@ -504,25 +505,9 @@ mbim_port_open_ready (MMMbimPort *mbim_port,
     /* Set probing result */
     mm_port_probe_set_result_mbim (self, is_mbim);
 
-    mm_mbim_port_close (task->mbim_port,
+    mm_port_mbim_close (task->mbim_port,
                         (GAsyncReadyCallback)mbim_port_close_ready,
                         self);
-}
-
-static gboolean
-mbim_sleep_ready (MMPortProbe *self)
-{
-    PortProbeRunTask *task = self->priv->task;
-
-    task->source_id = 0;
-
-    /* Create a port and try to open it */
-    task->mbim_port = mm_mbim_port_new (g_udev_device_get_name (self->priv->port));
-    mm_mbim_port_open (task->mbim_port,
-                       NULL,
-                       (GAsyncReadyCallback)mbim_port_open_ready,
-                       self);
-    return FALSE;
 }
 
 #endif /* WITH_MBIM */
@@ -537,7 +522,12 @@ wdm_probe_mbim (MMPortProbe *self)
             g_udev_device_get_subsystem (self->priv->port),
             g_udev_device_get_name (self->priv->port));
 
-    task->source_id = g_timeout_add_seconds (3, (GSourceFunc)mbim_sleep_ready, self);
+    /* Create a port and try to open it */
+    task->mbim_port = mm_port_mbim_new (g_udev_device_get_name (self->priv->port));
+    mm_port_mbim_open (task->mbim_port,
+                       NULL,
+                       (GAsyncReadyCallback)mbim_port_open_ready,
+                       self);
 #else
     /* If not compiled with MBIM support, just assume we won't have any MBIM port */
     mm_port_probe_set_result_mbim (self, FALSE);
@@ -575,9 +565,8 @@ wdm_probe (MMPortProbe *self)
 /* QCDM */
 
 static void
-serial_probe_qcdm_parse_response (MMQcdmSerialPort *port,
-                                  GByteArray *response,
-                                  GError *error,
+serial_probe_qcdm_parse_response (MMPortSerialQcdm *port,
+                                  GAsyncResult *res,
                                   MMPortProbe *self)
 {
     QcdmResult *result;
@@ -585,10 +574,14 @@ serial_probe_qcdm_parse_response (MMQcdmSerialPort *port,
     gboolean is_qcdm = FALSE;
     gboolean retry = FALSE;
     PortProbeRunTask *task = self->priv->task;
+    GError *error = NULL;
+    GByteArray *response;
+
+    response = mm_port_serial_qcdm_command_finish (port, res, &error);
 
     /* If already cancelled, do nothing else */
     if (port_probe_run_is_cancelled (self))
-        return;
+        goto out;
 
     if (!error) {
         /* Parse the response */
@@ -604,7 +597,6 @@ serial_probe_qcdm_parse_response (MMQcdmSerialPort *port,
         } else {
             /* yay, probably a QCDM port */
             is_qcdm = TRUE;
-
             qcdm_result_unref (result);
         }
     } else {
@@ -619,13 +611,14 @@ serial_probe_qcdm_parse_response (MMQcdmSerialPort *port,
         cmd2 = g_object_steal_data (G_OBJECT (self), "cmd2");
         if (cmd2) {
             /* second try */
-            mm_qcdm_serial_port_queue_command (MM_QCDM_SERIAL_PORT (task->serial),
-                                               cmd2,
-                                               3,
-                                               NULL,
-                                               (MMQcdmSerialResponseFn)serial_probe_qcdm_parse_response,
-                                               self);
-            return;
+            mm_port_serial_qcdm_command (MM_PORT_SERIAL_QCDM (task->serial),
+                                         cmd2,
+                                         3,
+                                         NULL,
+                                         (GAsyncReadyCallback)serial_probe_qcdm_parse_response,
+                                         self);
+            g_byte_array_unref (cmd2);
+            goto out;
         }
 
         /* no more retries left */
@@ -636,6 +629,12 @@ serial_probe_qcdm_parse_response (MMQcdmSerialPort *port,
 
     /* Reschedule probing */
     serial_probe_schedule (self);
+
+out:
+    if (response)
+        g_byte_array_unref (response);
+    if (error)
+        g_error_free (error);
 }
 
 static gboolean
@@ -665,12 +664,12 @@ serial_probe_qcdm (MMPortProbe *self)
             g_signal_handler_disconnect (task->serial, task->buffer_full_id);
             task->buffer_full_id = 0;
         }
-        mm_serial_port_close (task->serial);
+        mm_port_serial_close (task->serial);
         g_object_unref (task->serial);
     }
 
     /* Open the QCDM port */
-    task->serial = MM_SERIAL_PORT (mm_qcdm_serial_port_new (g_udev_device_get_name (self->priv->port)));
+    task->serial = MM_PORT_SERIAL (mm_port_serial_qcdm_new (g_udev_device_get_name (self->priv->port)));
     if (!task->serial) {
         port_probe_run_task_complete (
             task,
@@ -684,7 +683,7 @@ serial_probe_qcdm (MMPortProbe *self)
     }
 
     /* Try to open the port */
-    if (!mm_serial_port_open (task->serial, &error)) {
+    if (!mm_port_serial_open (task->serial, &error)) {
         port_probe_run_task_complete (
             task,
             FALSE,
@@ -707,7 +706,7 @@ serial_probe_qcdm (MMPortProbe *self)
     g_byte_array_append (verinfo, &marker, 1);
     len = qcdm_cmd_version_info_new ((char *) (verinfo->data + 1), 9);
     if (len <= 0) {
-        g_byte_array_free (verinfo, TRUE);
+        g_byte_array_unref (verinfo);
         port_probe_run_task_complete (
             task,
             FALSE,
@@ -725,12 +724,13 @@ serial_probe_qcdm (MMPortProbe *self)
     g_byte_array_append (verinfo2, verinfo->data, verinfo->len);
     g_object_set_data_full (G_OBJECT (self), "cmd2", verinfo2, (GDestroyNotify) g_byte_array_unref);
 
-    mm_qcdm_serial_port_queue_command (MM_QCDM_SERIAL_PORT (task->serial),
-                                       verinfo,
-                                       3,
-                                       NULL,
-                                       (MMQcdmSerialResponseFn)serial_probe_qcdm_parse_response,
-                                       self);
+    mm_port_serial_qcdm_command (MM_PORT_SERIAL_QCDM (task->serial),
+                                 verinfo,
+                                 3,
+                                 NULL,
+                                 (GAsyncReadyCallback)serial_probe_qcdm_parse_response,
+                                 self);
+    g_byte_array_unref (verinfo);
 
     return FALSE;
 }
@@ -852,18 +852,21 @@ serial_probe_at_result_processor (MMPortProbe *self,
 }
 
 static void
-serial_probe_at_parse_response (MMAtSerialPort *port,
-                                GString *response,
-                                GError *error,
+serial_probe_at_parse_response (MMPortSerialAt *port,
+                                GAsyncResult *res,
                                 MMPortProbe *self)
 {
     PortProbeRunTask *task = self->priv->task;
     GVariant *result = NULL;
     GError *result_error = NULL;
+    const gchar *response;
+    GError *error = NULL;
+
+    response = mm_port_serial_at_command_finish (port, res, &error);
 
     /* If already cancelled, do nothing else */
     if (port_probe_run_is_cancelled (self))
-        return;
+        goto out;
 
     /* If AT probing cancelled, end this partial probing */
     if (g_cancellable_is_cancelled (task->at_probing_cancellable)) {
@@ -872,11 +875,11 @@ serial_probe_at_parse_response (MMAtSerialPort *port,
                 g_udev_device_get_name (self->priv->port));
         task->at_result_processor (self, NULL);
         serial_probe_schedule (self);
-        return;
+        goto out;
     }
 
     if (!task->at_commands->response_processor (task->at_commands->command,
-                                                response ? response->str : NULL,
+                                                response,
                                                 !!task->at_commands[1].command,
                                                 error,
                                                 &result,
@@ -892,8 +895,7 @@ serial_probe_at_parse_response (MMAtSerialPort *port,
                              g_udev_device_get_subsystem (self->priv->port),
                              g_udev_device_get_name (self->priv->port),
                              result_error->message));
-            g_error_free (result_error);
-            return;
+            goto out;
         }
 
         /* Go on to next command */
@@ -904,22 +906,28 @@ serial_probe_at_parse_response (MMAtSerialPort *port,
             task->at_result_processor (self, NULL);
             /* Reschedule */
             serial_probe_schedule (self);
-            return;
+            goto out;
         }
 
         /* Schedule the next command in the probing group */
         task->source_id = g_idle_add ((GSourceFunc)serial_probe_at, self);
-        return;
+        goto out;
     }
 
     /* Run result processor.
      * Note that custom init commands are allowed to not return anything */
     task->at_result_processor (self, result);
-    if (result)
-        g_variant_unref (result);
 
     /* Reschedule probing */
     serial_probe_schedule (self);
+
+out:
+    if (result)
+        g_variant_unref (result);
+    if (error)
+        g_error_free (error);
+    if (result_error)
+        g_error_free (result_error);
 }
 
 static gboolean
@@ -943,13 +951,14 @@ serial_probe_at (MMPortProbe *self)
         return FALSE;
     }
 
-    mm_at_serial_port_queue_command (
-        MM_AT_SERIAL_PORT (task->serial),
+    mm_port_serial_at_command (
+        MM_PORT_SERIAL_AT (task->serial),
         task->at_commands->command,
         task->at_commands->timeout,
         FALSE,
+        FALSE,
         task->at_probing_cancellable,
-        (MMAtSerialResponseFn)serial_probe_at_parse_response,
+        (GAsyncReadyCallback)serial_probe_at_parse_response,
         self);
     return FALSE;
 }
@@ -1015,7 +1024,7 @@ serial_probe_schedule (MMPortProbe *self)
         task->at_custom_init &&
         task->at_custom_init_finish) {
         task->at_custom_init (self,
-                              MM_AT_SERIAL_PORT (task->serial),
+                              MM_PORT_SERIAL_AT (task->serial),
                               task->at_probing_cancellable,
                               (GAsyncReadyCallback)at_custom_init_ready,
                               NULL);
@@ -1077,16 +1086,18 @@ serial_probe_schedule (MMPortProbe *self)
 }
 
 static void
-serial_flash_done (MMSerialPort *port,
-                   GError *error,
-                   MMPortProbe *self)
+serial_flash_ready (MMPortSerial *port,
+                    GAsyncResult *res,
+                    MMPortProbe *self)
 {
+    mm_port_serial_flash_finish (port, res, NULL);
+
     /* Schedule probing */
     serial_probe_schedule (self);
 }
 
 static void
-serial_buffer_full (MMSerialPort *serial,
+serial_buffer_full (MMPortSerial *serial,
                     GByteArray *buffer,
                     MMPortProbe *self)
 {
@@ -1135,8 +1146,13 @@ serial_open_at (MMPortProbe *self)
     /* Create AT serial port if not done before */
     if (!task->serial) {
         gpointer parser;
+        MMPortSubsys subsys = MM_PORT_SUBSYS_TTY;
 
-        task->serial = MM_SERIAL_PORT (mm_at_serial_port_new (g_udev_device_get_name (self->priv->port)));
+        if (g_str_has_prefix (g_udev_device_get_subsystem (self->priv->port), "usb"))
+            subsys = MM_PORT_SUBSYS_USB;
+
+        task->serial = MM_PORT_SERIAL (mm_port_serial_at_new (g_udev_device_get_name (self->priv->port),
+                                                              subsys));
         if (!task->serial) {
             port_probe_run_task_complete (
                 task,
@@ -1150,24 +1166,24 @@ serial_open_at (MMPortProbe *self)
         }
 
         g_object_set (task->serial,
-                      MM_SERIAL_PORT_SEND_DELAY,     task->at_send_delay,
-                      MM_AT_SERIAL_PORT_REMOVE_ECHO, task->at_remove_echo,
-                      MM_AT_SERIAL_PORT_SEND_LF,     task->at_send_lf,
-                      MM_SERIAL_PORT_SPEW_CONTROL,   TRUE,
+                      MM_PORT_SERIAL_SPEW_CONTROL,   TRUE,
+                      MM_PORT_SERIAL_SEND_DELAY,     (subsys == MM_PORT_SUBSYS_TTY ? task->at_send_delay : 0),
+                      MM_PORT_SERIAL_AT_REMOVE_ECHO, task->at_remove_echo,
+                      MM_PORT_SERIAL_AT_SEND_LF,     task->at_send_lf,
                       NULL);
 
         parser = mm_serial_parser_v1_new ();
         mm_serial_parser_v1_add_filter (parser,
                                         serial_parser_filter_cb,
                                         NULL);
-        mm_at_serial_port_set_response_parser (MM_AT_SERIAL_PORT (task->serial),
+        mm_port_serial_at_set_response_parser (MM_PORT_SERIAL_AT (task->serial),
                                                mm_serial_parser_v1_parse,
                                                parser,
                                                mm_serial_parser_v1_destroy);
     }
 
     /* Try to open the port */
-    if (!mm_serial_port_open (task->serial, &error)) {
+    if (!mm_port_serial_open (task->serial, &error)) {
         /* Abort if maximum number of open tries reached */
         if (++task->at_open_tries > 4) {
             /* took too long to open the port; give up */
@@ -1208,10 +1224,10 @@ serial_open_at (MMPortProbe *self)
                                              G_CALLBACK (serial_buffer_full),
                                              self);
 
-    mm_serial_port_flash (MM_SERIAL_PORT (task->serial),
+    mm_port_serial_flash (MM_PORT_SERIAL (task->serial),
                           100,
                           TRUE,
-                          (MMSerialFlashFn)serial_flash_done,
+                          (GAsyncReadyCallback)serial_flash_ready,
                           self);
     return FALSE;
 }
@@ -1373,9 +1389,7 @@ mm_port_probe_is_at (MMPortProbe *self)
 
     subsys = g_udev_device_get_subsystem (self->priv->port);
     name = g_udev_device_get_name (self->priv->port);
-    if (g_str_equal (subsys, "net") ||
-        (g_str_has_prefix (subsys, "usb") &&
-         g_str_has_prefix (name, "cdc-wdm")))
+    if (g_str_equal (subsys, "net"))
         return FALSE;
 
     return (self->priv->flags & MM_PORT_PROBE_AT ?
@@ -1633,6 +1647,14 @@ mm_port_probe_get_port_subsys (MMPortProbe *self)
     return g_udev_device_get_subsystem (self->priv->port);
 }
 
+const gchar *
+mm_port_probe_get_parent_path (MMPortProbe *self)
+{
+    g_return_val_if_fail (MM_IS_PORT_PROBE (self), NULL);
+
+    return (self->priv->parent ? g_udev_device_get_sysfs_path (self->priv->parent) : NULL);
+}
+
 /*****************************************************************************/
 
 MMPortProbe *
@@ -1648,8 +1670,8 @@ mm_port_probe_new (MMDevice *device,
 static void
 mm_port_probe_init (MMPortProbe *self)
 {
-    self->priv = G_TYPE_INSTANCE_GET_PRIVATE ((self),                  \
-                                              MM_TYPE_PORT_PROBE,      \
+    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
+                                              MM_TYPE_PORT_PROBE,
                                               MMPortProbePrivate);
 }
 
@@ -1669,6 +1691,7 @@ set_property (GObject *object,
     case PROP_PORT:
         /* construct only */
         self->priv->port = g_value_dup_object (value);
+        self->priv->parent = g_udev_device_get_parent (self->priv->port);
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1719,6 +1742,7 @@ dispose (GObject *object)
     /* We didn't get a reference to the device */
     self->priv->device = NULL;
 
+    g_clear_object (&self->priv->parent);
     g_clear_object (&self->priv->port);
 
     G_OBJECT_CLASS (mm_port_probe_parent_class)->dispose (object);

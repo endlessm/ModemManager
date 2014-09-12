@@ -257,7 +257,7 @@ load_supported_modes (MMIfaceModem *self,
 /*****************************************************************************/
 /* Create SIM (Modem inteface) */
 
-static MMSim *
+static MMBaseSim *
 create_sim_finish (MMIfaceModem *self,
                    GAsyncResult *res,
                    GError **error)
@@ -280,15 +280,15 @@ create_sim (MMIfaceModem *self,
 /*****************************************************************************/
 /* Create Bearer (Modem interface) */
 
-static MMBearer *
+static MMBaseBearer *
 create_bearer_finish (MMIfaceModem *self,
                       GAsyncResult *res,
                       GError **error)
 {
-    MMBearer *bearer;
+    MMBaseBearer *bearer;
 
     bearer = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res));
-    mm_dbg ("New Iridium bearer created at DBus path '%s'", mm_bearer_get_path (bearer));
+    mm_dbg ("New Iridium bearer created at DBus path '%s'", mm_base_bearer_get_path (bearer));
 
     return g_object_ref (bearer);
 }
@@ -299,7 +299,7 @@ create_bearer (MMIfaceModem *self,
                GAsyncReadyCallback callback,
                gpointer user_data)
 {
-    MMBearer *bearer;
+    MMBaseBearer *bearer;
     GSimpleAsyncResult *result;
 
     result = g_simple_async_result_new (G_OBJECT (self),
@@ -331,7 +331,7 @@ static const gchar *primary_init_sequence[] = {
 static void
 setup_ports (MMBroadbandModem *self)
 {
-    MMAtSerialPort *primary;
+    MMPortSerialAt *primary;
 
     /* Call parent's setup ports first always */
     MM_BROADBAND_MODEM_CLASS (mm_broadband_modem_iridium_parent_class)->setup_ports (self);
@@ -343,8 +343,8 @@ setup_ports (MMBroadbandModem *self)
         return;
 
     g_object_set (G_OBJECT (primary),
-                  MM_SERIAL_PORT_BAUD, 9600,
-                  MM_AT_SERIAL_PORT_INIT_SEQUENCE, primary_init_sequence,
+                  MM_PORT_SERIAL_BAUD, 9600,
+                  MM_PORT_SERIAL_AT_INIT_SEQUENCE, primary_init_sequence,
                   NULL);
 }
 
