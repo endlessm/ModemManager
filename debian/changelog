@@ -1,6 +1,7 @@
 modemmanager (1.4.0-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+    - Fixes conflicting definitions of mm_manager_new. (Closes: #749387)
   * Refresh patches.
   * Bump Build-Depends on libmbim-glib-dev to (>= 1.10).
 
