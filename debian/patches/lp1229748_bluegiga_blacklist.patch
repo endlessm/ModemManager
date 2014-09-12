@@ -10,11 +10,11 @@ Subject: lp1229748_bluegiga_blacklist
  src/77-mm-usb-device-blacklist.rules | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/src/77-mm-usb-device-blacklist.rules b/src/77-mm-usb-device-blacklist.rules
-index cdd0bd1..8e60d1c 100644
---- a/src/77-mm-usb-device-blacklist.rules
-+++ b/src/77-mm-usb-device-blacklist.rules
-@@ -130,4 +130,7 @@ ATTRS{idVendor}=="2341", ENV{ID_MM_DEVICE_IGNORE}="1"
+Index: modemmanager/src/77-mm-usb-device-blacklist.rules
+===================================================================
+--- modemmanager.orig/src/77-mm-usb-device-blacklist.rules	2014-09-12 19:19:29.277269503 +0200
++++ modemmanager/src/77-mm-usb-device-blacklist.rules	2014-09-12 19:19:29.277269503 +0200
+@@ -145,4 +145,7 @@
  # Netchip Technology, Inc. Linux-USB Serial Gadget (CDC ACM mode)
  ATTRS{idVendor}=="0525", ATTRS{idProduct}=="a4a7", ENV{ID_MM_DEVICE_IGNORE}="1"
  

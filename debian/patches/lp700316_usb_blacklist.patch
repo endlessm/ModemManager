@@ -6,13 +6,13 @@ Subject: lp700316_usb_blacklist
  src/77-mm-usb-device-blacklist.rules | 9 +++++++++
  1 file changed, 9 insertions(+)
 
-diff --git a/src/77-mm-usb-device-blacklist.rules b/src/77-mm-usb-device-blacklist.rules
-index 044d80f..24187d1 100644
---- a/src/77-mm-usb-device-blacklist.rules
-+++ b/src/77-mm-usb-device-blacklist.rules
-@@ -113,4 +113,13 @@ DRIVERS=="cypress_m8", ENV{ID_MM_DEVICE_IGNORE}="1"
- # All devices in the Openmoko vendor ID
- ATTRS{idVendor}=="1d50", ENV{ID_MM_DEVICE_IGNORE}="1"
+Index: modemmanager/src/77-mm-usb-device-blacklist.rules
+===================================================================
+--- modemmanager.orig/src/77-mm-usb-device-blacklist.rules	2014-09-12 19:19:19.533269848 +0200
++++ modemmanager/src/77-mm-usb-device-blacklist.rules	2014-09-12 19:19:19.529269848 +0200
+@@ -128,4 +128,13 @@
+ # Infineon Flashloader used by Intel XMM modem bootloader
+ ATTRS{idVendor}=="8087", ATTRS{idProduct}=="0716", ENV{ID_MM_DEVICE_IGNORE}="1"
  
 +# Prolific Technology, Inc. PL2303 Serial Port
 +ATTRS{idVendor}=="067b", ATTRS{idProduct}=="2303", ENV{ID_MM_DEVICE_IGNORE}="1"

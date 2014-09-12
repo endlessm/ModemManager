@@ -2,4 +2,3 @@ lp700316_usb_blacklist.patch
 arduino-blacklist.patch
 linux-default-usb-id.patch
 lp1229748_bluegiga_blacklist.patch
-initialize_result_array.patch

@@ -6,11 +6,11 @@ Subject: linux-default-usb-id
  src/77-mm-usb-device-blacklist.rules | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/src/77-mm-usb-device-blacklist.rules b/src/77-mm-usb-device-blacklist.rules
-index 108fef1..cdd0bd1 100644
---- a/src/77-mm-usb-device-blacklist.rules
-+++ b/src/77-mm-usb-device-blacklist.rules
-@@ -127,4 +127,7 @@ ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ENV{ID_MM_DEVICE_IGNORE}="1"
+Index: modemmanager/src/77-mm-usb-device-blacklist.rules
+===================================================================
+--- modemmanager.orig/src/77-mm-usb-device-blacklist.rules	2014-09-12 19:19:26.665269596 +0200
++++ modemmanager/src/77-mm-usb-device-blacklist.rules	2014-09-12 19:19:26.661269596 +0200
+@@ -142,4 +142,7 @@
  ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="204b", ENV{ID_MM_DEVICE_IGNORE}="1"
  ATTRS{idVendor}=="2341", ENV{ID_MM_DEVICE_IGNORE}="1"
  
