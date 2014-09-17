@@ -24,6 +24,7 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_bearer_ip_config_get_dns@Base 0.7.991
  mm_bearer_ip_config_get_gateway@Base 0.7.991
  mm_bearer_ip_config_get_method@Base 0.7.991
+ mm_bearer_ip_config_get_mtu@Base 1.4.0
  mm_bearer_ip_config_get_prefix@Base 0.7.991
  mm_bearer_ip_config_get_type@Base 0.7.991
  mm_bearer_ip_config_new@Base 0.7.991
@@ -32,6 +33,7 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_bearer_ip_config_set_dns@Base 0.7.991
  mm_bearer_ip_config_set_gateway@Base 0.7.991
  mm_bearer_ip_config_set_method@Base 0.7.991
+ mm_bearer_ip_config_set_mtu@Base 1.4.0
  mm_bearer_ip_config_set_prefix@Base 0.7.991
  mm_bearer_ip_family_build_string_from_mask@Base 0.7.991
  mm_bearer_ip_family_get_type@Base 0.7.991
