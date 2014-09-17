@@ -7,6 +7,7 @@ modemmanager (1.4.0-1) UNRELEASED; urgency=medium
   * Install NEWS file which includes the relevant upstream changes.
     (Closes: #641467)
   * Update symbols file for libmm-glib0.
+  * Add Build-Depends on dbus, required by the test suite.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 12 Sep 2014 19:19:05 +0200
 
