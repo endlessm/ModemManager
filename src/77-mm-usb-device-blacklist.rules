@@ -140,4 +140,9 @@ ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ENV{ID_MM_DEVICE_IGNORE}="1"
 # QinHeng Electronics HL-340
 ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", ENV{ID_MM_DEVICE_IGNORE}="1"
 
+# Arduino devices, FT-232-based series and Atmega8U2 (Uno)
+ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ENV{ID_MM_DEVICE_IGNORE}="1"
+ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="204b", ENV{ID_MM_DEVICE_IGNORE}="1"
+ATTRS{idVendor}=="2341", ENV{ID_MM_DEVICE_IGNORE}="1"
+
 LABEL="mm_usb_device_blacklist_end"
