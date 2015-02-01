@@ -1,6 +1,5 @@
 <ANCHOR id="ModemManager-Version-checks" href="ModemManager/ModemManager-Version-checks.html">
 <ANCHOR id="ModemManager-Version-checks.functions" href="ModemManager/ModemManager-Version-checks.html#ModemManager-Version-checks.functions">
-<ANCHOR id="ModemManager-Version-checks.object-hierarchy" href="ModemManager/ModemManager-Version-checks.html#ModemManager-Version-checks.object-hierarchy">
 <ANCHOR id="ModemManager-Version-checks.description" href="ModemManager/ModemManager-Version-checks.html#ModemManager-Version-checks.description">
 <ANCHOR id="ModemManager-Version-checks.functions_details" href="ModemManager/ModemManager-Version-checks.html#ModemManager-Version-checks.functions_details">
 <ANCHOR id="MM-MAJOR-VERSION:CAPS" href="ModemManager/ModemManager-Version-checks.html#MM-MAJOR-VERSION:CAPS">
@@ -10,7 +9,6 @@
 <ANCHOR id="ModemManager-Version-checks.other_details" href="ModemManager/ModemManager-Version-checks.html#ModemManager-Version-checks.other_details">
 <ANCHOR id="ModemManager-Flags-and-Enumerations" href="ModemManager/ModemManager-Flags-and-Enumerations.html">
 <ANCHOR id="ModemManager-Flags-and-Enumerations.other" href="ModemManager/ModemManager-Flags-and-Enumerations.html#ModemManager-Flags-and-Enumerations.other">
-<ANCHOR id="ModemManager-Flags-and-Enumerations.object-hierarchy" href="ModemManager/ModemManager-Flags-and-Enumerations.html#ModemManager-Flags-and-Enumerations.object-hierarchy">
 <ANCHOR id="ModemManager-Flags-and-Enumerations.description" href="ModemManager/ModemManager-Flags-and-Enumerations.html#ModemManager-Flags-and-Enumerations.description">
 <ANCHOR id="ModemManager-Flags-and-Enumerations.functions_details" href="ModemManager/ModemManager-Flags-and-Enumerations.html#ModemManager-Flags-and-Enumerations.functions_details">
 <ANCHOR id="ModemManager-Flags-and-Enumerations.other_details" href="ModemManager/ModemManager-Flags-and-Enumerations.html#ModemManager-Flags-and-Enumerations.other_details">
@@ -51,7 +49,6 @@
 <ANCHOR id="MMSmsCdmaServiceCategory" href="ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsCdmaServiceCategory">
 <ANCHOR id="ModemManager-Errors" href="ModemManager/ModemManager-Errors.html">
 <ANCHOR id="ModemManager-Errors.other" href="ModemManager/ModemManager-Errors.html#ModemManager-Errors.other">
-<ANCHOR id="ModemManager-Errors.object-hierarchy" href="ModemManager/ModemManager-Errors.html#ModemManager-Errors.object-hierarchy">
 <ANCHOR id="ModemManager-Errors.description" href="ModemManager/ModemManager-Errors.html#ModemManager-Errors.description">
 <ANCHOR id="ModemManager-Errors.functions_details" href="ModemManager/ModemManager-Errors.html#ModemManager-Errors.functions_details">
 <ANCHOR id="ModemManager-Errors.other_details" href="ModemManager/ModemManager-Errors.html#ModemManager-Errors.other_details">
