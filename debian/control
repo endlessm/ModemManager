@@ -57,6 +57,7 @@ Description: D-Bus service for managing modems - debugging symbols
 Package: modemmanager-dev
 Section: libdevel
 Architecture: linux-any
+Multi-Arch: same
 Depends: ${misc:Depends}
 Replaces: modemmanager (<< 0.7.990)
 Breaks: modemmanager (<< 0.7.990)
@@ -105,6 +106,7 @@ Description: D-Bus service for managing modems - shared libraries
 
 Package: libmm-glib-dev
 Architecture: linux-any
+Multi-Arch: same
 Section: libdevel
 Depends: libmm-glib0 (= ${binary:Version}),
          gir1.2-modemmanager-1.0 (= ${binary:Version}),
@@ -140,6 +142,7 @@ Description: D-Bus service for managing modems - library documentation
 Package: gir1.2-modemmanager-1.0
 Section: introspection
 Architecture: linux-any
+Multi-Arch: same
 Depends: ${gir:Depends},
          ${shlibs:Depends},
          ${misc:Depends}
