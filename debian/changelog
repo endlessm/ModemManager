@@ -1,3 +1,19 @@
+modemmanager (1.4.2-1) UNRELEASED; urgency=medium
+
+  [ Marius B. Kotsbak ]
+  * Imported Upstream version 1.4.2.
+  * Removed all patches applied upstream.
+  * Update to latest Standards-Version 3.9.6.
+
+  [ Michael Biebl ]
+  * Set debian-branch to experimental in gbp.conf.
+  * Update Vcs-Browser to use cgit and https.
+  * Install typelib files into multiarch paths now that gobject-introspection
+    supports that.
+  * Mark dev and gir packages as Multi-Arch: same.
+
+ -- Marius B. Kotsbak <marius@kotsbak.com>  Mon, 09 Feb 2015 00:29:16 +0100
+
 modemmanager (1.4.0-1) unstable; urgency=medium
 
   * New upstream release.
