@@ -1,4 +1,4 @@
-modemmanager (1.4.2-1) UNRELEASED; urgency=medium
+modemmanager (1.4.2-1) experimental; urgency=medium
 
   [ Marius B. Kotsbak ]
   * Imported Upstream version 1.4.2.
@@ -12,7 +12,7 @@ modemmanager (1.4.2-1) UNRELEASED; urgency=medium
     supports that.
   * Mark dev and gir packages as Multi-Arch: same.
 
- -- Marius B. Kotsbak <marius@kotsbak.com>  Mon, 09 Feb 2015 00:29:16 +0100
+ -- Michael Biebl <biebl@debian.org>  Mon, 09 Feb 2015 00:29:46 +0100
 
 modemmanager (1.4.0-1) unstable; urgency=medium
 
