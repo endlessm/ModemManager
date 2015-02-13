@@ -1,9 +1,9 @@
-modemmanager (1.4.4-1) UNRELEASED; urgency=medium
+modemmanager (1.4.4-1) experimental; urgency=medium
 
   * Imported Upstream version 1.4.4.
   * Bump Build-Depends on libqmi-glib-dev to (>= 1.12.4).
 
- -- Michael Biebl <biebl@debian.org>  Fri, 13 Feb 2015 10:28:27 +0100
+ -- Michael Biebl <biebl@debian.org>  Fri, 13 Feb 2015 10:28:55 +0100
 
 modemmanager (1.4.2-1) experimental; urgency=medium
 
