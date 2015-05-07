@@ -3,7 +3,7 @@ AC_PREREQ([2.63])
 dnl The MM version number
 m4_define([mm_major_version], [1])
 m4_define([mm_minor_version], [4])
-m4_define([mm_micro_version], [4])
+m4_define([mm_micro_version], [8])
 m4_define([mm_version],
           [mm_major_version.mm_minor_version.mm_micro_version])
 
@@ -109,6 +109,10 @@ GLIB_MKENUMS=`$PKG_CONFIG --variable=glib_mkenums glib-2.0`
 AC_SUBST(GLIB_MKENUMS)
 GDBUS_CODEGEN=`$PKG_CONFIG --variable=gdbus_codegen gio-2.0`
 AC_SUBST(GDBUS_CODEGEN)
+
+# DBus testing support only with GIO 2.34
+PKG_CHECK_MODULES(DBUS_TEST_SUPPORT, [gio-2.0 >= 2.34], [have_dbus_test_support=yes], [have_dbus_test_support=no])
+AM_CONDITIONAL(BUILD_DBUS_TEST_SUPPORT, test "x$have_dbus_test_support" = "xyes")
 
 # GObject Introspection
 GOBJECT_INTROSPECTION_CHECK([0.9.6])

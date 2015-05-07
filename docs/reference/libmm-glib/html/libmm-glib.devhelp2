@@ -1019,7 +1019,9 @@
     <keyword type="property" name="The “enabled” property" link="MmGdbusModemLocation.html#MmGdbusModemLocation--enabled"/>
     <keyword type="property" name="The “location” property" link="MmGdbusModemLocation.html#MmGdbusModemLocation--location"/>
     <keyword type="property" name="The “signals-location” property" link="MmGdbusModemLocation.html#MmGdbusModemLocation--signals-location"/>
+    <keyword type="property" name="The “supl-server” property" link="MmGdbusModemLocation.html#MmGdbusModemLocation--supl-server"/>
     <keyword type="signal" name="The “handle-get-location” signal" link="MmGdbusModemLocation.html#MmGdbusModemLocation-handle-get-location"/>
+    <keyword type="signal" name="The “handle-set-supl-server” signal" link="MmGdbusModemLocation.html#MmGdbusModemLocation-handle-set-supl-server"/>
     <keyword type="signal" name="The “handle-setup” signal" link="MmGdbusModemLocation.html#MmGdbusModemLocation-handle-setup"/>
     <keyword type="function" name="mm_gdbus_modem_location_proxy_new ()" link="MmGdbusModemLocationProxy.html#mm-gdbus-modem-location-proxy-new"/>
     <keyword type="function" name="mm_gdbus_modem_location_proxy_new_finish ()" link="MmGdbusModemLocationProxy.html#mm-gdbus-modem-location-proxy-new-finish"/>

@@ -9,12 +9,10 @@ MmGdbusModemLocation
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -35,6 +33,16 @@ MmGdbusModemLocation
 
 @mmgdbusmodemlocation: the object which received the signal.
 @arg1: 
+@Returns: 
+
+<!-- ##### SIGNAL MmGdbusModemLocation::handle-set-supl-server ##### -->
+<para>
+
+</para>
+
+@mmgdbusmodemlocation: the object which received the signal.
+@arg1: 
+@arg2: 
 @Returns: 
 
 <!-- ##### SIGNAL MmGdbusModemLocation::handle-setup ##### -->
@@ -68,6 +76,11 @@ MmGdbusModemLocation
 
 </para>
 
+<!-- ##### ARG MmGdbusModemLocation:supl-server ##### -->
+<para>
+
+</para>
+
 <!-- ##### STRUCT MmGdbusModemLocationIface ##### -->
 <para>
 
@@ -75,11 +88,13 @@ MmGdbusModemLocation
 
 @parent_iface: 
 @handle_get_location: 
+@handle_set_supl_server: 
 @handle_setup: 
 @get_capabilities: 
 @get_enabled: 
 @get_location: 
 @get_signals_location: 
+@get_supl_server: 
 
 <!-- ##### FUNCTION mm_gdbus_modem_location_get_enabled ##### -->
 <para>

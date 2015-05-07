@@ -1320,8 +1320,10 @@
 <ANCHOR id="MmGdbusModemLocation--enabled" href="libmm-glib/MmGdbusModemLocation.html#MmGdbusModemLocation--enabled">
 <ANCHOR id="MmGdbusModemLocation--location" href="libmm-glib/MmGdbusModemLocation.html#MmGdbusModemLocation--location">
 <ANCHOR id="MmGdbusModemLocation--signals-location" href="libmm-glib/MmGdbusModemLocation.html#MmGdbusModemLocation--signals-location">
+<ANCHOR id="MmGdbusModemLocation--supl-server" href="libmm-glib/MmGdbusModemLocation.html#MmGdbusModemLocation--supl-server">
 <ANCHOR id="MmGdbusModemLocation.signal-details" href="libmm-glib/MmGdbusModemLocation.html#MmGdbusModemLocation.signal-details">
 <ANCHOR id="MmGdbusModemLocation-handle-get-location" href="libmm-glib/MmGdbusModemLocation.html#MmGdbusModemLocation-handle-get-location">
+<ANCHOR id="MmGdbusModemLocation-handle-set-supl-server" href="libmm-glib/MmGdbusModemLocation.html#MmGdbusModemLocation-handle-set-supl-server">
 <ANCHOR id="MmGdbusModemLocation-handle-setup" href="libmm-glib/MmGdbusModemLocation.html#MmGdbusModemLocation-handle-setup">
 <ANCHOR id="MmGdbusModemLocationProxy" href="libmm-glib/MmGdbusModemLocationProxy.html">
 <ANCHOR id="MmGdbusModemLocationProxy.functions" href="libmm-glib/MmGdbusModemLocationProxy.html#MmGdbusModemLocationProxy.functions">

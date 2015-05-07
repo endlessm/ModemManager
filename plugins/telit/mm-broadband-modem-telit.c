@@ -29,12 +29,15 @@
 #include "mm-modem-helpers.h"
 #include "mm-base-modem-at.h"
 #include "mm-iface-modem.h"
+#include "mm-iface-modem-3gpp.h"
 #include "mm-broadband-modem-telit.h"
 
 static void iface_modem_init (MMIfaceModem *iface);
+static void iface_modem_3gpp_init (MMIfaceModem3gpp *iface);
 
 G_DEFINE_TYPE_EXTENDED (MMBroadbandModemTelit, mm_broadband_modem_telit, MM_TYPE_BROADBAND_MODEM, 0,
-                        G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM, iface_modem_init));
+                        G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM, iface_modem_init)
+                        G_IMPLEMENT_INTERFACE (MM_TYPE_IFACE_MODEM_3GPP, iface_modem_3gpp_init));
 
 /*****************************************************************************/
 /* Load access technologies (Modem interface) */
@@ -175,6 +178,92 @@ load_access_technologies (MMIfaceModem *self,
 }
 
 /*****************************************************************************/
+/* Flow control (Modem interface) */
+
+static gboolean
+setup_flow_control_finish (MMIfaceModem *self,
+                           GAsyncResult *res,
+                           GError **error)
+{
+    /* Completely ignore errors */
+    return TRUE;
+}
+
+static void
+setup_flow_control (MMIfaceModem *self,
+                    GAsyncReadyCallback callback,
+                    gpointer user_data)
+{
+    GSimpleAsyncResult *result;
+    gchar *cmd;
+    guint flow_control = 1; /* Default flow control: XON/XOFF */
+
+    switch (mm_base_modem_get_product_id (MM_BASE_MODEM (self)) & 0xFFFF) {
+    case 0x0021:
+        flow_control = 2; /* Telit IMC modems support only RTS/CTS mode */
+        break;
+    default:
+        break;
+    }
+
+    cmd = g_strdup_printf ("+IFC=%u,%u", flow_control, flow_control);
+    mm_base_modem_at_command (MM_BASE_MODEM (self),
+                              cmd,
+                              3,
+                              FALSE,
+                              NULL,
+                              NULL);
+    result = g_simple_async_result_new (G_OBJECT (self),
+                                        callback,
+                                        user_data,
+                                        setup_flow_control);
+    g_simple_async_result_set_op_res_gboolean (result, TRUE);
+    g_simple_async_result_complete_in_idle (result);
+    g_object_unref (result);
+    g_free (cmd);
+}
+
+/*****************************************************************************/
+/* Enabling unsolicited events (3GPP interface) */
+
+static gboolean
+modem_3gpp_enable_unsolicited_events_finish (MMIfaceModem3gpp *self,
+                                             GAsyncResult *res,
+                                             GError **error)
+{
+   /* Ignore errors */
+    mm_base_modem_at_sequence_full_finish (MM_BASE_MODEM (self),
+                                           res,
+                                           NULL,
+                                           NULL);
+    return TRUE;
+}
+
+static const MMBaseModemAtCommand unsolicited_enable_sequence[] = {
+    /* Enable +CIEV only for: signal, service, roam */
+    { "AT+CIND=0,1,1,0,0,0,1,0,0", 5, FALSE, NULL },
+    /* Telit modems +CMER command supports only <ind>=2 */
+    { "+CMER=3,0,0,2", 5, FALSE, NULL },
+    { NULL }
+};
+
+static void
+modem_3gpp_enable_unsolicited_events (MMIfaceModem3gpp *self,
+                                      GAsyncReadyCallback callback,
+                                      gpointer user_data)
+{
+    mm_base_modem_at_sequence_full (
+        MM_BASE_MODEM (self),
+        mm_base_modem_peek_port_secondary (MM_BASE_MODEM (self)),
+        unsolicited_enable_sequence,
+        NULL,  /* response_processor_context */
+        NULL,  /* response_processor_context_free */
+        NULL,  /* cancellable */
+        callback,
+        user_data);
+}
+
+/*****************************************************************************/
 
 MMBroadbandModemTelit *
 mm_broadband_modem_telit_new (const gchar *device,
@@ -202,6 +291,15 @@ iface_modem_init (MMIfaceModem *iface)
 {
     iface->load_access_technologies = load_access_technologies;
     iface->load_access_technologies_finish = load_access_technologies_finish;
+    iface->setup_flow_control = setup_flow_control;
+    iface->setup_flow_control_finish = setup_flow_control_finish;
+}
+
+static void
+iface_modem_3gpp_init (MMIfaceModem3gpp *iface)
+{
+    iface->enable_unsolicited_events = modem_3gpp_enable_unsolicited_events;
+    iface->enable_unsolicited_events_finish = modem_3gpp_enable_unsolicited_events_finish;
 }
 
 static void
