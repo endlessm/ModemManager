@@ -152,6 +152,8 @@ CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DBUS_SYS_DIR = @DBUS_SYS_DIR@
+DBUS_TEST_SUPPORT_CFLAGS = @DBUS_TEST_SUPPORT_CFLAGS@
+DBUS_TEST_SUPPORT_LIBS = @DBUS_TEST_SUPPORT_LIBS@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
@@ -659,10 +661,10 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-@ENABLE_GTK_DOC_FALSE@uninstall-local:
 @ENABLE_GTK_DOC_FALSE@clean-local:
 @ENABLE_GTK_DOC_FALSE@maintainer-clean-local:
 @ENABLE_GTK_DOC_FALSE@distclean-local:
+@ENABLE_GTK_DOC_FALSE@uninstall-local:
 @ENABLE_GTK_DOC_FALSE@install-data-local:
 clean: clean-am
 
