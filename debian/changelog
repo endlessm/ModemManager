@@ -1,8 +1,9 @@
 modemmanager (1.4.10-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+    - Blacklist: ignore devices from Posnet Polska S.A. (Closes: #791341)
 
- -- Michael Biebl <biebl@debian.org>  Sun, 26 Jul 2015 20:35:19 +0200
+ -- Michael Biebl <biebl@debian.org>  Sun, 26 Jul 2015 20:41:02 +0200
 
 modemmanager (1.4.8-1) unstable; urgency=medium
 
