@@ -1,3 +1,9 @@
+modemmanager (1.4.10-1) UNRELEASED; urgency=medium
+
+  * New upstream release.
+
+ -- Michael Biebl <biebl@debian.org>  Sun, 26 Jul 2015 20:35:19 +0200
+
 modemmanager (1.4.8-1) unstable; urgency=medium
 
   * Upload to unstable.
