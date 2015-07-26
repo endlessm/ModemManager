@@ -750,6 +750,7 @@
     <keyword type="property" name="The “modem-signal” property" link="MmGdbusObject.html#MmGdbusObject--modem-signal"/>
     <keyword type="property" name="The “modem-simple” property" link="MmGdbusObject.html#MmGdbusObject--modem-simple"/>
     <keyword type="property" name="The “modem-time” property" link="MmGdbusObject.html#MmGdbusObject--modem-time"/>
+    <keyword type="property" name="The “modem-voice” property" link="MmGdbusObject.html#MmGdbusObject--modem-voice"/>
     <keyword type="property" name="The “modem3gpp” property" link="MmGdbusObject.html#MmGdbusObject--modem3gpp"/>
     <keyword type="property" name="The “modem3gpp-ussd” property" link="MmGdbusObject.html#MmGdbusObject--modem3gpp-ussd"/>
     <keyword type="function" name="mm_gdbus_object_proxy_new ()" link="MmGdbusObjectProxy.html#mm-gdbus-object-proxy-new"/>

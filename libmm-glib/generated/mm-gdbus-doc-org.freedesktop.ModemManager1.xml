@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+]>
+<refentry id="gdbus-org.freedesktop.ModemManager1">
+  <refmeta>    <refentrytitle role="top_of_page" id="gdbus-interface-org-freedesktop-ModemManager1.top_of_page">org.freedesktop.ModemManager1</refentrytitle>
+  <indexterm zone="gdbus-interface-org-freedesktop-ModemManager1.top_of_page"><primary sortas="org.freedesktop.ModemManager1">org.freedesktop.ModemManager1</primary></indexterm>
+  </refmeta>  <refnamediv>    <refname>org.freedesktop.ModemManager1</refname>    <refpurpose>The ModemManager Manager interface.</refpurpose>  </refnamediv>  <refsynopsisdiv role="synopsis">
+    <title role="synopsis.title">Methods</title>
+    <synopsis>
+<link linkend="gdbus-method-org-freedesktop-ModemManager1.ScanDevices">ScanDevices</link> ();
+<link linkend="gdbus-method-org-freedesktop-ModemManager1.SetLogging">SetLogging</link>  (IN  s level);
+</synopsis>
+  </refsynopsisdiv>
+<refsect1 role="desc" id="gdbus-interface-org-freedesktop-ModemManager1">
+  <title role="desc.title">Description</title>
+  <para>      The Manager interface allows controlling and querying the status of the
+      ModemManager daemon.
+</para>
+</refsect1>
+<refsect1 role="details" id="gdbus-methods-org.freedesktop.ModemManager1">
+  <title role="details.title">Method Details</title>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1.ScanDevices">
+  <title>The ScanDevices() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1.ScanDevices"><primary sortas="org.freedesktop.ModemManager1.ScanDevices">org.freedesktop.ModemManager1.ScanDevices()</primary></indexterm>
+<programlisting>
+ScanDevices ();
+</programlisting>
+<para>        Start a new scan for connected modem devices.
+</para>
+</refsect2>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1.SetLogging">
+  <title>The SetLogging() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1.SetLogging"><primary sortas="org.freedesktop.ModemManager1.SetLogging">org.freedesktop.ModemManager1.SetLogging()</primary></indexterm>
+<programlisting>
+SetLogging (IN  s level);
+</programlisting>
+<para>        Set logging verbosity.
+</para>
+<variablelist role="params">
+<varlistentry>
+  <term><literal>IN s <parameter>level</parameter></literal>:</term>
+  <listitem><para>One of <literal>"ERR"</literal>, <literal>"WARN"</literal>, <literal>"INFO"</literal>, <literal>"DEBUG"</literal>.</para></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+</refsect1>
+</refentry>
+

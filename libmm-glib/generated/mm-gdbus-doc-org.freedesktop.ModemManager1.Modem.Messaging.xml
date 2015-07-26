@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+]>
+<refentry id="gdbus-org.freedesktop.ModemManager1.Modem.Messaging">
+  <refmeta>    <refentrytitle role="top_of_page" id="gdbus-interface-org-freedesktop-ModemManager1-Modem-Messaging.top_of_page">org.freedesktop.ModemManager1.Modem.Messaging</refentrytitle>
+  <indexterm zone="gdbus-interface-org-freedesktop-ModemManager1-Modem-Messaging.top_of_page"><primary sortas="Modem.Messaging">org.freedesktop.ModemManager1.Modem.Messaging</primary></indexterm>
+  </refmeta>  <refnamediv>    <refname>org.freedesktop.ModemManager1.Modem.Messaging</refname>    <refpurpose>The ModemManager Messaging interface.</refpurpose>  </refnamediv>  <refsynopsisdiv role="synopsis">
+    <title role="synopsis.title">Methods</title>
+    <synopsis>
+<link linkend="gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.List">List</link>   (OUT ao    result);
+<link linkend="gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.Delete">Delete</link> (IN  o     path);
+<link linkend="gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.Create">Create</link> (IN  a{sv} properties,
+        OUT o     path);
+</synopsis>
+  </refsynopsisdiv>
+  <refsect1 role="signal_proto">
+    <title role="signal_proto.title">Signals</title>
+    <synopsis>
+<link linkend="gdbus-signal-org-freedesktop-ModemManager1-Modem-Messaging.Added">Added</link>   (o path,
+         b received);
+<link linkend="gdbus-signal-org-freedesktop-ModemManager1-Modem-Messaging.Deleted">Deleted</link> (o path);
+</synopsis>
+  </refsect1>
+  <refsect1 role="properties">
+    <title role="properties.title">Properties</title>
+    <synopsis>
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.Messages">Messages</link>           readable   ao
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.SupportedStorages">SupportedStorages</link>  readable   au
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.DefaultStorage">DefaultStorage</link>     readable   u
+</synopsis>
+  </refsect1>
+<refsect1 role="desc" id="gdbus-interface-org-freedesktop-ModemManager1-Modem-Messaging">
+  <title role="desc.title">Description</title>
+  <para>      The Messaging interface handles sending SMS messages and notification of new
+      incoming messages.
+</para>
+</refsect1>
+<refsect1 role="details" id="gdbus-methods-org.freedesktop.ModemManager1.Modem.Messaging">
+  <title role="details.title">Method Details</title>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.List">
+  <title>The List() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.List"><primary sortas="Modem.Messaging.List">org.freedesktop.ModemManager1.Modem.Messaging.List()</primary></indexterm>
+<programlisting>
+List (OUT ao result);
+</programlisting>
+<para>        Retrieve all SMS messages.
+</para><para>        This method should only be used once and subsequent information
+        retrieved either by listening for the
+        <link linkend="gdbus-signal-org-freedesktop-ModemManager1-Modem-Messaging.Added">"Added"</link> signal,
+        or by querying the specific SMS object of interest.
+</para>
+<variablelist role="params">
+<varlistentry>
+  <term><literal>OUT ao <parameter>result</parameter></literal>:</term>
+  <listitem><para>The list of SMS object paths.</para></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.Delete">
+  <title>The Delete() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.Delete"><primary sortas="Modem.Messaging.Delete">org.freedesktop.ModemManager1.Modem.Messaging.Delete()</primary></indexterm>
+<programlisting>
+Delete (IN  o path);
+</programlisting>
+<para>        Delete an SMS message.
+</para>
+<variablelist role="params">
+<varlistentry>
+  <term><literal>IN o <parameter>path</parameter></literal>:</term>
+  <listitem><para>The object path of the SMS to delete.</para></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.Create">
+  <title>The Create() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1-Modem-Messaging.Create"><primary sortas="Modem.Messaging.Create">org.freedesktop.ModemManager1.Modem.Messaging.Create()</primary></indexterm>
+<programlisting>
+Create (IN  a{sv} properties,
+        OUT o     path);
+</programlisting>
+<para>        Creates a new message object.
+</para><para>        The '<link linkend="gdbus-property-org-freedesktop-ModemManager1-Sms.Number">Number</link>'
+        and
+        either '<link linkend="gdbus-property-org-freedesktop-ModemManager1-Sms.Text">Text</link>' or
+        '<link linkend="gdbus-property-org-freedesktop-ModemManager1-Sms.Data">Data</link>'
+        properties are mandatory, others are optional.
+</para><para>        If the SMSC is not specified and one is required, the default SMSC is
+        used.
+</para>
+<variablelist role="params">
+<varlistentry>
+  <term><literal>IN a{sv} <parameter>properties</parameter></literal>:</term>
+  <listitem><para>Message properties from the <link linkend="gdbus-org.freedesktop.ModemManager1.Sms">SMS D-Bus interface</link>.</para></listitem>
+</varlistentry>
+<varlistentry>
+  <term><literal>OUT o <parameter>path</parameter></literal>:</term>
+  <listitem><para>The object path of the new message object.</para></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+</refsect1>
+<refsect1 role="details" id="gdbus-signals-org.freedesktop.ModemManager1.Modem.Messaging">
+  <title role="details.title">Signal Details</title>
+<refsect2 role="signal" id="gdbus-signal-org-freedesktop-ModemManager1-Modem-Messaging.Added">
+  <title>The "Added" signal</title>
+  <indexterm zone="gdbus-signal-org-freedesktop-ModemManager1-Modem-Messaging.Added"><primary sortas="Modem.Messaging::Added">org.freedesktop.ModemManager1.Modem.Messaging::Added</primary></indexterm>
+<programlisting>
+Added (o path,
+       b received);
+</programlisting>
+<para>        Emitted when any part of a new SMS has been received or added (but not
+        for subsequent parts, if any). For messages received from the network,
+        not all parts may have been received and the message may not be
+        complete.
+</para><para>        Check the
+        '<link linkend="gdbus-property-org-freedesktop-ModemManager1-Sms.State">State</link>'
+        property to determine if the message is complete.
+</para>
+<variablelist role="params">
+<varlistentry>
+  <term><literal>o <parameter>path</parameter></literal>:</term>
+  <listitem><para>Object path of the new SMS.</para></listitem>
+</varlistentry>
+<varlistentry>
+  <term><literal>b <parameter>received</parameter></literal>:</term>
+  <listitem><para><constant>TRUE</constant> if the message was received from the network, as opposed to being added locally.</para></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+<refsect2 role="signal" id="gdbus-signal-org-freedesktop-ModemManager1-Modem-Messaging.Deleted">
+  <title>The "Deleted" signal</title>
+  <indexterm zone="gdbus-signal-org-freedesktop-ModemManager1-Modem-Messaging.Deleted"><primary sortas="Modem.Messaging::Deleted">org.freedesktop.ModemManager1.Modem.Messaging::Deleted</primary></indexterm>
+<programlisting>
+Deleted (o path);
+</programlisting>
+<para>        Emitted when a message has been deleted.
+</para>
+<variablelist role="params">
+<varlistentry>
+  <term><literal>o <parameter>path</parameter></literal>:</term>
+  <listitem><para>Object path of the now deleted SMS.</para></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+</refsect1>
+<refsect1 role="details" id="gdbus-properties-org.freedesktop.ModemManager1.Modem.Messaging">
+  <title role="details.title">Property Details</title>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.Messages">
+  <title>The "Messages" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.Messages"><primary sortas="Modem.Messaging:Messages">org.freedesktop.ModemManager1.Modem.Messaging:Messages</primary></indexterm>
+<programlisting>
+Messages  readable   ao
+</programlisting>
+<para>        The list of SMS object paths.
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.SupportedStorages">
+  <title>The "SupportedStorages" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.SupportedStorages"><primary sortas="Modem.Messaging:SupportedStorages">org.freedesktop.ModemManager1.Modem.Messaging:SupportedStorages</primary></indexterm>
+<programlisting>
+SupportedStorages  readable   au
+</programlisting>
+<para>        A list of <link linkend="MMSmsStorage">MMSmsStorage</link> values,
+        specifying the storages supported by this modem for storing and
+        receiving SMS.
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.DefaultStorage">
+  <title>The "DefaultStorage" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.DefaultStorage"><primary sortas="Modem.Messaging:DefaultStorage">org.freedesktop.ModemManager1.Modem.Messaging:DefaultStorage</primary></indexterm>
+<programlisting>
+DefaultStorage  readable   u
+</programlisting>
+<para>        A <link linkend="MMSmsStorage">MMSmsStorage</link> value,
+        specifying the storage to be used when receiving or storing SMS.
+</para>
+</refsect2>
+</refsect1>
+</refentry>
+

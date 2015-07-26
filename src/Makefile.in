@@ -735,13 +735,17 @@ ModemManager_SOURCES = main.c mm-context.h mm-context.c mm-log.c \
 EXTRA_DIST = \
 	$(udevrules_DATA)
 
-CLEANFILES = \
+
+# Request to build enum types before anything else
+BUILT_SOURCES = \
 	mm-daemon-enums-types.h \
 	mm-daemon-enums-types.c \
 	mm-port-enums-types.h \
 	mm-port-enums-types.c
 
-all: all-recursive
+CLEANFILES = $(BUILT_SOURCES)
+all: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
 .SUFFIXES:
 .SUFFIXES: .c .lo .o .obj
@@ -1831,14 +1835,16 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 check-am: all-am
-check: check-recursive
+check: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) check-recursive
 all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(DATA)
 installdirs: installdirs-recursive
 installdirs-am:
 	for dir in "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(udevrulesdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: install-recursive
+install: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) install-recursive
 install-exec: install-exec-recursive
 install-data: install-data-recursive
 uninstall: uninstall-recursive
@@ -1869,6 +1875,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-recursive
 
 clean-am: clean-generic clean-libtool clean-noinstLTLIBRARIES \
@@ -1940,7 +1947,8 @@ ps-am:
 
 uninstall-am: uninstall-sbinPROGRAMS uninstall-udevrulesDATA
 
-.MAKE: $(am__recursive_targets) install-am install-strip
+.MAKE: $(am__recursive_targets) all check install install-am \
+	install-strip
 
 .PHONY: $(am__recursive_targets) CTAGS GTAGS TAGS all all-am check \
 	check-am clean clean-generic clean-libtool \
@@ -1986,9 +1994,6 @@ mm-daemon-enums-types.c: Makefile.am $(top_srcdir)/build-aux/mm-enums-template.c
 		--fhead "#include \"mm-daemon-enums-types.h\"" \
 		--template $(top_srcdir)/build-aux/mm-enums-template.c \
 		$(DAEMON_ENUMS) > $@
-
-# Additional dependency rules
-mm-base-bearer.c: mm-daemon-enums-types.h
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -417,6 +417,7 @@ content_files = \
 @ENABLE_GTK_DOC_TRUE@TARGET_DIR = $(HTML_DIR)/$(DOC_MODULE)
 @ENABLE_GTK_DOC_TRUE@SETUP_FILES = \
 @ENABLE_GTK_DOC_TRUE@	$(content_files)		\
+@ENABLE_GTK_DOC_TRUE@	$(expand_content_files)		\
 @ENABLE_GTK_DOC_TRUE@	$(DOC_MAIN_SGML_FILE)		\
 @ENABLE_GTK_DOC_TRUE@	$(DOC_MODULE)-sections.txt	\
 @ENABLE_GTK_DOC_TRUE@	$(DOC_MODULE)-overrides.txt
@@ -633,11 +634,11 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+@ENABLE_GTK_DOC_FALSE@clean-local:
+@ENABLE_GTK_DOC_FALSE@maintainer-clean-local:
 @ENABLE_GTK_DOC_FALSE@distclean-local:
 @ENABLE_GTK_DOC_FALSE@uninstall-local:
 @ENABLE_GTK_DOC_FALSE@install-data-local:
-@ENABLE_GTK_DOC_FALSE@clean-local:
-@ENABLE_GTK_DOC_FALSE@maintainer-clean-local:
 clean: clean-am
 
 clean-am: clean-generic clean-libtool clean-local mostlyclean-am
@@ -740,7 +741,7 @@ uninstall-am: uninstall-local
 
 @ENABLE_GTK_DOC_TRUE@setup-build.stamp:
 @ENABLE_GTK_DOC_TRUE@	-$(GTK_DOC_V_SETUP)if test "$(abs_srcdir)" != "$(abs_builddir)" ; then \
-@ENABLE_GTK_DOC_TRUE@	    files=`echo $(SETUP_FILES) $(expand_content_files) $(DOC_MODULE).types`; \
+@ENABLE_GTK_DOC_TRUE@	    files=`echo $(SETUP_FILES) $(DOC_MODULE).types`; \
 @ENABLE_GTK_DOC_TRUE@	    if test "x$$files" != "x" ; then \
 @ENABLE_GTK_DOC_TRUE@	        for file in $$files ; do \
 @ENABLE_GTK_DOC_TRUE@	            destdir=`dirname $(abs_builddir)/$$file` ;\
@@ -764,7 +765,7 @@ uninstall-am: uninstall-local
 @ENABLE_GTK_DOC_TRUE@	$(GTK_DOC_V_INTROSPECT)if grep -l '^..*$$' $(DOC_MODULE).types > /dev/null 2>&1 ; then \
 @ENABLE_GTK_DOC_TRUE@	    scanobj_options=""; \
 @ENABLE_GTK_DOC_TRUE@	    gtkdoc-scangobj 2>&1 --help | grep  >/dev/null "\-\-verbose"; \
-@ENABLE_GTK_DOC_TRUE@	    if test "$(?)" = "0"; then \
+@ENABLE_GTK_DOC_TRUE@	    if test "$$?" = "0"; then \
 @ENABLE_GTK_DOC_TRUE@	        if test "x$(V)" = "x1"; then \
 @ENABLE_GTK_DOC_TRUE@	            scanobj_options="--verbose"; \
 @ENABLE_GTK_DOC_TRUE@	        fi; \
@@ -807,17 +808,17 @@ uninstall-am: uninstall-local
 @ENABLE_GTK_DOC_TRUE@sgml.stamp: sgml-build.stamp
 @ENABLE_GTK_DOC_TRUE@	@true
 
-@ENABLE_GTK_DOC_TRUE@html-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
+@ENABLE_GTK_DOC_TRUE@html-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files) $(expand_content_files)
 @ENABLE_GTK_DOC_TRUE@	$(GTK_DOC_V_HTML)rm -rf html && mkdir html && \
 @ENABLE_GTK_DOC_TRUE@	mkhtml_options=""; \
 @ENABLE_GTK_DOC_TRUE@	gtkdoc-mkhtml 2>&1 --help | grep  >/dev/null "\-\-verbose"; \
-@ENABLE_GTK_DOC_TRUE@	if test "$(?)" = "0"; then \
+@ENABLE_GTK_DOC_TRUE@	if test "$$?" = "0"; then \
 @ENABLE_GTK_DOC_TRUE@	  if test "x$(V)" = "x1"; then \
 @ENABLE_GTK_DOC_TRUE@	    mkhtml_options="$$mkhtml_options --verbose"; \
 @ENABLE_GTK_DOC_TRUE@	  fi; \
 @ENABLE_GTK_DOC_TRUE@	fi; \
 @ENABLE_GTK_DOC_TRUE@	gtkdoc-mkhtml 2>&1 --help | grep  >/dev/null "\-\-path"; \
-@ENABLE_GTK_DOC_TRUE@	if test "$(?)" = "0"; then \
+@ENABLE_GTK_DOC_TRUE@	if test "$$?" = "0"; then \
 @ENABLE_GTK_DOC_TRUE@	  mkhtml_options="$$mkhtml_options --path=\"$(abs_srcdir)\""; \
 @ENABLE_GTK_DOC_TRUE@	fi; \
 @ENABLE_GTK_DOC_TRUE@	cd html && gtkdoc-mkhtml $$mkhtml_options $(MKHTML_OPTIONS) $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
@@ -833,11 +834,11 @@ uninstall-am: uninstall-local
 @ENABLE_GTK_DOC_TRUE@	$(GTK_DOC_V_XREF)gtkdoc-fixxref --module=$(DOC_MODULE) --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS)
 @ENABLE_GTK_DOC_TRUE@	$(AM_V_at)touch html-build.stamp
 
-@ENABLE_GTK_DOC_TRUE@pdf-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
+@ENABLE_GTK_DOC_TRUE@pdf-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files) $(expand_content_files)
 @ENABLE_GTK_DOC_TRUE@	$(GTK_DOC_V_PDF)rm -f $(DOC_MODULE).pdf && \
 @ENABLE_GTK_DOC_TRUE@	mkpdf_options=""; \
 @ENABLE_GTK_DOC_TRUE@	gtkdoc-mkpdf 2>&1 --help | grep  >/dev/null "\-\-verbose"; \
-@ENABLE_GTK_DOC_TRUE@	if test "$(?)" = "0"; then \
+@ENABLE_GTK_DOC_TRUE@	if test "$$?" = "0"; then \
 @ENABLE_GTK_DOC_TRUE@	  if test "x$(V)" = "x1"; then \
 @ENABLE_GTK_DOC_TRUE@	    mkpdf_options="$$mkpdf_options --verbose"; \
 @ENABLE_GTK_DOC_TRUE@	  fi; \
@@ -862,12 +863,15 @@ uninstall-am: uninstall-local
 @ENABLE_GTK_DOC_TRUE@	@if echo $(SCAN_OPTIONS) | grep -q "\-\-rebuild-types" ; then \
 @ENABLE_GTK_DOC_TRUE@	  rm -f $(DOC_MODULE).types; \
 @ENABLE_GTK_DOC_TRUE@	fi
+@ENABLE_GTK_DOC_TRUE@	@if echo $(SCAN_OPTIONS) | grep -q "\-\-rebuild-sections" ; then \
+@ENABLE_GTK_DOC_TRUE@	  rm -f $(DOC_MODULE)-sections.txt; \
+@ENABLE_GTK_DOC_TRUE@	fi
 
 @ENABLE_GTK_DOC_TRUE@distclean-local:
 @ENABLE_GTK_DOC_TRUE@	@rm -rf xml html $(REPORT_FILES) $(DOC_MODULE).pdf \
 @ENABLE_GTK_DOC_TRUE@	    $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt
 @ENABLE_GTK_DOC_TRUE@	@if test "$(abs_srcdir)" != "$(abs_builddir)" ; then \
-@ENABLE_GTK_DOC_TRUE@	    rm -f $(SETUP_FILES) $(expand_content_files) $(DOC_MODULE).types; \
+@ENABLE_GTK_DOC_TRUE@	    rm -f $(SETUP_FILES) $(DOC_MODULE).types; \
 @ENABLE_GTK_DOC_TRUE@	    rm -rf tmpl; \
 @ENABLE_GTK_DOC_TRUE@	fi
 

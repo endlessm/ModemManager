@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+]>
+<refentry id="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd">
+  <refmeta>    <refentrytitle role="top_of_page" id="gdbus-interface-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.top_of_page">org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd</refentrytitle>
+  <indexterm zone="gdbus-interface-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.top_of_page"><primary sortas="Modem3gppUssd">org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd</primary></indexterm>
+  </refmeta>  <refnamediv>    <refname>org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd</refname>    <refpurpose>The ModemManager 3GPP USSD interface.</refpurpose>  </refnamediv>  <refsynopsisdiv role="synopsis">
+    <title role="synopsis.title">Methods</title>
+    <synopsis>
+<link linkend="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Initiate">Initiate</link> (IN  s command,
+          OUT s reply);
+<link linkend="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Respond">Respond</link>  (IN  s response,
+          OUT s reply);
+<link linkend="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Cancel">Cancel</link>   ();
+</synopsis>
+  </refsynopsisdiv>
+  <refsect1 role="properties">
+    <title role="properties.title">Properties</title>
+    <synopsis>
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.State">State</link>                readable   u
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.NetworkNotification">NetworkNotification</link>  readable   s
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.NetworkRequest">NetworkRequest</link>       readable   s
+</synopsis>
+  </refsect1>
+<refsect1 role="desc" id="gdbus-interface-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd">
+  <title role="desc.title">Description</title>
+  <para>      This interface provides access to actions based on the USSD protocol.
+</para>
+</refsect1>
+<refsect1 role="details" id="gdbus-methods-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd">
+  <title role="details.title">Method Details</title>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Initiate">
+  <title>The Initiate() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Initiate"><primary sortas="Modem3gppUssd.Initiate">org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.Initiate()</primary></indexterm>
+<programlisting>
+Initiate (IN  s command,
+          OUT s reply);
+</programlisting>
+<para>        Sends a USSD command string to the network initiating a USSD session.
+</para><para>        When the request is handled by the network, the method returns the
+        response or an appropriate error. The network may be awaiting further
+        response from the ME after returning from this method and no new command
+        can be initiated until this one is cancelled or ended.
+</para>
+<variablelist role="params">
+<varlistentry>
+  <term><literal>IN s <parameter>command</parameter></literal>:</term>
+  <listitem><para>The command to start the USSD session with.</para></listitem>
+</varlistentry>
+<varlistentry>
+  <term><literal>OUT s <parameter>reply</parameter></literal>:</term>
+  <listitem><para>The network response to the command which started the USSD session.</para></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Respond">
+  <title>The Respond() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Respond"><primary sortas="Modem3gppUssd.Respond">org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.Respond()</primary></indexterm>
+<programlisting>
+Respond (IN  s response,
+         OUT s reply);
+</programlisting>
+<para>        Respond to a USSD request that is either initiated by the mobile network,
+        or that is awaiting further input after
+        <link linkend="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Initiate">Initiate()</link>
+        was called.
+</para>
+<variablelist role="params">
+<varlistentry>
+  <term><literal>IN s <parameter>response</parameter></literal>:</term>
+  <listitem><para>The response to network-initiated USSD command, or a response to a request for further input.</para></listitem>
+</varlistentry>
+<varlistentry>
+  <term><literal>OUT s <parameter>reply</parameter></literal>:</term>
+  <listitem><para>The network reply to this response to the network-initiated USSD command. The reply may require further responses.</para></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Cancel">
+  <title>The Cancel() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Cancel"><primary sortas="Modem3gppUssd.Cancel">org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.Cancel()</primary></indexterm>
+<programlisting>
+Cancel ();
+</programlisting>
+<para>        Cancel an ongoing USSD session, either mobile or network initiated.
+</para>
+</refsect2>
+</refsect1>
+<refsect1 role="details" id="gdbus-properties-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd">
+  <title role="details.title">Property Details</title>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.State">
+  <title>The "State" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.State"><primary sortas="Modem3gppUssd:State">org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd:State</primary></indexterm>
+<programlisting>
+State  readable   u
+</programlisting>
+<para>        A <link linkend="MMModem3gppUssdSessionState">MMModem3gppUssdSessionState</link> value,
+        indicating the state of any ongoing USSD session.
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.NetworkNotification">
+  <title>The "NetworkNotification" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.NetworkNotification"><primary sortas="Modem3gppUssd:NetworkNotification">org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd:NetworkNotification</primary></indexterm>
+<programlisting>
+NetworkNotification  readable   s
+</programlisting>
+<para>        Contains any network-initiated request to which no USSD response is
+        required.
+</para><para>        When no USSD session is active, or when there is no network-
+        initiated request, this property will be a zero-length string.
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.NetworkRequest">
+  <title>The "NetworkRequest" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.NetworkRequest"><primary sortas="Modem3gppUssd:NetworkRequest">org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd:NetworkRequest</primary></indexterm>
+<programlisting>
+NetworkRequest  readable   s
+</programlisting>
+<para>        Contains any pending network-initiated request for a response. Client
+        should call
+        <link linkend="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp-Ussd.Respond">Respond()</link>
+        with the appropriate response to this request.
+</para><para>        When no USSD session is active, or when there is no pending
+        network-initiated request, this property will be a zero-length string.
+</para>
+</refsect2>
+</refsect1>
+</refentry>
+

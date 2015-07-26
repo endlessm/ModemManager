@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+]>
+<refentry id="gdbus-org.freedesktop.ModemManager1.Sim">
+  <refmeta>    <refentrytitle role="top_of_page" id="gdbus-interface-org-freedesktop-ModemManager1-Sim.top_of_page">org.freedesktop.ModemManager1.Sim</refentrytitle>
+  <indexterm zone="gdbus-interface-org-freedesktop-ModemManager1-Sim.top_of_page"><primary sortas="Sim">org.freedesktop.ModemManager1.Sim</primary></indexterm>
+  </refmeta>  <refnamediv>    <refname>org.freedesktop.ModemManager1.Sim</refname>    <refpurpose>The ModemManager SIM interface.</refpurpose>  </refnamediv>  <refsynopsisdiv role="synopsis">
+    <title role="synopsis.title">Methods</title>
+    <synopsis>
+<link linkend="gdbus-method-org-freedesktop-ModemManager1-Sim.SendPin">SendPin</link>   (IN  s pin);
+<link linkend="gdbus-method-org-freedesktop-ModemManager1-Sim.SendPuk">SendPuk</link>   (IN  s puk,
+           IN  s pin);
+<link linkend="gdbus-method-org-freedesktop-ModemManager1-Sim.EnablePin">EnablePin</link> (IN  s pin,
+           IN  b enabled);
+<link linkend="gdbus-method-org-freedesktop-ModemManager1-Sim.ChangePin">ChangePin</link> (IN  s old_pin,
+           IN  s new_pin);
+</synopsis>
+  </refsynopsisdiv>
+  <refsect1 role="properties">
+    <title role="properties.title">Properties</title>
+    <synopsis>
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Sim.SimIdentifier">SimIdentifier</link>       readable   s
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Sim.Imsi">Imsi</link>                readable   s
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Sim.OperatorIdentifier">OperatorIdentifier</link>  readable   s
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Sim.OperatorName">OperatorName</link>        readable   s
+</synopsis>
+  </refsect1>
+<refsect1 role="desc" id="gdbus-interface-org-freedesktop-ModemManager1-Sim">
+  <title role="desc.title">Description</title>
+  <para>      The SIM interface handles communication with SIM, USIM, and RUIM (CDMA
+      SIM) cards.
+</para>
+</refsect1>
+<refsect1 role="details" id="gdbus-methods-org.freedesktop.ModemManager1.Sim">
+  <title role="details.title">Method Details</title>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1-Sim.SendPin">
+  <title>The SendPin() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1-Sim.SendPin"><primary sortas="Sim.SendPin">org.freedesktop.ModemManager1.Sim.SendPin()</primary></indexterm>
+<programlisting>
+SendPin (IN  s pin);
+</programlisting>
+<para>        Send the PIN to unlock the SIM card.
+</para>
+<variablelist role="params">
+<varlistentry>
+  <term><literal>IN s <parameter>pin</parameter></literal>:</term>
+  <listitem><para>A string containing the PIN code.</para></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1-Sim.SendPuk">
+  <title>The SendPuk() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1-Sim.SendPuk"><primary sortas="Sim.SendPuk">org.freedesktop.ModemManager1.Sim.SendPuk()</primary></indexterm>
+<programlisting>
+SendPuk (IN  s puk,
+         IN  s pin);
+</programlisting>
+<para>        Send the PUK and a new PIN to unlock the SIM card.
+</para>
+<variablelist role="params">
+<varlistentry>
+  <term><literal>IN s <parameter>puk</parameter></literal>:</term>
+  <listitem><para>A string containing the PUK code.</para></listitem>
+</varlistentry>
+<varlistentry>
+  <term><literal>IN s <parameter>pin</parameter></literal>:</term>
+  <listitem><para>A string containing the PIN code.</para></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1-Sim.EnablePin">
+  <title>The EnablePin() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1-Sim.EnablePin"><primary sortas="Sim.EnablePin">org.freedesktop.ModemManager1.Sim.EnablePin()</primary></indexterm>
+<programlisting>
+EnablePin (IN  s pin,
+           IN  b enabled);
+</programlisting>
+<para>        Enable or disable the PIN checking.
+</para>
+<variablelist role="params">
+<varlistentry>
+  <term><literal>IN s <parameter>pin</parameter></literal>:</term>
+  <listitem><para>A string containing the PIN code.</para></listitem>
+</varlistentry>
+<varlistentry>
+  <term><literal>IN b <parameter>enabled</parameter></literal>:</term>
+  <listitem><para><constant>TRUE</constant> to enable PIN checking, <constant>FALSE</constant> otherwise.</para></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1-Sim.ChangePin">
+  <title>The ChangePin() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1-Sim.ChangePin"><primary sortas="Sim.ChangePin">org.freedesktop.ModemManager1.Sim.ChangePin()</primary></indexterm>
+<programlisting>
+ChangePin (IN  s old_pin,
+           IN  s new_pin);
+</programlisting>
+<para>        Change the PIN code.
+</para>
+<variablelist role="params">
+<varlistentry>
+  <term><literal>IN s <parameter>old_pin</parameter></literal>:</term>
+  <listitem><para>A string containing the current PIN code.</para></listitem>
+</varlistentry>
+<varlistentry>
+  <term><literal>IN s <parameter>new_pin</parameter></literal>:</term>
+  <listitem><para>A string containing the new PIN code.</para></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+</refsect1>
+<refsect1 role="details" id="gdbus-properties-org.freedesktop.ModemManager1.Sim">
+  <title role="details.title">Property Details</title>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Sim.SimIdentifier">
+  <title>The "SimIdentifier" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Sim.SimIdentifier"><primary sortas="Sim:SimIdentifier">org.freedesktop.ModemManager1.Sim:SimIdentifier</primary></indexterm>
+<programlisting>
+SimIdentifier  readable   s
+</programlisting>
+<para>        An obfuscated SIM identifier based on the IMSI or the
+        ICCID.
+</para><para>        This may be available before the PIN has been entered depending
+        on the device itself.
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Sim.Imsi">
+  <title>The "Imsi" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Sim.Imsi"><primary sortas="Sim:Imsi">org.freedesktop.ModemManager1.Sim:Imsi</primary></indexterm>
+<programlisting>
+Imsi  readable   s
+</programlisting>
+<para>        The IMSI of the SIM card, if any.
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Sim.OperatorIdentifier">
+  <title>The "OperatorIdentifier" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Sim.OperatorIdentifier"><primary sortas="Sim:OperatorIdentifier">org.freedesktop.ModemManager1.Sim:OperatorIdentifier</primary></indexterm>
+<programlisting>
+OperatorIdentifier  readable   s
+</programlisting>
+<para></para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Sim.OperatorName">
+  <title>The "OperatorName" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Sim.OperatorName"><primary sortas="Sim:OperatorName">org.freedesktop.ModemManager1.Sim:OperatorName</primary></indexterm>
+<programlisting>
+OperatorName  readable   s
+</programlisting>
+<para>        The name of the network operator, as given by the SIM card, if known.
+</para>
+</refsect2>
+</refsect1>
+</refentry>
+
