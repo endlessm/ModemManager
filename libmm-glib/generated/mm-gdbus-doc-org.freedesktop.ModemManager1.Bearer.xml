@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+]>
+<refentry id="gdbus-org.freedesktop.ModemManager1.Bearer">
+  <refmeta>    <refentrytitle role="top_of_page" id="gdbus-interface-org-freedesktop-ModemManager1-Bearer.top_of_page">org.freedesktop.ModemManager1.Bearer</refentrytitle>
+  <indexterm zone="gdbus-interface-org-freedesktop-ModemManager1-Bearer.top_of_page"><primary sortas="Bearer">org.freedesktop.ModemManager1.Bearer</primary></indexterm>
+  </refmeta>  <refnamediv>    <refname>org.freedesktop.ModemManager1.Bearer</refname>    <refpurpose>The ModemManager Bearer interface.</refpurpose>  </refnamediv>  <refsynopsisdiv role="synopsis">
+    <title role="synopsis.title">Methods</title>
+    <synopsis>
+<link linkend="gdbus-method-org-freedesktop-ModemManager1-Bearer.Connect">Connect</link>    ();
+<link linkend="gdbus-method-org-freedesktop-ModemManager1-Bearer.Disconnect">Disconnect</link> ();
+</synopsis>
+  </refsynopsisdiv>
+  <refsect1 role="properties">
+    <title role="properties.title">Properties</title>
+    <synopsis>
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.Interface">Interface</link>   readable   s
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.Connected">Connected</link>   readable   b
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.Suspended">Suspended</link>   readable   b
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.Ip4Config">Ip4Config</link>   readable   a{sv}
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.Ip6Config">Ip6Config</link>   readable   a{sv}
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.IpTimeout">IpTimeout</link>   readable   u
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.Properties">Properties</link>  readable   a{sv}
+</synopsis>
+  </refsect1>
+<refsect1 role="desc" id="gdbus-interface-org-freedesktop-ModemManager1-Bearer">
+  <title role="desc.title">Description</title>
+  <para>      This interface provides access to specific actions that may be performed
+      on available bearers.
+</para>
+</refsect1>
+<refsect1 role="details" id="gdbus-methods-org.freedesktop.ModemManager1.Bearer">
+  <title role="details.title">Method Details</title>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1-Bearer.Connect">
+  <title>The Connect() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1-Bearer.Connect"><primary sortas="Bearer.Connect">org.freedesktop.ModemManager1.Bearer.Connect()</primary></indexterm>
+<programlisting>
+Connect ();
+</programlisting>
+<para>        Requests activation of a packet data connection with the network using
+        this bearer's properties. Upon successful activation, the modem can
+        send and receive packet data and, depending on the addressing
+        capability of the modem, a connection manager may need to start PPP,
+        perform DHCP, or assign the IP address returned by the modem to the
+        data interface. Upon successful return, the
+        <link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.Ip4Config">"Ip4Config"</link>
+        and/or
+        <link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.Ip6Config">"Ip6Config"</link>
+        properties become valid and may contain IP configuration information for
+        the data interface associated with this bearer.
+</para>
+</refsect2>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1-Bearer.Disconnect">
+  <title>The Disconnect() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1-Bearer.Disconnect"><primary sortas="Bearer.Disconnect">org.freedesktop.ModemManager1.Bearer.Disconnect()</primary></indexterm>
+<programlisting>
+Disconnect ();
+</programlisting>
+<para>        Disconnect and deactivate this packet data connection.
+</para><para>        Any ongoing data session will be terminated and IP addresses become
+        invalid when this method is called.
+</para>
+</refsect2>
+</refsect1>
+<refsect1 role="details" id="gdbus-properties-org.freedesktop.ModemManager1.Bearer">
+  <title role="details.title">Property Details</title>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Bearer.Interface">
+  <title>The "Interface" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Bearer.Interface"><primary sortas="Bearer:Interface">org.freedesktop.ModemManager1.Bearer:Interface</primary></indexterm>
+<programlisting>
+Interface  readable   s
+</programlisting>
+<para>        The operating system name for the network data interface that provides
+        packet data using this bearer.
+</para><para>        Connection managers must configure this interface depending on the IP
+        <literal>"method"</literal> given by the
+        <link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.Ip4Config">"Ip4Config"</link>
+        or
+        <link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.Ip6Config">"Ip6Config"</link>
+        properties set by bearer activation.
+</para><para>        If <link linkend="MM-BEARER-IP-METHOD-STATIC:CAPS">MM_BEARER_IP_METHOD_STATIC</link>
+        or
+        <link linkend="MM-BEARER-IP-METHOD-DHCP:CAPS">MM_BEARER_IP_METHOD_DHCP</link>
+        methods are given, the interface
+        will be an ethernet-style interface suitable for DHCP or setting static
+        IP configuration on, while if the
+        <link linkend="MM-BEARER-IP-METHOD-PPP:CAPS">MM_BEARER_IP_METHOD_PPP</link>
+        method is given, the interface
+        will be a serial TTY which must then have PPP run over it.
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Bearer.Connected">
+  <title>The "Connected" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Bearer.Connected"><primary sortas="Bearer:Connected">org.freedesktop.ModemManager1.Bearer:Connected</primary></indexterm>
+<programlisting>
+Connected  readable   b
+</programlisting>
+<para>        Indicates whether or not the bearer is connected and thus whether
+        packet data communication using this bearer is possible.
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Bearer.Suspended">
+  <title>The "Suspended" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Bearer.Suspended"><primary sortas="Bearer:Suspended">org.freedesktop.ModemManager1.Bearer:Suspended</primary></indexterm>
+<programlisting>
+Suspended  readable   b
+</programlisting>
+<para>        In some devices, packet data service will be suspended while the device
+        is handling other communication, like a voice call. If packet data
+        service is suspended (but not deactivated) this property will be <constant>TRUE</constant>.
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Bearer.Ip4Config">
+  <title>The "Ip4Config" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Bearer.Ip4Config"><primary sortas="Bearer:Ip4Config">org.freedesktop.ModemManager1.Bearer:Ip4Config</primary></indexterm>
+<programlisting>
+Ip4Config  readable   a{sv}
+</programlisting>
+<para>        If the bearer was configured for IPv4 addressing, upon activation this
+        property contains the addressing details for assignment to the data
+        interface.
+</para><para>        Mandatory items include:
+        <variablelist>
+          <varlistentry><term><literal>"method"</literal></term>
+            <listitem>
+              A <link linkend="MMBearerIpMethod">MMBearerIpMethod</link>,
+              given as an unsigned integer value (signature <literal>"u"</literal>).
+            </listitem>
+          </varlistentry>
+        </variablelist>
+</para><para>        If the bearer specifies configuration via PPP or DHCP, only the
+        <literal>"method"</literal> item will be present.
+</para><para>        Additional items which are only applicable when using the
+        <link linkend="MM-BEARER-IP-METHOD-STATIC:CAPS">MM_BEARER_IP_METHOD_STATIC</link>
+        method are:
+        <variablelist>
+          <varlistentry><term><literal>"address"</literal></term>
+            <listitem>
+              IP address, given as a string value (signature <literal>"s"</literal>).
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"prefix"</literal></term>
+            <listitem>
+              Numeric CIDR network prefix (ie, 24, 32, etc), given as an unsigned integer value (signature <literal>"u"</literal>).
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"dns1"</literal></term>
+            <listitem>
+              IP address of the first DNS server, given as a string value (signature <literal>"s"</literal>).
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"dns2"</literal></term>
+            <listitem>
+              IP address of the second DNS server, given as a string value (signature <literal>"s"</literal>).
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"dns3"</literal></term>
+            <listitem>
+              IP address of the third DNS server, given as a string value (signature <literal>"s"</literal>).
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"gateway"</literal></term>
+            <listitem>
+              IP address of the default gateway, given as a string value (signature <literal>"s"</literal>).
+            </listitem>
+          </varlistentry>
+        </variablelist>
+</para><para>        This property may also include the following items when such information is available:
+        <variablelist>
+          <varlistentry><term><literal>"mtu"</literal></term>
+            <listitem>
+              Maximum transmission unit (MTU), given as an unsigned integer value (signature <literal>"u"</literal>).
+            </listitem>
+          </varlistentry>
+        </variablelist>
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Bearer.Ip6Config">
+  <title>The "Ip6Config" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Bearer.Ip6Config"><primary sortas="Bearer:Ip6Config">org.freedesktop.ModemManager1.Bearer:Ip6Config</primary></indexterm>
+<programlisting>
+Ip6Config  readable   a{sv}
+</programlisting>
+<para>        If the bearer was configured for IPv6 addressing, upon activation this
+        property contains the addressing details for assignment to the data
+        interface.
+</para><para>        Mandatory items include:
+        <variablelist>
+          <varlistentry><term><literal>"method"</literal></term>
+            <listitem>
+              A <link linkend="MMBearerIpMethod">MMBearerIpMethod</link>,
+              given as an unsigned integer value (signature <literal>"u"</literal>).
+            </listitem>
+          </varlistentry>
+        </variablelist>
+</para><para>        If the bearer specifies configuration via PPP or DHCP, often only the
+        <literal>"method"</literal> item will be present.  IPv6 SLAAC should
+        be used to retrieve correct addressing and DNS information via Router
+        Advertisements and DHCPv6.  In some cases an IPv6 Link-Local
+        <literal>"address"</literal> item will be present, which should be
+        assigned to the data port before performing SLAAC, as the mobile network
+        may expect SLAAC setup to use this address.
+</para><para>        Additional items which are usually only applicable when using the
+        <link linkend="MM-BEARER-IP-METHOD-STATIC:CAPS">MM_BEARER_IP_METHOD_STATIC</link>
+        method are:
+        <variablelist>
+          <varlistentry><term><literal>"address"</literal></term>
+            <listitem>
+              IP address, given as a string value (signature <literal>"s"</literal>).
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"prefix"</literal></term>
+            <listitem>
+              Numeric CIDR network prefix (ie, 24, 32, etc), given as an unsigned integer value (signature <literal>"u"</literal>).
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"dns1"</literal></term>
+            <listitem>
+              IP address of the first DNS server, given as a string value (signature <literal>"s"</literal>).
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"dns2"</literal></term>
+            <listitem>
+              IP address of the second DNS server, given as a string value (signature <literal>"s"</literal>).
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"dns3"</literal></term>
+            <listitem>
+              IP address of the third DNS server, given as a string value (signature <literal>"s"</literal>).
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"gateway"</literal></term>
+            <listitem>
+              IP address of the default gateway, given as a string value (signature <literal>"s"</literal>).
+            </listitem>
+          </varlistentry>
+        </variablelist>
+</para><para>        This property may also include the following items when such information is available:
+        <variablelist>
+          <varlistentry><term><literal>"mtu"</literal></term>
+            <listitem>
+              Maximum transmission unit (MTU), given as an unsigned integer value (signature <literal>"u"</literal>).
+            </listitem>
+          </varlistentry>
+        </variablelist>
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Bearer.IpTimeout">
+  <title>The "IpTimeout" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Bearer.IpTimeout"><primary sortas="Bearer:IpTimeout">org.freedesktop.ModemManager1.Bearer:IpTimeout</primary></indexterm>
+<programlisting>
+IpTimeout  readable   u
+</programlisting>
+<para>        Maximum time to wait for a successful IP establishment, when PPP is used.
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Bearer.Properties">
+  <title>The "Properties" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Bearer.Properties"><primary sortas="Bearer:Properties">org.freedesktop.ModemManager1.Bearer:Properties</primary></indexterm>
+<programlisting>
+Properties  readable   a{sv}
+</programlisting>
+<para>        List of properties used when creating the bearer.
+</para>
+</refsect2>
+</refsect1>
+</refentry>
+

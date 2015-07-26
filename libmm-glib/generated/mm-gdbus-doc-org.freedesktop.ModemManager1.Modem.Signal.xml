@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+]>
+<refentry id="gdbus-org.freedesktop.ModemManager1.Modem.Signal">
+  <refmeta>    <refentrytitle role="top_of_page" id="gdbus-interface-org-freedesktop-ModemManager1-Modem-Signal.top_of_page">org.freedesktop.ModemManager1.Modem.Signal</refentrytitle>
+  <indexterm zone="gdbus-interface-org-freedesktop-ModemManager1-Modem-Signal.top_of_page"><primary sortas="Modem.Signal">org.freedesktop.ModemManager1.Modem.Signal</primary></indexterm>
+  </refmeta>  <refnamediv>    <refname>org.freedesktop.ModemManager1.Modem.Signal</refname>    <refpurpose>The ModemManager Signal interface.</refpurpose>  </refnamediv>  <refsynopsisdiv role="synopsis">
+    <title role="synopsis.title">Methods</title>
+    <synopsis>
+<link linkend="gdbus-method-org-freedesktop-ModemManager1-Modem-Signal.Setup">Setup</link> (IN  u rate);
+</synopsis>
+  </refsynopsisdiv>
+  <refsect1 role="properties">
+    <title role="properties.title">Properties</title>
+    <synopsis>
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Rate">Rate</link>  readable   u
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Cdma">Cdma</link>  readable   a{sv}
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Evdo">Evdo</link>  readable   a{sv}
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Gsm">Gsm</link>   readable   a{sv}
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Umts">Umts</link>  readable   a{sv}
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Lte">Lte</link>   readable   a{sv}
+</synopsis>
+  </refsect1>
+<refsect1 role="desc" id="gdbus-interface-org-freedesktop-ModemManager1-Modem-Signal">
+  <title role="desc.title">Description</title>
+  <para>      This interface provides access to extended signal quality information.
+</para>
+</refsect1>
+<refsect1 role="details" id="gdbus-methods-org.freedesktop.ModemManager1.Modem.Signal">
+  <title role="details.title">Method Details</title>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1-Modem-Signal.Setup">
+  <title>The Setup() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1-Modem-Signal.Setup"><primary sortas="Modem.Signal.Setup">org.freedesktop.ModemManager1.Modem.Signal.Setup()</primary></indexterm>
+<programlisting>
+Setup (IN  u rate);
+</programlisting>
+<para>        Setup extended signal quality information retrieval.
+</para>
+<variablelist role="params">
+<varlistentry>
+  <term><literal>IN u <parameter>rate</parameter></literal>:</term>
+  <listitem><para>refresh rate to set, in seconds. 0 to disable retrieval.</para></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+</refsect1>
+<refsect1 role="details" id="gdbus-properties-org.freedesktop.ModemManager1.Modem.Signal">
+  <title role="details.title">Property Details</title>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Rate">
+  <title>The "Rate" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Rate"><primary sortas="Modem.Signal:Rate">org.freedesktop.ModemManager1.Modem.Signal:Rate</primary></indexterm>
+<programlisting>
+Rate  readable   u
+</programlisting>
+<para>        Refresh rate for the extended signal quality information updates,
+        in seconds. A value of 0 disables the retrieval of the values.
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Cdma">
+  <title>The "Cdma" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Cdma"><primary sortas="Modem.Signal:Cdma">org.freedesktop.ModemManager1.Modem.Signal:Cdma</primary></indexterm>
+<programlisting>
+Cdma  readable   a{sv}
+</programlisting>
+<para>        Dictionary of available signal information for the CDMA1x access
+        technology.
+</para><para>        This dictionary is composed of a string key, with an associated data
+        which contains type-specific information.
+</para><para>        <variablelist>
+        <varlistentry><term><literal>"rssi"</literal></term>
+          <listitem>
+            <para>
+              The CDMA1x RSSI (Received Signal Strength Indication), in dBm,
+              given as a floating point value (signature <literal>"d"</literal>).
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry><term><literal>"ecio"</literal></term>
+          <listitem>
+            <para>
+              The CDMA1x Ec/Io, in dBm, given as a floating point value
+              (signature <literal>"d"</literal>).
+            </para>
+          </listitem>
+        </varlistentry>
+        </variablelist>
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Evdo">
+  <title>The "Evdo" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Evdo"><primary sortas="Modem.Signal:Evdo">org.freedesktop.ModemManager1.Modem.Signal:Evdo</primary></indexterm>
+<programlisting>
+Evdo  readable   a{sv}
+</programlisting>
+<para>        Dictionary of available signal information for the CDMA EV-DO access
+        technology.
+</para><para>        This dictionary is composed of a string key, with an associated data
+        which contains type-specific information.
+</para><para>        <variablelist>
+        <varlistentry><term><literal>"rssi"</literal></term>
+          <listitem>
+            <para>
+              The CDMA EV-DO RSSI (Received Signal Strength Indication), in dBm,
+              given as a floating point value (signature <literal>"d"</literal>).
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry><term><literal>"ecio"</literal></term>
+          <listitem>
+            <para>
+              The CDMA EV-DO Ec/Io, in dBm, given as a floating point value
+              (signature <literal>"d"</literal>).
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry><term><literal>"sinr"</literal></term>
+          <listitem>
+            <para>
+              CDMA EV-DO SINR level, in dB, given as a floating point value
+              (signature <literal>"d"</literal>).
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry><term><literal>"io"</literal></term>
+          <listitem>
+            <para>
+              The CDMA EV-DO Io, in dBm, given as a floating point value
+              (signature <literal>"d"</literal>).
+            </para>
+          </listitem>
+        </varlistentry>
+        </variablelist>
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Gsm">
+  <title>The "Gsm" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Gsm"><primary sortas="Modem.Signal:Gsm">org.freedesktop.ModemManager1.Modem.Signal:Gsm</primary></indexterm>
+<programlisting>
+Gsm  readable   a{sv}
+</programlisting>
+<para>        Dictionary of available signal information for the GSM/GPRS access
+        technology.
+</para><para>        This dictionary is composed of a string key, with an associated data
+        which contains type-specific information.
+</para><para>        <variablelist>
+        <varlistentry><term><literal>"rssi"</literal></term>
+          <listitem>
+            <para>
+              The GSM RSSI (Received Signal Strength Indication), in dBm,
+              given as a floating point value (signature <literal>"d"</literal>).
+            </para>
+          </listitem>
+        </varlistentry>
+        </variablelist>
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Umts">
+  <title>The "Umts" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Umts"><primary sortas="Modem.Signal:Umts">org.freedesktop.ModemManager1.Modem.Signal:Umts</primary></indexterm>
+<programlisting>
+Umts  readable   a{sv}
+</programlisting>
+<para>        Dictionary of available signal information for the UMTS (WCDMA) access
+        technology.
+</para><para>        This dictionary is composed of a string key, with an associated data
+        which contains type-specific information.
+</para><para>        <variablelist>
+        <varlistentry><term><literal>"rssi"</literal></term>
+          <listitem>
+            <para>
+              The UMTS RSSI (Received Signal Strength Indication), in dBm,
+              given as a floating point value (signature <literal>"d"</literal>).
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry><term><literal>"ecio"</literal></term>
+          <listitem>
+            <para>
+              The UMTS Ec/Io, in dBm, given as a floating point value
+              (signature <literal>"d"</literal>).
+            </para>
+          </listitem>
+        </varlistentry>
+        </variablelist>
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Lte">
+  <title>The "Lte" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Signal.Lte"><primary sortas="Modem.Signal:Lte">org.freedesktop.ModemManager1.Modem.Signal:Lte</primary></indexterm>
+<programlisting>
+Lte  readable   a{sv}
+</programlisting>
+<para>        Dictionary of available signal information for the UMTS (WCDMA) access
+        technology.
+</para><para>        This dictionary is composed of a string key, with an associated data
+        which contains type-specific information.
+</para><para>        <variablelist>
+        <varlistentry><term><literal>"rssi"</literal></term>
+          <listitem>
+            <para>
+              The LTE RSSI (Received Signal Strength Indication), in dBm,
+              given as a floating point value (signature <literal>"d"</literal>).
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry><term><literal>"rsrq"</literal></term>
+          <listitem>
+            <para>
+              The LTE RSRQ (Reference Signal Received Quality), in dB, given as
+              a floating point value (signature <literal>"d"</literal>).
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry><term><literal>"rsrp"</literal></term>
+          <listitem>
+            <para>
+              The LTE RSRP (Reference Signal Received Power), in dBm, given as
+              a floating point value (signature <literal>"d"</literal>).
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry><term><literal>"snr"</literal></term>
+          <listitem>
+            <para>
+              The LTE S/R ratio, in dB, given as
+              a floating point value (signature <literal>"d"</literal>).
+            </para>
+          </listitem>
+        </varlistentry>
+        </variablelist>
+</para>
+</refsect2>
+</refsect1>
+</refentry>
+

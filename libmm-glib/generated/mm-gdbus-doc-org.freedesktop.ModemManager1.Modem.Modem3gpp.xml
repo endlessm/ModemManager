@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+]>
+<refentry id="gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp">
+  <refmeta>    <refentrytitle role="top_of_page" id="gdbus-interface-org-freedesktop-ModemManager1-Modem-Modem3gpp.top_of_page">org.freedesktop.ModemManager1.Modem.Modem3gpp</refentrytitle>
+  <indexterm zone="gdbus-interface-org-freedesktop-ModemManager1-Modem-Modem3gpp.top_of_page"><primary sortas="Modem3gpp">org.freedesktop.ModemManager1.Modem.Modem3gpp</primary></indexterm>
+  </refmeta>  <refnamediv>    <refname>org.freedesktop.ModemManager1.Modem.Modem3gpp</refname>    <refpurpose>The ModemManager 3GPP interface.</refpurpose>  </refnamediv>  <refsynopsisdiv role="synopsis">
+    <title role="synopsis.title">Methods</title>
+    <synopsis>
+<link linkend="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.Register">Register</link> (IN  s      operator_id);
+<link linkend="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.Scan">Scan</link>     (OUT aa{sv} results);
+</synopsis>
+  </refsynopsisdiv>
+  <refsect1 role="properties">
+    <title role="properties.title">Properties</title>
+    <synopsis>
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.Imei">Imei</link>                  readable   s
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.RegistrationState">RegistrationState</link>     readable   u
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorCode">OperatorCode</link>          readable   s
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorName">OperatorName</link>          readable   s
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.EnabledFacilityLocks">EnabledFacilityLocks</link>  readable   u
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.SubscriptionState">SubscriptionState</link>     readable   u
+</synopsis>
+  </refsect1>
+<refsect1 role="desc" id="gdbus-interface-org-freedesktop-ModemManager1-Modem-Modem3gpp">
+  <title role="desc.title">Description</title>
+  <para>      This interface provides access to specific actions that may be performed
+      in modems with 3GPP capabilities.
+</para>
+</refsect1>
+<refsect1 role="details" id="gdbus-methods-org.freedesktop.ModemManager1.Modem.Modem3gpp">
+  <title role="details.title">Method Details</title>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.Register">
+  <title>The Register() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.Register"><primary sortas="Modem3gpp.Register">org.freedesktop.ModemManager1.Modem.Modem3gpp.Register()</primary></indexterm>
+<programlisting>
+Register (IN  s operator_id);
+</programlisting>
+<para>        Request registration with a given mobile network.
+</para>
+<variablelist role="params">
+<varlistentry>
+  <term><literal>IN s <parameter>operator_id</parameter></literal>:</term>
+  <listitem><para>The operator ID (ie, <literal>"MCCMNC"</literal>, like <literal>"310260"</literal>) to register. An empty string can be used to register to the home network.</para></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.Scan">
+  <title>The Scan() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.Scan"><primary sortas="Modem3gpp.Scan">org.freedesktop.ModemManager1.Modem.Modem3gpp.Scan()</primary></indexterm>
+<programlisting>
+Scan (OUT aa{sv} results);
+</programlisting>
+<para>        Scan for available networks.
+</para><para>        <parameter>results</parameter> is an array of dictionaries with each array element describing
+        a mobile network found in the scan. Each dictionary may include one or
+        more of the following keys:
+        <variablelist>
+          <varlistentry><term><literal>"status"</literal></term>
+            <listitem>
+              A <link linkend="MMModem3gppNetworkAvailability">MMModem3gppNetworkAvailability</link>
+              value representing network availability status, given as an
+              unsigned integer (signature <literal>"u"</literal>). This key will
+              always be present.
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"operator-long"</literal></term>
+            <listitem>
+              Long-format name of operator, given as a string value (signature
+              <literal>"s"</literal>). If the name is unknown, this field
+              should not be present.
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"operator-short"</literal></term>
+            <listitem>
+              Short-format name of operator, given as a string value (signature
+              <literal>"s"</literal>). If the name is unknown, this field
+              should not be present.
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"operator-code"</literal></term>
+            <listitem>
+              Mobile code of the operator, given as a string value (signature
+              <literal>"s"</literal>). Returned in the format
+              <literal>"MCCMNC"</literal>, where <literal>MCC</literal> is the
+              three-digit ITU E.212 Mobile Country Code and <literal>MNC</literal>
+              is the two- or three-digit GSM Mobile Network Code. e.g.
+              <literal>"31026"</literal> or <literal>"310260"</literal>.
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"access-technology"</literal></term>
+            <listitem>
+              A <link linkend="MMModemAccessTechnology">MMModemAccessTechnology</link> value
+              representing the generic access technology used by this mobile network,
+              given as an unsigned integer (signature <literal>"u"</literal>).
+            </listitem>
+          </varlistentry>
+        </variablelist>
+</para>
+<variablelist role="params">
+<varlistentry>
+  <term><literal>OUT aa{sv} <parameter>results</parameter></literal>:</term>
+  <listitem><para>Array of dictionaries with the found networks.</para></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+</refsect1>
+<refsect1 role="details" id="gdbus-properties-org.freedesktop.ModemManager1.Modem.Modem3gpp">
+  <title role="details.title">Property Details</title>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.Imei">
+  <title>The "Imei" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.Imei"><primary sortas="Modem3gpp:Imei">org.freedesktop.ModemManager1.Modem.Modem3gpp:Imei</primary></indexterm>
+<programlisting>
+Imei  readable   s
+</programlisting>
+<para>        The <ulink url="http://en.wikipedia.org/wiki/Imei">IMEI</ulink> of the device.
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.RegistrationState">
+  <title>The "RegistrationState" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.RegistrationState"><primary sortas="Modem3gpp:RegistrationState">org.freedesktop.ModemManager1.Modem.Modem3gpp:RegistrationState</primary></indexterm>
+<programlisting>
+RegistrationState  readable   u
+</programlisting>
+<para>        A <link linkend="MMModem3gppRegistrationState">MMModem3gppRegistrationState</link>
+        value specifying the mobile registration status as defined in 3GPP TS 27.007
+        section 10.1.19.
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorCode">
+  <title>The "OperatorCode" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorCode"><primary sortas="Modem3gpp:OperatorCode">org.freedesktop.ModemManager1.Modem.Modem3gpp:OperatorCode</primary></indexterm>
+<programlisting>
+OperatorCode  readable   s
+</programlisting>
+<para>        Code of the operator to which the mobile is currently registered.
+</para><para>        Returned in the format <literal>"MCCMNC"</literal>, where
+        <literal>MCC</literal> is the three-digit ITU E.212 Mobile Country Code
+        and <literal>MNC</literal> is the two- or three-digit GSM Mobile Network
+        Code. e.g. e<literal>"31026"</literal> or <literal>"310260"</literal>.
+</para><para>        If the <literal>MCC</literal> and <literal>MNC</literal> are not known
+        or the mobile is not registered to a mobile network, this property will
+        be a zero-length (blank) string.
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorName">
+  <title>The "OperatorName" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorName"><primary sortas="Modem3gpp:OperatorName">org.freedesktop.ModemManager1.Modem.Modem3gpp:OperatorName</primary></indexterm>
+<programlisting>
+OperatorName  readable   s
+</programlisting>
+<para>        Name of the operator to which the mobile is currently registered.
+</para><para>        If the operator name is not known or the mobile is not
+        registered to a mobile network, this property will be a zero-length
+        (blank) string.
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.EnabledFacilityLocks">
+  <title>The "EnabledFacilityLocks" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.EnabledFacilityLocks"><primary sortas="Modem3gpp:EnabledFacilityLocks">org.freedesktop.ModemManager1.Modem.Modem3gpp:EnabledFacilityLocks</primary></indexterm>
+<programlisting>
+EnabledFacilityLocks  readable   u
+</programlisting>
+<para>        Bitmask of <link linkend="MMModem3gppFacility">MMModem3gppFacility</link> values
+        for which PIN locking is enabled.
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.SubscriptionState">
+  <title>The "SubscriptionState" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.SubscriptionState"><primary sortas="Modem3gpp:SubscriptionState">org.freedesktop.ModemManager1.Modem.Modem3gpp:SubscriptionState</primary></indexterm>
+<programlisting>
+SubscriptionState  readable   u
+</programlisting>
+<para>        A <link linkend="MMModem3gppSubscriptionState">MMModem3gppSubscriptionState</link>
+        value representing the subscription status of the account and whether there
+        is any data remaining, given as an unsigned integer (signature <literal>"u"</literal>).
+</para>
+</refsect2>
+</refsect1>
+</refentry>
+

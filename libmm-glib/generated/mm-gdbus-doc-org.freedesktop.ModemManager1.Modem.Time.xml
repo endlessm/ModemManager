@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+]>
+<refentry id="gdbus-org.freedesktop.ModemManager1.Modem.Time">
+  <refmeta>    <refentrytitle role="top_of_page" id="gdbus-interface-org-freedesktop-ModemManager1-Modem-Time.top_of_page">org.freedesktop.ModemManager1.Modem.Time</refentrytitle>
+  <indexterm zone="gdbus-interface-org-freedesktop-ModemManager1-Modem-Time.top_of_page"><primary sortas="Modem.Time">org.freedesktop.ModemManager1.Modem.Time</primary></indexterm>
+  </refmeta>  <refnamediv>    <refname>org.freedesktop.ModemManager1.Modem.Time</refname>    <refpurpose>The ModemManager Time interface.</refpurpose>  </refnamediv>  <refsynopsisdiv role="synopsis">
+    <title role="synopsis.title">Methods</title>
+    <synopsis>
+<link linkend="gdbus-method-org-freedesktop-ModemManager1-Modem-Time.GetNetworkTime">GetNetworkTime</link> (OUT s time);
+</synopsis>
+  </refsynopsisdiv>
+  <refsect1 role="signal_proto">
+    <title role="signal_proto.title">Signals</title>
+    <synopsis>
+<link linkend="gdbus-signal-org-freedesktop-ModemManager1-Modem-Time.NetworkTimeChanged">NetworkTimeChanged</link> (s time);
+</synopsis>
+  </refsect1>
+  <refsect1 role="properties">
+    <title role="properties.title">Properties</title>
+    <synopsis>
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Time.NetworkTimezone">NetworkTimezone</link>  readable   a{sv}
+</synopsis>
+  </refsect1>
+<refsect1 role="desc" id="gdbus-interface-org-freedesktop-ModemManager1-Modem-Time">
+  <title role="desc.title">Description</title>
+  <para>      This interface allows clients to receive network time and timezone
+      updates broadcast by mobile networks.
+</para>
+</refsect1>
+<refsect1 role="details" id="gdbus-methods-org.freedesktop.ModemManager1.Modem.Time">
+  <title role="details.title">Method Details</title>
+<refsect2 role="method" id="gdbus-method-org-freedesktop-ModemManager1-Modem-Time.GetNetworkTime">
+  <title>The GetNetworkTime() method</title>
+  <indexterm zone="gdbus-method-org-freedesktop-ModemManager1-Modem-Time.GetNetworkTime"><primary sortas="Modem.Time.GetNetworkTime">org.freedesktop.ModemManager1.Modem.Time.GetNetworkTime()</primary></indexterm>
+<programlisting>
+GetNetworkTime (OUT s time);
+</programlisting>
+<para>        time, and (if available) UTC offset in ISO 8601 format. If the network
+        time is unknown, the empty string.
+</para><para>        Gets the current network time in local time.
+</para><para>        This method will only work if the modem tracks, or can request, the
+        current network time; it will not attempt to use previously-received
+        network time updates on the host to guess the current network time.
+</para>
+<variablelist role="params">
+<varlistentry>
+  <term><literal>OUT s <parameter>time</parameter></literal>:</term>
+  <listitem><para>If the network time is known, a string containing local date,</para></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+</refsect1>
+<refsect1 role="details" id="gdbus-signals-org.freedesktop.ModemManager1.Modem.Time">
+  <title role="details.title">Signal Details</title>
+<refsect2 role="signal" id="gdbus-signal-org-freedesktop-ModemManager1-Modem-Time.NetworkTimeChanged">
+  <title>The "NetworkTimeChanged" signal</title>
+  <indexterm zone="gdbus-signal-org-freedesktop-ModemManager1-Modem-Time.NetworkTimeChanged"><primary sortas="Modem.Time::NetworkTimeChanged">org.freedesktop.ModemManager1.Modem.Time::NetworkTimeChanged</primary></indexterm>
+<programlisting>
+NetworkTimeChanged (s time);
+</programlisting>
+<para>        Sent when the network time is updated.
+</para>
+<variablelist role="params">
+<varlistentry>
+  <term><literal>s <parameter>time</parameter></literal>:</term>
+  <listitem><para>A string containing date and time in ISO 8601 format.</para></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+</refsect1>
+<refsect1 role="details" id="gdbus-properties-org.freedesktop.ModemManager1.Modem.Time">
+  <title role="details.title">Property Details</title>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Modem-Time.NetworkTimezone">
+  <title>The "NetworkTimezone" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Modem-Time.NetworkTimezone"><primary sortas="Modem.Time:NetworkTimezone">org.freedesktop.ModemManager1.Modem.Time:NetworkTimezone</primary></indexterm>
+<programlisting>
+NetworkTimezone  readable   a{sv}
+</programlisting>
+<para>        The timezone data provided by the network. It may include one or more
+        of the following fields:
+</para><para>        <variablelist>
+          <varlistentry><term><literal>"offset"</literal></term>
+            <listitem>
+              Offset of the timezone from UTC, in minutes (including DST, if applicable),
+              given as a signed integer value (signature <literal>"i"</literal>).
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"dst-offset"</literal></term>
+            <listitem>
+              Amount of offset that is due to DST (daylight saving time),
+              given as a signed integer value (signature <literal>"i"</literal>).
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"leap-seconds"</literal></term>
+            <listitem>
+              Number of leap seconds included in the network time,
+              given as a signed integer value (signature <literal>"i"</literal>).
+            </listitem>
+          </varlistentry>
+        </variablelist>
+</para>
+</refsect2>
+</refsect1>
+</refentry>
+
