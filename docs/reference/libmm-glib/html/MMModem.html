@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>libmm-glib Reference Manual: MMModem</title>
+<title>MMModem: libmm-glib Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
 <link rel="up" href="ch03.html#id-1.2.4.3" title="Generic interfaces">
 <link rel="prev" href="MMObject.html" title="MMObject">
 <link rel="next" href="MMModem3gpp.html" title="MMModem3gpp">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -794,8 +794,9 @@ least this interface is also available.</p>
 <pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 mm_modem_get_path (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
 <p>Gets the DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> which implements this interface.</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.4.3.2.8.2.5"></a><h4>Parameters</h4>
+<a name="id-1.2.4.3.2.8.2.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -810,7 +811,7 @@ mm_modem_get_path (<em class="parameter"><code><a class="link" href="MMModem.htm
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.3.2.8.2.6"></a><h4>Returns</h4>
+<a name="id-1.2.4.3.2.8.2.7"></a><h4>Returns</h4>
 <p> The DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> object. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -867,7 +868,6 @@ mm_modem_get_state (<em class="parameter"><code><a class="link" href="MMModem.ht
 <div class="refsect3">
 <a name="id-1.2.4.3.2.8.4.6"></a><h4>Returns</h4>
 <p> A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemState"><span class="type">MMModemState</span></a> value.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -875,7 +875,7 @@ mm_modem_get_state (<em class="parameter"><code><a class="link" href="MMModem.ht
 <a name="mm-modem-get-state-failed-reason"></a><h3>mm_modem_get_state_failed_reason ()</h3>
 <pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemStateFailedReason"><span class="returnvalue">MMModemStateFailedReason</span></a>
 mm_modem_get_state_failed_reason (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
-<p>Gets the reason specifying why the modem is in <span class="type">MM_MODEM_STATE_FAILED</span> state.</p>
+<p>Gets the reason specifying why the modem is in <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-STATE-FAILED:CAPS"><span class="type">MM_MODEM_STATE_FAILED</span></a> state.</p>
 <div class="refsect3">
 <a name="id-1.2.4.3.2.8.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -894,7 +894,6 @@ mm_modem_get_state_failed_reason (<em class="parameter"><code><a class="link" hr
 <div class="refsect3">
 <a name="id-1.2.4.3.2.8.5.6"></a><h4>Returns</h4>
 <p> A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemStateFailedReason"><span class="type">MMModemStateFailedReason</span></a> value.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -921,7 +920,6 @@ mm_modem_get_power_state (<em class="parameter"><code><a class="link" href="MMMo
 <div class="refsect3">
 <a name="id-1.2.4.3.2.8.6.6"></a><h4>Returns</h4>
 <p> A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="type">MMModemPowerState</span></a> value.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -966,7 +964,6 @@ mm_modem_peek_supported_capabilities (<em class="parameter"><code><a class="link
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>capabilities</code></em>
 and <em class="parameter"><code>n_capabilities</code></em>
 are set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1010,7 +1007,6 @@ mm_modem_get_supported_capabilities (<em class="parameter"><code><a class="link"
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>capabilities</code></em>
 and <em class="parameter"><code>n_capabilities</code></em>
 are set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1038,7 +1034,6 @@ without a firmware reload or reinitialization.</p>
 <div class="refsect3">
 <a name="id-1.2.4.3.2.8.9.6"></a><h4>Returns</h4>
 <p> A bitmask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> flags.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1439,7 +1434,6 @@ mm_modem_peek_ports (<em class="parameter"><code><a class="link" href="MMModem.h
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>ports</code></em>
 and <em class="parameter"><code>n_ports</code></em>
 are set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1483,7 +1477,6 @@ mm_modem_get_ports (<em class="parameter"><code><a class="link" href="MMModem.ht
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>ports</code></em>
 and <em class="parameter"><code>n_ports</code></em>
 are set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1707,7 +1700,6 @@ mm_modem_get_unlock_required (<em class="parameter"><code><a class="link" href="
 <div class="refsect3">
 <a name="id-1.2.4.3.2.8.30.6"></a><h4>Returns</h4>
 <p> A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a> value, specifying the current lock state.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1809,7 +1801,6 @@ CDMA2000-capable) also typically support three or more.</p>
 <div class="refsect3">
 <a name="id-1.2.4.3.2.8.33.7"></a><h4>Returns</h4>
 <p> the maximum number of defined packet data bearers.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1839,7 +1830,6 @@ at least two active bearers.</p>
 <div class="refsect3">
 <a name="id-1.2.4.3.2.8.34.7"></a><h4>Returns</h4>
 <p> the maximum number of defined packet data bearers.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1912,8 +1902,9 @@ this modem.</p>
 it is only safe to use this function on the thread where
 <em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMModem.html#mm-modem-dup-own-numbers" title="mm_modem_dup_own_numbers ()"><code class="function">mm_modem_dup_own_numbers()</code></a> if on another
 thread.</div>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.4.3.2.8.37.6"></a><h4>Parameters</h4>
+<a name="id-1.2.4.3.2.8.37.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1928,7 +1919,7 @@ thread.</div>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.3.2.8.37.7"></a><h4>Returns</h4>
+<a name="id-1.2.4.3.2.8.37.8"></a><h4>Returns</h4>
 <p> The list of own numbers or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none available. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -2004,7 +1995,6 @@ mm_modem_peek_supported_modes (<em class="parameter"><code><a class="link" href=
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>modes</code></em>
 and <em class="parameter"><code>n_modes</code></em>
 are set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2048,7 +2038,6 @@ mm_modem_get_supported_modes (<em class="parameter"><code><a class="link" href="
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>modes</code></em>
 and <em class="parameter"><code>n_modes</code></em>
 are set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2093,7 +2082,6 @@ well as the preferred one, if any.</p>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>allowed</code></em>
 and <em class="parameter"><code>preferred</code></em>
 are set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2104,7 +2092,7 @@ mm_modem_peek_supported_bands (<em class="parameter"><code><a class="link" href=
                                <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> **bands</code></em>,
                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_bands</code></em>);</pre>
 <p>Gets the list of radio frequency and technology bands supported by the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.</p>
-<p>For POTS devices, only <span class="type">MM_MODEM_BAND_ANY</span> will be returned in <em class="parameter"><code>bands</code></em>
+<p>For POTS devices, only <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-BAND-ANY:CAPS"><span class="type">MM_MODEM_BAND_ANY</span></a> will be returned in <em class="parameter"><code>bands</code></em>
 .</p>
 <div class="refsect3">
 <a name="id-1.2.4.3.2.8.42.6"></a><h4>Parameters</h4>
@@ -2140,7 +2128,6 @@ mm_modem_peek_supported_bands (<em class="parameter"><code><a class="link" href=
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>bands</code></em>
 and <em class="parameter"><code>n_bands</code></em>
 are set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2151,7 +2138,7 @@ mm_modem_get_supported_bands (<em class="parameter"><code><a class="link" href="
                               <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> **bands</code></em>,
                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_bands</code></em>);</pre>
 <p>Gets the list of radio frequency and technology bands supported by the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.</p>
-<p>For POTS devices, only <span class="type">MM_MODEM_BAND_ANY</span> will be returned in <em class="parameter"><code>bands</code></em>
+<p>For POTS devices, only <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-BAND-ANY:CAPS"><span class="type">MM_MODEM_BAND_ANY</span></a> will be returned in <em class="parameter"><code>bands</code></em>
 .</p>
 <div class="refsect3">
 <a name="id-1.2.4.3.2.8.43.6"></a><h4>Parameters</h4>
@@ -2186,7 +2173,6 @@ mm_modem_get_supported_bands (<em class="parameter"><code><a class="link" href="
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>bands</code></em>
 and <em class="parameter"><code>n_bands</code></em>
 are set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2198,7 +2184,7 @@ mm_modem_peek_current_bands (<em class="parameter"><code><a class="link" href="M
                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_bands</code></em>);</pre>
 <p>Gets the list of radio frequency and technology bands the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> is currently
 using when connecting to a network.</p>
-<p>For POTS devices, only the <span class="type">MM_MODEM_BAND_ANY</span> band is supported.</p>
+<p>For POTS devices, only the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-BAND-ANY:CAPS"><span class="type">MM_MODEM_BAND_ANY</span></a> band is supported.</p>
 <div class="refsect3">
 <a name="id-1.2.4.3.2.8.44.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -2233,7 +2219,6 @@ using when connecting to a network.</p>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>bands</code></em>
 and <em class="parameter"><code>n_bands</code></em>
 are set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2245,7 +2230,7 @@ mm_modem_get_current_bands (<em class="parameter"><code><a class="link" href="MM
                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_bands</code></em>);</pre>
 <p>Gets the list of radio frequency and technology bands the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> is currently
 using when connecting to a network.</p>
-<p>For POTS devices, only the <span class="type">MM_MODEM_BAND_ANY</span> band is supported.</p>
+<p>For POTS devices, only the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-BAND-ANY:CAPS"><span class="type">MM_MODEM_BAND_ANY</span></a> band is supported.</p>
 <div class="refsect3">
 <a name="id-1.2.4.3.2.8.45.6"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -2279,7 +2264,6 @@ using when connecting to a network.</p>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>bands</code></em>
 and <em class="parameter"><code>n_bands</code></em>
 are set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2306,7 +2290,6 @@ mm_modem_get_supported_ip_families (<em class="parameter"><code><a class="link" 
 <div class="refsect3">
 <a name="id-1.2.4.3.2.8.46.6"></a><h4>Returns</h4>
 <p> A bitmask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="type">MMBearerIpFamily</span></a> values.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2343,7 +2326,6 @@ the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMMod
 <div class="refsect3">
 <a name="id-1.2.4.3.2.8.47.7"></a><h4>Returns</h4>
 <p> The signal quality.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2351,12 +2333,6 @@ the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMMod
 <a name="mm-modem-get-access-technologies"></a><h3>mm_modem_get_access_technologies ()</h3>
 <pre class="programlisting"><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"><span class="returnvalue">MMModemAccessTechnology</span></a>
 mm_modem_get_access_technologies (<em class="parameter"><code><a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> *self</code></em>);</pre>
-<p>
-</p>
-<div class="refsect3">
-<a name="id-1.2.4.3.2.8.48.5"></a><h4>Returns</h4>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="refsect2">
@@ -2368,8 +2344,9 @@ mm_modem_get_sim_path (<em class="parameter"><code><a class="link" href="MMModem
 it is only safe to use this function on the thread where
 <em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMModem.html#mm-modem-dup-sim-path" title="mm_modem_dup_sim_path ()"><code class="function">mm_modem_dup_sim_path()</code></a> if on another
 thread.</div>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.4.3.2.8.49.6"></a><h4>Parameters</h4>
+<a name="id-1.2.4.3.2.8.49.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -2384,7 +2361,7 @@ thread.</div>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.3.2.8.49.7"></a><h4>Returns</h4>
+<a name="id-1.2.4.3.2.8.49.8"></a><h4>Returns</h4>
 <p> The DBus path of the <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> handled in this <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none available. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -2501,7 +2478,8 @@ mm_modem_get_sim_finish (<em class="parameter"><code><a class="link" href="MMMod
 </div>
 <div class="refsect3">
 <a name="id-1.2.4.3.2.8.52.6"></a><h4>Returns</h4>
-<p> a <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if none available. The returned value should be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. </p>
+<p> a <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if <em class="parameter"><code>error</code></em>
+is set. The returned value should be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
@@ -2544,7 +2522,8 @@ for the asynchronous version of this method.</p>
 </div>
 <div class="refsect3">
 <a name="id-1.2.4.3.2.8.53.7"></a><h4>Returns</h4>
-<p> a <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if none available. The returned value should be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. </p>
+<p> a <a class="link" href="MMSim.html" title="MMSim"><span class="type">MMSim</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if <em class="parameter"><code>error</code></em>
+is set. The returned value should be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
@@ -2636,7 +2615,6 @@ mm_modem_enable_finish (<em class="parameter"><code><a class="link" href="MMMode
 <a name="id-1.2.4.3.2.8.55.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the modem was properly enabled, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2682,7 +2660,6 @@ for the asynchronous version of this method.</p>
 <a name="id-1.2.4.3.2.8.56.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the modem was properly enabled, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2772,7 +2749,6 @@ mm_modem_disable_finish (<em class="parameter"><code><a class="link" href="MMMod
 <a name="id-1.2.4.3.2.8.58.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the modem was properly disabled, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2817,7 +2793,6 @@ for the asynchronous version of this method.</p>
 <a name="id-1.2.4.3.2.8.59.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the modem was properly disabled, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2830,7 +2805,7 @@ mm_modem_set_power_state (<em class="parameter"><code><a class="link" href="MMMo
                           <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                           <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>Asynchronously sets the power state of the device. This method can only be
-used while the modem is in <code class="literal">MM_MODEM_STATE_DISABLED</code> state.</p>
+used while the modem is in <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-STATE-DISABLED:CAPS"><code class="literal">MM_MODEM_STATE_DISABLED</code></a> state.</p>
 <p>When the operation is finished, <em class="parameter"><code>callback</code></em>
  will be invoked in the <a href="https://developer.gnome.org/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
 You can then call <a class="link" href="MMModem.html#mm-modem-set-power-state-finish" title="mm_modem_set_power_state_finish ()"><code class="function">mm_modem_set_power_state_finish()</code></a> to get the result of the operation.</p>
@@ -2851,7 +2826,7 @@ You can then call <a class="link" href="MMModem.html#mm-modem-set-power-state-fi
 </tr>
 <tr>
 <td class="parameter_name"><p>state</p></td>
-<td class="parameter_description"><p>Either <code class="literal">MM_MODEM_POWER_STATE_LOW</code> or <code class="literal">MM_MODEM_POWER_STATE_ON</code>. Every other <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="type">MMModemPowerState</span></a> value is not allowed.</p></td>
+<td class="parameter_description"><p>Either <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-POWER-STATE-LOW:CAPS"><code class="literal">MM_MODEM_POWER_STATE_LOW</code></a> or <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-POWER-STATE-ON:CAPS"><code class="literal">MM_MODEM_POWER_STATE_ON</code></a>. Every other <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="type">MMModemPowerState</span></a> value is not allowed.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -2913,7 +2888,6 @@ mm_modem_set_power_state_finish (<em class="parameter"><code><a class="link" hre
 <a name="id-1.2.4.3.2.8.61.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the power state was successfully set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -2925,7 +2899,7 @@ mm_modem_set_power_state_sync (<em class="parameter"><code><a class="link" href=
                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Synchronously sets the power state of the device. This method can only be
-used while the modem is in <code class="literal">MM_MODEM_STATE_DISABLED</code> state.</p>
+used while the modem is in <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-STATE-DISABLED:CAPS"><code class="literal">MM_MODEM_STATE_DISABLED</code></a> state.</p>
 <p>The calling thread is blocked until a reply is received. See <a class="link" href="MMModem.html#mm-modem-set-power-state" title="mm_modem_set_power_state ()"><code class="function">mm_modem_set_power_state()</code></a>
 for the asynchronous version of this method.</p>
 <div class="refsect3">
@@ -2944,7 +2918,7 @@ for the asynchronous version of this method.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>state</p></td>
-<td class="parameter_description"><p>Either <code class="literal">MM_MODEM_POWER_STATE_LOW</code> or <code class="literal">MM_MODEM_POWER_STATE_ON</code>. Every other <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="type">MMModemPowerState</span></a> value is not allowed.</p></td>
+<td class="parameter_description"><p>Either <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-POWER-STATE-LOW:CAPS"><code class="literal">MM_MODEM_POWER_STATE_LOW</code></a> or <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-POWER-STATE-ON:CAPS"><code class="literal">MM_MODEM_POWER_STATE_ON</code></a>. Every other <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="type">MMModemPowerState</span></a> value is not allowed.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -2964,7 +2938,6 @@ for the asynchronous version of this method.</p>
 <a name="id-1.2.4.3.2.8.62.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the power state was successfully set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3005,7 +2978,7 @@ You can then call <a class="link" href="MMModem.html#mm-modem-set-current-modes-
 <tr>
 <td class="parameter_name"><p>preferred</p></td>
 <td class="parameter_description"><p>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> value specifying which of the modes given in <em class="parameter"><code>modes</code></em>
-is the preferred one, or <span class="type">MM_MODEM_MODE_NONE</span> if none.</p></td>
+is the preferred one, or <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-MODE-NONE:CAPS"><span class="type">MM_MODEM_MODE_NONE</span></a> if none.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -3067,7 +3040,6 @@ mm_modem_set_current_modes_finish (<em class="parameter"><code><a class="link" h
 <a name="id-1.2.4.3.2.8.64.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the allowed modes were successfully set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3105,7 +3077,7 @@ for the asynchronous version of this method.</p>
 <tr>
 <td class="parameter_name"><p>preferred</p></td>
 <td class="parameter_description"><p>A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> value specifying which of the modes given in <em class="parameter"><code>modes</code></em>
-is the preferred one, or <span class="type">MM_MODEM_MODE_NONE</span> if none.</p></td>
+is the preferred one, or <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-MODE-NONE:CAPS"><span class="type">MM_MODEM_MODE_NONE</span></a> if none.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -3125,7 +3097,6 @@ is the preferred one, or <span class="type">MM_MODEM_MODE_NONE</span> if none.</
 <a name="id-1.2.4.3.2.8.65.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the allowed modes were successfully set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3228,7 +3199,6 @@ mm_modem_set_current_bands_finish (<em class="parameter"><code><a class="link" h
 <a name="id-1.2.4.3.2.8.67.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the bands were successfully set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3286,7 +3256,6 @@ for the asynchronous version of this method.</p>
 <a name="id-1.2.4.3.2.8.68.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the bands were successfully set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3382,7 +3351,6 @@ mm_modem_set_current_capabilities_finish
 <a name="id-1.2.4.3.2.8.70.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the capabilities were successfully set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3433,7 +3401,6 @@ for the asynchronous version of this method.</p>
 <a name="id-1.2.4.3.2.8.71.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the capabilities were successfully set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3523,7 +3490,6 @@ mm_modem_reset_finish (<em class="parameter"><code><a class="link" href="MMModem
 <a name="id-1.2.4.3.2.8.73.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the reset was successful, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3568,7 +3534,6 @@ for the asynchronous version of this method.</p>
 <a name="id-1.2.4.3.2.8.74.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the reset was successful, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3664,7 +3629,6 @@ mm_modem_factory_reset_finish (<em class="parameter"><code><a class="link" href=
 <a name="id-1.2.4.3.2.8.76.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the factory_reset was successful, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -3715,7 +3679,6 @@ for the asynchronous version of this method.</p>
 <a name="id-1.2.4.3.2.8.77.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the factory reset was successful, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4096,7 +4059,6 @@ mm_modem_delete_bearer_finish (<em class="parameter"><code><a class="link" href=
 <a name="id-1.2.4.3.2.8.85.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the bearer was deleted, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4146,7 +4108,6 @@ for the asynchronous version of this method.</p>
 <a name="id-1.2.4.3.2.8.86.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the bearer was deleted, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -4413,7 +4374,6 @@ using the provided API.</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

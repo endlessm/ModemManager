@@ -5603,8 +5603,7 @@ sms_part_ready (MMBroadbandModem *self,
                 SmsPartContext *ctx)
 {
     MMSmsPart *part;
-    gint rv, status, tpdu_len;
-    gchar pdu[MM_SMS_PART_3GPP_MAX_PDU_LEN + 1];
+    MM3gppPduInfo *info;
     const gchar *response;
     GError *error = NULL;
 
@@ -5622,19 +5621,16 @@ sms_part_ready (MMBroadbandModem *self,
         return;
     }
 
-    rv = sscanf (response, "+CMGR: %d,,%d %" G_STRINGIFY (MM_SMS_PART_3GPP_MAX_PDU_LEN) "s",
-                 &status, &tpdu_len, pdu);
-    if (rv != 3) {
-        error = g_error_new (MM_CORE_ERROR,
-                             MM_CORE_ERROR_FAILED,
-                             "Failed to parse CMGR response (parsed %d items)", rv);
-        mm_warn ("Couldn't retrieve SMS part: '%s'", error->message);
+    info = mm_3gpp_parse_cmgr_read_response (response, ctx->idx, &error);
+    if (!info) {
+        mm_warn ("Couldn't parse SMS part: '%s'",
+                 error->message);
         g_simple_async_result_take_error (ctx->result, error);
         sms_part_context_complete_and_free (ctx);
         return;
     }
 
-    part = mm_sms_part_3gpp_new_from_pdu (ctx->idx, pdu, &error);
+    part = mm_sms_part_3gpp_new_from_pdu (info->index, info->pdu, &error);
     if (part) {
         mm_dbg ("Correctly parsed PDU (%d)", ctx->idx);
         mm_iface_modem_messaging_take_part (MM_IFACE_MODEM_MESSAGING (self),
@@ -5648,6 +5644,7 @@ sms_part_ready (MMBroadbandModem *self,
     }
 
     /* All done */
+    mm_3gpp_pdu_info_free (info);
     g_simple_async_result_set_op_res_gboolean (ctx->result, TRUE);
     sms_part_context_complete_and_free (ctx);
 }
@@ -5780,7 +5777,7 @@ set_messaging_unsolicited_events_handlers (MMIfaceModemMessaging *self,
     ports[0] = mm_base_modem_peek_port_primary (MM_BASE_MODEM (self));
     ports[1] = mm_base_modem_peek_port_secondary (MM_BASE_MODEM (self));
 
-    /* Enable unsolicited events in given port */
+    /* Add messaging unsolicited events handler for port primary and secondary */
     for (i = 0; i < 2; i++) {
         if (!ports[i])
             continue;
@@ -5834,15 +5831,7 @@ modem_messaging_enable_unsolicited_events_finish (MMIfaceModemMessaging *self,
                                                   GAsyncResult *res,
                                                   GError **error)
 {
-    GError *inner_error = NULL;
-
-    mm_base_modem_at_sequence_finish (MM_BASE_MODEM (self), res, NULL, &inner_error);
-    if (inner_error) {
-        g_propagate_error (error, inner_error);
-        return FALSE;
-    }
-
-    return TRUE;
+    return !g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error);
 }
 
 static gboolean
@@ -5884,17 +5873,101 @@ static const MMBaseModemAtCommand cnmi_sequence[] = {
 };
 
 static void
+modem_messaging_enable_unsolicited_events_secondary_ready (MMBaseModem *self,
+                                                           GAsyncResult *res,
+                                                           GSimpleAsyncResult *final_result)
+{
+    GError *inner_error = NULL;
+    MMPortSerialAt *secondary;
+
+    secondary = mm_base_modem_peek_port_secondary (MM_BASE_MODEM (self));
+
+    /* Since the secondary is not required, we don't propagate the error anywhere */
+    mm_base_modem_at_sequence_full_finish (MM_BASE_MODEM (self), res, NULL, &inner_error);
+    if (inner_error) {
+        mm_dbg ("(%s) Unable to enable messaging unsolicited events on modem secondary: %s",
+                mm_port_get_device (MM_PORT (secondary)),
+                inner_error->message);
+        g_error_free (inner_error);
+    }
+
+    mm_dbg ("(%s) Messaging unsolicited events enabled on secondary",
+            mm_port_get_device (MM_PORT (secondary)));
+
+    g_simple_async_result_complete (final_result);
+    g_object_unref (final_result);
+}
+
+static void
+modem_messaging_enable_unsolicited_events_primary_ready (MMBaseModem *self,
+                                                         GAsyncResult *res,
+                                                         GSimpleAsyncResult *final_result)
+{
+    GError *inner_error = NULL;
+    MMPortSerialAt *primary;
+    MMPortSerialAt *secondary;
+
+    primary = mm_base_modem_peek_port_primary (MM_BASE_MODEM (self));
+    secondary = mm_base_modem_peek_port_secondary (MM_BASE_MODEM (self));
+
+    mm_base_modem_at_sequence_full_finish (MM_BASE_MODEM (self), res, NULL, &inner_error);
+    if (inner_error) {
+        g_simple_async_result_take_error (final_result, inner_error);
+        g_simple_async_result_complete (final_result);
+        g_object_unref (final_result);
+        return;
+    }
+
+    mm_dbg ("(%s) Messaging unsolicited events enabled on primary",
+            mm_port_get_device (MM_PORT (primary)));
+
+    /* Try to enable unsolicited events for secondary port */
+    if (secondary) {
+        mm_dbg ("(%s) Enabling messaging unsolicited events on secondary port",
+                mm_port_get_device (MM_PORT (secondary)));
+        mm_base_modem_at_sequence_full (
+            MM_BASE_MODEM (self),
+            secondary,
+            cnmi_sequence,
+            NULL, /* response_processor_context */
+            NULL, /* response_processor_context_free */
+            NULL,
+            (GAsyncReadyCallback)modem_messaging_enable_unsolicited_events_secondary_ready,
+            final_result);
+        return;
+    }
+
+    g_simple_async_result_complete (final_result);
+    g_object_unref (final_result);
+}
+
+static void
 modem_messaging_enable_unsolicited_events (MMIfaceModemMessaging *self,
                                            GAsyncReadyCallback callback,
                                            gpointer user_data)
 {
-    mm_base_modem_at_sequence (
+    GSimpleAsyncResult *result;
+    MMPortSerialAt *primary;
+
+    result = g_simple_async_result_new (G_OBJECT (self),
+                                        callback,
+                                        user_data,
+                                        modem_messaging_enable_unsolicited_events);
+
+    primary = mm_base_modem_peek_port_primary (MM_BASE_MODEM (self));
+
+    /* Enable unsolicited events for primary port */
+    mm_dbg ("(%s) Enabling messaging unsolicited events on primary port",
+            mm_port_get_device (MM_PORT (primary)));
+    mm_base_modem_at_sequence_full (
         MM_BASE_MODEM (self),
+        primary,
         cnmi_sequence,
         NULL, /* response_processor_context */
         NULL, /* response_processor_context_free */
-        callback,
-        user_data);
+        NULL,
+        (GAsyncReadyCallback)modem_messaging_enable_unsolicited_events_primary_ready,
+        result);
 }
 
 /*****************************************************************************/
@@ -7508,6 +7581,96 @@ enable_location_gathering (MMIfaceModemLocation *self,
     g_simple_async_result_set_op_res_gboolean (result, TRUE);
     g_simple_async_result_complete_in_idle (result);
     g_object_unref (result);
+}
+
+/*****************************************************************************/
+/* Load network time (Time interface) */
+
+static gchar *
+modem_time_load_network_time_finish (MMIfaceModemTime *self,
+                                     GAsyncResult *res,
+                                     GError **error)
+{
+    const gchar *response;
+    gchar *result = NULL;
+
+    response = mm_base_modem_at_command_finish (MM_BASE_MODEM (self), res, error);
+    if (response)
+        mm_parse_cclk_response (response, &result, NULL, error);
+    return result;
+}
+
+static void
+modem_time_load_network_time (MMIfaceModemTime *self,
+                              GAsyncReadyCallback callback,
+                              gpointer user_data)
+{
+    mm_base_modem_at_command (MM_BASE_MODEM (self),
+                              "+CCLK?",
+                              3,
+                              FALSE,
+                              callback,
+                              user_data);
+}
+
+/*****************************************************************************/
+/* Load network timezone (Time interface) */
+
+static MMNetworkTimezone *
+modem_time_load_network_timezone_finish (MMIfaceModemTime *self,
+                                         GAsyncResult *res,
+                                         GError **error)
+{
+    const gchar *response;
+    MMNetworkTimezone *tz = NULL;
+
+    response = mm_base_modem_at_command_finish (MM_BASE_MODEM (self), res, NULL);
+    if (response)
+        mm_parse_cclk_response (response, NULL, &tz, error);
+    return tz;
+}
+
+static void
+modem_time_load_network_timezone (MMIfaceModemTime *self,
+                                  GAsyncReadyCallback callback,
+                                  gpointer user_data)
+{
+    mm_base_modem_at_command (MM_BASE_MODEM (self),
+                              "+CCLK?",
+                              3,
+                              FALSE,
+                              callback,
+                              user_data);
+}
+
+/*****************************************************************************/
+/* Check support (Time interface) */
+
+static const MMBaseModemAtCommand time_check_sequence[] = {
+    { "+CTZU=1",  3, TRUE, mm_base_modem_response_processor_no_result_continue },
+    { "+CCLK?",   3, TRUE, mm_base_modem_response_processor_string },
+    { NULL }
+};
+
+static gboolean
+modem_time_check_support_finish (MMIfaceModemTime *self,
+                                 GAsyncResult *res,
+                                 GError **error)
+{
+    return !!mm_base_modem_at_sequence_finish (MM_BASE_MODEM (self), res, NULL, error);
+}
+
+static void
+modem_time_check_support (MMIfaceModemTime *self,
+                          GAsyncReadyCallback callback,
+                          gpointer user_data)
+{
+    mm_base_modem_at_sequence (MM_BASE_MODEM (self),
+                               time_check_sequence,
+                               NULL, /* response_processor_context */
+                               NULL, /* response_processor_context_free */
+                               callback,
+                               user_data);
 }
 
 /*****************************************************************************/
@@ -9824,6 +9987,12 @@ iface_modem_messaging_init (MMIfaceModemMessaging *iface)
 static void
 iface_modem_time_init (MMIfaceModemTime *iface)
 {
+    iface->check_support = modem_time_check_support;
+    iface->check_support_finish = modem_time_check_support_finish;
+    iface->load_network_time = modem_time_load_network_time;
+    iface->load_network_time_finish = modem_time_load_network_time_finish;
+    iface->load_network_timezone = modem_time_load_network_timezone;
+    iface->load_network_timezone_finish = modem_time_load_network_timezone_finish;
 }
 
 static void

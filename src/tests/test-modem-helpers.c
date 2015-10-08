@@ -196,6 +196,69 @@ test_cmgl_response_pantech_multiple (void *f, gpointer d)
 }
 
 /*****************************************************************************/
+/* Test CMGR responses */
+
+static void
+test_cmgr_response (const gchar *str,
+                    const MM3gppPduInfo *expected)
+{
+    MM3gppPduInfo *info;
+    GError *error = NULL;
+
+    info = mm_3gpp_parse_cmgr_read_response (str, 0, &error);
+    g_assert_no_error (error);
+    g_assert (info != NULL);
+
+    /* Ignore index, it is not included in CMGR response */
+    g_assert_cmpint (info->status, ==, expected->status);
+    g_assert_cmpstr (info->pdu, ==, expected->pdu);
+
+    mm_3gpp_pdu_info_free (info);
+}
+
+static void
+test_cmgr_response_generic (void *f, gpointer d)
+{
+    const gchar *str =
+        "+CMGR: 1,,147 07914306073011F00405812261F700003130916191314095C27"
+        "4D96D2FBBD3E437280CB2BEC961F3DB5D76818EF2F0381D9E83E06F39A8CC2E9FD372F"
+        "77BEE0249CBE37A594E0E83E2F532085E2F93CB73D0B93CA7A7DFEEB01C447F93DF731"
+        "0BD3E07CDCB727B7A9C7ECF41E432C8FC96B7C32079189E26874179D0F8DD7E93C3A0B"
+        "21B246AA641D637396C7EBBCB22D0FD7E77B5D376B3AB3C07";
+
+    const MM3gppPduInfo expected = {
+        .index = 0,
+        .status = 1,
+        .pdu = "07914306073011F00405812261F700003130916191314095C27"
+        "4D96D2FBBD3E437280CB2BEC961F3DB5D76818EF2F0381D9E83E06F39A8CC2E9FD372F"
+        "77BEE0249CBE37A594E0E83E2F532085E2F93CB73D0B93CA7A7DFEEB01C447F93DF731"
+        "0BD3E07CDCB727B7A9C7ECF41E432C8FC96B7C32079189E26874179D0F8DD7E93C3A0B"
+        "21B246AA641D637396C7EBBCB22D0FD7E77B5D376B3AB3C07"
+    };
+
+    test_cmgr_response (str, &expected);
+}
+
+/* Telit HE910 places empty quotation marks in the <alpha> field and a CR+LF
+ * before the PDU */
+static void
+test_cmgr_response_telit (void *f, gpointer d)
+{
+    const gchar *str =
+        "+CMGR: 0,\"\",50\r\n07916163838428F9040B916121021021F7000051905141642"
+        "20A23C4B0BCFD5E8740C4B0BCFD5E83C26E3248196687C9A0301D440DBBC3677918";
+
+    const MM3gppPduInfo expected = {
+        .index = 0,
+        .status = 0,
+        .pdu = "07916163838428F9040B916121021021F7000051905141642"
+        "20A23C4B0BCFD5E8740C4B0BCFD5E83C26E3248196687C9A0301D440DBBC3677918"
+    };
+
+    test_cmgr_response (str, &expected);
+}
+
+/*****************************************************************************/
 /* Test COPS responses */
 
 static void
@@ -2341,6 +2404,77 @@ test_supported_capability_filter (void *f, gpointer d)
 }
 
 /*****************************************************************************/
+/* Test +CCLK responses */
+
+typedef struct {
+    const gchar *str;
+    gboolean ret;
+    gboolean test_iso8601;
+    gboolean test_tz;
+    gchar *iso8601;
+    gint32 offset;
+} CclkTest;
+
+static const CclkTest cclk_tests[] = {
+    { "+CCLK: \"14/08/05,04:00:21+40\"", TRUE, TRUE, FALSE,
+        "2014-08-05T04:00:21+10:00", 600 },
+    { "+CCLK: \"14/08/05,04:00:21+40\"", TRUE, FALSE, TRUE,
+        "2014-08-05T04:00:21+10:00", 600 },
+    { "+CCLK: \"14/08/05,04:00:21+40\"", TRUE, TRUE, TRUE,
+        "2014-08-05T04:00:21+10:00", 600 },
+
+    { "+CCLK: \"15/02/28,20:30:40-32\"", TRUE, TRUE, FALSE,
+        "2015-02-28T20:30:40-08:00", -480 },
+    { "+CCLK: \"15/02/28,20:30:40-32\"", TRUE, FALSE, TRUE,
+        "2015-02-28T20:30:40-08:00", -480 },
+    { "+CCLK: \"15/02/28,20:30:40-32\"", TRUE, TRUE, TRUE,
+        "2015-02-28T20:30:40-08:00", -480 },
+
+    { "+CCLK: \"XX/XX/XX,XX:XX:XX+XX\"", FALSE, TRUE, FALSE,
+        NULL, MM_NETWORK_TIMEZONE_OFFSET_UNKNOWN },
+
+    { NULL, FALSE, FALSE, FALSE, NULL, MM_NETWORK_TIMEZONE_OFFSET_UNKNOWN }
+};
+
+static void
+test_cclk_response (void)
+{
+    guint i;
+
+    for (i = 0; cclk_tests[i].str; i++) {
+        GError *error = NULL;
+        gchar *iso8601 = NULL;
+        MMNetworkTimezone *tz = NULL;
+        gboolean ret;
+
+        ret = mm_parse_cclk_response (cclk_tests[i].str,
+                                      cclk_tests[i].test_iso8601 ? &iso8601 : NULL,
+                                      cclk_tests[i].test_tz ? &tz : NULL,
+                                      &error);
+
+        g_assert (ret == cclk_tests[i].ret);
+        g_assert (ret == (error ? FALSE : TRUE));
+
+        g_clear_error (&error);
+
+        if (cclk_tests[i].test_iso8601)
+            g_assert_cmpstr (cclk_tests[i].iso8601, ==, iso8601);
+
+        if (cclk_tests[i].test_tz) {
+            g_assert (mm_network_timezone_get_offset (tz) == cclk_tests[i].offset);
+            g_assert (mm_network_timezone_get_dst_offset (tz) == MM_NETWORK_TIMEZONE_OFFSET_UNKNOWN);
+            g_assert (mm_network_timezone_get_leap_seconds (tz) == MM_NETWORK_TIMEZONE_LEAP_SECONDS_UNKNOWN);
+        }
+
+        if (iso8601)
+            g_free (iso8601);
+
+        if (tz)
+            g_object_unref (tz);
+    }
+}
+
+/*****************************************************************************/
 
 void
 _mm_log (const char *loc,
@@ -2497,9 +2631,14 @@ int main (int argc, char **argv)
     g_test_suite_add (suite, TESTCASE (test_cmgl_response_pantech, NULL));
     g_test_suite_add (suite, TESTCASE (test_cmgl_response_pantech_multiple, NULL));
 
+    g_test_suite_add (suite, TESTCASE (test_cmgr_response_generic, NULL));
+    g_test_suite_add (suite, TESTCASE (test_cmgr_response_telit, NULL));
+
     g_test_suite_add (suite, TESTCASE (test_supported_mode_filter, NULL));
 
     g_test_suite_add (suite, TESTCASE (test_supported_capability_filter, NULL));
+
+    g_test_suite_add (suite, TESTCASE (test_cclk_response, NULL));
 
     result = g_test_run ();
 

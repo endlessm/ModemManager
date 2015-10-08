@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>libmm-glib Reference Manual: MMFirmwareProperties</title>
+<title>MMFirmwareProperties: libmm-glib Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
 <link rel="up" href="ch03s06.html" title="Firmware support">
 <link rel="prev" href="MMModemFirmware.html" title="MMModemFirmware">
 <link rel="next" href="ch03s07.html" title="Extended signal information">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -144,7 +144,6 @@ mm_firmware_properties_get_image_type (<em class="parameter"><code><a class="lin
 <div class="refsect3">
 <a name="id-1.2.4.8.3.7.2.6"></a><h4>Returns</h4>
 <p> A <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMFirmwareImageType"><span class="type">MMFirmwareImageType</span></a> specifying The type of the image.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -181,7 +180,7 @@ mm_firmware_properties_get_unique_id (<em class="parameter"><code><a class="link
 <pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 mm_firmware_properties_get_gobi_pri_version
                                (<em class="parameter"><code><a class="link" href="MMFirmwareProperties.html" title="MMFirmwareProperties"><span class="type">MMFirmwareProperties</span></a> *self</code></em>);</pre>
-<p>Gets the PRI version of a firmware image of type <code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code>.</p>
+<p>Gets the PRI version of a firmware image of type <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-FIRMWARE-IMAGE-TYPE-GOBI:CAPS"><code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code></a>.</p>
 <div class="refsect3">
 <a name="id-1.2.4.8.3.7.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -201,7 +200,6 @@ mm_firmware_properties_get_gobi_pri_version
 <a name="id-1.2.4.8.3.7.4.6"></a><h4>Returns</h4>
 <p> The PRI version, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -210,7 +208,7 @@ mm_firmware_properties_get_gobi_pri_version
 <pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 mm_firmware_properties_get_gobi_pri_info
                                (<em class="parameter"><code><a class="link" href="MMFirmwareProperties.html" title="MMFirmwareProperties"><span class="type">MMFirmwareProperties</span></a> *self</code></em>);</pre>
-<p>Gets the PRI info of a firmware image of type <code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code>.</p>
+<p>Gets the PRI info of a firmware image of type <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-FIRMWARE-IMAGE-TYPE-GOBI:CAPS"><code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code></a>.</p>
 <div class="refsect3">
 <a name="id-1.2.4.8.3.7.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -230,7 +228,6 @@ mm_firmware_properties_get_gobi_pri_info
 <a name="id-1.2.4.8.3.7.5.6"></a><h4>Returns</h4>
 <p> The PRI info, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -239,7 +236,7 @@ mm_firmware_properties_get_gobi_pri_info
 <pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 mm_firmware_properties_get_gobi_boot_version
                                (<em class="parameter"><code><a class="link" href="MMFirmwareProperties.html" title="MMFirmwareProperties"><span class="type">MMFirmwareProperties</span></a> *self</code></em>);</pre>
-<p>Gets the boot version of a firmware image of type <code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code>.</p>
+<p>Gets the boot version of a firmware image of type <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-FIRMWARE-IMAGE-TYPE-GOBI:CAPS"><code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code></a>.</p>
 <div class="refsect3">
 <a name="id-1.2.4.8.3.7.6.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -259,7 +256,6 @@ mm_firmware_properties_get_gobi_boot_version
 <a name="id-1.2.4.8.3.7.6.6"></a><h4>Returns</h4>
 <p> The boot version, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -268,7 +264,7 @@ mm_firmware_properties_get_gobi_boot_version
 <pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 mm_firmware_properties_get_gobi_pri_unique_id
                                (<em class="parameter"><code><a class="link" href="MMFirmwareProperties.html" title="MMFirmwareProperties"><span class="type">MMFirmwareProperties</span></a> *self</code></em>);</pre>
-<p>Gets the PRI unique ID of a firmware image of type <code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code>.</p>
+<p>Gets the PRI unique ID of a firmware image of type <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-FIRMWARE-IMAGE-TYPE-GOBI:CAPS"><code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code></a>.</p>
 <div class="refsect3">
 <a name="id-1.2.4.8.3.7.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -288,7 +284,6 @@ mm_firmware_properties_get_gobi_pri_unique_id
 <a name="id-1.2.4.8.3.7.7.6"></a><h4>Returns</h4>
 <p> The PRI unique ID, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -297,7 +292,7 @@ mm_firmware_properties_get_gobi_pri_unique_id
 <pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 mm_firmware_properties_get_gobi_modem_unique_id
                                (<em class="parameter"><code><a class="link" href="MMFirmwareProperties.html" title="MMFirmwareProperties"><span class="type">MMFirmwareProperties</span></a> *self</code></em>);</pre>
-<p>Gets the MODEM unique ID of a firmware image of type <code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code>.</p>
+<p>Gets the MODEM unique ID of a firmware image of type <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-FIRMWARE-IMAGE-TYPE-GOBI:CAPS"><code class="literal">MM_FIRMWARE_IMAGE_TYPE_GOBI</code></a>.</p>
 <div class="refsect3">
 <a name="id-1.2.4.8.3.7.8.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
@@ -317,7 +312,6 @@ mm_firmware_properties_get_gobi_modem_unique_id
 <a name="id-1.2.4.8.3.7.8.6"></a><h4>Returns</h4>
 <p> The PRI unique ID, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 </div>
@@ -332,7 +326,6 @@ using the provided API.</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

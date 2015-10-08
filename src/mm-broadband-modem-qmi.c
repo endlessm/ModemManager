@@ -1235,7 +1235,7 @@ dms_get_ids_ready (QmiClientDms *client,
         else if (len == 8)
             ctx->self->priv->esn = g_strdup (str);
         else
-            g_warn_if_reached ();
+            g_debug ("Invalid ESN reported: '%s' (unexpected length)", str);
     }
 
     if (qmi_message_dms_get_ids_output_get_meid (output, &str, NULL) &&
@@ -1245,7 +1245,7 @@ dms_get_ids_ready (QmiClientDms *client,
         if (len == 14)
             ctx->self->priv->meid = g_strdup (str);
         else
-            g_warn_if_reached ();
+            g_debug ("Invalid MEID reported: '%s' (unexpected length)", str);
     }
 
     if (ctx->self->priv->imei)
@@ -2226,7 +2226,7 @@ signal_info_get_quality (MMBroadbandModemQmi *self,
                          QmiMessageNasGetSignalInfoOutput *output,
                          gint8 *out_quality)
 {
-    gint8 rssi_max = 0;
+    gint8 rssi_max = -125;
     gint8 rssi;
 
     g_assert (out_quality != NULL);
@@ -2237,31 +2237,31 @@ signal_info_get_quality (MMBroadbandModemQmi *self,
     if (qmi_message_nas_get_signal_info_output_get_cdma_signal_strength (output, &rssi, NULL, NULL)) {
         mm_dbg ("RSSI (CDMA): %d dBm", rssi);
         if (qmi_dbm_valid (rssi, QMI_NAS_RADIO_INTERFACE_CDMA_1X))
-            rssi = MAX (rssi, rssi_max);
+            rssi_max = MAX (rssi, rssi_max);
     }
 
     if (qmi_message_nas_get_signal_info_output_get_hdr_signal_strength (output, &rssi, NULL, NULL, NULL, NULL)) {
         mm_dbg ("RSSI (HDR): %d dBm", rssi);
         if (qmi_dbm_valid (rssi, QMI_NAS_RADIO_INTERFACE_CDMA_1XEVDO))
-            rssi = MAX (rssi, rssi_max);
+            rssi_max = MAX (rssi, rssi_max);
     }
 
     if (qmi_message_nas_get_signal_info_output_get_gsm_signal_strength (output, &rssi, NULL)) {
         mm_dbg ("RSSI (GSM): %d dBm", rssi);
         if (qmi_dbm_valid (rssi, QMI_NAS_RADIO_INTERFACE_GSM))
-            rssi = MAX (rssi, rssi_max);
+            rssi_max = MAX (rssi, rssi_max);
     }
 
     if (qmi_message_nas_get_signal_info_output_get_wcdma_signal_strength (output, &rssi, NULL, NULL)) {
         mm_dbg ("RSSI (WCDMA): %d dBm", rssi);
         if (qmi_dbm_valid (rssi, QMI_NAS_RADIO_INTERFACE_UMTS))
-            rssi = MAX (rssi, rssi_max);
+            rssi_max = MAX (rssi, rssi_max);
     }
 
     if (qmi_message_nas_get_signal_info_output_get_lte_signal_strength (output, &rssi, NULL, NULL, NULL, NULL)) {
         mm_dbg ("RSSI (LTE): %d dBm", rssi);
         if (qmi_dbm_valid (rssi, QMI_NAS_RADIO_INTERFACE_LTE))
-            rssi = MAX (rssi, rssi_max);
+            rssi_max = MAX (rssi, rssi_max);
     }
 
     /* This RSSI comes as negative dBms */
@@ -2269,7 +2269,7 @@ signal_info_get_quality (MMBroadbandModemQmi *self,
 
     mm_dbg ("RSSI: %d dBm --> %u%%", rssi_max, *out_quality);
 
-    return (rssi_max < 0);
+    return (rssi_max > -125);
 }
 
 static void
@@ -3435,6 +3435,68 @@ modem_3gpp_load_enabled_facility_locks_finish (MMIfaceModem3gpp *self,
 }
 
 static void
+get_sim_lock_status_via_pin_status_ready (QmiClientDms *client,
+                                          GAsyncResult *res,
+                                          LoadEnabledFacilityLocksContext *ctx)
+{
+    QmiMessageDmsUimGetPinStatusOutput *output;
+    gboolean enabled;
+
+    output = qmi_client_dms_uim_get_pin_status_finish (client, res, NULL);
+    if (!output ||
+        !qmi_message_dms_uim_get_pin_status_output_get_result (output, NULL)) {
+        mm_dbg ("Couldn't query PIN status, assuming SIM PIN is disabled");
+        enabled = FALSE;
+    } else {
+        QmiDmsUimPinStatus current_status;
+
+        if (qmi_message_dms_uim_get_pin_status_output_get_pin1_status (
+            output,
+            &current_status,
+            NULL, /* verify_retries_left */
+            NULL, /* unblock_retries_left */
+            NULL)) {
+            enabled = mm_pin_enabled_from_qmi_uim_pin_status (current_status);
+            mm_dbg ("PIN is reported %s", (enabled ? "enabled" : "disabled"));
+        } else {
+            mm_dbg ("Couldn't find PIN1 status in the result, assuming SIM PIN is disabled");
+            enabled = FALSE;
+        }
+    }
+
+    if (output)
+        qmi_message_dms_uim_get_pin_status_output_unref (output);
+
+    if (enabled) {
+        ctx->locks |= (MM_MODEM_3GPP_FACILITY_SIM);
+    } else {
+        ctx->locks &= ~(MM_MODEM_3GPP_FACILITY_SIM);
+    }
+
+    /* No more facilities to query, all done */
+    g_simple_async_result_set_op_res_gpointer (ctx->result,
+                                               GUINT_TO_POINTER (ctx->locks),
+                                               NULL);
+    load_enabled_facility_locks_context_complete_and_free (ctx);
+}
+
+/* the SIM lock cannot be queried with the qmi_get_ck_status function,
+ * therefore using the PIN status */
+static void
+get_sim_lock_status_via_pin_status (LoadEnabledFacilityLocksContext *ctx)
+{
+    mm_dbg ("Retrieving PIN status to check for enabled PIN");
+    /* if the SIM is locked or not can only be queried by locking at
+     * the PIN status */
+    qmi_client_dms_uim_get_pin_status (QMI_CLIENT_DMS (ctx->client),
+                                       NULL,
+                                       5,
+                                       NULL,
+                                       (GAsyncReadyCallback)get_sim_lock_status_via_pin_status_ready,
+                                       ctx);
+}
+
+static void
 dms_uim_get_ck_status_ready (QmiClientDms *client,
                              GAsyncResult *res,
                              LoadEnabledFacilityLocksContext *ctx)
@@ -3512,11 +3574,7 @@ get_next_facility_lock_status (LoadEnabledFacilityLocksContext *ctx)
         }
     }
 
-    /* No more facilities to query, all done */
-    g_simple_async_result_set_op_res_gpointer (ctx->result,
-                                               GUINT_TO_POINTER (ctx->locks),
-                                               NULL);
-    load_enabled_facility_locks_context_complete_and_free (ctx);
+    get_sim_lock_status_via_pin_status (ctx);
 }
 
 static void
@@ -4168,8 +4226,8 @@ process_common_info (QmiNasServiceStatus service_status,
                      gchar **mm_operator_id)
 {
     MMModem3gppRegistrationState tmp_registration_state;
-    gboolean apply_cs;
-    gboolean apply_ps;
+    gboolean apply_cs = TRUE;
+    gboolean apply_ps = TRUE;
 
     if (service_status != QMI_NAS_SERVICE_STATUS_LIMITED &&
         service_status != QMI_NAS_SERVICE_STATUS_AVAILABLE &&
@@ -4189,6 +4247,8 @@ process_common_info (QmiNasServiceStatus service_status,
             apply_ps = FALSE;
         else if (domain == QMI_NAS_NETWORK_SERVICE_DOMAIN_PS)
             apply_cs = FALSE;
+        else if (domain == QMI_NAS_NETWORK_SERVICE_DOMAIN_CS_PS)
+            /* both apply */ ;
 
         /* Check if we really are roaming or forbidden */
         if (forbidden_valid && forbidden)
@@ -4210,16 +4270,16 @@ process_common_info (QmiNasServiceStatus service_status,
     if (apply_cs)
         *mm_cs_registration_state = tmp_registration_state;
     if (apply_ps)
-        *mm_cs_registration_state = tmp_registration_state;
+        *mm_ps_registration_state = tmp_registration_state;
 
     if (network_id_valid) {
         *mm_operator_id = g_malloc (7);
         memcpy (*mm_operator_id, mcc, 3);
         if (mnc[2] == 0xFF) {
-            memcpy (*mm_operator_id, mnc, 2);
+            memcpy (&((*mm_operator_id)[3]), mnc, 2);
             (*mm_operator_id)[5] = '\0';
         } else {
-            memcpy (*mm_operator_id, mnc, 3);
+            memcpy (&((*mm_operator_id)[3]), mnc, 3);
             (*mm_operator_id)[6] = '\0';
         }
     }
@@ -6436,7 +6496,7 @@ signal_info_indication_cb (QmiClientNas *client,
                            QmiIndicationNasSignalInfoOutput *output,
                            MMBroadbandModemQmi *self)
 {
-    gint8 rssi_max = 0;
+    gint8 rssi_max = -125;
     gint8 rssi;
     guint8 quality;
 
@@ -6449,31 +6509,31 @@ signal_info_indication_cb (QmiClientNas *client,
     if (qmi_indication_nas_signal_info_output_get_cdma_signal_strength (output, &rssi, NULL, NULL)) {
         mm_dbg ("RSSI (CDMA): %d dBm", rssi);
         if (qmi_dbm_valid (rssi, QMI_NAS_RADIO_INTERFACE_CDMA_1X))
-            rssi = MAX (rssi, rssi_max);
+            rssi_max = MAX (rssi, rssi_max);
     }
 
     if (qmi_indication_nas_signal_info_output_get_hdr_signal_strength (output, &rssi, NULL, NULL, NULL, NULL)) {
         mm_dbg ("RSSI (HDR): %d dBm", rssi);
         if (qmi_dbm_valid (rssi, QMI_NAS_RADIO_INTERFACE_CDMA_1XEVDO))
-            rssi = MAX (rssi, rssi_max);
+            rssi_max = MAX (rssi, rssi_max);
     }
 
     if (qmi_indication_nas_signal_info_output_get_gsm_signal_strength (output, &rssi, NULL)) {
         mm_dbg ("RSSI (GSM): %d dBm", rssi);
         if (qmi_dbm_valid (rssi, QMI_NAS_RADIO_INTERFACE_GSM))
-            rssi = MAX (rssi, rssi_max);
+            rssi_max = MAX (rssi, rssi_max);
     }
 
     if (qmi_indication_nas_signal_info_output_get_wcdma_signal_strength (output, &rssi, NULL, NULL)) {
         mm_dbg ("RSSI (WCDMA): %d dBm", rssi);
         if (qmi_dbm_valid (rssi, QMI_NAS_RADIO_INTERFACE_UMTS))
-            rssi = MAX (rssi, rssi_max);
+            rssi_max = MAX (rssi, rssi_max);
     }
 
     if (qmi_indication_nas_signal_info_output_get_lte_signal_strength (output, &rssi, NULL, NULL, NULL, NULL)) {
         mm_dbg ("RSSI (LTE): %d dBm", rssi);
         if (qmi_dbm_valid (rssi, QMI_NAS_RADIO_INTERFACE_LTE))
-            rssi = MAX (rssi, rssi_max);
+            rssi_max = MAX (rssi, rssi_max);
     }
 
     if (rssi_max < 0) {

@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>libmm-glib Reference Manual: MMModemCdma</title>
+<title>MMModemCdma: libmm-glib Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
 <link rel="up" href="ch03.html#id-1.2.4.3" title="Generic interfaces">
 <link rel="prev" href="MMModem3gppUssd.html" title="MMModem3gppUssd">
 <link rel="next" href="MMCdmaManualActivationProperties.html" title="MMCdmaManualActivationProperties">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -219,7 +219,7 @@ MMModemCdma implements
 <p>The <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> is an object providing access to the methods, signals and
 properties of the CDMA interface.</p>
 <p>The CDMA interface is exposed whenever a modem has CDMA capabilities
-(<code class="literal">MM_MODEM_CAPABILITY_CDMA_EVDO</code>).</p>
+(<a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MM-MODEM-CAPABILITY-CDMA-EVDO:CAPS"><code class="literal">MM_MODEM_CAPABILITY_CDMA_EVDO</code></a>).</p>
 </div>
 <div class="refsect1">
 <a name="MMModemCdma.functions_details"></a><h2>Functions</h2>
@@ -424,7 +424,6 @@ a CDMA 1x network.</p>
 <div class="refsect3">
 <a name="id-1.2.4.3.5.8.8.6"></a><h4>Returns</h4>
 <p> The NID, or <a class="link" href="MMModemCdma.html#MM-MODEM-CDMA-NID-UNKNOWN:CAPS" title="MM_MODEM_CDMA_NID_UNKNOWN"><code class="literal">MM_MODEM_CDMA_NID_UNKNOWN</code></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -453,7 +452,6 @@ a CDMA 1x network.</p>
 <div class="refsect3">
 <a name="id-1.2.4.3.5.8.9.6"></a><h4>Returns</h4>
 <p> The SID, or <a class="link" href="MMModemCdma.html#MM-MODEM-CDMA-SID-UNKNOWN:CAPS" title="MM_MODEM_CDMA_SID_UNKNOWN"><code class="literal">MM_MODEM_CDMA_SID_UNKNOWN</code></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -481,7 +479,6 @@ mm_modem_cdma_get_cdma1x_registration_state
 <div class="refsect3">
 <a name="id-1.2.4.3.5.8.10.6"></a><h4>Returns</h4>
 <p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -509,7 +506,6 @@ mm_modem_cdma_get_evdo_registration_state
 <div class="refsect3">
 <a name="id-1.2.4.3.5.8.11.6"></a><h4>Returns</h4>
 <p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -536,7 +532,6 @@ mm_modem_cdma_get_activation_state (<em class="parameter"><code><a class="link" 
 <div class="refsect3">
 <a name="id-1.2.4.3.5.8.12.6"></a><h4>Returns</h4>
 <p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaActivationState"><span class="type">MMModemCdmaActivationState</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -632,7 +627,6 @@ mm_modem_cdma_activate_finish (<em class="parameter"><code><a class="link" href=
 <a name="id-1.2.4.3.5.8.14.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the activation was successful, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -683,7 +677,6 @@ for the asynchronous version of this method.</p>
 <a name="id-1.2.4.3.5.8.15.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the activation was successful, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -778,7 +771,6 @@ mm_modem_cdma_activate_manual_finish (<em class="parameter"><code><a class="link
 <a name="id-1.2.4.3.5.8.17.6"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the activation was successful, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -828,7 +820,6 @@ for the asynchronous version of this method.</p>
 <a name="id-1.2.4.3.5.8.18.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the activation was successful, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
-<p></p>
 </div>
 </div>
 </div>
@@ -857,7 +848,6 @@ using the provided API.</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>
