@@ -60,7 +60,6 @@ HTML_IMAGES = \
 	$(NULL)
 
 content_files = \
-	$(HTML_IMAGES) \
 	$(NULL)
 
 if ENABLE_GTK_DOC
@@ -90,8 +89,3 @@ CLEANFILES += \
 	*.stamp \
 	-rf xml html tmpl \
 	$(NULL)
-
-# PNGs are removed only in maintainer-clean
-# Logos are copied to current directory by gtk-doc
-DISTCLEANFILES = \
-	$(notdir $(LOGOS_PNG))

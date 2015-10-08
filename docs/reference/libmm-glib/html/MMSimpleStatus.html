@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>libmm-glib Reference Manual: MMSimpleStatus</title>
+<title>MMSimpleStatus: libmm-glib Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
 <link rel="up" href="ch03s02.html" title="Simple interface support">
 <link rel="prev" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties">
 <link rel="next" href="ch03s03.html" title="Location support">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -265,7 +265,6 @@ mm_simple_status_get_state (<em class="parameter"><code><a class="link" href="MM
 <div class="refsect3">
 <a name="id-1.2.4.4.4.8.2.6"></a><h4>Returns</h4>
 <p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemState"><span class="type">MMModemState</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -300,7 +299,6 @@ mm_simple_status_get_signal_quality (<em class="parameter"><code><a class="link"
 <div class="refsect3">
 <a name="id-1.2.4.4.4.8.3.6"></a><h4>Returns</h4>
 <p> the signal quality.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -328,7 +326,6 @@ mm_simple_status_get_access_technologies
 <div class="refsect3">
 <a name="id-1.2.4.4.4.8.4.6"></a><h4>Returns</h4>
 <p> a bitmask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"><span class="type">MMModemAccessTechnology</span></a> values.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -394,7 +391,6 @@ mm_simple_status_get_3gpp_registration_state
 <div class="refsect3">
 <a name="id-1.2.4.4.4.8.6.6"></a><h4>Returns</h4>
 <p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState"><span class="type">MMModem3gppRegistrationState</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -423,7 +419,6 @@ mm_simple_status_get_3gpp_operator_code
 <a name="id-1.2.4.4.4.8.7.6"></a><h4>Returns</h4>
 <p> the operator code, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -452,7 +447,6 @@ mm_simple_status_get_3gpp_operator_name
 <a name="id-1.2.4.4.4.8.8.6"></a><h4>Returns</h4>
 <p> the operator name, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
 .</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -480,7 +474,6 @@ mm_simple_status_get_3gpp_subscription_state
 <div class="refsect3">
 <a name="id-1.2.4.4.4.8.9.6"></a><h4>Returns</h4>
 <p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppSubscriptionState"><span class="type">MMModem3gppSubscriptionState</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -508,7 +501,6 @@ mm_simple_status_get_cdma_cdma1x_registration_state
 <div class="refsect3">
 <a name="id-1.2.4.4.4.8.10.6"></a><h4>Returns</h4>
 <p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -536,7 +528,6 @@ mm_simple_status_get_cdma_evdo_registration_state
 <div class="refsect3">
 <a name="id-1.2.4.4.4.8.11.6"></a><h4>Returns</h4>
 <p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a>.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -563,7 +554,6 @@ mm_simple_status_get_cdma_nid (<em class="parameter"><code><a class="link" href=
 <div class="refsect3">
 <a name="id-1.2.4.4.4.8.12.6"></a><h4>Returns</h4>
 <p> the NID, or <a class="link" href="MMModemCdma.html#MM-MODEM-CDMA-NID-UNKNOWN:CAPS" title="MM_MODEM_CDMA_NID_UNKNOWN"><code class="literal">MM_MODEM_CDMA_NID_UNKNOWN</code></a> if unknown.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -590,7 +580,6 @@ mm_simple_status_get_cdma_sid (<em class="parameter"><code><a class="link" href=
 <div class="refsect3">
 <a name="id-1.2.4.4.4.8.13.6"></a><h4>Returns</h4>
 <p> the SID, or <a class="link" href="MMModemCdma.html#MM-MODEM-CDMA-SID-UNKNOWN:CAPS" title="MM_MODEM_CDMA_SID_UNKNOWN"><code class="literal">MM_MODEM_CDMA_SID_UNKNOWN</code></a> if unknown.</p>
-<p></p>
 </div>
 </div>
 </div>
@@ -706,7 +695,6 @@ only be accessed using the provided API.</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

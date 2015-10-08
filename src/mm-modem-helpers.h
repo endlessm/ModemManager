@@ -20,6 +20,9 @@
 
 #include <ModemManager.h>
 
+#define _LIBMM_INSIDE_MM
+#include <libmm-glib.h>
+
 #include "glib-object.h"
 #include "mm-charsets.h"
 
@@ -181,10 +184,15 @@ typedef struct {
     gint status;
     gchar *pdu;
 } MM3gppPduInfo;
+void   mm_3gpp_pdu_info_free           (MM3gppPduInfo *info);
 void   mm_3gpp_pdu_info_list_free      (GList *info_list);
 GList *mm_3gpp_parse_pdu_cmgl_response (const gchar *str,
                                         GError **error);
 
+/* AT+CMGR (Read message) response parser */
+MM3gppPduInfo *mm_3gpp_parse_cmgr_read_response (const gchar *reply,
+                                                 guint index,
+                                                 GError **error);
 
 /* Additional 3GPP-specific helpers */
 
@@ -245,5 +253,11 @@ gboolean mm_parse_gsn (const char *gsn,
                        gchar **out_imei,
                        gchar **out_meid,
                        gchar **out_esn);
+
+/* +CCLK response parser */
+gboolean mm_parse_cclk_response (const gchar *response,
+                                 gchar **iso8601p,
+                                 MMNetworkTimezone **tzp,
+                                 GError **error);
 
 #endif  /* MM_MODEM_HELPERS_H */

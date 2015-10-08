@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>libmm-glib Reference Manual: MmGdbusModem3gpp</title>
+<title>MmGdbusModem3gpp: libmm-glib Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
 <link rel="up" href="pt02.html" title="Part II. Low level API">
 <link rel="prev" href="MmGdbusModemSkeleton.html" title="MmGdbusModemSkeleton">
 <link rel="next" href="MmGdbusModem3gppProxy.html" title="MmGdbusModem3gppProxy">
-<meta name="generator" content="GTK-Doc V1.21 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -281,8 +281,9 @@ mm_gdbus_modem3gpp_get_registration_state
                                (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);</pre>
 <p>Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.RegistrationState">"RegistrationState"</a> D-Bus property.</p>
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.12.11.2.6"></a><h4>Parameters</h4>
+<a name="id-1.3.12.11.2.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -297,9 +298,8 @@ mm_gdbus_modem3gpp_get_registration_state
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.12.11.2.7"></a><h4>Returns</h4>
+<a name="id-1.3.12.11.2.8"></a><h4>Returns</h4>
 <p> The property value.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -310,8 +310,9 @@ mm_gdbus_modem3gpp_get_imei (<em class="parameter"><code><a class="link" href="M
 <p>Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.Imei">"Imei"</a> D-Bus property.</p>
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <div class="warning">The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where <em class="parameter"><code>object</code></em> was constructed. Use <a class="link" href="MmGdbusModem3gpp.html#mm-gdbus-modem3gpp-dup-imei" title="mm_gdbus_modem3gpp_dup_imei ()"><code class="function">mm_gdbus_modem3gpp_dup_imei()</code></a> if on another thread.</div>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.12.11.3.7"></a><h4>Parameters</h4>
+<a name="id-1.3.12.11.3.8"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -326,7 +327,7 @@ mm_gdbus_modem3gpp_get_imei (<em class="parameter"><code><a class="link" href="M
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.12.11.3.8"></a><h4>Returns</h4>
+<a name="id-1.3.12.11.3.9"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -339,8 +340,9 @@ mm_gdbus_modem3gpp_get_imei (<em class="parameter"><code><a class="link" href="M
 mm_gdbus_modem3gpp_dup_imei (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);</pre>
 <p>Gets a copy of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.Imei">"Imei"</a> D-Bus property.</p>
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.12.11.4.6"></a><h4>Parameters</h4>
+<a name="id-1.3.12.11.4.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -355,7 +357,7 @@ mm_gdbus_modem3gpp_dup_imei (<em class="parameter"><code><a class="link" href="M
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.12.11.4.7"></a><h4>Returns</h4>
+<a name="id-1.3.12.11.4.8"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -368,8 +370,9 @@ mm_gdbus_modem3gpp_get_operator_code (<em class="parameter"><code><a class="link
 <p>Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorCode">"OperatorCode"</a> D-Bus property.</p>
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <div class="warning">The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where <em class="parameter"><code>object</code></em> was constructed. Use <a class="link" href="MmGdbusModem3gpp.html#mm-gdbus-modem3gpp-dup-operator-code" title="mm_gdbus_modem3gpp_dup_operator_code ()"><code class="function">mm_gdbus_modem3gpp_dup_operator_code()</code></a> if on another thread.</div>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.12.11.5.7"></a><h4>Parameters</h4>
+<a name="id-1.3.12.11.5.8"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -384,7 +387,7 @@ mm_gdbus_modem3gpp_get_operator_code (<em class="parameter"><code><a class="link
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.12.11.5.8"></a><h4>Returns</h4>
+<a name="id-1.3.12.11.5.9"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -397,8 +400,9 @@ mm_gdbus_modem3gpp_get_operator_code (<em class="parameter"><code><a class="link
 mm_gdbus_modem3gpp_dup_operator_code (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);</pre>
 <p>Gets a copy of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorCode">"OperatorCode"</a> D-Bus property.</p>
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.12.11.6.6"></a><h4>Parameters</h4>
+<a name="id-1.3.12.11.6.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -413,7 +417,7 @@ mm_gdbus_modem3gpp_dup_operator_code (<em class="parameter"><code><a class="link
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.12.11.6.7"></a><h4>Returns</h4>
+<a name="id-1.3.12.11.6.8"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -426,8 +430,9 @@ mm_gdbus_modem3gpp_get_operator_name (<em class="parameter"><code><a class="link
 <p>Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorName">"OperatorName"</a> D-Bus property.</p>
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <div class="warning">The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where <em class="parameter"><code>object</code></em> was constructed. Use <a class="link" href="MmGdbusModem3gpp.html#mm-gdbus-modem3gpp-dup-operator-name" title="mm_gdbus_modem3gpp_dup_operator_name ()"><code class="function">mm_gdbus_modem3gpp_dup_operator_name()</code></a> if on another thread.</div>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.12.11.7.7"></a><h4>Parameters</h4>
+<a name="id-1.3.12.11.7.8"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -442,7 +447,7 @@ mm_gdbus_modem3gpp_get_operator_name (<em class="parameter"><code><a class="link
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.12.11.7.8"></a><h4>Returns</h4>
+<a name="id-1.3.12.11.7.9"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -455,8 +460,9 @@ mm_gdbus_modem3gpp_get_operator_name (<em class="parameter"><code><a class="link
 mm_gdbus_modem3gpp_dup_operator_name (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);</pre>
 <p>Gets a copy of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.OperatorName">"OperatorName"</a> D-Bus property.</p>
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.12.11.8.6"></a><h4>Parameters</h4>
+<a name="id-1.3.12.11.8.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -471,7 +477,7 @@ mm_gdbus_modem3gpp_dup_operator_name (<em class="parameter"><code><a class="link
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.12.11.8.7"></a><h4>Returns</h4>
+<a name="id-1.3.12.11.8.8"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -484,8 +490,9 @@ mm_gdbus_modem3gpp_get_enabled_facility_locks
                                (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);</pre>
 <p>Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.EnabledFacilityLocks">"EnabledFacilityLocks"</a> D-Bus property.</p>
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.12.11.9.6"></a><h4>Parameters</h4>
+<a name="id-1.3.12.11.9.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -500,9 +507,8 @@ mm_gdbus_modem3gpp_get_enabled_facility_locks
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.12.11.9.7"></a><h4>Returns</h4>
+<a name="id-1.3.12.11.9.8"></a><h4>Returns</h4>
 <p> The property value.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -513,8 +519,9 @@ mm_gdbus_modem3gpp_get_subscription_state
                                (<em class="parameter"><code><a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> *object</code></em>);</pre>
 <p>Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Modem3gpp.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.SubscriptionState">"SubscriptionState"</a> D-Bus property.</p>
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.12.11.10.6"></a><h4>Parameters</h4>
+<a name="id-1.3.12.11.10.7"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -529,9 +536,8 @@ mm_gdbus_modem3gpp_get_subscription_state
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.12.11.10.7"></a><h4>Returns</h4>
+<a name="id-1.3.12.11.10.8"></a><h4>Returns</h4>
 <p> The property value.</p>
-<p></p>
 </div>
 </div>
 <hr>
@@ -1027,7 +1033,6 @@ user_function (<a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3
 <div class="refsect3">
 <a name="id-1.3.12.14.2.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</p>
-<p></p>
 </div>
 <p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
@@ -1071,14 +1076,12 @@ user_function (<a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3
 <div class="refsect3">
 <a name="id-1.3.12.14.3.7"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</p>
-<p></p>
 </div>
 <p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.21</div>
+<hr>Generated by GTK-Doc V1.24</div>
 </body>
 </html>

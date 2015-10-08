@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
 <book xmlns="http://www.devhelp.net/book" title="libmm-glib Reference Manual" link="index.html" author="Aleksander Morgado" name="libmm-glib" version="2" language="c">
   <chapters>
     <sub name="High level API" link="pt01.html">
@@ -750,7 +749,6 @@
     <keyword type="property" name="The “modem-signal” property" link="MmGdbusObject.html#MmGdbusObject--modem-signal"/>
     <keyword type="property" name="The “modem-simple” property" link="MmGdbusObject.html#MmGdbusObject--modem-simple"/>
     <keyword type="property" name="The “modem-time” property" link="MmGdbusObject.html#MmGdbusObject--modem-time"/>
-    <keyword type="property" name="The “modem-voice” property" link="MmGdbusObject.html#MmGdbusObject--modem-voice"/>
     <keyword type="property" name="The “modem3gpp” property" link="MmGdbusObject.html#MmGdbusObject--modem3gpp"/>
     <keyword type="property" name="The “modem3gpp-ussd” property" link="MmGdbusObject.html#MmGdbusObject--modem3gpp-ussd"/>
     <keyword type="function" name="mm_gdbus_object_proxy_new ()" link="MmGdbusObjectProxy.html#mm-gdbus-object-proxy-new"/>
@@ -1020,9 +1018,7 @@
     <keyword type="property" name="The “enabled” property" link="MmGdbusModemLocation.html#MmGdbusModemLocation--enabled"/>
     <keyword type="property" name="The “location” property" link="MmGdbusModemLocation.html#MmGdbusModemLocation--location"/>
     <keyword type="property" name="The “signals-location” property" link="MmGdbusModemLocation.html#MmGdbusModemLocation--signals-location"/>
-    <keyword type="property" name="The “supl-server” property" link="MmGdbusModemLocation.html#MmGdbusModemLocation--supl-server"/>
     <keyword type="signal" name="The “handle-get-location” signal" link="MmGdbusModemLocation.html#MmGdbusModemLocation-handle-get-location"/>
-    <keyword type="signal" name="The “handle-set-supl-server” signal" link="MmGdbusModemLocation.html#MmGdbusModemLocation-handle-set-supl-server"/>
     <keyword type="signal" name="The “handle-setup” signal" link="MmGdbusModemLocation.html#MmGdbusModemLocation-handle-setup"/>
     <keyword type="function" name="mm_gdbus_modem_location_proxy_new ()" link="MmGdbusModemLocationProxy.html#mm-gdbus-modem-location-proxy-new"/>
     <keyword type="function" name="mm_gdbus_modem_location_proxy_new_finish ()" link="MmGdbusModemLocationProxy.html#mm-gdbus-modem-location-proxy-new-finish"/>
