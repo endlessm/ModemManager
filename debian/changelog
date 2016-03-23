@@ -1,4 +1,4 @@
-modemmanager (1.4.14-1) UNRELEASED; urgency=medium
+modemmanager (1.4.14-1) unstable; urgency=medium
 
   [ Laurent Bigonville ]
   * New upstream release.
@@ -14,7 +14,7 @@ modemmanager (1.4.14-1) UNRELEASED; urgency=medium
   * Drop Ubuntu specific upstart job now that Ubuntu has switched to systemd as
     well. (Closes: #804054)
 
- -- Laurent Bigonville <bigon@debian.org>  Wed, 23 Mar 2016 15:10:41 +0100
+ -- Michael Biebl <biebl@debian.org>  Wed, 23 Mar 2016 21:30:46 +0100
 
 modemmanager (1.4.12-1) unstable; urgency=medium
 
