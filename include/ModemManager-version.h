@@ -50,7 +50,7 @@
  * Evaluates to the micro version number of ModemManager which this source
  * compiled against.
  */
-#define MM_MICRO_VERSION (12)
+#define MM_MICRO_VERSION (14)
 
 /**
  * MM_CHECK_VERSION:

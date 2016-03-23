@@ -2802,6 +2802,53 @@ create_sim (MMIfaceModem *self,
 }
 
 /*****************************************************************************/
+/* Reset (Modem interface) */
+
+static gboolean
+modem_reset_finish (MMIfaceModem *self,
+                    GAsyncResult *res,
+                    GError **error)
+{
+    return !g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error);
+}
+
+
+static void
+modem_reset_power_cycle_ready (MMBroadbandModemQmi *self,
+                               GAsyncResult *res,
+                               GSimpleAsyncResult *simple)
+{
+    GError *error = NULL;
+
+    if (!power_cycle_finish (self, res, &error))
+        g_simple_async_result_take_error (simple, error);
+    else
+        g_simple_async_result_set_op_res_gboolean (simple, TRUE);
+
+    g_simple_async_result_complete (simple);
+    g_object_unref (simple);
+}
+
+
+static void
+modem_reset (MMIfaceModem *self,
+             GAsyncReadyCallback callback,
+             gpointer user_data)
+{
+    GSimpleAsyncResult *result;
+
+    result = g_simple_async_result_new (G_OBJECT (self),
+                                        callback,
+                                        user_data,
+                                        modem_reset);
+
+    /* Power cycle the modem */
+    power_cycle (MM_BROADBAND_MODEM_QMI (self),
+                 (GAsyncReadyCallback)modem_reset_power_cycle_ready,
+                 result);
+}
+
+/*****************************************************************************/
 /* Factory reset (Modem interface) */
 
 static gboolean
@@ -4151,21 +4198,22 @@ common_process_serving_system_3gpp (MMBroadbandModemQmi *self,
                              mnc);
     }
 
-    /* Get 3GPP location LAC and CI */
-    lac = 0;
-    cid = 0;
-    if (response_output) {
-        qmi_message_nas_get_serving_system_output_get_lac_3gpp (response_output, &lac, NULL);
-        qmi_message_nas_get_serving_system_output_get_cid_3gpp (response_output, &cid, NULL);
-    } else {
-        qmi_indication_nas_serving_system_output_get_lac_3gpp (indication_output, &lac, NULL);
-        qmi_indication_nas_serving_system_output_get_cid_3gpp (indication_output, &cid, NULL);
-    }
-
     /* Report new registration states */
     mm_iface_modem_3gpp_update_cs_registration_state (MM_IFACE_MODEM_3GPP (self), mm_cs_registration_state);
     mm_iface_modem_3gpp_update_ps_registration_state (MM_IFACE_MODEM_3GPP (self), mm_ps_registration_state);
-    mm_iface_modem_3gpp_update_location (MM_IFACE_MODEM_3GPP (self), lac, cid);
+
+    /* Get 3GPP location LAC and CI */
+    lac = 0;
+    cid = 0;
+    if ((response_output &&
+         qmi_message_nas_get_serving_system_output_get_lac_3gpp (response_output, &lac, NULL) &&
+         qmi_message_nas_get_serving_system_output_get_cid_3gpp (response_output, &cid, NULL)) ||
+        (indication_output &&
+         qmi_indication_nas_serving_system_output_get_lac_3gpp (indication_output, &lac, NULL) &&
+         qmi_indication_nas_serving_system_output_get_cid_3gpp (indication_output, &cid, NULL))) {
+        /* Only update info in the interface if we get something */
+        mm_iface_modem_3gpp_update_location (MM_IFACE_MODEM_3GPP (self), lac, cid);
+    }
 
     /* Note: don't update access technologies with the ones retrieved here; they
      * are not really the 'current' access technologies */
@@ -10400,6 +10448,8 @@ iface_modem_init (MMIfaceModem *iface)
     iface->create_bearer_finish = modem_create_bearer_finish;
 
     /* Other actions */
+    iface->reset = modem_reset;
+    iface->reset_finish = modem_reset_finish;
     iface->factory_reset = modem_factory_reset;
     iface->factory_reset_finish = modem_factory_reset_finish;
 }

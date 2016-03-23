@@ -105,15 +105,6 @@ mm_bearer_list_delete_bearer (MMBearerList *self,
 {
     GList *l;
 
-    if (!g_str_has_prefix (path, MM_DBUS_BEARER_PREFIX)) {
-        g_set_error (error,
-                     MM_CORE_ERROR,
-                     MM_CORE_ERROR_INVALID_ARGS,
-                     "Cannot delete bearer: invalid path '%s'",
-                     path);
-        return FALSE;
-    }
-
     for (l = self->priv->bearers; l; l = g_list_next (l)) {
         if (g_str_equal (path, mm_base_bearer_get_path (MM_BASE_BEARER (l->data)))) {
             g_object_unref (l->data);
@@ -129,17 +120,6 @@ mm_bearer_list_delete_bearer (MMBearerList *self,
                  "Cannot delete bearer: path '%s' not found",
                  path);
     return FALSE;
-}
-
-void
-mm_bearer_list_delete_all_bearers (MMBearerList *self)
-{
-    if (!self->priv->bearers)
-        return;
-
-    g_list_free_full (self->priv->bearers, (GDestroyNotify) g_object_unref);
-    self->priv->bearers = NULL;
-    g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_NUM_BEARERS]);
 }
 
 GStrv
@@ -167,13 +147,27 @@ mm_bearer_list_foreach (MMBearerList *self,
 }
 
 MMBaseBearer *
-mm_bearer_list_find (MMBearerList *self,
-                     MMBearerProperties *properties)
+mm_bearer_list_find_by_properties (MMBearerList *self,
+                                   MMBearerProperties *properties)
 {
     GList *l;
 
     for (l = self->priv->bearers; l; l = g_list_next (l)) {
         if (mm_bearer_properties_cmp (mm_base_bearer_peek_config (MM_BASE_BEARER (l->data)), properties))
+            return g_object_ref (l->data);
+    }
+
+    return NULL;
+}
+
+MMBaseBearer *
+mm_bearer_list_find_by_path (MMBearerList *self,
+                             const gchar *path)
+{
+    GList *l;
+
+    for (l = self->priv->bearers; l; l = g_list_next (l)) {
+        if (g_str_equal (path, mm_base_bearer_get_path (MM_BASE_BEARER (l->data))))
             return g_object_ref (l->data);
     }
 
@@ -344,7 +338,10 @@ dispose (GObject *object)
 {
     MMBearerList *self = MM_BEARER_LIST (object);
 
-    mm_bearer_list_delete_all_bearers (self);
+    if (self->priv->bearers) {
+        g_list_free_full (self->priv->bearers, (GDestroyNotify) g_object_unref);
+        self->priv->bearers = NULL;
+    }
 
     G_OBJECT_CLASS (mm_bearer_list_parent_class)->dispose (object);
 }

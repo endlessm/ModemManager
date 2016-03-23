@@ -1135,7 +1135,7 @@ test_cereg2_novatel_lte_solicited (void *f, gpointer d)
 {
     RegTestData *data = (RegTestData *) d;
     const char *reply = "\r\n+CEREG: 2,1, 1F00, 20 ,79D903 ,7\r\n";
-    const CregResult result = { 1, 0x1F00, 0x79D903, MM_MODEM_ACCESS_TECHNOLOGY_LTE, 12, FALSE, TRUE };
+    const CregResult result = { 1, 0x1F00, 0x79D903, MM_MODEM_ACCESS_TECHNOLOGY_LTE, 13, FALSE, TRUE };
 
     test_creg_match ("Novatel LTE E362 CEREG=2", TRUE, reply, data, &result);
 }
@@ -1145,9 +1145,29 @@ test_cereg2_novatel_lte_unsolicited (void *f, gpointer d)
 {
     RegTestData *data = (RegTestData *) d;
     const char *reply = "\r\n+CEREG: 1, 1F00, 20 ,79D903 ,7\r\n";
-    const CregResult result = { 1, 0x1F00, 0x79D903, MM_MODEM_ACCESS_TECHNOLOGY_LTE, 11, FALSE, TRUE };
+    const CregResult result = { 1, 0x1F00, 0x79D903, MM_MODEM_ACCESS_TECHNOLOGY_LTE, 12, FALSE, TRUE };
 
     test_creg_match ("Novatel LTE E362 CEREG=2", FALSE, reply, data, &result);
+}
+
+static void
+test_cgreg2_thuraya_solicited (void *f, gpointer d)
+{
+    RegTestData *data = (RegTestData *) d;
+    const char *reply = "+CGREG: 1, \"0426\", \"F0,0F\"";
+    const CregResult result = { 1, 0x0426, 0x00F0, MM_MODEM_ACCESS_TECHNOLOGY_UNKNOWN, 11, TRUE, FALSE };
+
+    test_creg_match ("Thuraya solicited CREG=2", TRUE, reply, data, &result);
+}
+
+static void
+test_cgreg2_thuraya_unsolicited (void *f, gpointer d)
+{
+    RegTestData *data = (RegTestData *) d;
+    const char *reply = "\r\n+CGREG: 1, \"0426\", \"F0,0F\"\r\n";
+    const CregResult result = { 1, 0x0426, 0x00F0, MM_MODEM_ACCESS_TECHNOLOGY_UNKNOWN, 11, TRUE, FALSE };
+
+    test_creg_match ("Thuraya unsolicited CREG=2", FALSE, reply, data, &result);
 }
 
 /*****************************************************************************/
@@ -1798,6 +1818,34 @@ test_cgdcont_test_response_single_context (void *f, gpointer d)
     test_cgdcont_test_results ("Single Context", reply, &expected[0], G_N_ELEMENTS (expected));
 }
 
+static void
+test_cgdcont_test_response_thuraya (void *f, gpointer d)
+{
+    const gchar *reply =
+        "+CGDCONT: ( 1 ) , \"IP\" ,,, (0-2),(0-3)\r\n"
+        "+CGDCONT: , \"PPP\" ,,, (0-2),(0-3)\r\n";
+    static MM3gppPdpContextFormat expected[] = {
+        { 1, 1, MM_BEARER_IP_FAMILY_IPV4 }
+    };
+
+    test_cgdcont_test_results ("Thuraya", reply, &expected[0], G_N_ELEMENTS (expected));
+}
+
+
+static void
+test_cgdcont_test_response_cinterion_phs8 (void *f, gpointer d)
+{
+    const gchar *reply =
+        "+CGDCONT: (1-17,101-116),\"IP\",,,(0),(0-4)\r\n";
+    static MM3gppPdpContextFormat expected[] = {
+        { 1, 17, MM_BEARER_IP_FAMILY_IPV4 }
+    };
+
+    test_cgdcont_test_results ("Cinterion PHS8-USA REVISION 03.001", reply, &expected[0], G_N_ELEMENTS (expected));
+}
+
+
+
 /*****************************************************************************/
 /* Test CGDCONT read responses */
 
@@ -1897,16 +1945,140 @@ test_cpms_response_cinterion (void *f, gpointer d)
     trace ("\nTesting Cinterion +CPMS=? response...\n");
 
     g_assert (mm_3gpp_parse_cpms_test_response (reply, &mem1, &mem2, &mem3));
-    g_assert (mem1->len == 2);
+    g_assert_cmpuint (mem1->len, ==, 2);
     g_assert (is_storage_supported (mem1, MM_SMS_STORAGE_ME));
     g_assert (is_storage_supported (mem1, MM_SMS_STORAGE_MT));
-    g_assert (mem2->len == 3);
+    g_assert_cmpuint (mem2->len, ==, 3);
     g_assert (is_storage_supported (mem2, MM_SMS_STORAGE_ME));
     g_assert (is_storage_supported (mem2, MM_SMS_STORAGE_SM));
     g_assert (is_storage_supported (mem2, MM_SMS_STORAGE_MT));
-    g_assert (mem3->len == 2);
+    g_assert_cmpuint (mem3->len, ==, 2);
     g_assert (is_storage_supported (mem3, MM_SMS_STORAGE_SM));
     g_assert (is_storage_supported (mem3, MM_SMS_STORAGE_MT));
+
+    g_array_unref (mem1);
+    g_array_unref (mem2);
+    g_array_unref (mem3);
+}
+
+static void
+test_cpms_response_huawei_mu609 (void *f, gpointer d)
+{
+    /* Use different sets for each on purpose, even if weird */
+    const gchar *reply = "+CPMS: \"ME\",\"MT\",\"SM\"";
+    GArray *mem1 = NULL;
+    GArray *mem2 = NULL;
+    GArray *mem3 = NULL;
+
+    trace ("\nTesting Huawei MU609 +CPMS=? response...\n");
+
+    g_assert (mm_3gpp_parse_cpms_test_response (reply, &mem1, &mem2, &mem3));
+    g_assert_cmpuint (mem1->len, ==, 1);
+    g_assert (is_storage_supported (mem1, MM_SMS_STORAGE_ME));
+    g_assert_cmpuint (mem2->len, ==, 1);
+    g_assert (is_storage_supported (mem2, MM_SMS_STORAGE_MT));
+    g_assert_cmpuint (mem3->len, ==, 1);
+    g_assert (is_storage_supported (mem3, MM_SMS_STORAGE_SM));
+
+    g_array_unref (mem1);
+    g_array_unref (mem2);
+    g_array_unref (mem3);
+}
+
+static void
+test_cpms_response_nokia_c6 (void *f, gpointer d)
+{
+    /* Use different sets for each on purpose, even if weird */
+    const gchar *reply = "+CPMS: (),(),()";
+    GArray *mem1 = NULL;
+    GArray *mem2 = NULL;
+    GArray *mem3 = NULL;
+
+    trace ("\nTesting Nokia C6 response...\n");
+
+    g_assert (mm_3gpp_parse_cpms_test_response (reply, &mem1, &mem2, &mem3));
+    g_assert_cmpuint (mem1->len, ==, 0);
+    g_assert_cmpuint (mem2->len, ==, 0);
+    g_assert_cmpuint (mem3->len, ==, 0);
+
+    g_array_unref (mem1);
+    g_array_unref (mem2);
+    g_array_unref (mem3);
+}
+
+static void
+test_cpms_response_mixed (void *f, gpointer d)
+{
+    /*
+     * First:    ("ME","MT")  2-item group
+     * Second:   "ME"         1 item
+     * Third:    ("SM")       1-item group
+     */
+    const gchar *reply = "+CPMS: (\"ME\",\"MT\"),\"ME\",(\"SM\")";
+    GArray *mem1 = NULL;
+    GArray *mem2 = NULL;
+    GArray *mem3 = NULL;
+
+    trace ("\nTesting mixed +CPMS=? response...\n");
+
+    g_assert (mm_3gpp_parse_cpms_test_response (reply, &mem1, &mem2, &mem3));
+    g_assert_cmpuint (mem1->len, ==, 2);
+    g_assert (is_storage_supported (mem1, MM_SMS_STORAGE_ME));
+    g_assert (is_storage_supported (mem1, MM_SMS_STORAGE_MT));
+    g_assert_cmpuint (mem2->len, ==, 1);
+    g_assert (is_storage_supported (mem2, MM_SMS_STORAGE_ME));
+    g_assert_cmpuint (mem3->len, ==, 1);
+    g_assert (is_storage_supported (mem3, MM_SMS_STORAGE_SM));
+
+    g_array_unref (mem1);
+    g_array_unref (mem2);
+    g_array_unref (mem3);
+}
+
+static void
+test_cpms_response_mixed_spaces (void *f, gpointer d)
+{
+    /* Test with whitespaces here and there */
+    const gchar *reply = "+CPMS:     (  \"ME\"  ,  \"MT\"  )   ,  \"ME\" ,   (  \"SM\"  )";
+    GArray *mem1 = NULL;
+    GArray *mem2 = NULL;
+    GArray *mem3 = NULL;
+
+    trace ("\nTesting mixed +CPMS=? response with spaces...\n");
+
+    g_assert (mm_3gpp_parse_cpms_test_response (reply, &mem1, &mem2, &mem3));
+    g_assert_cmpuint (mem1->len, ==, 2);
+    g_assert (is_storage_supported (mem1, MM_SMS_STORAGE_ME));
+    g_assert (is_storage_supported (mem1, MM_SMS_STORAGE_MT));
+    g_assert_cmpuint (mem2->len, ==, 1);
+    g_assert (is_storage_supported (mem2, MM_SMS_STORAGE_ME));
+    g_assert_cmpuint (mem3->len, ==, 1);
+    g_assert (is_storage_supported (mem3, MM_SMS_STORAGE_SM));
+
+    g_array_unref (mem1);
+    g_array_unref (mem2);
+    g_array_unref (mem3);
+}
+
+static void
+test_cpms_response_empty_fields (void *f, gpointer d)
+{
+    /*
+     * First:    ()    Empty group
+     * Second:         Empty item
+     * Third:    (  )  Empty group with spaces
+     */
+    const gchar *reply = "+CPMS: (),,(  )";
+    GArray *mem1 = NULL;
+    GArray *mem2 = NULL;
+    GArray *mem3 = NULL;
+
+    trace ("\nTesting mixed +CPMS=? response...\n");
+
+    g_assert (mm_3gpp_parse_cpms_test_response (reply, &mem1, &mem2, &mem3));
+    g_assert_cmpuint (mem1->len, ==, 0);
+    g_assert_cmpuint (mem2->len, ==, 0);
+    g_assert_cmpuint (mem3->len, ==, 0);
 
     g_array_unref (mem1);
     g_array_unref (mem2);
@@ -2569,6 +2741,8 @@ int main (int argc, char **argv)
     g_test_suite_add (suite, TESTCASE (test_cgreg2_md400_unsolicited, reg_data));
     g_test_suite_add (suite, TESTCASE (test_cgreg2_x220_unsolicited, reg_data));
     g_test_suite_add (suite, TESTCASE (test_cgreg2_unsolicited_with_rac, reg_data));
+    g_test_suite_add (suite, TESTCASE (test_cgreg2_thuraya_solicited, reg_data));
+    g_test_suite_add (suite, TESTCASE (test_cgreg2_thuraya_unsolicited, reg_data));
 
     g_test_suite_add (suite, TESTCASE (test_cereg1_solicited, reg_data));
     g_test_suite_add (suite, TESTCASE (test_cereg1_unsolicited, reg_data));
@@ -2604,12 +2778,19 @@ int main (int argc, char **argv)
         item++;
     }
 
-    g_test_suite_add (suite, TESTCASE (test_cpms_response_cinterion, NULL));
+    g_test_suite_add (suite, TESTCASE (test_cpms_response_cinterion,    NULL));
+    g_test_suite_add (suite, TESTCASE (test_cpms_response_huawei_mu609, NULL));
+    g_test_suite_add (suite, TESTCASE (test_cpms_response_nokia_c6,     NULL));
+    g_test_suite_add (suite, TESTCASE (test_cpms_response_mixed,        NULL));
+    g_test_suite_add (suite, TESTCASE (test_cpms_response_mixed_spaces, NULL));
+    g_test_suite_add (suite, TESTCASE (test_cpms_response_empty_fields, NULL));
 
     g_test_suite_add (suite, TESTCASE (test_cgdcont_test_response_single, NULL));
     g_test_suite_add (suite, TESTCASE (test_cgdcont_test_response_multiple, NULL));
     g_test_suite_add (suite, TESTCASE (test_cgdcont_test_response_multiple_and_ignore, NULL));
     g_test_suite_add (suite, TESTCASE (test_cgdcont_test_response_single_context, NULL));
+    g_test_suite_add (suite, TESTCASE (test_cgdcont_test_response_thuraya, NULL));
+    g_test_suite_add (suite, TESTCASE (test_cgdcont_test_response_cinterion_phs8, NULL));
 
     g_test_suite_add (suite, TESTCASE (test_cgdcont_read_response_nokia, NULL));
     g_test_suite_add (suite, TESTCASE (test_cgdcont_read_response_samsung, NULL));

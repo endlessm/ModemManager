@@ -222,6 +222,7 @@ static QmiMessageWdsStartNetworkInput *
 build_start_network_input (ConnectContext *ctx)
 {
     QmiMessageWdsStartNetworkInput *input;
+    gboolean has_user, has_password;
 
     g_assert (ctx->running_ipv4 || ctx->running_ipv6);
     g_assert (!(ctx->running_ipv4 && ctx->running_ipv6));
@@ -231,12 +232,21 @@ build_start_network_input (ConnectContext *ctx)
     if (ctx->apn && ctx->apn[0])
         qmi_message_wds_start_network_input_set_apn (input, ctx->apn, NULL);
 
-    if (ctx->auth != QMI_WDS_AUTHENTICATION_NONE) {
-        qmi_message_wds_start_network_input_set_authentication_preference (input, ctx->auth, NULL);
+    has_user     = (ctx->user     && ctx->user[0]);
+    has_password = (ctx->password && ctx->password[0]);
 
-        if (ctx->user)
+    /* Need to add auth info? */
+    if (has_user || has_password || ctx->auth != QMI_WDS_AUTHENTICATION_NONE) {
+        /* We define a valid auth preference if we have either user or password, or a explicit
+         * request for one to be set. If no explicit one was given, default to PAP. */
+        qmi_message_wds_start_network_input_set_authentication_preference (
+            input,
+            (ctx->auth != QMI_WDS_AUTHENTICATION_NONE) ? ctx->auth : QMI_WDS_AUTHENTICATION_PAP,
+            NULL);
+
+        if (has_user)
             qmi_message_wds_start_network_input_set_username (input, ctx->user, NULL);
-        if (ctx->password)
+        if (has_password)
             qmi_message_wds_start_network_input_set_password (input, ctx->password, NULL);
     }
 
@@ -285,7 +295,7 @@ get_ipv4_config (MMBearerQmi *self,
 
     /* IPv4 subnet mask */
     if (!qmi_message_wds_get_current_settings_output_get_ipv4_gateway_subnet_mask (output, &addr, &error)) {
-        mm_dbg ("Failed to read IPv4 netmask (%s)", error->message);
+        mm_warn ("Failed to read IPv4 netmask (%s)", error->message);
         g_clear_error (&error);
         return NULL;
     }
@@ -294,12 +304,12 @@ get_ipv4_config (MMBearerQmi *self,
 
     /* IPv4 address */
     if (!qmi_message_wds_get_current_settings_output_get_ipv4_address (output, &addr, &error)) {
-        mm_dbg ("IPv4 family but no IPv4 address (%s)", error->message);
+        mm_warn ("IPv4 family but no IPv4 address (%s)", error->message);
         g_clear_error (&error);
         return NULL;
     }
 
-    mm_dbg ("QMI IPv4 Settings:");
+    mm_info ("QMI IPv4 Settings:");
 
     config = mm_bearer_ip_config_new ();
     if (self->priv->force_dhcp)
@@ -312,15 +322,15 @@ get_ipv4_config (MMBearerQmi *self,
     qmi_inet4_ntop (addr, buf, sizeof (buf));
     mm_bearer_ip_config_set_address (config, buf);
     mm_bearer_ip_config_set_prefix (config, prefix);
-    mm_dbg ("    Address: %s/%d", buf, prefix);
+    mm_info ("    Address: %s/%d", buf, prefix);
 
     /* IPv4 gateway address */
     if (qmi_message_wds_get_current_settings_output_get_ipv4_gateway_address (output, &addr, &error)) {
         qmi_inet4_ntop (addr, buf, sizeof (buf));
         mm_bearer_ip_config_set_gateway (config, buf);
-        mm_dbg ("    Gateway: %s", buf);
+        mm_info ("    Gateway: %s", buf);
     } else {
-        mm_dbg ("    Gateway: failed (%s)", error->message);
+        mm_info ("    Gateway: failed (%s)", error->message);
         g_clear_error (&error);
     }
 
@@ -328,9 +338,9 @@ get_ipv4_config (MMBearerQmi *self,
     if (qmi_message_wds_get_current_settings_output_get_primary_ipv4_dns_address (output, &addr, &error)) {
         qmi_inet4_ntop (addr, buf, sizeof (buf));
         dns[dns_idx++] = buf;
-        mm_dbg ("    DNS #1: %s", buf);
+        mm_info ("    DNS #1: %s", buf);
     } else {
-        mm_dbg ("    DNS #1: failed (%s)", error->message);
+        mm_info ("    DNS #1: failed (%s)", error->message);
         g_clear_error (&error);
     }
 
@@ -338,9 +348,9 @@ get_ipv4_config (MMBearerQmi *self,
     if (qmi_message_wds_get_current_settings_output_get_secondary_ipv4_dns_address (output, &addr, &error)) {
         qmi_inet4_ntop (addr, buf2, sizeof (buf2));
         dns[dns_idx++] = buf2;
-        mm_dbg ("    DNS #2: %s", buf2);
+        mm_info ("    DNS #2: %s", buf2);
     } else {
-        mm_dbg ("    DNS #2: failed (%s)", error->message);
+        mm_info ("    DNS #2: failed (%s)", error->message);
         g_clear_error (&error);
     }
 
@@ -349,7 +359,7 @@ get_ipv4_config (MMBearerQmi *self,
 
     if (mtu) {
         mm_bearer_ip_config_set_mtu (config, mtu);
-        mm_dbg ("       MTU: %d", mtu);
+        mm_info ("       MTU: %d", mtu);
     }
 
     return config;
@@ -390,12 +400,12 @@ get_ipv6_config (MMBearerQmi *self,
 
     /* If the message has an IPv6 address, create an IPv6 bearer config */
     if (!qmi_message_wds_get_current_settings_output_get_ipv6_address (output, &array, &prefix, &error)) {
-        mm_dbg ("IPv6 family but no IPv6 address (%s)", error->message);
+        mm_warn ("IPv6 family but no IPv6 address (%s)", error->message);
         g_clear_error (&error);
         return NULL;
     }
 
-    mm_dbg ("QMI IPv6 Settings:");
+    mm_info ("QMI IPv6 Settings:");
 
     config = mm_bearer_ip_config_new ();
     if (self->priv->force_dhcp)
@@ -409,15 +419,15 @@ get_ipv6_config (MMBearerQmi *self,
 
     mm_bearer_ip_config_set_address (config, buf);
     mm_bearer_ip_config_set_prefix (config, prefix);
-    mm_dbg ("    Address: %s/%d", buf, prefix);
+    mm_info ("    Address: %s/%d", buf, prefix);
 
     /* IPv6 gateway address */
     if (qmi_message_wds_get_current_settings_output_get_ipv6_gateway_address (output, &array, &prefix, &error)) {
         qmi_inet6_ntop (array, buf, sizeof (buf));
         mm_bearer_ip_config_set_gateway (config, buf);
-        mm_dbg ("    Gateway: %s", buf);
+        mm_info ("    Gateway: %s/%d", buf, prefix);
     } else {
-        mm_dbg ("    Gateway: failed (%s)", error->message);
+        mm_info ("    Gateway: failed (%s)", error->message);
         g_clear_error (&error);
     }
 
@@ -425,9 +435,9 @@ get_ipv6_config (MMBearerQmi *self,
     if (qmi_message_wds_get_current_settings_output_get_ipv6_primary_dns_address (output, &array, &error)) {
         qmi_inet6_ntop (array, buf, sizeof (buf));
         dns[dns_idx++] = buf;
-        mm_dbg ("    DNS #1: %s", buf);
+        mm_info ("    DNS #1: %s", buf);
     } else {
-        mm_dbg ("    DNS #1: failed (%s)", error->message);
+        mm_info ("    DNS #1: failed (%s)", error->message);
         g_clear_error (&error);
     }
 
@@ -435,9 +445,9 @@ get_ipv6_config (MMBearerQmi *self,
     if (qmi_message_wds_get_current_settings_output_get_ipv6_secondary_dns_address (output, &array, &error)) {
         qmi_inet6_ntop (array, buf2, sizeof (buf2));
         dns[dns_idx++] = buf2;
-        mm_dbg ("    DNS #2: %s", buf2);
+        mm_info ("    DNS #2: %s", buf2);
     } else {
-        mm_dbg ("    DNS #2: failed (%s)", error->message);
+        mm_info ("    DNS #2: failed (%s)", error->message);
         g_clear_error (&error);
     }
 
@@ -446,7 +456,7 @@ get_ipv6_config (MMBearerQmi *self,
 
     if (mtu) {
         mm_bearer_ip_config_set_mtu (config, mtu);
-        mm_dbg ("       MTU: %d", mtu);
+        mm_info ("       MTU: %d", mtu);
     }
 
     return config;
@@ -1032,8 +1042,8 @@ _connect (MMBaseBearer *self,
         g_object_unref (properties);
 
         if (auth == MM_BEARER_ALLOWED_AUTH_UNKNOWN) {
-            mm_dbg ("Using default (PAP) authentication method");
-            ctx->auth = QMI_WDS_AUTHENTICATION_PAP;
+            /* We'll default to PAP later if needed */
+            ctx->auth = QMI_WDS_AUTHENTICATION_NONE;
         } else if (auth & (MM_BEARER_ALLOWED_AUTH_PAP |
                            MM_BEARER_ALLOWED_AUTH_CHAP |
                            MM_BEARER_ALLOWED_AUTH_NONE)) {
