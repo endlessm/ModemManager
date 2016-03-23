@@ -1,8 +1,9 @@
-modemmanager (1.4.12-2) UNRELEASED; urgency=medium
+modemmanager (1.4.14-1) UNRELEASED; urgency=medium
 
+  * New upstream release.
   * debian/control: Fix capitalisation of Bluetooth (Closes: #754439)
 
- -- Laurent Bigonville <bigon@debian.org>  Wed, 23 Mar 2016 13:48:47 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Wed, 23 Mar 2016 14:03:07 +0100
 
 modemmanager (1.4.12-1) unstable; urgency=medium
 
