@@ -11,6 +11,8 @@ modemmanager (1.4.14-1) UNRELEASED; urgency=medium
   * Remove outdated debian/README.source.
   * Use https:// for upstream homepage.
   * Bump Build-Depends on debhelper for dh_strip --dbgsym-migration support.
+  * Drop Ubuntu specific upstart job now that Ubuntu has switched to systemd as
+    well. (Closes: #804054)
 
  -- Laurent Bigonville <bigon@debian.org>  Wed, 23 Mar 2016 15:10:41 +0100
 

@@ -15,7 +15,6 @@ override_dh_autoreconf:
 	NOCONFIGURE=true dh_autoreconf ./autogen.sh
 
 override_dh_auto_clean:
-	rm -f $(CURDIR)/debian/modemmanager.upstart
 	rm -f gtk-doc.make m4/gtk-doc.m4
 	dh_auto_clean
 
@@ -34,10 +33,6 @@ override_dh_strip:
 override_dh_install:
 	cp $(CURDIR)/debian/77-mm-qdl-device-blacklist.rules \
 		 $(CURDIR)/debian/tmp/lib/udev/rules.d
-	if dpkg-vendor --is ubuntu; then \
-		cp $(CURDIR)/debian/ubuntu/modemmanager.upstart $(CURDIR)/debian; \
-		dh_link lib/systemd/system/ModemManager.service lib/systemd/system/modemmanager.service; \
-	fi
 	find $(CURDIR)/debian/tmp/ -name \*.a -exec rm {} \;
 	find $(CURDIR)/debian/tmp/ -name \*.la -exec rm {} \;
 	dh_install --fail-missing
