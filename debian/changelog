@@ -4,8 +4,9 @@ modemmanager (1.4.14-1) UNRELEASED; urgency=medium
   * debian/control: Fix capitalisation of Bluetooth (Closes: #754439)
   * Remove modemmanager-dbg package and rely on automatic dbgsym package
   * debian/control: Fix Vcs-Git URL (again) to please lintian
+  * debian/control: Bump Standards-Version to 3.9.7 (no further changes)
 
- -- Laurent Bigonville <bigon@debian.org>  Wed, 23 Mar 2016 15:07:46 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Wed, 23 Mar 2016 15:10:41 +0100
 
 modemmanager (1.4.12-1) unstable; urgency=medium
 
