@@ -35,7 +35,7 @@ Breaks: network-manager (<< 0.9.8.2-1)
 Description: D-Bus service for managing modems
  ModemManager is a DBus-activated daemon which controls mobile broadband
  (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
- bluetooth-paired telephones or professional RS232/USB devices with external
+ Bluetooth-paired telephones or professional RS232/USB devices with external
  power supplies, ModemManager is able to prepare and configure the modems and
  setup connections with them.
 
@@ -48,7 +48,7 @@ Depends: modemmanager (= ${binary:Version}),
 Description: D-Bus service for managing modems - debugging symbols
  ModemManager is a DBus-activated daemon which controls mobile broadband
  (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
- bluetooth-paired telephones or professional RS232/USB devices with external
+ Bluetooth-paired telephones or professional RS232/USB devices with external
  power supplies, ModemManager is able to prepare and configure the modems and
  setup connections with them.
  .
@@ -65,7 +65,7 @@ Suggests: modemmanager-doc
 Description: D-Bus service for managing modems - development files
  ModemManager is a DBus-activated daemon which controls mobile broadband
  (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
- bluetooth-paired telephones or professional RS232/USB devices with external
+ Bluetooth-paired telephones or professional RS232/USB devices with external
  power supplies, ModemManager is able to prepare and configure the modems and
  setup connections with them.
  .
@@ -79,7 +79,7 @@ Suggests: devhelp
 Description: D-Bus service for managing modems - documentation files
  ModemManager is a DBus-activated daemon which controls mobile broadband
  (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
- bluetooth-paired telephones or professional RS232/USB devices with external
+ Bluetooth-paired telephones or professional RS232/USB devices with external
  power supplies, ModemManager is able to prepare and configure the modems and
  setup connections with them.
  .
@@ -97,7 +97,7 @@ Recommends: modemmanager (>= ${binary:Version})
 Description: D-Bus service for managing modems - shared libraries
  ModemManager is a DBus-activated daemon which controls mobile broadband
  (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
- bluetooth-paired telephones or professional RS232/USB devices with external
+ Bluetooth-paired telephones or professional RS232/USB devices with external
  power supplies, ModemManager is able to prepare and configure the modems and
  setup connections with them.
  .
@@ -117,7 +117,7 @@ Suggests: libmm-glib-doc
 Description: D-Bus service for managing modems - library development files
  ModemManager is a DBus-activated daemon which controls mobile broadband
  (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
- bluetooth-paired telephones or professional RS232/USB devices with external
+ Bluetooth-paired telephones or professional RS232/USB devices with external
  power supplies, ModemManager is able to prepare and configure the modems and
  setup connections with them.
  .
@@ -132,7 +132,7 @@ Suggests: devhelp
 Description: D-Bus service for managing modems - library documentation
  ModemManager is a DBus-activated daemon which controls mobile broadband
  (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
- bluetooth-paired telephones or professional RS232/USB devices with external
+ Bluetooth-paired telephones or professional RS232/USB devices with external
  power supplies, ModemManager is able to prepare and configure the modems and
  setup connections with them.
  .
@@ -149,7 +149,7 @@ Depends: ${gir:Depends},
 Description: GObject introspection data for modemmanager
  ModemManager is a DBus-activated daemon which controls mobile broadband
  (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
- bluetooth-paired telephones or professional RS232/USB devices with external
+ Bluetooth-paired telephones or professional RS232/USB devices with external
  power supplies, ModemManager is able to prepare and configure the modems and
  setup connections with them.
  .
