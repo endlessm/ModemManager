@@ -40,7 +40,6 @@ override_dh_install:
 	fi
 	find $(CURDIR)/debian/tmp/ -name \*.a -exec rm {} \;
 	find $(CURDIR)/debian/tmp/ -name \*.la -exec rm {} \;
-	rm -f $(CURDIR)/debian/tmp/usr/lib/*/pppd/*/mm-test-pppd-plugin.*
 	dh_install --fail-missing
 
 override_dh_systemd_start:
