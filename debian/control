@@ -22,7 +22,7 @@ Build-Depends: debhelper (>= 9),
                valac (>= 0.22),
                dbus
 Standards-Version: 3.9.6
-Vcs-Git: git://anonscm.debian.org/collab-maint/modemmanager.git
+Vcs-Git: https://anonscm.debian.org/git/collab-maint/modemmanager.git
 Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/modemmanager.git
 Homepage: http://www.freedesktop.org/wiki/Software/ModemManager/
 
