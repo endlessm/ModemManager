@@ -118,8 +118,7 @@ ChangePin (IN  s old_pin,
 <programlisting>
 SimIdentifier  readable   s
 </programlisting>
-<para>        An obfuscated SIM identifier based on the IMSI or the
-        ICCID.
+<para>        The ICCID of the SIM card.
 </para><para>        This may be available before the PIN has been entered depending
         on the device itself.
 </para>

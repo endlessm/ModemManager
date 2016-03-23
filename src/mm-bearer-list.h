@@ -65,7 +65,6 @@ gboolean mm_bearer_list_add_bearer (MMBearerList *self,
 gboolean mm_bearer_list_delete_bearer (MMBearerList *self,
                                        const gchar *path,
                                        GError **error);
-void mm_bearer_list_delete_all_bearers (MMBearerList *self);
 
 typedef void (*MMBearerListForeachFunc) (MMBaseBearer *bearer,
                                          gpointer user_data);
@@ -73,8 +72,10 @@ void mm_bearer_list_foreach (MMBearerList *self,
                              MMBearerListForeachFunc func,
                              gpointer user_data);
 
-MMBaseBearer *mm_bearer_list_find (MMBearerList *self,
-                                   MMBearerProperties *properties);
+MMBaseBearer *mm_bearer_list_find_by_properties (MMBearerList *self,
+                                                 MMBearerProperties *properties);
+MMBaseBearer *mm_bearer_list_find_by_path (MMBearerList *self,
+                                           const gchar *path);
 
 void     mm_bearer_list_disconnect_all_bearers        (MMBearerList *self,
                                                        GAsyncReadyCallback callback,

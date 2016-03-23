@@ -98,7 +98,8 @@ noinst_PROGRAMS = test-modem-helpers-icera$(EXEEXT) $(am__EXEEXT_1) \
 	test-modem-helpers-huawei$(EXEEXT) \
 	test-modem-helpers-mbm$(EXEEXT) \
 	test-modem-helpers-cinterion$(EXEEXT) \
-	test-modem-helpers-altair-lte$(EXEEXT)
+	test-modem-helpers-altair-lte$(EXEEXT) \
+	test-modem-helpers-telit$(EXEEXT)
 
 ########################################
 
@@ -411,7 +412,8 @@ libmm_plugin_simtech_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 libmm_plugin_telit_la_LIBADD =
 am_libmm_plugin_telit_la_OBJECTS =  \
 	telit/libmm_plugin_telit_la-mm-plugin-telit.lo \
-	telit/libmm_plugin_telit_la-mm-broadband-modem-telit.lo
+	telit/libmm_plugin_telit_la-mm-broadband-modem-telit.lo \
+	telit/libmm_plugin_telit_la-mm-modem-helpers-telit.lo
 libmm_plugin_telit_la_OBJECTS = $(am_libmm_plugin_telit_la_OBJECTS)
 libmm_plugin_telit_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
@@ -530,6 +532,17 @@ test_modem_helpers_mbm_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(AM_CFLAGS) $(CFLAGS) $(test_modem_helpers_mbm_LDFLAGS) \
 	$(LDFLAGS) -o $@
+am_test_modem_helpers_telit_OBJECTS = telit/test_modem_helpers_telit-mm-modem-helpers-telit.$(OBJEXT) \
+	telit/tests/test_modem_helpers_telit-test-mm-modem-helpers-telit.$(OBJEXT)
+test_modem_helpers_telit_OBJECTS =  \
+	$(am_test_modem_helpers_telit_OBJECTS)
+test_modem_helpers_telit_DEPENDENCIES =  \
+	$(top_builddir)/libmm-glib/libmm-glib.la \
+	$(top_builddir)/src/libmodem-helpers.la
+test_modem_helpers_telit_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(test_modem_helpers_telit_LDFLAGS) \
+	$(LDFLAGS) -o $@
 am__test_service_generic_SOURCES_DIST =  \
 	generic/tests/test-service-generic.c
 @BUILD_DBUS_TEST_SUPPORT_TRUE@am_test_service_generic_OBJECTS = generic/tests/test_service_generic-test-service-generic.$(OBJEXT)
@@ -606,6 +619,7 @@ SOURCES = $(libmm_plugin_altair_lte_la_SOURCES) \
 	$(test_modem_helpers_huawei_SOURCES) \
 	$(test_modem_helpers_icera_SOURCES) \
 	$(test_modem_helpers_mbm_SOURCES) \
+	$(test_modem_helpers_telit_SOURCES) \
 	$(test_service_generic_SOURCES)
 DIST_SOURCES = $(libmm_plugin_altair_lte_la_SOURCES) \
 	$(libmm_plugin_anydata_la_SOURCES) \
@@ -639,6 +653,7 @@ DIST_SOURCES = $(libmm_plugin_altair_lte_la_SOURCES) \
 	$(test_modem_helpers_huawei_SOURCES) \
 	$(test_modem_helpers_icera_SOURCES) \
 	$(test_modem_helpers_mbm_SOURCES) \
+	$(test_modem_helpers_telit_SOURCES) \
 	$(am__test_service_generic_SOURCES_DIST)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
@@ -1354,10 +1369,26 @@ libmm_plugin_telit_la_SOURCES = \
 	telit/mm-plugin-telit.c \
 	telit/mm-plugin-telit.h \
 	telit/mm-broadband-modem-telit.c \
-	telit/mm-broadband-modem-telit.h
+	telit/mm-broadband-modem-telit.h \
+	telit/mm-modem-helpers-telit.c \
+	telit/mm-modem-helpers-telit.h
 
 libmm_plugin_telit_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
 libmm_plugin_telit_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
+test_modem_helpers_telit_SOURCES = \
+	telit/mm-modem-helpers-telit.c \
+	telit/mm-modem-helpers-telit.h \
+	telit/tests/test-mm-modem-helpers-telit.c
+
+test_modem_helpers_telit_CPPFLAGS = \
+	-I$(top_srcdir)/plugins/telit \
+	$(PLUGIN_COMMON_COMPILER_FLAGS)
+
+test_modem_helpers_telit_LDADD = \
+       $(top_builddir)/libmm-glib/libmm-glib.la \
+       $(top_builddir)/src/libmodem-helpers.la
+
+test_modem_helpers_telit_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
 
 # MTK
 libmm_plugin_mtk_la_SOURCES = \
@@ -1768,6 +1799,8 @@ telit/libmm_plugin_telit_la-mm-plugin-telit.lo: telit/$(am__dirstamp) \
 	telit/$(DEPDIR)/$(am__dirstamp)
 telit/libmm_plugin_telit_la-mm-broadband-modem-telit.lo:  \
 	telit/$(am__dirstamp) telit/$(DEPDIR)/$(am__dirstamp)
+telit/libmm_plugin_telit_la-mm-modem-helpers-telit.lo:  \
+	telit/$(am__dirstamp) telit/$(DEPDIR)/$(am__dirstamp)
 
 libmm-plugin-telit.la: $(libmm_plugin_telit_la_OBJECTS) $(libmm_plugin_telit_la_DEPENDENCIES) $(EXTRA_libmm_plugin_telit_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(libmm_plugin_telit_la_LINK) -rpath $(pkglibdir) $(libmm_plugin_telit_la_OBJECTS) $(libmm_plugin_telit_la_LIBADD) $(LIBS)
@@ -1938,6 +1971,21 @@ mbm/tests/test_modem_helpers_mbm-test-modem-helpers-mbm.$(OBJEXT):  \
 test-modem-helpers-mbm$(EXEEXT): $(test_modem_helpers_mbm_OBJECTS) $(test_modem_helpers_mbm_DEPENDENCIES) $(EXTRA_test_modem_helpers_mbm_DEPENDENCIES) 
 	@rm -f test-modem-helpers-mbm$(EXEEXT)
 	$(AM_V_CCLD)$(test_modem_helpers_mbm_LINK) $(test_modem_helpers_mbm_OBJECTS) $(test_modem_helpers_mbm_LDADD) $(LIBS)
+telit/test_modem_helpers_telit-mm-modem-helpers-telit.$(OBJEXT):  \
+	telit/$(am__dirstamp) telit/$(DEPDIR)/$(am__dirstamp)
+telit/tests/$(am__dirstamp):
+	@$(MKDIR_P) telit/tests
+	@: > telit/tests/$(am__dirstamp)
+telit/tests/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) telit/tests/$(DEPDIR)
+	@: > telit/tests/$(DEPDIR)/$(am__dirstamp)
+telit/tests/test_modem_helpers_telit-test-mm-modem-helpers-telit.$(OBJEXT):  \
+	telit/tests/$(am__dirstamp) \
+	telit/tests/$(DEPDIR)/$(am__dirstamp)
+
+test-modem-helpers-telit$(EXEEXT): $(test_modem_helpers_telit_OBJECTS) $(test_modem_helpers_telit_DEPENDENCIES) $(EXTRA_test_modem_helpers_telit_DEPENDENCIES) 
+	@rm -f test-modem-helpers-telit$(EXEEXT)
+	$(AM_V_CCLD)$(test_modem_helpers_telit_LINK) $(test_modem_helpers_telit_OBJECTS) $(test_modem_helpers_telit_LDADD) $(LIBS)
 generic/tests/$(am__dirstamp):
 	@$(MKDIR_P) generic/tests
 	@: > generic/tests/$(am__dirstamp)
@@ -2002,6 +2050,7 @@ mostlyclean-compile:
 	-rm -f simtech/*.lo
 	-rm -f telit/*.$(OBJEXT)
 	-rm -f telit/*.lo
+	-rm -f telit/tests/*.$(OBJEXT)
 	-rm -f tests/*.$(OBJEXT)
 	-rm -f tests/*.lo
 	-rm -f via/*.$(OBJEXT)
@@ -2096,7 +2145,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@simtech/$(DEPDIR)/libmm_plugin_simtech_la-mm-broadband-modem-simtech.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@simtech/$(DEPDIR)/libmm_plugin_simtech_la-mm-plugin-simtech.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@telit/$(DEPDIR)/libmm_plugin_telit_la-mm-broadband-modem-telit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@telit/$(DEPDIR)/libmm_plugin_telit_la-mm-modem-helpers-telit.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@telit/$(DEPDIR)/libmm_plugin_telit_la-mm-plugin-telit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@telit/$(DEPDIR)/test_modem_helpers_telit-mm-modem-helpers-telit.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@telit/tests/$(DEPDIR)/test_modem_helpers_telit-test-mm-modem-helpers-telit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/libmm_test_common_la-test-fixture.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@tests/$(DEPDIR)/libmm_test_common_la-test-port-context.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@via/$(DEPDIR)/libmm_plugin_via_la-mm-broadband-modem-via.Plo@am__quote@
@@ -2603,6 +2655,13 @@ telit/libmm_plugin_telit_la-mm-broadband-modem-telit.lo: telit/mm-broadband-mode
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_plugin_telit_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o telit/libmm_plugin_telit_la-mm-broadband-modem-telit.lo `test -f 'telit/mm-broadband-modem-telit.c' || echo '$(srcdir)/'`telit/mm-broadband-modem-telit.c
 
+telit/libmm_plugin_telit_la-mm-modem-helpers-telit.lo: telit/mm-modem-helpers-telit.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_plugin_telit_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT telit/libmm_plugin_telit_la-mm-modem-helpers-telit.lo -MD -MP -MF telit/$(DEPDIR)/libmm_plugin_telit_la-mm-modem-helpers-telit.Tpo -c -o telit/libmm_plugin_telit_la-mm-modem-helpers-telit.lo `test -f 'telit/mm-modem-helpers-telit.c' || echo '$(srcdir)/'`telit/mm-modem-helpers-telit.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) telit/$(DEPDIR)/libmm_plugin_telit_la-mm-modem-helpers-telit.Tpo telit/$(DEPDIR)/libmm_plugin_telit_la-mm-modem-helpers-telit.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='telit/mm-modem-helpers-telit.c' object='telit/libmm_plugin_telit_la-mm-modem-helpers-telit.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_plugin_telit_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o telit/libmm_plugin_telit_la-mm-modem-helpers-telit.lo `test -f 'telit/mm-modem-helpers-telit.c' || echo '$(srcdir)/'`telit/mm-modem-helpers-telit.c
+
 via/libmm_plugin_via_la-mm-plugin-via.lo: via/mm-plugin-via.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_plugin_via_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT via/libmm_plugin_via_la-mm-plugin-via.lo -MD -MP -MF via/$(DEPDIR)/libmm_plugin_via_la-mm-plugin-via.Tpo -c -o via/libmm_plugin_via_la-mm-plugin-via.lo `test -f 'via/mm-plugin-via.c' || echo '$(srcdir)/'`via/mm-plugin-via.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) via/$(DEPDIR)/libmm_plugin_via_la-mm-plugin-via.Tpo via/$(DEPDIR)/libmm_plugin_via_la-mm-plugin-via.Plo
@@ -2848,6 +2907,34 @@ mbm/tests/test_modem_helpers_mbm-test-modem-helpers-mbm.obj: mbm/tests/test-mode
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_modem_helpers_mbm_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o mbm/tests/test_modem_helpers_mbm-test-modem-helpers-mbm.obj `if test -f 'mbm/tests/test-modem-helpers-mbm.c'; then $(CYGPATH_W) 'mbm/tests/test-modem-helpers-mbm.c'; else $(CYGPATH_W) '$(srcdir)/mbm/tests/test-modem-helpers-mbm.c'; fi`
 
+telit/test_modem_helpers_telit-mm-modem-helpers-telit.o: telit/mm-modem-helpers-telit.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_modem_helpers_telit_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT telit/test_modem_helpers_telit-mm-modem-helpers-telit.o -MD -MP -MF telit/$(DEPDIR)/test_modem_helpers_telit-mm-modem-helpers-telit.Tpo -c -o telit/test_modem_helpers_telit-mm-modem-helpers-telit.o `test -f 'telit/mm-modem-helpers-telit.c' || echo '$(srcdir)/'`telit/mm-modem-helpers-telit.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) telit/$(DEPDIR)/test_modem_helpers_telit-mm-modem-helpers-telit.Tpo telit/$(DEPDIR)/test_modem_helpers_telit-mm-modem-helpers-telit.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='telit/mm-modem-helpers-telit.c' object='telit/test_modem_helpers_telit-mm-modem-helpers-telit.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_modem_helpers_telit_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o telit/test_modem_helpers_telit-mm-modem-helpers-telit.o `test -f 'telit/mm-modem-helpers-telit.c' || echo '$(srcdir)/'`telit/mm-modem-helpers-telit.c
+
+telit/test_modem_helpers_telit-mm-modem-helpers-telit.obj: telit/mm-modem-helpers-telit.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_modem_helpers_telit_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT telit/test_modem_helpers_telit-mm-modem-helpers-telit.obj -MD -MP -MF telit/$(DEPDIR)/test_modem_helpers_telit-mm-modem-helpers-telit.Tpo -c -o telit/test_modem_helpers_telit-mm-modem-helpers-telit.obj `if test -f 'telit/mm-modem-helpers-telit.c'; then $(CYGPATH_W) 'telit/mm-modem-helpers-telit.c'; else $(CYGPATH_W) '$(srcdir)/telit/mm-modem-helpers-telit.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) telit/$(DEPDIR)/test_modem_helpers_telit-mm-modem-helpers-telit.Tpo telit/$(DEPDIR)/test_modem_helpers_telit-mm-modem-helpers-telit.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='telit/mm-modem-helpers-telit.c' object='telit/test_modem_helpers_telit-mm-modem-helpers-telit.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_modem_helpers_telit_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o telit/test_modem_helpers_telit-mm-modem-helpers-telit.obj `if test -f 'telit/mm-modem-helpers-telit.c'; then $(CYGPATH_W) 'telit/mm-modem-helpers-telit.c'; else $(CYGPATH_W) '$(srcdir)/telit/mm-modem-helpers-telit.c'; fi`
+
+telit/tests/test_modem_helpers_telit-test-mm-modem-helpers-telit.o: telit/tests/test-mm-modem-helpers-telit.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_modem_helpers_telit_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT telit/tests/test_modem_helpers_telit-test-mm-modem-helpers-telit.o -MD -MP -MF telit/tests/$(DEPDIR)/test_modem_helpers_telit-test-mm-modem-helpers-telit.Tpo -c -o telit/tests/test_modem_helpers_telit-test-mm-modem-helpers-telit.o `test -f 'telit/tests/test-mm-modem-helpers-telit.c' || echo '$(srcdir)/'`telit/tests/test-mm-modem-helpers-telit.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) telit/tests/$(DEPDIR)/test_modem_helpers_telit-test-mm-modem-helpers-telit.Tpo telit/tests/$(DEPDIR)/test_modem_helpers_telit-test-mm-modem-helpers-telit.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='telit/tests/test-mm-modem-helpers-telit.c' object='telit/tests/test_modem_helpers_telit-test-mm-modem-helpers-telit.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_modem_helpers_telit_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o telit/tests/test_modem_helpers_telit-test-mm-modem-helpers-telit.o `test -f 'telit/tests/test-mm-modem-helpers-telit.c' || echo '$(srcdir)/'`telit/tests/test-mm-modem-helpers-telit.c
+
+telit/tests/test_modem_helpers_telit-test-mm-modem-helpers-telit.obj: telit/tests/test-mm-modem-helpers-telit.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_modem_helpers_telit_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT telit/tests/test_modem_helpers_telit-test-mm-modem-helpers-telit.obj -MD -MP -MF telit/tests/$(DEPDIR)/test_modem_helpers_telit-test-mm-modem-helpers-telit.Tpo -c -o telit/tests/test_modem_helpers_telit-test-mm-modem-helpers-telit.obj `if test -f 'telit/tests/test-mm-modem-helpers-telit.c'; then $(CYGPATH_W) 'telit/tests/test-mm-modem-helpers-telit.c'; else $(CYGPATH_W) '$(srcdir)/telit/tests/test-mm-modem-helpers-telit.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) telit/tests/$(DEPDIR)/test_modem_helpers_telit-test-mm-modem-helpers-telit.Tpo telit/tests/$(DEPDIR)/test_modem_helpers_telit-test-mm-modem-helpers-telit.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='telit/tests/test-mm-modem-helpers-telit.c' object='telit/tests/test_modem_helpers_telit-test-mm-modem-helpers-telit.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_modem_helpers_telit_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o telit/tests/test_modem_helpers_telit-test-mm-modem-helpers-telit.obj `if test -f 'telit/tests/test-mm-modem-helpers-telit.c'; then $(CYGPATH_W) 'telit/tests/test-mm-modem-helpers-telit.c'; else $(CYGPATH_W) '$(srcdir)/telit/tests/test-mm-modem-helpers-telit.c'; fi`
+
 generic/tests/test_service_generic-test-service-generic.o: generic/tests/test-service-generic.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_service_generic_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT generic/tests/test_service_generic-test-service-generic.o -MD -MP -MF generic/tests/$(DEPDIR)/test_service_generic-test-service-generic.Tpo -c -o generic/tests/test_service_generic-test-service-generic.o `test -f 'generic/tests/test-service-generic.c' || echo '$(srcdir)/'`generic/tests/test-service-generic.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) generic/tests/$(DEPDIR)/test_service_generic-test-service-generic.Tpo generic/tests/$(DEPDIR)/test_service_generic-test-service-generic.Po
@@ -3085,6 +3172,8 @@ distclean-generic:
 	-rm -f simtech/$(am__dirstamp)
 	-rm -f telit/$(DEPDIR)/$(am__dirstamp)
 	-rm -f telit/$(am__dirstamp)
+	-rm -f telit/tests/$(DEPDIR)/$(am__dirstamp)
+	-rm -f telit/tests/$(am__dirstamp)
 	-rm -f tests/$(DEPDIR)/$(am__dirstamp)
 	-rm -f tests/$(am__dirstamp)
 	-rm -f via/$(DEPDIR)/$(am__dirstamp)
@@ -3105,7 +3194,7 @@ clean-am: clean-generic clean-libtool clean-noinstLTLIBRARIES \
 	clean-noinstPROGRAMS clean-pkglibLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf altair/$(DEPDIR) altair/tests/$(DEPDIR) anydata/$(DEPDIR) cinterion/$(DEPDIR) cinterion/tests/$(DEPDIR) generic/$(DEPDIR) generic/tests/$(DEPDIR) gobi/$(DEPDIR) huawei/$(DEPDIR) huawei/tests/$(DEPDIR) icera/$(DEPDIR) icera/tests/$(DEPDIR) iridium/$(DEPDIR) linktop/$(DEPDIR) longcheer/$(DEPDIR) mbm/$(DEPDIR) mbm/tests/$(DEPDIR) motorola/$(DEPDIR) mtk/$(DEPDIR) nokia/$(DEPDIR) novatel/$(DEPDIR) option/$(DEPDIR) pantech/$(DEPDIR) samsung/$(DEPDIR) sierra/$(DEPDIR) simtech/$(DEPDIR) telit/$(DEPDIR) tests/$(DEPDIR) via/$(DEPDIR) wavecom/$(DEPDIR) x22x/$(DEPDIR) zte/$(DEPDIR)
+	-rm -rf altair/$(DEPDIR) altair/tests/$(DEPDIR) anydata/$(DEPDIR) cinterion/$(DEPDIR) cinterion/tests/$(DEPDIR) generic/$(DEPDIR) generic/tests/$(DEPDIR) gobi/$(DEPDIR) huawei/$(DEPDIR) huawei/tests/$(DEPDIR) icera/$(DEPDIR) icera/tests/$(DEPDIR) iridium/$(DEPDIR) linktop/$(DEPDIR) longcheer/$(DEPDIR) mbm/$(DEPDIR) mbm/tests/$(DEPDIR) motorola/$(DEPDIR) mtk/$(DEPDIR) nokia/$(DEPDIR) novatel/$(DEPDIR) option/$(DEPDIR) pantech/$(DEPDIR) samsung/$(DEPDIR) sierra/$(DEPDIR) simtech/$(DEPDIR) telit/$(DEPDIR) telit/tests/$(DEPDIR) tests/$(DEPDIR) via/$(DEPDIR) wavecom/$(DEPDIR) x22x/$(DEPDIR) zte/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -3151,7 +3240,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf altair/$(DEPDIR) altair/tests/$(DEPDIR) anydata/$(DEPDIR) cinterion/$(DEPDIR) cinterion/tests/$(DEPDIR) generic/$(DEPDIR) generic/tests/$(DEPDIR) gobi/$(DEPDIR) huawei/$(DEPDIR) huawei/tests/$(DEPDIR) icera/$(DEPDIR) icera/tests/$(DEPDIR) iridium/$(DEPDIR) linktop/$(DEPDIR) longcheer/$(DEPDIR) mbm/$(DEPDIR) mbm/tests/$(DEPDIR) motorola/$(DEPDIR) mtk/$(DEPDIR) nokia/$(DEPDIR) novatel/$(DEPDIR) option/$(DEPDIR) pantech/$(DEPDIR) samsung/$(DEPDIR) sierra/$(DEPDIR) simtech/$(DEPDIR) telit/$(DEPDIR) tests/$(DEPDIR) via/$(DEPDIR) wavecom/$(DEPDIR) x22x/$(DEPDIR) zte/$(DEPDIR)
+	-rm -rf altair/$(DEPDIR) altair/tests/$(DEPDIR) anydata/$(DEPDIR) cinterion/$(DEPDIR) cinterion/tests/$(DEPDIR) generic/$(DEPDIR) generic/tests/$(DEPDIR) gobi/$(DEPDIR) huawei/$(DEPDIR) huawei/tests/$(DEPDIR) icera/$(DEPDIR) icera/tests/$(DEPDIR) iridium/$(DEPDIR) linktop/$(DEPDIR) longcheer/$(DEPDIR) mbm/$(DEPDIR) mbm/tests/$(DEPDIR) motorola/$(DEPDIR) mtk/$(DEPDIR) nokia/$(DEPDIR) novatel/$(DEPDIR) option/$(DEPDIR) pantech/$(DEPDIR) samsung/$(DEPDIR) sierra/$(DEPDIR) simtech/$(DEPDIR) telit/$(DEPDIR) telit/tests/$(DEPDIR) tests/$(DEPDIR) via/$(DEPDIR) wavecom/$(DEPDIR) x22x/$(DEPDIR) zte/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
