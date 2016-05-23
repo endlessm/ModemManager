@@ -15,7 +15,6 @@ override_dh_autoreconf:
 	NOCONFIGURE=true dh_autoreconf ./autogen.sh
 
 override_dh_auto_clean:
-	rm -f $(CURDIR)/debian/modemmanager.upstart
 	rm -f gtk-doc.make m4/gtk-doc.m4
 	dh_auto_clean
 
@@ -29,18 +28,13 @@ override_dh_makeshlibs:
 	dh_makeshlibs -X/usr/lib/$(DEB_HOST_MULTIARCH)/ModemManager/
 
 override_dh_strip:
-	dh_strip --dbg-package=modemmanager-dbg
+	dh_strip --dbgsym-migration='modemmanager-dbg (<< 1.4.14-1~)'
 
 override_dh_install:
 	cp $(CURDIR)/debian/77-mm-qdl-device-blacklist.rules \
 		 $(CURDIR)/debian/tmp/lib/udev/rules.d
-	if dpkg-vendor --is ubuntu; then \
-		cp $(CURDIR)/debian/ubuntu/modemmanager.upstart $(CURDIR)/debian; \
-		dh_link lib/systemd/system/ModemManager.service lib/systemd/system/modemmanager.service; \
-	fi
 	find $(CURDIR)/debian/tmp/ -name \*.a -exec rm {} \;
 	find $(CURDIR)/debian/tmp/ -name \*.la -exec rm {} \;
-	rm -f $(CURDIR)/debian/tmp/usr/lib/*/pppd/*/mm-test-pppd-plugin.*
 	dh_install --fail-missing
 
 override_dh_systemd_start:

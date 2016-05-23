@@ -1,6 +1,6 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: ModemManager
-Source: http://www.freedesktop.org/software/ModemManager/
+Source: https://www.freedesktop.org/software/ModemManager/
 
 Files: *
 Copyright: 2011 - 2013 Aleksander Morgado <aleksander@gnu.org>
