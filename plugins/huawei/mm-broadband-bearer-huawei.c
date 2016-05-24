@@ -25,12 +25,16 @@
 #include <ctype.h>
 #include <arpa/inet.h>
 #include <ModemManager.h>
+
+#define _LIBMM_INSIDE_MM
+
 #include "mm-base-modem-at.h"
 #include "mm-broadband-bearer-huawei.h"
 #include "mm-log.h"
 #include "mm-modem-helpers.h"
 #include "mm-modem-helpers-huawei.h"
 #include "mm-daemon-enums-types.h"
+#include "mm-iface-modem.h"
 
 G_DEFINE_TYPE (MMBroadbandBearerHuawei, mm_broadband_bearer_huawei, MM_TYPE_BROADBAND_BEARER)
 
@@ -386,6 +390,13 @@ connect_3gpp_context_step (GTask *task)
         gint                 encoded_auth = MM_BEARER_HUAWEI_AUTH_UNKNOWN;
         gchar               *command;
 
+        if (g_strcmp0 (mm_iface_modem_get_model (MM_IFACE_MODEM (ctx->modem)), "E8278") == 0) {
+            mm_dbg ("Skip NDISDUP for E8278");
+            ctx->step++;
+            connect_3gpp_context_step (task);
+            return;
+        }
+
         apn = mm_bearer_properties_get_apn (mm_base_bearer_peek_config (MM_BASE_BEARER (self)));
         user = mm_bearer_properties_get_user (mm_base_bearer_peek_config (MM_BASE_BEARER (self)));
         passwd = mm_bearer_properties_get_password (mm_base_bearer_peek_config (MM_BASE_BEARER (self)));
@@ -425,6 +436,13 @@ connect_3gpp_context_step (GTask *task)
     }
 
     case CONNECT_3GPP_CONTEXT_STEP_NDISSTATQRY:
+        if (g_strcmp0 (mm_iface_modem_get_model (MM_IFACE_MODEM (ctx->modem)), "E8278") == 0) {
+            mm_dbg ("Skip NDISSTATQRY for E8278");
+            ctx->step++;
+            connect_3gpp_context_step (task);
+            return;
+        }
+
         /* Wait for dial up timeout, retries for 60 times
          * (1s between the retries, so it means 1 minute).
          * If too many retries, failed
