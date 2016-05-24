@@ -25,12 +25,16 @@
 #include <ctype.h>
 #include <arpa/inet.h>
 #include <ModemManager.h>
+
+#define _LIBMM_INSIDE_MM
+
 #include "mm-base-modem-at.h"
 #include "mm-broadband-bearer-huawei.h"
 #include "mm-log.h"
 #include "mm-modem-helpers.h"
 #include "mm-modem-helpers-huawei.h"
 #include "mm-daemon-enums-types.h"
+#include "mm-iface-modem.h"
 
 G_DEFINE_TYPE (MMBroadbandBearerHuawei, mm_broadband_bearer_huawei, MM_TYPE_BROADBAND_BEARER)
 
@@ -385,6 +389,13 @@ connect_3gpp_context_step (Connect3gppContext *ctx)
         MMBearerAllowedAuth  auth;
         gint                 encoded_auth = MM_BEARER_HUAWEI_AUTH_UNKNOWN;
         gchar               *command;
+
+        if (g_strcmp0 (mm_iface_modem_get_model (MM_IFACE_MODEM (ctx->modem)), "E8278") == 0) {
+            mm_dbg ("Skip NDISDUP and NDISSTATQRY for E8278");
+            ctx->step = CONNECT_3GPP_CONTEXT_STEP_LAST;
+            connect_3gpp_context_step (ctx);
+            return;
+        }
 
         apn = mm_bearer_properties_get_apn (mm_base_bearer_peek_config (MM_BASE_BEARER (ctx->self)));
         user = mm_bearer_properties_get_user (mm_base_bearer_peek_config (MM_BASE_BEARER (ctx->self)));
