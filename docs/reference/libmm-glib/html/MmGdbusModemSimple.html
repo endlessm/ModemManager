@@ -6,9 +6,9 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
 <link rel="up" href="pt02.html" title="Part II. Low level API">
-<link rel="prev" href="MmGdbusModemOmaSkeleton.html" title="MmGdbusModemOmaSkeleton">
+<link rel="prev" href="MmGdbusModemVoiceSkeleton.html" title="MmGdbusModemVoiceSkeleton">
 <link rel="next" href="MmGdbusModemSimpleProxy.html" title="MmGdbusModemSimpleProxy">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -23,7 +23,7 @@
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="pt02.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="MmGdbusModemOmaSkeleton.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="MmGdbusModemVoiceSkeleton.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="MmGdbusModemSimpleProxy.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
@@ -166,7 +166,7 @@
 </div>
 <div class="refsect1">
 <a name="MmGdbusModemSimple.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GInterface
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/GTypeModule.html">GInterface</a>
     <span class="lineart">╰──</span> MmGdbusModemSimple
 </pre>
 </div>
@@ -174,7 +174,7 @@
 <a name="MmGdbusModemSimple.prerequisites"></a><h2>Prerequisites</h2>
 <p>
 MmGdbusModemSimple requires
- <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>.</p>
+ <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>.</p>
 </div>
 <div class="refsect1">
 <a name="MmGdbusModemSimple.implementations"></a><h2>Known Implementations</h2>
@@ -193,7 +193,7 @@ MmGdbusModemSimple is implemented by
 <pre class="programlisting"><span class="returnvalue">void</span>
 mm_gdbus_modem_simple_call_connect (<em class="parameter"><code><a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a> *proxy</code></em>,
                                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> *arg_properties</code></em>,
-                                    <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                    <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                     <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Simple.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Simple.Connect"><GTKDOCLINK HREF="Connect"><code class="function">Connect()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>
@@ -203,7 +203,7 @@ When the operation is finished, <em class="parameter"><code>callback</code></em>
 You can then call <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-connect-finish" title="mm_gdbus_modem_simple_call_connect_finish ()"><code class="function">mm_gdbus_modem_simple_call_connect_finish()</code></a> to get the result of the operation.</p>
 <p>See <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-connect-sync" title="mm_gdbus_modem_simple_call_connect_sync ()"><code class="function">mm_gdbus_modem_simple_call_connect_sync()</code></a> for the synchronous, blocking version of this method.</p>
 <div class="refsect3">
-<a name="id-1.3.39.10.2.6"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-simple-call-connect.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -223,7 +223,7 @@ You can then call <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-s
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -248,11 +248,11 @@ You can then call <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-s
 mm_gdbus_modem_simple_call_connect_finish
                                (<em class="parameter"><code><a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a> *proxy</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **out_bearer</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes an operation started with <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-connect" title="mm_gdbus_modem_simple_call_connect ()"><code class="function">mm_gdbus_modem_simple_call_connect()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.39.10.3.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-simple-call-connect-finish.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -272,7 +272,7 @@ mm_gdbus_modem_simple_call_connect_finish
 </tr>
 <tr>
 <td class="parameter_name"><p>res</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-connect" title="mm_gdbus_modem_simple_call_connect ()"><code class="function">mm_gdbus_modem_simple_call_connect()</code></a>.</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-connect" title="mm_gdbus_modem_simple_call_connect ()"><code class="function">mm_gdbus_modem_simple_call_connect()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -284,7 +284,7 @@ mm_gdbus_modem_simple_call_connect_finish
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.39.10.3.6"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-simple-call-connect-finish.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
@@ -298,13 +298,13 @@ mm_gdbus_modem_simple_call_connect_sync
                                (<em class="parameter"><code><a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a> *proxy</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> *arg_properties</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **out_bearer</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Simple.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Simple.Connect"><GTKDOCLINK HREF="Connect"><code class="function">Connect()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>
 . The calling thread is blocked until a reply is received.</p>
 <p>See <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-connect" title="mm_gdbus_modem_simple_call_connect ()"><code class="function">mm_gdbus_modem_simple_call_connect()</code></a> for the asynchronous version of this method.</p>
 <div class="refsect3">
-<a name="id-1.3.39.10.4.6"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-simple-call-connect-sync.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -329,7 +329,7 @@ mm_gdbus_modem_simple_call_connect_sync
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -341,7 +341,7 @@ mm_gdbus_modem_simple_call_connect_sync
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.39.10.4.7"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-simple-call-connect-sync.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
@@ -353,7 +353,7 @@ is set. </p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 mm_gdbus_modem_simple_call_disconnect (<em class="parameter"><code><a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a> *proxy</code></em>,
                                        <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *arg_bearer</code></em>,
-                                       <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                       <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                        <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Simple.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Simple.Disconnect"><GTKDOCLINK HREF="Disconnect"><code class="function">Disconnect()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>
@@ -363,7 +363,7 @@ When the operation is finished, <em class="parameter"><code>callback</code></em>
 You can then call <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-disconnect-finish" title="mm_gdbus_modem_simple_call_disconnect_finish ()"><code class="function">mm_gdbus_modem_simple_call_disconnect_finish()</code></a> to get the result of the operation.</p>
 <p>See <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-disconnect-sync" title="mm_gdbus_modem_simple_call_disconnect_sync ()"><code class="function">mm_gdbus_modem_simple_call_disconnect_sync()</code></a> for the synchronous, blocking version of this method.</p>
 <div class="refsect3">
-<a name="id-1.3.39.10.5.6"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-simple-call-disconnect.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -383,7 +383,7 @@ You can then call <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-s
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -407,11 +407,11 @@ You can then call <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-s
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 mm_gdbus_modem_simple_call_disconnect_finish
                                (<em class="parameter"><code><a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a> *proxy</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes an operation started with <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-disconnect" title="mm_gdbus_modem_simple_call_disconnect ()"><code class="function">mm_gdbus_modem_simple_call_disconnect()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.39.10.6.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-simple-call-disconnect-finish.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -426,7 +426,7 @@ mm_gdbus_modem_simple_call_disconnect_finish
 </tr>
 <tr>
 <td class="parameter_name"><p>res</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-disconnect" title="mm_gdbus_modem_simple_call_disconnect ()"><code class="function">mm_gdbus_modem_simple_call_disconnect()</code></a>.</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-disconnect" title="mm_gdbus_modem_simple_call_disconnect ()"><code class="function">mm_gdbus_modem_simple_call_disconnect()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -438,7 +438,7 @@ mm_gdbus_modem_simple_call_disconnect_finish
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.39.10.6.6"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-simple-call-disconnect-finish.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
@@ -451,13 +451,13 @@ is set. </p>
 mm_gdbus_modem_simple_call_disconnect_sync
                                (<em class="parameter"><code><a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a> *proxy</code></em>,
                                 <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *arg_bearer</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Simple.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Simple.Disconnect"><GTKDOCLINK HREF="Disconnect"><code class="function">Disconnect()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>
 . The calling thread is blocked until a reply is received.</p>
 <p>See <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-disconnect" title="mm_gdbus_modem_simple_call_disconnect ()"><code class="function">mm_gdbus_modem_simple_call_disconnect()</code></a> for the asynchronous version of this method.</p>
 <div class="refsect3">
-<a name="id-1.3.39.10.7.6"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-simple-call-disconnect-sync.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -477,7 +477,7 @@ mm_gdbus_modem_simple_call_disconnect_sync
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -489,7 +489,7 @@ mm_gdbus_modem_simple_call_disconnect_sync
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.39.10.7.7"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-simple-call-disconnect-sync.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
@@ -500,7 +500,7 @@ is set. </p>
 <a name="mm-gdbus-modem-simple-call-get-status"></a><h3>mm_gdbus_modem_simple_call_get_status ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 mm_gdbus_modem_simple_call_get_status (<em class="parameter"><code><a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a> *proxy</code></em>,
-                                       <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                       <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                        <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Simple.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Simple.GetStatus"><GTKDOCLINK HREF="GetStatus"><code class="function">GetStatus()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>
@@ -510,7 +510,7 @@ When the operation is finished, <em class="parameter"><code>callback</code></em>
 You can then call <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-get-status-finish" title="mm_gdbus_modem_simple_call_get_status_finish ()"><code class="function">mm_gdbus_modem_simple_call_get_status_finish()</code></a> to get the result of the operation.</p>
 <p>See <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-get-status-sync" title="mm_gdbus_modem_simple_call_get_status_sync ()"><code class="function">mm_gdbus_modem_simple_call_get_status_sync()</code></a> for the synchronous, blocking version of this method.</p>
 <div class="refsect3">
-<a name="id-1.3.39.10.8.6"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-simple-call-get-status.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -525,7 +525,7 @@ You can then call <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-s
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -550,11 +550,11 @@ You can then call <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-s
 mm_gdbus_modem_simple_call_get_status_finish
                                (<em class="parameter"><code><a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a> *proxy</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> **out_properties</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes an operation started with <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-get-status" title="mm_gdbus_modem_simple_call_get_status ()"><code class="function">mm_gdbus_modem_simple_call_get_status()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.39.10.9.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-simple-call-get-status-finish.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -574,7 +574,7 @@ mm_gdbus_modem_simple_call_get_status_finish
 </tr>
 <tr>
 <td class="parameter_name"><p>res</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-get-status" title="mm_gdbus_modem_simple_call_get_status ()"><code class="function">mm_gdbus_modem_simple_call_get_status()</code></a>.</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-get-status" title="mm_gdbus_modem_simple_call_get_status ()"><code class="function">mm_gdbus_modem_simple_call_get_status()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -586,7 +586,7 @@ mm_gdbus_modem_simple_call_get_status_finish
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.39.10.9.6"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-simple-call-get-status-finish.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
@@ -599,13 +599,13 @@ is set. </p>
 mm_gdbus_modem_simple_call_get_status_sync
                                (<em class="parameter"><code><a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a> *proxy</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> **out_properties</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Simple.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Simple.GetStatus"><GTKDOCLINK HREF="GetStatus"><code class="function">GetStatus()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>
 . The calling thread is blocked until a reply is received.</p>
 <p>See <a class="link" href="MmGdbusModemSimple.html#mm-gdbus-modem-simple-call-get-status" title="mm_gdbus_modem_simple_call_get_status ()"><code class="function">mm_gdbus_modem_simple_call_get_status()</code></a> for the asynchronous version of this method.</p>
 <div class="refsect3">
-<a name="id-1.3.39.10.10.6"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-simple-call-get-status-sync.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -625,7 +625,7 @@ mm_gdbus_modem_simple_call_get_status_sync
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -637,7 +637,7 @@ mm_gdbus_modem_simple_call_get_status_sync
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.39.10.10.7"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-simple-call-get-status-sync.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
@@ -674,7 +674,7 @@ is set. </p>
 </pre>
 <p>Virtual table for the D-Bus interface org.freedesktop.ModemManager1.Modem.Simple.</p>
 <div class="refsect3">
-<a name="id-1.3.39.11.3.5"></a><h4>Members</h4>
+<a name="MmGdbusModemSimpleIface.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -713,14 +713,14 @@ is set. </p>
 <a name="MmGdbusModemSimple-handle-connect"></a><h3>The <code class="literal">“handle-connect”</code> signal</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 user_function (<a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a>    *object,
-               <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a> *invocation,
+               <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a> *invocation,
                <a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a>              *arg_properties,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)</pre>
 <p>Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Simple.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Simple.Connect"><GTKDOCLINK HREF="Connect"><code class="function">Connect()</code></a></GTKDOCLINK> D-Bus method.</p>
 <p>If a signal handler returns <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em>
  and eventually call <code class="function">mm_gdbus_modem_simple_complete_connect()</code> or e.g. <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="https://developer.gnome.org/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
 <div class="refsect3">
-<a name="id-1.3.39.12.2.6"></a><h4>Parameters</h4>
+<a name="MmGdbusModemSimple-handle-connect.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -735,7 +735,7 @@ user_function (<a class="link" href="MmGdbusModemSimple.html" title="MmGdbusMode
 </tr>
 <tr>
 <td class="parameter_name"><p>invocation</p></td>
-<td class="parameter_description"><p>A <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a>.</p></td>
+<td class="parameter_description"><p>A <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -752,7 +752,7 @@ user_function (<a class="link" href="MmGdbusModemSimple.html" title="MmGdbusMode
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.39.12.2.7"></a><h4>Returns</h4>
+<a name="MmGdbusModemSimple-handle-connect.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</p>
 </div>
 <p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
@@ -762,14 +762,14 @@ user_function (<a class="link" href="MmGdbusModemSimple.html" title="MmGdbusMode
 <a name="MmGdbusModemSimple-handle-disconnect"></a><h3>The <code class="literal">“handle-disconnect”</code> signal</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 user_function (<a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a>    *object,
-               <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a> *invocation,
+               <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a> *invocation,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>                 *arg_bearer,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)</pre>
 <p>Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Simple.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Simple.Disconnect"><GTKDOCLINK HREF="Disconnect"><code class="function">Disconnect()</code></a></GTKDOCLINK> D-Bus method.</p>
 <p>If a signal handler returns <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em>
  and eventually call <code class="function">mm_gdbus_modem_simple_complete_disconnect()</code> or e.g. <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="https://developer.gnome.org/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
 <div class="refsect3">
-<a name="id-1.3.39.12.3.6"></a><h4>Parameters</h4>
+<a name="MmGdbusModemSimple-handle-disconnect.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -784,7 +784,7 @@ user_function (<a class="link" href="MmGdbusModemSimple.html" title="MmGdbusMode
 </tr>
 <tr>
 <td class="parameter_name"><p>invocation</p></td>
-<td class="parameter_description"><p>A <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a>.</p></td>
+<td class="parameter_description"><p>A <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -801,7 +801,7 @@ user_function (<a class="link" href="MmGdbusModemSimple.html" title="MmGdbusMode
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.39.12.3.7"></a><h4>Returns</h4>
+<a name="MmGdbusModemSimple-handle-disconnect.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</p>
 </div>
 <p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
@@ -811,13 +811,13 @@ user_function (<a class="link" href="MmGdbusModemSimple.html" title="MmGdbusMode
 <a name="MmGdbusModemSimple-handle-get-status"></a><h3>The <code class="literal">“handle-get-status”</code> signal</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 user_function (<a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a>    *object,
-               <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a> *invocation,
+               <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a> *invocation,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)</pre>
 <p>Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Simple.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Simple.GetStatus"><GTKDOCLINK HREF="GetStatus"><code class="function">GetStatus()</code></a></GTKDOCLINK> D-Bus method.</p>
 <p>If a signal handler returns <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em>
  and eventually call <code class="function">mm_gdbus_modem_simple_complete_get_status()</code> or e.g. <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="https://developer.gnome.org/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
 <div class="refsect3">
-<a name="id-1.3.39.12.4.6"></a><h4>Parameters</h4>
+<a name="MmGdbusModemSimple-handle-get-status.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -832,7 +832,7 @@ user_function (<a class="link" href="MmGdbusModemSimple.html" title="MmGdbusMode
 </tr>
 <tr>
 <td class="parameter_name"><p>invocation</p></td>
-<td class="parameter_description"><p>A <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a>.</p></td>
+<td class="parameter_description"><p>A <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -844,7 +844,7 @@ user_function (<a class="link" href="MmGdbusModemSimple.html" title="MmGdbusMode
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.39.12.4.7"></a><h4>Returns</h4>
+<a name="MmGdbusModemSimple-handle-get-status.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</p>
 </div>
 <p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
@@ -852,6 +852,6 @@ user_function (<a class="link" href="MmGdbusModemSimple.html" title="MmGdbusMode
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

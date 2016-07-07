@@ -8,7 +8,7 @@
 <link rel="up" href="ch03s02.html" title="Simple interface support">
 <link rel="prev" href="MMSimpleConnectProperties.html" title="MMSimpleConnectProperties">
 <link rel="next" href="ch03s03.html" title="Location support">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -229,7 +229,7 @@
 </div>
 <div class="refsect1">
 <a name="MMSimpleStatus.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
     <span class="lineart">╰──</span> MMSimpleStatus
 </pre>
 </div>
@@ -248,7 +248,7 @@ available in the Simple interface.</p>
 mm_simple_status_get_state (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
 <p>Gets the state of the modem.</p>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.2.5"></a><h4>Parameters</h4>
+<a name="mm-simple-status-get-state.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -263,7 +263,7 @@ mm_simple_status_get_state (<em class="parameter"><code><a class="link" href="MM
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.2.6"></a><h4>Returns</h4>
+<a name="mm-simple-status-get-state.returns"></a><h4>Returns</h4>
 <p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemState"><span class="type">MMModemState</span></a>.</p>
 </div>
 </div>
@@ -275,7 +275,7 @@ mm_simple_status_get_signal_quality (<em class="parameter"><code><a class="link"
                                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> *recent</code></em>);</pre>
 <p>Gets the signal quality.</p>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.3.5"></a><h4>Parameters</h4>
+<a name="mm-simple-status-get-signal-quality.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -297,7 +297,7 @@ mm_simple_status_get_signal_quality (<em class="parameter"><code><a class="link"
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.3.6"></a><h4>Returns</h4>
+<a name="mm-simple-status-get-signal-quality.returns"></a><h4>Returns</h4>
 <p> the signal quality.</p>
 </div>
 </div>
@@ -309,7 +309,7 @@ mm_simple_status_get_access_technologies
                                (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
 <p>Gets the currently used access technologies.</p>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.4.5"></a><h4>Parameters</h4>
+<a name="mm-simple-status-get-access-technologies.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -324,7 +324,7 @@ mm_simple_status_get_access_technologies
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.4.6"></a><h4>Returns</h4>
+<a name="mm-simple-status-get-access-technologies.returns"></a><h4>Returns</h4>
 <p> a bitmask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"><span class="type">MMModemAccessTechnology</span></a> values.</p>
 </div>
 </div>
@@ -337,7 +337,7 @@ mm_simple_status_get_current_bands (<em class="parameter"><code><a class="link" 
                                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_bands</code></em>);</pre>
 <p>Gets the currently used frequency bands.</p>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.5.5"></a><h4>Parameters</h4>
+<a name="mm-simple-status-get-current-bands.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -374,7 +374,7 @@ mm_simple_status_get_3gpp_registration_state
                                (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
 <p>Gets the current state of the registration in the 3GPP network.</p>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.6.5"></a><h4>Parameters</h4>
+<a name="mm-simple-status-get-3gpp-registration-state.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -389,7 +389,7 @@ mm_simple_status_get_3gpp_registration_state
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.6.6"></a><h4>Returns</h4>
+<a name="mm-simple-status-get-3gpp-registration-state.returns"></a><h4>Returns</h4>
 <p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState"><span class="type">MMModem3gppRegistrationState</span></a>.</p>
 </div>
 </div>
@@ -401,7 +401,7 @@ mm_simple_status_get_3gpp_operator_code
                                (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
 <p>Gets the MCC/MNC of the operator of the 3GPP network where the modem is registered.</p>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.7.5"></a><h4>Parameters</h4>
+<a name="mm-simple-status-get-3gpp-operator-code.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -416,7 +416,7 @@ mm_simple_status_get_3gpp_operator_code
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.7.6"></a><h4>Returns</h4>
+<a name="mm-simple-status-get-3gpp-operator-code.returns"></a><h4>Returns</h4>
 <p> the operator code, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
 .</p>
 </div>
@@ -429,7 +429,7 @@ mm_simple_status_get_3gpp_operator_name
                                (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
 <p>Gets the name of the operator of the 3GPP network where the modem is registered.</p>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.8.5"></a><h4>Parameters</h4>
+<a name="mm-simple-status-get-3gpp-operator-name.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -444,7 +444,7 @@ mm_simple_status_get_3gpp_operator_name
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.8.6"></a><h4>Returns</h4>
+<a name="mm-simple-status-get-3gpp-operator-name.returns"></a><h4>Returns</h4>
 <p> the operator name, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
 .</p>
 </div>
@@ -457,7 +457,7 @@ mm_simple_status_get_3gpp_subscription_state
                                (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
 <p>Gets the current subscription status of the account.</p>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.9.5"></a><h4>Parameters</h4>
+<a name="mm-simple-status-get-3gpp-subscription-state.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -472,7 +472,7 @@ mm_simple_status_get_3gpp_subscription_state
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.9.6"></a><h4>Returns</h4>
+<a name="mm-simple-status-get-3gpp-subscription-state.returns"></a><h4>Returns</h4>
 <p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppSubscriptionState"><span class="type">MMModem3gppSubscriptionState</span></a>.</p>
 </div>
 </div>
@@ -484,7 +484,7 @@ mm_simple_status_get_cdma_cdma1x_registration_state
                                (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
 <p>Gets the current state of the registration in the CDMA-1x network.</p>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.10.5"></a><h4>Parameters</h4>
+<a name="mm-simple-status-get-cdma-cdma1x-registration-state.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -499,7 +499,7 @@ mm_simple_status_get_cdma_cdma1x_registration_state
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.10.6"></a><h4>Returns</h4>
+<a name="mm-simple-status-get-cdma-cdma1x-registration-state.returns"></a><h4>Returns</h4>
 <p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a>.</p>
 </div>
 </div>
@@ -511,7 +511,7 @@ mm_simple_status_get_cdma_evdo_registration_state
                                (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
 <p>Gets the current state of the registration in the EV-DO network.</p>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.11.5"></a><h4>Parameters</h4>
+<a name="mm-simple-status-get-cdma-evdo-registration-state.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -526,7 +526,7 @@ mm_simple_status_get_cdma_evdo_registration_state
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.11.6"></a><h4>Returns</h4>
+<a name="mm-simple-status-get-cdma-evdo-registration-state.returns"></a><h4>Returns</h4>
 <p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a>.</p>
 </div>
 </div>
@@ -537,7 +537,7 @@ mm_simple_status_get_cdma_evdo_registration_state
 mm_simple_status_get_cdma_nid (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
 <p>Gets the Network Identification number of the CDMA network.</p>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.12.5"></a><h4>Parameters</h4>
+<a name="mm-simple-status-get-cdma-nid.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -552,7 +552,7 @@ mm_simple_status_get_cdma_nid (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.12.6"></a><h4>Returns</h4>
+<a name="mm-simple-status-get-cdma-nid.returns"></a><h4>Returns</h4>
 <p> the NID, or <a class="link" href="MMModemCdma.html#MM-MODEM-CDMA-NID-UNKNOWN:CAPS" title="MM_MODEM_CDMA_NID_UNKNOWN"><code class="literal">MM_MODEM_CDMA_NID_UNKNOWN</code></a> if unknown.</p>
 </div>
 </div>
@@ -563,7 +563,7 @@ mm_simple_status_get_cdma_nid (<em class="parameter"><code><a class="link" href=
 mm_simple_status_get_cdma_sid (<em class="parameter"><code><a class="link" href="MMSimpleStatus.html" title="MMSimpleStatus"><span class="type">MMSimpleStatus</span></a> *self</code></em>);</pre>
 <p>Gets the System Identification number of the CDMA network.</p>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.13.5"></a><h4>Parameters</h4>
+<a name="mm-simple-status-get-cdma-sid.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -578,7 +578,7 @@ mm_simple_status_get_cdma_sid (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.4.4.8.13.6"></a><h4>Returns</h4>
+<a name="mm-simple-status-get-cdma-sid.returns"></a><h4>Returns</h4>
 <p> the SID, or <a class="link" href="MMModemCdma.html#MM-MODEM-CDMA-SID-UNKNOWN:CAPS" title="MM_MODEM_CDMA_SID_UNKNOWN"><code class="literal">MM_MODEM_CDMA_SID_UNKNOWN</code></a> if unknown.</p>
 </div>
 </div>
@@ -695,6 +695,6 @@ only be accessed using the provided API.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

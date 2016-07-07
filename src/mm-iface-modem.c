@@ -131,7 +131,7 @@ state_changed_wait_expired (WaitForFinalStateContext *ctx)
         MM_CORE_ERROR_RETRY,
         "Too much time waiting to get to a final state");
     wait_for_final_state_context_complete_and_free (ctx);
-    return FALSE;
+    return G_SOURCE_REMOVE;
 }
 
 static void
@@ -250,7 +250,7 @@ load_unlock_required_again (InternalLoadUnlockRequiredContext *ctx)
     ctx->pin_check_timeout_id = 0;
     /* Retry the step */
     internal_load_unlock_required_context_step (ctx);
-    return FALSE;
+    return G_SOURCE_REMOVE;
 }
 
 static void
@@ -1000,7 +1000,7 @@ periodic_access_technologies_check (MMIfaceModem *self)
             NULL);
     }
 
-    return TRUE;
+    return G_SOURCE_CONTINUE;
 }
 
 void
@@ -1150,7 +1150,7 @@ expire_signal_quality (MMIfaceModem *self)
     /* Remove source id */
     ctx = g_object_get_qdata (G_OBJECT (self), signal_quality_update_context_quark);
     ctx->recent_timeout_source = 0;
-    return FALSE;
+    return G_SOURCE_REMOVE;
 }
 
 static void
@@ -1300,7 +1300,7 @@ periodic_signal_quality_check (MMIfaceModem *self)
             NULL);
     }
 
-    return TRUE;
+    return G_SOURCE_CONTINUE;
 }
 
 static void
@@ -2814,7 +2814,7 @@ restart_initialize_idle (MMIfaceModem *self)
     mm_base_modem_initialize (MM_BASE_MODEM (self),
                               (GAsyncReadyCallback) reinitialize_ready,
                               NULL);
-    return FALSE;
+    return G_SOURCE_REMOVE;
 }
 
 static void

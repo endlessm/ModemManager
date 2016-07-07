@@ -110,15 +110,6 @@ gboolean  mm_base_modem_grab_port    (MMBaseModem *self,
                                       MMPortType ptype,
                                       MMPortSerialAtFlag at_pflags,
                                       GError **error);
-void      mm_base_modem_release_port (MMBaseModem *self,
-                                      const gchar *subsys,
-                                      const gchar *name);
-MMPort   *mm_base_modem_get_port     (MMBaseModem *self,
-                                      const gchar *subsys,
-                                      const gchar *name);
-gboolean  mm_base_modem_owns_port    (MMBaseModem *self,
-                                      const gchar *subsys,
-                                      const gchar *name);
 
 gboolean  mm_base_modem_has_at_port  (MMBaseModem *self);
 

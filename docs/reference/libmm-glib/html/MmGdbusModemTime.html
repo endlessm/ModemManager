@@ -8,7 +8,7 @@
 <link rel="up" href="pt02.html" title="Part II. Low level API">
 <link rel="prev" href="MmGdbusModemMessagingSkeleton.html" title="MmGdbusModemMessagingSkeleton">
 <link rel="next" href="MmGdbusModemTimeProxy.html" title="MmGdbusModemTimeProxy">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -146,7 +146,7 @@
 </div>
 <div class="refsect1">
 <a name="MmGdbusModemTime.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GInterface
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/GTypeModule.html">GInterface</a>
     <span class="lineart">╰──</span> MmGdbusModemTime
 </pre>
 </div>
@@ -154,7 +154,7 @@
 <a name="MmGdbusModemTime.prerequisites"></a><h2>Prerequisites</h2>
 <p>
 MmGdbusModemTime requires
- <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>.</p>
+ <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>.</p>
 </div>
 <div class="refsect1">
 <a name="MmGdbusModemTime.implementations"></a><h2>Known Implementations</h2>
@@ -178,7 +178,7 @@ mm_gdbus_modem_time_get_network_timezone
 <div class="warning">The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where <em class="parameter"><code>object</code></em> was constructed. Use <a class="link" href="MmGdbusModemTime.html#mm-gdbus-modem-time-dup-network-timezone" title="mm_gdbus_modem_time_dup_network_timezone ()"><code class="function">mm_gdbus_modem_time_dup_network_timezone()</code></a> if on another thread.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.27.11.2.8"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-time-get-network-timezone.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -193,7 +193,7 @@ mm_gdbus_modem_time_get_network_timezone
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.27.11.2.9"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-time-get-network-timezone.returns"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -209,7 +209,7 @@ mm_gdbus_modem_time_dup_network_timezone
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.27.11.3.7"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-time-dup-network-timezone.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -224,7 +224,7 @@ mm_gdbus_modem_time_dup_network_timezone
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.27.11.3.8"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-time-dup-network-timezone.returns"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#g-variant-unref"><code class="function">g_variant_unref()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -235,7 +235,7 @@ mm_gdbus_modem_time_dup_network_timezone
 <pre class="programlisting"><span class="returnvalue">void</span>
 mm_gdbus_modem_time_call_get_network_time
                                (<em class="parameter"><code><a class="link" href="MmGdbusModemTime.html" title="MmGdbusModemTime"><span class="type">MmGdbusModemTime</span></a> *proxy</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Time.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Time.GetNetworkTime"><GTKDOCLINK HREF="GetNetworkTime"><code class="function">GetNetworkTime()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>
@@ -245,7 +245,7 @@ When the operation is finished, <em class="parameter"><code>callback</code></em>
 You can then call <a class="link" href="MmGdbusModemTime.html#mm-gdbus-modem-time-call-get-network-time-finish" title="mm_gdbus_modem_time_call_get_network_time_finish ()"><code class="function">mm_gdbus_modem_time_call_get_network_time_finish()</code></a> to get the result of the operation.</p>
 <p>See <a class="link" href="MmGdbusModemTime.html#mm-gdbus-modem-time-call-get-network-time-sync" title="mm_gdbus_modem_time_call_get_network_time_sync ()"><code class="function">mm_gdbus_modem_time_call_get_network_time_sync()</code></a> for the synchronous, blocking version of this method.</p>
 <div class="refsect3">
-<a name="id-1.3.27.11.4.6"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-time-call-get-network-time.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -260,7 +260,7 @@ You can then call <a class="link" href="MmGdbusModemTime.html#mm-gdbus-modem-tim
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -285,11 +285,11 @@ You can then call <a class="link" href="MmGdbusModemTime.html#mm-gdbus-modem-tim
 mm_gdbus_modem_time_call_get_network_time_finish
                                (<em class="parameter"><code><a class="link" href="MmGdbusModemTime.html" title="MmGdbusModemTime"><span class="type">MmGdbusModemTime</span></a> *proxy</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **out_time</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes an operation started with <a class="link" href="MmGdbusModemTime.html#mm-gdbus-modem-time-call-get-network-time" title="mm_gdbus_modem_time_call_get_network_time ()"><code class="function">mm_gdbus_modem_time_call_get_network_time()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.27.11.5.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-time-call-get-network-time-finish.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -309,7 +309,7 @@ mm_gdbus_modem_time_call_get_network_time_finish
 </tr>
 <tr>
 <td class="parameter_name"><p>res</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemTime.html#mm-gdbus-modem-time-call-get-network-time" title="mm_gdbus_modem_time_call_get_network_time ()"><code class="function">mm_gdbus_modem_time_call_get_network_time()</code></a>.</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemTime.html#mm-gdbus-modem-time-call-get-network-time" title="mm_gdbus_modem_time_call_get_network_time ()"><code class="function">mm_gdbus_modem_time_call_get_network_time()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -321,7 +321,7 @@ mm_gdbus_modem_time_call_get_network_time_finish
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.27.11.5.6"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-time-call-get-network-time-finish.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
@@ -334,13 +334,13 @@ is set. </p>
 mm_gdbus_modem_time_call_get_network_time_sync
                                (<em class="parameter"><code><a class="link" href="MmGdbusModemTime.html" title="MmGdbusModemTime"><span class="type">MmGdbusModemTime</span></a> *proxy</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **out_time</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Time.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Time.GetNetworkTime"><GTKDOCLINK HREF="GetNetworkTime"><code class="function">GetNetworkTime()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>
 . The calling thread is blocked until a reply is received.</p>
 <p>See <a class="link" href="MmGdbusModemTime.html#mm-gdbus-modem-time-call-get-network-time" title="mm_gdbus_modem_time_call_get_network_time ()"><code class="function">mm_gdbus_modem_time_call_get_network_time()</code></a> for the asynchronous version of this method.</p>
 <div class="refsect3">
-<a name="id-1.3.27.11.6.6"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-time-call-get-network-time-sync.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -360,7 +360,7 @@ mm_gdbus_modem_time_call_get_network_time_sync
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -372,7 +372,7 @@ mm_gdbus_modem_time_call_get_network_time_sync
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.27.11.6.7"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-time-call-get-network-time-sync.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
@@ -407,7 +407,7 @@ is set. </p>
 </pre>
 <p>Virtual table for the D-Bus interface org.freedesktop.ModemManager1.Modem.Time.</p>
 <div class="refsect3">
-<a name="id-1.3.27.12.3.5"></a><h4>Members</h4>
+<a name="MmGdbusModemTimeIface.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -446,7 +446,7 @@ is set. </p>
 <a name="MmGdbusModemTime--network-timezone"></a><h3>The <code class="literal">“network-timezone”</code> property</h3>
 <pre class="programlisting">  “network-timezone”         <a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> *</pre>
 <p>Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Time.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Time.NetworkTimezone">"NetworkTimezone"</a>.</p>
-<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
+<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Flags: Read / Write</p>
 <p>Allowed values: GVariant&lt;a{sv}&gt;</p>
 <p>Default value: NULL</p>
@@ -458,13 +458,13 @@ is set. </p>
 <a name="MmGdbusModemTime-handle-get-network-time"></a><h3>The <code class="literal">“handle-get-network-time”</code> signal</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 user_function (<a class="link" href="MmGdbusModemTime.html" title="MmGdbusModemTime"><span class="type">MmGdbusModemTime</span></a>      *object,
-               <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a> *invocation,
+               <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a> *invocation,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)</pre>
 <p>Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Time.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Time.GetNetworkTime"><GTKDOCLINK HREF="GetNetworkTime"><code class="function">GetNetworkTime()</code></a></GTKDOCLINK> D-Bus method.</p>
 <p>If a signal handler returns <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em>
  and eventually call <code class="function">mm_gdbus_modem_time_complete_get_network_time()</code> or e.g. <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="https://developer.gnome.org/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
 <div class="refsect3">
-<a name="id-1.3.27.14.2.6"></a><h4>Parameters</h4>
+<a name="MmGdbusModemTime-handle-get-network-time.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -479,7 +479,7 @@ user_function (<a class="link" href="MmGdbusModemTime.html" title="MmGdbusModemT
 </tr>
 <tr>
 <td class="parameter_name"><p>invocation</p></td>
-<td class="parameter_description"><p>A <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a>.</p></td>
+<td class="parameter_description"><p>A <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -491,7 +491,7 @@ user_function (<a class="link" href="MmGdbusModemTime.html" title="MmGdbusModemT
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.27.14.2.7"></a><h4>Returns</h4>
+<a name="MmGdbusModemTime-handle-get-network-time.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</p>
 </div>
 <p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
@@ -506,7 +506,7 @@ user_function (<a class="link" href="MmGdbusModemTime.html" title="MmGdbusModemT
 <p>On the client-side, this signal is emitted whenever the D-Bus signal <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.Time.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Time.NetworkTimeChanged">"NetworkTimeChanged"</a> is received.</p>
 <p>On the service-side, this signal can be used with e.g. <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#g-signal-emit-by-name"><code class="function">g_signal_emit_by_name()</code></a> to make the object emit the D-Bus signal.</p>
 <div class="refsect3">
-<a name="id-1.3.27.14.3.6"></a><h4>Parameters</h4>
+<a name="MmGdbusModemTime-network-time-changed.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -537,6 +537,6 @@ user_function (<a class="link" href="MmGdbusModemTime.html" title="MmGdbusModemT
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

@@ -28,6 +28,8 @@ struct _TestPortContext {
     GCond ready_cond;
     GMutex ready_mutex;
     GMainLoop *loop;
+    GMainContext *context;
+    GSocket *socket;
     GSocketService *socket_service;
     GList *clients;
     GHashTable *commands;
@@ -235,7 +237,7 @@ client_new (TestPortContext *self,
                            (GSourceFunc)connection_readable_cb,
                            client,
                            NULL);
-    g_source_attach (client->connection_readable_source, NULL);
+    g_source_attach (client->connection_readable_source, self->context);
 
     return client;
 }
@@ -279,6 +281,7 @@ create_socket_service (TestPortContext *self)
                    G_UNIX_SOCKET_ADDRESS_ABSTRACT));
     if (!g_socket_bind (socket, address, TRUE, &error))
         g_error ("Cannot bind socket: %s", error->message);
+    g_object_unref (address);
 
     /* Listen */
     if (!g_socket_listen (socket, &error))
@@ -296,46 +299,63 @@ create_socket_service (TestPortContext *self)
     /* Start it */
     g_socket_service_start (service);
 
-    /* And store it */
+    /* And store both the service and the socket.
+     * Since GLib 2.42 the socket may not be explicitly closed when the
+     * listener is diposed, so we'll do it ourselves. */
     self->socket_service = service;
+    self->socket = socket;
 
     /* Signal that the thread is ready */
     g_mutex_lock (&self->ready_mutex);
     self->ready = TRUE;
     g_cond_signal (&self->ready_cond);
     g_mutex_unlock (&self->ready_mutex);
-
-    if (socket)
-        g_object_unref (socket);
-    if (address)
-        g_object_unref (address);
 }
 
 /*****************************************************************************/
+
+static gboolean
+cancel_loop_cb (TestPortContext *self)
+{
+    g_main_loop_quit (self->loop);
+    return FALSE;
+}
 
 void
 test_port_context_stop (TestPortContext *self)
 {
     g_assert (self->thread != NULL);
     g_assert (self->loop != NULL);
+    g_assert (self->context != NULL);
 
-    g_main_loop_quit (self->loop);
+    /* Cancel main loop of the port context thread, by scheduling an idle task
+     * in the thread-owned main context */
+    g_main_context_invoke (self->context, (GSourceFunc) cancel_loop_cb, self);
 
     g_thread_join (self->thread);
-    g_thread_unref (self->thread);
     self->thread = NULL;
 }
 
 static gpointer
 port_context_thread_func (TestPortContext *self)
 {
+    g_assert (self->loop == NULL);
+    g_assert (self->context == NULL);
+
+    /* Define main context and loop for the thread */
+    self->context = g_main_context_new ();
+    self->loop    = g_main_loop_new (self->context, FALSE);
+    g_main_context_push_thread_default (self->context);
+
+    /* Once the thread default context is setup, launch service */
     create_socket_service (self);
 
-    g_assert (self->loop == NULL);
-    self->loop = g_main_loop_new (g_main_context_get_thread_default (), FALSE);
     g_main_loop_run (self->loop);
+
     g_main_loop_unref (self->loop);
     self->loop = NULL;
+    g_main_context_unref (self->context);
+    self->context = NULL;
     return NULL;
 }
 
@@ -369,6 +389,15 @@ test_port_context_free (TestPortContext *self)
     if (self->commands)
         g_hash_table_unref (self->commands);
     g_list_free_full (self->clients, (GDestroyNotify)client_free);
+    if (self->socket) {
+        GError *error = NULL;
+
+        if (!g_socket_close (self->socket, &error)) {
+            g_debug ("Couldn't close socket: %s", error->message);
+            g_error_free (error);
+        }
+        g_object_unref (self->socket);
+    }
     if (self->socket_service) {
         if (g_socket_service_is_active (self->socket_service))
             g_socket_service_stop (self->socket_service);

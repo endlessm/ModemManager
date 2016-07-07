@@ -8,7 +8,7 @@
 <link rel="up" href="ref-dbus-object-modem.html" title="The /org/freedesktop/ModemManager/Modems objects">
 <link rel="prev" href="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html" title="org.freedesktop.ModemManager1.Modem.Messaging">
 <link rel="next" href="gdbus-org.freedesktop.ModemManager1.Modem.Time.html" title="org.freedesktop.ModemManager1.Modem.Time">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -35,9 +35,11 @@
 <div class="refsynopsisdiv">
 <h2>Methods</h2>
 <pre class="synopsis">
-<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Location.Setup" title="The Setup() method">Setup</a>       (IN  u     sources,
-             IN  b     signal_location);
-<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Location.GetLocation" title="The GetLocation() method">GetLocation</a> (OUT a{uv} Location);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Location.Setup" title="The Setup() method">Setup</a>             (IN  u     sources,
+                   IN  b     signal_location);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Location.GetLocation" title="The GetLocation() method">GetLocation</a>       (OUT a{uv} Location);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Location.SetSuplServer" title="The SetSuplServer() method">SetSuplServer</a>     (IN  s     supl);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Location.SetGpsRefreshRate" title="The SetGpsRefreshRate() method">SetGpsRefreshRate</a> (IN  u     rate);
 </pre>
 </div>
 <div class="refsect1">
@@ -47,6 +49,8 @@
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Location.Enabled" title='The "Enabled" property'>Enabled</a>          readable   u
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Location.SignalsLocation" title='The "SignalsLocation" property'>SignalsLocation</a>  readable   b
 <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Location.Location" title='The "Location" property'>Location</a>         readable   a{uv}
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Location.SuplServer" title='The "SuplServer" property'>SuplServer</a>       readable   s
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Location.GpsRefreshRate" title='The "GpsRefreshRate" property'>GpsRefreshRate</a>   readable   u
 </pre>
 </div>
 <div class="refsect1">
@@ -78,6 +82,13 @@ Setup (IN  u sources,
         <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Location.GetLocation" title="The GetLocation() method">GetLocation()</a>
         ) to get
         location information.
+</p>
+<p>        The optional
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-MODEM-LOCATION-SOURCE-AGPS:CAPS">MM_MODEM_LOCATION_SOURCE_AGPS</a>
+        allows to request A-GPS operation, and it must be given along with either
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-MODEM-LOCATION-SOURCE-GPS-RAW:CAPS">MM_MODEM_LOCATION_SOURCE_GPS_RAW</a>
+        or
+        <a class="link" href="ModemManager-Flags-and-Enumerations.html#MM-MODEM-LOCATION-SOURCE-GPS-NMEA:CAPS">MM_MODEM_LOCATION_SOURCE_GPS_NMEA</a>.
 </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -117,6 +128,48 @@ GetLocation (OUT a{uv} Location);
 <tbody><tr>
 <td><p><span class="term"><code class="literal">OUT a{uv} <em class="parameter"><code>Location</code></em></code>:</span></p></td>
 <td><p></p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Location.SetSuplServer"></a><h3>The SetSuplServer() method</h3>
+<pre class="programlisting">
+SetSuplServer (IN  s supl);
+</pre>
+<p>        Configure the SUPL server for A-GPS.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN s <em class="parameter"><code>supl</code></em></code>:</span></p></td>
+<td><p>SUPL server configuration, given either as IP:PORT or with a full URL.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Location.SetGpsRefreshRate"></a><h3>The SetGpsRefreshRate() method</h3>
+<pre class="programlisting">
+SetGpsRefreshRate (IN  u rate);
+</pre>
+<p>        Set the refresh rate of the GPS information in the API. If not explicitly
+        set, a default of 30s will be used.
+</p>
+<p>        The refresh rate can be set to 0 to disable it, so that every update reported by
+        the modem is published in the interface.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN u <em class="parameter"><code>rate</code></em></code>:</span></p></td>
+<td><p>Rate, in seconds.</p></td>
 </tr></tbody>
 </table></div>
 </div>
@@ -380,9 +433,27 @@ Location  readable   a{uv}
 <p>
 </p>
 </div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Location.SuplServer"></a><h3>The "SuplServer" property</h3>
+<pre class="programlisting">
+SuplServer  readable   s
+</pre>
+<p>        SUPL server configuration for A-GPS, given either as IP:PORT or with a full URL.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Location.GpsRefreshRate"></a><h3>The "GpsRefreshRate" property</h3>
+<pre class="programlisting">
+GpsRefreshRate  readable   u
+</pre>
+<p>        Rate of refresh of the GPS information in the interface.
+</p>
+</div>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

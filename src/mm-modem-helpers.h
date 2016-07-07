@@ -51,6 +51,8 @@ gchar       *mm_strip_quotes (gchar *str);
 const gchar *mm_strip_tag    (const gchar *str,
                               const gchar *cmd);
 
+gchar **mm_split_string_groups (const gchar *str);
+
 guint mm_count_bits_set (gulong number);
 
 gchar *mm_create_device_identifier (guint vid,
@@ -81,6 +83,13 @@ GArray *mm_filter_supported_modes (const GArray *all,
 
 GArray *mm_filter_supported_capabilities (MMModemCapability all,
                                           const GArray *supported_combinations);
+
+/*****************************************************************************/
+/* VOICE specific helpers and utilities */
+/*****************************************************************************/
+GRegex *mm_voice_ring_regex_get (void);
+GRegex *mm_voice_cring_regex_get(void);
+GRegex *mm_voice_clip_regex_get (void);
 
 /*****************************************************************************/
 /* 3GPP specific helpers and utilities */
@@ -149,6 +158,16 @@ gboolean mm_3gpp_parse_cpms_test_response (const gchar *reply,
                                            GArray **mem2,
                                            GArray **mem3);
 
+/* AT+CPMS? (Current SMS storage) response parser */
+gboolean mm_3gpp_parse_cpms_query_response (const gchar *reply,
+                                            MMSmsStorage *mem1,
+                                            MMSmsStorage *mem2,
+                                            GError** error);
+gboolean mm_3gpp_get_cpms_storage_match (GMatchInfo *match_info,
+                                         const gchar *match_name,
+                                         MMSmsStorage *storage,
+                                         GError **error);
+
 /* AT+CSCS=? (Supported charsets) response parser */
 gboolean mm_3gpp_parse_cscs_test_response (const gchar *reply,
                                            MMModemCharset *out_charsets);
@@ -193,6 +212,14 @@ GList *mm_3gpp_parse_pdu_cmgl_response (const gchar *str,
 MM3gppPduInfo *mm_3gpp_parse_cmgr_read_response (const gchar *reply,
                                                  guint index,
                                                  GError **error);
+
+
+/* AT+CRSM response parser */
+gboolean mm_3gpp_parse_crsm_response (const gchar *reply,
+                                      guint *sw1,
+                                      guint *sw2,
+                                      gchar **hex,
+                                      GError **error);
 
 /* Additional 3GPP-specific helpers */
 

@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MMBearerStats: libmm-glib Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="libmm-glib Reference Manual">
+<link rel="up" href="ch04.html" title="The Bearer object">
+<link rel="prev" href="MMBearerIpConfig.html" title="MMBearerIpConfig">
+<link rel="next" href="ch05.html" title="The SIM object">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#libmm-glib-MMBearerStats.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="MMBearerIpConfig.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="ch05.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="libmm-glib-MMBearerStats"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libmm-glib-MMBearerStats.top_of_page"></a>MMBearerStats</span></h2>
+<p>MMBearerStats — Helper object to handle bearer stats.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="libmm-glib-MMBearerStats.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="libmm-glib-MMBearerStats.html#mm-bearer-stats-get-duration" title="mm_bearer_stats_get_duration ()">mm_bearer_stats_get_duration</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="libmm-glib-MMBearerStats.html#mm-bearer-stats-get-rx-bytes" title="mm_bearer_stats_get_rx_bytes ()">mm_bearer_stats_get_rx_bytes</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="libmm-glib-MMBearerStats.html#mm-bearer-stats-get-tx-bytes" title="mm_bearer_stats_get_tx_bytes ()">mm_bearer_stats_get_tx_bytes</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="libmm-glib-MMBearerStats.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody><tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="libmm-glib-MMBearerStats.html#MMBearerStats" title="struct MMBearerStats">MMBearerStats</a></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="libmm-glib-MMBearerStats.description"></a><h2>Description</h2>
+<p>The <a class="link" href="libmm-glib-MMBearerStats.html#MMBearerStats" title="struct MMBearerStats"><span class="type">MMBearerStats</span></a> is an object handling the statistics reported by the
+bearer object during a connection.</p>
+<p>This object is retrieved with either <a class="link" href="MMBearer.html#mm-bearer-get-stats" title="mm_bearer_get_stats ()"><code class="function">mm_bearer_get_stats()</code></a> or
+<a class="link" href="MMBearer.html#mm-bearer-peek-stats" title="mm_bearer_peek_stats ()"><code class="function">mm_bearer_peek_stats()</code></a>.</p>
+</div>
+<div class="refsect1">
+<a name="libmm-glib-MMBearerStats.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="mm-bearer-stats-get-duration"></a><h3>mm_bearer_stats_get_duration ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>
+mm_bearer_stats_get_duration (<em class="parameter"><code><a class="link" href="libmm-glib-MMBearerStats.html#MMBearerStats" title="struct MMBearerStats"><span class="type">MMBearerStats</span></a> *self</code></em>);</pre>
+<p>Gets the duration of the current connection, in seconds.</p>
+<div class="refsect3">
+<a name="mm-bearer-stats-get-duration.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="libmm-glib-MMBearerStats.html#MMBearerStats" title="struct MMBearerStats"><span class="type">MMBearerStats</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="mm-bearer-stats-get-duration.returns"></a><h4>Returns</h4>
+<p> a <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-stats-get-rx-bytes"></a><h3>mm_bearer_stats_get_rx_bytes ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
+mm_bearer_stats_get_rx_bytes (<em class="parameter"><code><a class="link" href="libmm-glib-MMBearerStats.html#MMBearerStats" title="struct MMBearerStats"><span class="type">MMBearerStats</span></a> *self</code></em>);</pre>
+<p>Gets the number of bytes received without error in the connection.</p>
+<div class="refsect3">
+<a name="mm-bearer-stats-get-rx-bytes.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="libmm-glib-MMBearerStats.html#MMBearerStats" title="struct MMBearerStats"><span class="type">MMBearerStats</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="mm-bearer-stats-get-rx-bytes.returns"></a><h4>Returns</h4>
+<p> a <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a>.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-bearer-stats-get-tx-bytes"></a><h3>mm_bearer_stats_get_tx_bytes ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>
+mm_bearer_stats_get_tx_bytes (<em class="parameter"><code><a class="link" href="libmm-glib-MMBearerStats.html#MMBearerStats" title="struct MMBearerStats"><span class="type">MMBearerStats</span></a> *self</code></em>);</pre>
+<p>Gets the number of bytes transmitted without error in the connection.</p>
+<div class="refsect3">
+<a name="mm-bearer-stats-get-tx-bytes.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="libmm-glib-MMBearerStats.html#MMBearerStats" title="struct MMBearerStats"><span class="type">MMBearerStats</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="mm-bearer-stats-get-tx-bytes.returns"></a><h4>Returns</h4>
+<p> a <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a>.</p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="libmm-glib-MMBearerStats.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="MMBearerStats"></a><h3>struct MMBearerStats</h3>
+<pre class="programlisting">struct MMBearerStats {
+};
+</pre>
+<p>The <a class="link" href="libmm-glib-MMBearerStats.html#MMBearerStats" title="struct MMBearerStats"><span class="type">MMBearerStats</span></a> structure contains private data and should
+only be accessed using the provided API.</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

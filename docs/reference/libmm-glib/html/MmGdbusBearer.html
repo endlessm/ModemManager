@@ -8,7 +8,7 @@
 <link rel="up" href="pt02.html" title="Part II. Low level API">
 <link rel="prev" href="MmGdbusModemSimpleSkeleton.html" title="MmGdbusModemSimpleSkeleton">
 <link rel="next" href="MmGdbusBearerProxy.html" title="MmGdbusBearerProxy">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -133,6 +133,22 @@
 </tr>
 <tr>
 <td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-get-stats" title="mm_gdbus_bearer_get_stats ()">mm_gdbus_bearer_get_stats</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-dup-stats" title="mm_gdbus_bearer_dup_stats ()">mm_gdbus_bearer_dup_stats</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <span class="returnvalue">void</span>
 </td>
 <td class="function_name">
@@ -226,6 +242,12 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
+<td class="property_type">
+<a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> *</td>
+<td class="property_name"><a class="link" href="MmGdbusBearer.html#MmGdbusBearer--stats" title="The “stats” property">stats</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
 <td class="property_type"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
 <td class="property_name"><a class="link" href="MmGdbusBearer.html#MmGdbusBearer--suspended" title="The “suspended” property">suspended</a></td>
 <td class="property_flags">Read / Write</td>
@@ -276,7 +298,7 @@
 </div>
 <div class="refsect1">
 <a name="MmGdbusBearer.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GInterface
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/GTypeModule.html">GInterface</a>
     <span class="lineart">╰──</span> MmGdbusBearer
 </pre>
 </div>
@@ -284,7 +306,7 @@
 <a name="MmGdbusBearer.prerequisites"></a><h2>Prerequisites</h2>
 <p>
 MmGdbusBearer requires
- <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>.</p>
+ <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>.</p>
 </div>
 <div class="refsect1">
 <a name="MmGdbusBearer.implementations"></a><h2>Known Implementations</h2>
@@ -307,7 +329,7 @@ mm_gdbus_bearer_get_interface (<em class="parameter"><code><a class="link" href=
 <div class="warning">The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where <em class="parameter"><code>object</code></em> was constructed. Use <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-dup-interface" title="mm_gdbus_bearer_dup_interface ()"><code class="function">mm_gdbus_bearer_dup_interface()</code></a> if on another thread.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.42.11.2.8"></a><h4>Parameters</h4>
+<a name="mm-gdbus-bearer-get-interface.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -322,7 +344,7 @@ mm_gdbus_bearer_get_interface (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.42.11.2.9"></a><h4>Returns</h4>
+<a name="mm-gdbus-bearer-get-interface.returns"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -337,7 +359,7 @@ mm_gdbus_bearer_dup_interface (<em class="parameter"><code><a class="link" href=
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.42.11.3.7"></a><h4>Parameters</h4>
+<a name="mm-gdbus-bearer-dup-interface.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -352,7 +374,7 @@ mm_gdbus_bearer_dup_interface (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.42.11.3.8"></a><h4>Returns</h4>
+<a name="mm-gdbus-bearer-dup-interface.returns"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -367,7 +389,7 @@ mm_gdbus_bearer_get_ip4_config (<em class="parameter"><code><a class="link" href
 <div class="warning">The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where <em class="parameter"><code>object</code></em> was constructed. Use <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-dup-ip4-config" title="mm_gdbus_bearer_dup_ip4_config ()"><code class="function">mm_gdbus_bearer_dup_ip4_config()</code></a> if on another thread.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.42.11.4.8"></a><h4>Parameters</h4>
+<a name="mm-gdbus-bearer-get-ip4-config.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -382,7 +404,7 @@ mm_gdbus_bearer_get_ip4_config (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.42.11.4.9"></a><h4>Returns</h4>
+<a name="mm-gdbus-bearer-get-ip4-config.returns"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -397,7 +419,7 @@ mm_gdbus_bearer_dup_ip4_config (<em class="parameter"><code><a class="link" href
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.42.11.5.7"></a><h4>Parameters</h4>
+<a name="mm-gdbus-bearer-dup-ip4-config.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -412,7 +434,7 @@ mm_gdbus_bearer_dup_ip4_config (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.42.11.5.8"></a><h4>Returns</h4>
+<a name="mm-gdbus-bearer-dup-ip4-config.returns"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#g-variant-unref"><code class="function">g_variant_unref()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -427,7 +449,7 @@ mm_gdbus_bearer_get_ip6_config (<em class="parameter"><code><a class="link" href
 <div class="warning">The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where <em class="parameter"><code>object</code></em> was constructed. Use <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-dup-ip6-config" title="mm_gdbus_bearer_dup_ip6_config ()"><code class="function">mm_gdbus_bearer_dup_ip6_config()</code></a> if on another thread.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.42.11.6.8"></a><h4>Parameters</h4>
+<a name="mm-gdbus-bearer-get-ip6-config.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -442,7 +464,7 @@ mm_gdbus_bearer_get_ip6_config (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.42.11.6.9"></a><h4>Returns</h4>
+<a name="mm-gdbus-bearer-get-ip6-config.returns"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -457,7 +479,7 @@ mm_gdbus_bearer_dup_ip6_config (<em class="parameter"><code><a class="link" href
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.42.11.7.7"></a><h4>Parameters</h4>
+<a name="mm-gdbus-bearer-dup-ip6-config.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -472,7 +494,7 @@ mm_gdbus_bearer_dup_ip6_config (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.42.11.7.8"></a><h4>Returns</h4>
+<a name="mm-gdbus-bearer-dup-ip6-config.returns"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#g-variant-unref"><code class="function">g_variant_unref()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -486,7 +508,7 @@ mm_gdbus_bearer_get_ip_timeout (<em class="parameter"><code><a class="link" href
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.42.11.8.7"></a><h4>Parameters</h4>
+<a name="mm-gdbus-bearer-get-ip-timeout.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -501,7 +523,7 @@ mm_gdbus_bearer_get_ip_timeout (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.42.11.8.8"></a><h4>Returns</h4>
+<a name="mm-gdbus-bearer-get-ip-timeout.returns"></a><h4>Returns</h4>
 <p> The property value.</p>
 </div>
 </div>
@@ -515,7 +537,7 @@ mm_gdbus_bearer_get_properties (<em class="parameter"><code><a class="link" href
 <div class="warning">The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where <em class="parameter"><code>object</code></em> was constructed. Use <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-dup-properties" title="mm_gdbus_bearer_dup_properties ()"><code class="function">mm_gdbus_bearer_dup_properties()</code></a> if on another thread.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.42.11.9.8"></a><h4>Parameters</h4>
+<a name="mm-gdbus-bearer-get-properties.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -530,7 +552,7 @@ mm_gdbus_bearer_get_properties (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.42.11.9.9"></a><h4>Returns</h4>
+<a name="mm-gdbus-bearer-get-properties.returns"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -545,7 +567,7 @@ mm_gdbus_bearer_dup_properties (<em class="parameter"><code><a class="link" href
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.42.11.10.7"></a><h4>Parameters</h4>
+<a name="mm-gdbus-bearer-dup-properties.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -560,7 +582,7 @@ mm_gdbus_bearer_dup_properties (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.42.11.10.8"></a><h4>Returns</h4>
+<a name="mm-gdbus-bearer-dup-properties.returns"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#g-variant-unref"><code class="function">g_variant_unref()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -574,7 +596,7 @@ mm_gdbus_bearer_get_connected (<em class="parameter"><code><a class="link" href=
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.42.11.11.7"></a><h4>Parameters</h4>
+<a name="mm-gdbus-bearer-get-connected.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -589,7 +611,7 @@ mm_gdbus_bearer_get_connected (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.42.11.11.8"></a><h4>Returns</h4>
+<a name="mm-gdbus-bearer-get-connected.returns"></a><h4>Returns</h4>
 <p> The property value.</p>
 </div>
 </div>
@@ -602,7 +624,7 @@ mm_gdbus_bearer_get_suspended (<em class="parameter"><code><a class="link" href=
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.42.11.12.7"></a><h4>Parameters</h4>
+<a name="mm-gdbus-bearer-get-suspended.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -617,8 +639,68 @@ mm_gdbus_bearer_get_suspended (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.42.11.12.8"></a><h4>Returns</h4>
+<a name="mm-gdbus-bearer-get-suspended.returns"></a><h4>Returns</h4>
 <p> The property value.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-bearer-get-stats"></a><h3>mm_gdbus_bearer_get_stats ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *
+mm_gdbus_bearer_get_stats (<em class="parameter"><code><a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><span class="type">MmGdbusBearer</span></a> *object</code></em>);</pre>
+<p>Gets the value of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.Stats">"Stats"</a> D-Bus property.</p>
+<p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
+<div class="warning">The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where <em class="parameter"><code>object</code></em> was constructed. Use <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-dup-stats" title="mm_gdbus_bearer_dup_stats ()"><code class="function">mm_gdbus_bearer_dup_stats()</code></a> if on another thread.</div>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
+<div class="refsect3">
+<a name="mm-gdbus-bearer-get-stats.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>object</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><span class="type">MmGdbusBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="mm-gdbus-bearer-get-stats.returns"></a><h4>Returns</h4>
+<p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-bearer-dup-stats"></a><h3>mm_gdbus_bearer_dup_stats ()</h3>
+<pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *
+mm_gdbus_bearer_dup_stats (<em class="parameter"><code><a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><span class="type">MmGdbusBearer</span></a> *object</code></em>);</pre>
+<p>Gets a copy of the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.Stats">"Stats"</a> D-Bus property.</p>
+<p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
+<div class="refsect3">
+<a name="mm-gdbus-bearer-dup-stats.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>object</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><span class="type">MmGdbusBearer</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="mm-gdbus-bearer-dup-stats.returns"></a><h4>Returns</h4>
+<p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#g-variant-unref"><code class="function">g_variant_unref()</code></a>. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 </div>
 <hr>
@@ -626,7 +708,7 @@ mm_gdbus_bearer_get_suspended (<em class="parameter"><code><a class="link" href=
 <a name="mm-gdbus-bearer-call-connect"></a><h3>mm_gdbus_bearer_call_connect ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 mm_gdbus_bearer_call_connect (<em class="parameter"><code><a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><span class="type">MmGdbusBearer</span></a> *proxy</code></em>,
-                              <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                              <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                               <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-method-org-freedesktop-ModemManager1-Bearer.Connect"><GTKDOCLINK HREF="Connect"><code class="function">Connect()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>
@@ -636,7 +718,7 @@ When the operation is finished, <em class="parameter"><code>callback</code></em>
 You can then call <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-call-connect-finish" title="mm_gdbus_bearer_call_connect_finish ()"><code class="function">mm_gdbus_bearer_call_connect_finish()</code></a> to get the result of the operation.</p>
 <p>See <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-call-connect-sync" title="mm_gdbus_bearer_call_connect_sync ()"><code class="function">mm_gdbus_bearer_call_connect_sync()</code></a> for the synchronous, blocking version of this method.</p>
 <div class="refsect3">
-<a name="id-1.3.42.11.13.6"></a><h4>Parameters</h4>
+<a name="mm-gdbus-bearer-call-connect.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -651,7 +733,7 @@ You can then call <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-call-
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -674,11 +756,11 @@ You can then call <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-call-
 <a name="mm-gdbus-bearer-call-connect-finish"></a><h3>mm_gdbus_bearer_call_connect_finish ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 mm_gdbus_bearer_call_connect_finish (<em class="parameter"><code><a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><span class="type">MmGdbusBearer</span></a> *proxy</code></em>,
-                                     <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                     <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes an operation started with <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-call-connect" title="mm_gdbus_bearer_call_connect ()"><code class="function">mm_gdbus_bearer_call_connect()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.42.11.14.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-bearer-call-connect-finish.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -693,7 +775,7 @@ mm_gdbus_bearer_call_connect_finish (<em class="parameter"><code><a class="link"
 </tr>
 <tr>
 <td class="parameter_name"><p>res</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-call-connect" title="mm_gdbus_bearer_call_connect ()"><code class="function">mm_gdbus_bearer_call_connect()</code></a>.</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-call-connect" title="mm_gdbus_bearer_call_connect ()"><code class="function">mm_gdbus_bearer_call_connect()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -705,7 +787,7 @@ mm_gdbus_bearer_call_connect_finish (<em class="parameter"><code><a class="link"
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.42.11.14.6"></a><h4>Returns</h4>
+<a name="mm-gdbus-bearer-call-connect-finish.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
@@ -716,13 +798,13 @@ is set. </p>
 <a name="mm-gdbus-bearer-call-connect-sync"></a><h3>mm_gdbus_bearer_call_connect_sync ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 mm_gdbus_bearer_call_connect_sync (<em class="parameter"><code><a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><span class="type">MmGdbusBearer</span></a> *proxy</code></em>,
-                                   <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                   <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-method-org-freedesktop-ModemManager1-Bearer.Connect"><GTKDOCLINK HREF="Connect"><code class="function">Connect()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>
 . The calling thread is blocked until a reply is received.</p>
 <p>See <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-call-connect" title="mm_gdbus_bearer_call_connect ()"><code class="function">mm_gdbus_bearer_call_connect()</code></a> for the asynchronous version of this method.</p>
 <div class="refsect3">
-<a name="id-1.3.42.11.15.6"></a><h4>Parameters</h4>
+<a name="mm-gdbus-bearer-call-connect-sync.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -737,7 +819,7 @@ mm_gdbus_bearer_call_connect_sync (<em class="parameter"><code><a class="link" h
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -749,7 +831,7 @@ mm_gdbus_bearer_call_connect_sync (<em class="parameter"><code><a class="link" h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.42.11.15.7"></a><h4>Returns</h4>
+<a name="mm-gdbus-bearer-call-connect-sync.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
@@ -760,7 +842,7 @@ is set. </p>
 <a name="mm-gdbus-bearer-call-disconnect"></a><h3>mm_gdbus_bearer_call_disconnect ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 mm_gdbus_bearer_call_disconnect (<em class="parameter"><code><a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><span class="type">MmGdbusBearer</span></a> *proxy</code></em>,
-                                 <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                 <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                  <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-method-org-freedesktop-ModemManager1-Bearer.Disconnect"><GTKDOCLINK HREF="Disconnect"><code class="function">Disconnect()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>
@@ -770,7 +852,7 @@ When the operation is finished, <em class="parameter"><code>callback</code></em>
 You can then call <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-call-disconnect-finish" title="mm_gdbus_bearer_call_disconnect_finish ()"><code class="function">mm_gdbus_bearer_call_disconnect_finish()</code></a> to get the result of the operation.</p>
 <p>See <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-call-disconnect-sync" title="mm_gdbus_bearer_call_disconnect_sync ()"><code class="function">mm_gdbus_bearer_call_disconnect_sync()</code></a> for the synchronous, blocking version of this method.</p>
 <div class="refsect3">
-<a name="id-1.3.42.11.16.6"></a><h4>Parameters</h4>
+<a name="mm-gdbus-bearer-call-disconnect.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -785,7 +867,7 @@ You can then call <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-call-
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -809,11 +891,11 @@ You can then call <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-call-
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 mm_gdbus_bearer_call_disconnect_finish
                                (<em class="parameter"><code><a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><span class="type">MmGdbusBearer</span></a> *proxy</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes an operation started with <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-call-disconnect" title="mm_gdbus_bearer_call_disconnect ()"><code class="function">mm_gdbus_bearer_call_disconnect()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.42.11.17.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-bearer-call-disconnect-finish.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -828,7 +910,7 @@ mm_gdbus_bearer_call_disconnect_finish
 </tr>
 <tr>
 <td class="parameter_name"><p>res</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-call-disconnect" title="mm_gdbus_bearer_call_disconnect ()"><code class="function">mm_gdbus_bearer_call_disconnect()</code></a>.</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-call-disconnect" title="mm_gdbus_bearer_call_disconnect ()"><code class="function">mm_gdbus_bearer_call_disconnect()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -840,7 +922,7 @@ mm_gdbus_bearer_call_disconnect_finish
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.42.11.17.6"></a><h4>Returns</h4>
+<a name="mm-gdbus-bearer-call-disconnect-finish.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
@@ -851,13 +933,13 @@ is set. </p>
 <a name="mm-gdbus-bearer-call-disconnect-sync"></a><h3>mm_gdbus_bearer_call_disconnect_sync ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 mm_gdbus_bearer_call_disconnect_sync (<em class="parameter"><code><a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><span class="type">MmGdbusBearer</span></a> *proxy</code></em>,
-                                      <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                      <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                       <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-method-org-freedesktop-ModemManager1-Bearer.Disconnect"><GTKDOCLINK HREF="Disconnect"><code class="function">Disconnect()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>
 . The calling thread is blocked until a reply is received.</p>
 <p>See <a class="link" href="MmGdbusBearer.html#mm-gdbus-bearer-call-disconnect" title="mm_gdbus_bearer_call_disconnect ()"><code class="function">mm_gdbus_bearer_call_disconnect()</code></a> for the asynchronous version of this method.</p>
 <div class="refsect3">
-<a name="id-1.3.42.11.18.6"></a><h4>Parameters</h4>
+<a name="mm-gdbus-bearer-call-disconnect-sync.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -872,7 +954,7 @@ mm_gdbus_bearer_call_disconnect_sync (<em class="parameter"><code><a class="link
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -884,7 +966,7 @@ mm_gdbus_bearer_call_disconnect_sync (<em class="parameter"><code><a class="link
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.42.11.18.7"></a><h4>Returns</h4>
+<a name="mm-gdbus-bearer-call-disconnect-sync.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
@@ -925,12 +1007,14 @@ is set. </p>
 
   GVariant * (*get_properties) (MmGdbusBearer *object);
 
+  GVariant * (*get_stats) (MmGdbusBearer *object);
+
   gboolean  (*get_suspended) (MmGdbusBearer *object);
 };
 </pre>
 <p>Virtual table for the D-Bus interface org.freedesktop.ModemManager1.Bearer.</p>
 <div class="refsect3">
-<a name="id-1.3.42.12.3.5"></a><h4>Members</h4>
+<a name="MmGdbusBearerIface.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -984,6 +1068,11 @@ is set. </p>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="MmGdbusBearerIface.get-stats"></a>get_stats</code></em> ()</p></td>
+<td class="struct_member_description"><p>Getter for the <a class="link" href="MmGdbusBearer.html#MmGdbusBearer--stats" title="The “stats” property"><span class="type">“stats”</span></a> property.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
 <td class="struct_member_name"><p><em class="structfield"><code><a name="MmGdbusBearerIface.get-suspended"></a>get_suspended</code></em> ()</p></td>
 <td class="struct_member_description"><p>Getter for the <a class="link" href="MmGdbusBearer.html#MmGdbusBearer--suspended" title="The “suspended” property"><span class="type">“suspended”</span></a> property.</p></td>
 <td class="struct_member_annotations"> </td>
@@ -999,7 +1088,7 @@ is set. </p>
 <a name="MmGdbusBearer--connected"></a><h3>The <code class="literal">“connected”</code> property</h3>
 <pre class="programlisting">  “connected”                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
 <p>Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.Connected">"Connected"</a>.</p>
-<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
+<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: FALSE</p>
 </div>
@@ -1008,7 +1097,7 @@ is set. </p>
 <a name="MmGdbusBearer--interface"></a><h3>The <code class="literal">“interface”</code> property</h3>
 <pre class="programlisting">  “interface”                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
 <p>Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.Interface">"Interface"</a>.</p>
-<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
+<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: NULL</p>
 </div>
@@ -1017,7 +1106,7 @@ is set. </p>
 <a name="MmGdbusBearer--ip-timeout"></a><h3>The <code class="literal">“ip-timeout”</code> property</h3>
 <pre class="programlisting">  “ip-timeout”               <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a></pre>
 <p>Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.IpTimeout">"IpTimeout"</a>.</p>
-<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
+<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: 0</p>
 </div>
@@ -1026,7 +1115,7 @@ is set. </p>
 <a name="MmGdbusBearer--ip4-config"></a><h3>The <code class="literal">“ip4-config”</code> property</h3>
 <pre class="programlisting">  “ip4-config”               <a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> *</pre>
 <p>Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.Ip4Config">"Ip4Config"</a>.</p>
-<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
+<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Flags: Read / Write</p>
 <p>Allowed values: GVariant&lt;a{sv}&gt;</p>
 <p>Default value: NULL</p>
@@ -1036,7 +1125,7 @@ is set. </p>
 <a name="MmGdbusBearer--ip6-config"></a><h3>The <code class="literal">“ip6-config”</code> property</h3>
 <pre class="programlisting">  “ip6-config”               <a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> *</pre>
 <p>Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.Ip6Config">"Ip6Config"</a>.</p>
-<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
+<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Flags: Read / Write</p>
 <p>Allowed values: GVariant&lt;a{sv}&gt;</p>
 <p>Default value: NULL</p>
@@ -1046,7 +1135,17 @@ is set. </p>
 <a name="MmGdbusBearer--properties"></a><h3>The <code class="literal">“properties”</code> property</h3>
 <pre class="programlisting">  “properties”               <a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> *</pre>
 <p>Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.Properties">"Properties"</a>.</p>
-<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
+<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: GVariant&lt;a{sv}&gt;</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MmGdbusBearer--stats"></a><h3>The <code class="literal">“stats”</code> property</h3>
+<pre class="programlisting">  “stats”                    <a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> *</pre>
+<p>Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.Stats">"Stats"</a>.</p>
+<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Flags: Read / Write</p>
 <p>Allowed values: GVariant&lt;a{sv}&gt;</p>
 <p>Default value: NULL</p>
@@ -1056,7 +1155,7 @@ is set. </p>
 <a name="MmGdbusBearer--suspended"></a><h3>The <code class="literal">“suspended”</code> property</h3>
 <pre class="programlisting">  “suspended”                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
 <p>Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.Suspended">"Suspended"</a>.</p>
-<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
+<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: FALSE</p>
 </div>
@@ -1067,13 +1166,13 @@ is set. </p>
 <a name="MmGdbusBearer-handle-connect"></a><h3>The <code class="literal">“handle-connect”</code> signal</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 user_function (<a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><span class="type">MmGdbusBearer</span></a>         *object,
-               <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a> *invocation,
+               <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a> *invocation,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)</pre>
 <p>Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-method-org-freedesktop-ModemManager1-Bearer.Connect"><GTKDOCLINK HREF="Connect"><code class="function">Connect()</code></a></GTKDOCLINK> D-Bus method.</p>
 <p>If a signal handler returns <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em>
  and eventually call <code class="function">mm_gdbus_bearer_complete_connect()</code> or e.g. <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="https://developer.gnome.org/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
 <div class="refsect3">
-<a name="id-1.3.42.14.2.6"></a><h4>Parameters</h4>
+<a name="MmGdbusBearer-handle-connect.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1088,7 +1187,7 @@ user_function (<a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><
 </tr>
 <tr>
 <td class="parameter_name"><p>invocation</p></td>
-<td class="parameter_description"><p>A <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a>.</p></td>
+<td class="parameter_description"><p>A <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1100,7 +1199,7 @@ user_function (<a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.42.14.2.7"></a><h4>Returns</h4>
+<a name="MmGdbusBearer-handle-connect.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</p>
 </div>
 <p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
@@ -1110,13 +1209,13 @@ user_function (<a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><
 <a name="MmGdbusBearer-handle-disconnect"></a><h3>The <code class="literal">“handle-disconnect”</code> signal</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 user_function (<a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><span class="type">MmGdbusBearer</span></a>         *object,
-               <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a> *invocation,
+               <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a> *invocation,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)</pre>
 <p>Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-method-org-freedesktop-ModemManager1-Bearer.Disconnect"><GTKDOCLINK HREF="Disconnect"><code class="function">Disconnect()</code></a></GTKDOCLINK> D-Bus method.</p>
 <p>If a signal handler returns <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em>
  and eventually call <code class="function">mm_gdbus_bearer_complete_disconnect()</code> or e.g. <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="https://developer.gnome.org/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
 <div class="refsect3">
-<a name="id-1.3.42.14.3.6"></a><h4>Parameters</h4>
+<a name="MmGdbusBearer-handle-disconnect.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1131,7 +1230,7 @@ user_function (<a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><
 </tr>
 <tr>
 <td class="parameter_name"><p>invocation</p></td>
-<td class="parameter_description"><p>A <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a>.</p></td>
+<td class="parameter_description"><p>A <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1143,7 +1242,7 @@ user_function (<a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.42.14.3.7"></a><h4>Returns</h4>
+<a name="MmGdbusBearer-handle-disconnect.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</p>
 </div>
 <p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
@@ -1151,6 +1250,6 @@ user_function (<a class="link" href="MmGdbusBearer.html" title="MmGdbusBearer"><
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

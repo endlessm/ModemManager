@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>org.freedesktop.ModemManager1.Modem.Voice: ModemManager Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="ModemManager Reference Manual">
+<link rel="up" href="ref-dbus-object-modem.html" title="The /org/freedesktop/ModemManager/Modems objects">
+<link rel="prev" href="gdbus-org.freedesktop.ModemManager1.Modem.Time.html" title="org.freedesktop.ModemManager1.Modem.Time">
+<link rel="next" href="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html" title="org.freedesktop.ModemManager1.Modem.Firmware">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Voice.description" class="shortcut">Description</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Voice.properties" class="shortcut">Properties</a></span><span id="nav_signals">  <span class="dim">|</span> 
+                  <a href="#gdbus-org.freedesktop.ModemManager1.Modem.Voice.signals" class="shortcut">Signals</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ref-dbus-object-modem.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="gdbus-org.freedesktop.ModemManager1.Modem.Time.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="gdbus-org.freedesktop.ModemManager1.Modem.Voice"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Voice.top_of_page"></a>org.freedesktop.ModemManager1.Modem.Voice</span></h2>
+<p>org.freedesktop.ModemManager1.Modem.Voice — The ModemManager Voice interface.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Methods</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Voice.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Voice.ListCalls" title="The ListCalls() method">ListCalls</a>  (OUT ao    result);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Voice.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Voice.DeleteCall" title="The DeleteCall() method">DeleteCall</a> (IN  o     path);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Voice.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Voice.CreateCall" title="The CreateCall() method">CreateCall</a> (IN  a{sv} properties,
+            OUT o     path);
+</pre>
+</div>
+<div class="refsect1">
+<a name="id-1.4.5.14.4"></a><h2>Signals</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Voice.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Voice.CallAdded" title='The "CallAdded" signal'>CallAdded</a>   (o path);
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Voice.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Voice.CallDeleted" title='The "CallDeleted" signal'>CallDeleted</a> (o path);
+</pre>
+</div>
+<div class="refsect1">
+<a name="id-1.4.5.14.5"></a><h2>Properties</h2>
+<pre class="synopsis">
+<a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Voice.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Voice.Calls" title='The "Calls" property'>Calls</a>  readable   ao
+</pre>
+</div>
+<div class="refsect1">
+<a name="gdbus-interface-org-freedesktop-ModemManager1-Modem-Voice"></a><h2>Description</h2>
+<p>      The Voice interface handles Calls.
+</p>
+</div>
+<div class="refsect1">
+<a name="gdbus-methods-org.freedesktop.ModemManager1.Modem.Voice"></a><h2>Method Details</h2>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Voice.ListCalls"></a><h3>The ListCalls() method</h3>
+<pre class="programlisting">
+ListCalls (OUT ao result);
+</pre>
+<p>        Retrieve all Calls.
+</p>
+<p>        This method should only be used once and subsequent information
+        retrieved either by listening for the
+        <a class="link" href="gdbus-org.freedesktop.ModemManager1.Modem.Voice.html#gdbus-interface-org-freedesktop-ModemManager1-Modem-Voice.top_of_page">org.freedesktop.ModemManager1.Modem.Voice</a>::Added signal,
+        or by querying the specific Call object of interest.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">OUT ao <em class="parameter"><code>result</code></em></code>:</span></p></td>
+<td><p>The list of call object paths.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Voice.DeleteCall"></a><h3>The DeleteCall() method</h3>
+<pre class="programlisting">
+DeleteCall (IN  o path);
+</pre>
+<p>        Delete a Call from the list of calls.
+</p>
+<p>        The call will be hangup if it is still active.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">IN o <em class="parameter"><code>path</code></em></code>:</span></p></td>
+<td><p>The object path of the Call to delete.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-method-org-freedesktop-ModemManager1-Modem-Voice.CreateCall"></a><h3>The CreateCall() method</h3>
+<pre class="programlisting">
+CreateCall (IN  a{sv} properties,
+            OUT o     path);
+</pre>
+<p>        Creates a new call object.
+</p>
+<p>        The '<a class="link" href="gdbus-org.freedesktop.ModemManager1.Call.html#gdbus-property-org-freedesktop-ModemManager1-Call.Number" title='The "Number" property'>Number</a>' is mandatory
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="literal">IN a{sv} <em class="parameter"><code>properties</code></em></code>:</span></p></td>
+<td><p>Call properties from the <a class="link" href="gdbus-org.freedesktop.ModemManager1.Call.html" title="org.freedesktop.ModemManager1.Call">Call D-Bus interface</a>.</p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="literal">OUT o <em class="parameter"><code>path</code></em></code>:</span></p></td>
+<td><p>The object path of the new call object.</p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-signals-org.freedesktop.ModemManager1.Modem.Voice"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="gdbus-signal-org-freedesktop-ModemManager1-Modem-Voice.CallAdded"></a><h3>The "CallAdded" signal</h3>
+<pre class="programlisting">
+CallAdded (o path);
+</pre>
+<p>        Emitted when any part of a Call has been received or added.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">o <em class="parameter"><code>path</code></em></code>:</span></p></td>
+<td><p>Object path of the new call.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gdbus-signal-org-freedesktop-ModemManager1-Modem-Voice.CallDeleted"></a><h3>The "CallDeleted" signal</h3>
+<pre class="programlisting">
+CallDeleted (o path);
+</pre>
+<p>        Emitted when a call has been deleted.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="literal">o <em class="parameter"><code>path</code></em></code>:</span></p></td>
+<td><p>Object path of the now deleted Call.</p></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="gdbus-properties-org.freedesktop.ModemManager1.Modem.Voice"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="gdbus-property-org-freedesktop-ModemManager1-Modem-Voice.Calls"></a><h3>The "Calls" property</h3>
+<pre class="programlisting">
+Calls  readable   ao
+</pre>
+<p>        The list of calls object paths.
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

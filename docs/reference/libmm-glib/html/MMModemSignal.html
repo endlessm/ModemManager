@@ -8,7 +8,7 @@
 <link rel="up" href="ch03s07.html" title="Extended signal information">
 <link rel="prev" href="ch03s07.html" title="Extended signal information">
 <link rel="next" href="MMSignal.html" title="MMSignal">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -186,8 +186,8 @@
 </div>
 <div class="refsect1">
 <a name="MMModemSignal.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gio/unstable/GDBusProxy.html">GDBusProxy</a>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gio/unstable/GDBusProxy.html#GDBusProxy-struct">GDBusProxy</a>
         <span class="lineart">╰──</span> <a class="link" href="MmGdbusModemSignalProxy.html" title="MmGdbusModemSignalProxy">MmGdbusModemSignalProxy</a>
             <span class="lineart">╰──</span> MMModemSignal
 </pre>
@@ -196,7 +196,7 @@
 <a name="MMModemSignal.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 MMModemSignal implements
- <a href="https://developer.gnome.org/gio/unstable/GDBusInterface.html">GDBusInterface</a>,  <a href="https://developer.gnome.org/gio/unstable/GInitable.html">GInitable</a>,  <a href="https://developer.gnome.org/gio/unstable/GAsyncInitable.html">GAsyncInitable</a> and  <a class="link" href="MmGdbusModemSignal.html" title="MmGdbusModemSignal">MmGdbusModemSignal</a>.</p>
+ <a href="https://developer.gnome.org/gio/unstable/GDBusInterface.html#GDBusInterface-struct">GDBusInterface</a>,  <a href="https://developer.gnome.org/gio/unstable/GInitable.html#GInitable-struct">GInitable</a>,  <a href="https://developer.gnome.org/gio/unstable/GAsyncInitable.html#GAsyncInitable-struct">GAsyncInitable</a> and  <a class="link" href="MmGdbusModemSignal.html" title="MmGdbusModemSignal">MmGdbusModemSignal</a>.</p>
 </div>
 <div class="refsect1">
 <a name="MMModemSignal.description"></a><h2>Description</h2>
@@ -213,7 +213,7 @@ capabilities.</p>
 mm_modem_signal_get_path (<em class="parameter"><code><a class="link" href="MMModemSignal.html" title="MMModemSignal"><span class="type">MMModemSignal</span></a> *self</code></em>);</pre>
 <p>Gets the DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> which implements this interface.</p>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.2.5"></a><h4>Parameters</h4>
+<a name="mm-modem-signal-get-path.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -228,7 +228,7 @@ mm_modem_signal_get_path (<em class="parameter"><code><a class="link" href="MMMo
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.2.6"></a><h4>Returns</h4>
+<a name="mm-modem-signal-get-path.returns"></a><h4>Returns</h4>
 <p> The DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> object. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -240,7 +240,7 @@ mm_modem_signal_get_path (<em class="parameter"><code><a class="link" href="MMMo
 mm_modem_signal_dup_path (<em class="parameter"><code><a class="link" href="MMModemSignal.html" title="MMModemSignal"><span class="type">MMModemSignal</span></a> *self</code></em>);</pre>
 <p>Gets a copy of the DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> object which implements this interface.</p>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.3.5"></a><h4>Parameters</h4>
+<a name="mm-modem-signal-dup-path.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -255,7 +255,7 @@ mm_modem_signal_dup_path (<em class="parameter"><code><a class="link" href="MMMo
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.3.6"></a><h4>Returns</h4>
+<a name="mm-modem-signal-dup-path.returns"></a><h4>Returns</h4>
 <p> The DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a>. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -267,7 +267,7 @@ mm_modem_signal_dup_path (<em class="parameter"><code><a class="link" href="MMMo
 mm_modem_signal_get_rate (<em class="parameter"><code><a class="link" href="MMModemSignal.html" title="MMModemSignal"><span class="type">MMModemSignal</span></a> *self</code></em>);</pre>
 <p>Gets the currently configured refresh rate.</p>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.4.5"></a><h4>Parameters</h4>
+<a name="mm-modem-signal-get-rate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -282,7 +282,7 @@ mm_modem_signal_get_rate (<em class="parameter"><code><a class="link" href="MMMo
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.4.6"></a><h4>Returns</h4>
+<a name="mm-modem-signal-get-rate.returns"></a><h4>Returns</h4>
 <p> the refresh rate, in seconds.</p>
 </div>
 </div>
@@ -297,7 +297,7 @@ it is only safe to use this function on the thread where
 <em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMModemSignal.html#mm-modem-signal-get-cdma" title="mm_modem_signal_get_cdma ()"><code class="function">mm_modem_signal_get_cdma()</code></a> if on another
 thread.</div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.5.6"></a><h4>Parameters</h4>
+<a name="mm-modem-signal-peek-cdma.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -312,7 +312,7 @@ thread.</div>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.5.7"></a><h4>Returns</h4>
+<a name="mm-modem-signal-peek-cdma.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a>. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -329,7 +329,7 @@ interface change. Instead, the client is expected to call
 <a class="link" href="MMModemSignal.html#mm-modem-signal-get-cdma" title="mm_modem_signal_get_cdma ()"><code class="function">mm_modem_signal_get_cdma()</code></a> again to get a new <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> with the
 new values.</div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.6.6"></a><h4>Parameters</h4>
+<a name="mm-modem-signal-get-cdma.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -344,7 +344,7 @@ new values.</div>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.6.7"></a><h4>Returns</h4>
+<a name="mm-modem-signal-get-cdma.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> that must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -360,7 +360,7 @@ it is only safe to use this function on the thread where
 <em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMModemSignal.html#mm-modem-signal-get-evdo" title="mm_modem_signal_get_evdo ()"><code class="function">mm_modem_signal_get_evdo()</code></a> if on another
 thread.</div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.7.6"></a><h4>Parameters</h4>
+<a name="mm-modem-signal-peek-evdo.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -375,7 +375,7 @@ thread.</div>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.7.7"></a><h4>Returns</h4>
+<a name="mm-modem-signal-peek-evdo.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a>. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -392,7 +392,7 @@ interface change. Instead, the client is expected to call
 <a class="link" href="MMModemSignal.html#mm-modem-signal-get-evdo" title="mm_modem_signal_get_evdo ()"><code class="function">mm_modem_signal_get_evdo()</code></a> again to get a new <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> with the
 new values.</div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.8.6"></a><h4>Parameters</h4>
+<a name="mm-modem-signal-get-evdo.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -407,7 +407,7 @@ new values.</div>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.8.7"></a><h4>Returns</h4>
+<a name="mm-modem-signal-get-evdo.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> that must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -423,7 +423,7 @@ it is only safe to use this function on the thread where
 <em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMModemSignal.html#mm-modem-signal-get-gsm" title="mm_modem_signal_get_gsm ()"><code class="function">mm_modem_signal_get_gsm()</code></a> if on another
 thread.</div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.9.6"></a><h4>Parameters</h4>
+<a name="mm-modem-signal-peek-gsm.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -438,7 +438,7 @@ thread.</div>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.9.7"></a><h4>Returns</h4>
+<a name="mm-modem-signal-peek-gsm.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a>. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -455,7 +455,7 @@ interface change. Instead, the client is expected to call
 <a class="link" href="MMModemSignal.html#mm-modem-signal-get-gsm" title="mm_modem_signal_get_gsm ()"><code class="function">mm_modem_signal_get_gsm()</code></a> again to get a new <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> with the
 new values.</div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.10.6"></a><h4>Parameters</h4>
+<a name="mm-modem-signal-get-gsm.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -470,7 +470,7 @@ new values.</div>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.10.7"></a><h4>Returns</h4>
+<a name="mm-modem-signal-get-gsm.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> that must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -486,7 +486,7 @@ it is only safe to use this function on the thread where
 <em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMModemSignal.html#mm-modem-signal-get-umts" title="mm_modem_signal_get_umts ()"><code class="function">mm_modem_signal_get_umts()</code></a> if on another
 thread.</div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.11.6"></a><h4>Parameters</h4>
+<a name="mm-modem-signal-peek-umts.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -501,7 +501,7 @@ thread.</div>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.11.7"></a><h4>Returns</h4>
+<a name="mm-modem-signal-peek-umts.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a>. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -518,7 +518,7 @@ interface change. Instead, the client is expected to call
 <a class="link" href="MMModemSignal.html#mm-modem-signal-get-umts" title="mm_modem_signal_get_umts ()"><code class="function">mm_modem_signal_get_umts()</code></a> again to get a new <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> with the
 new values.</div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.12.6"></a><h4>Parameters</h4>
+<a name="mm-modem-signal-get-umts.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -533,7 +533,7 @@ new values.</div>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.12.7"></a><h4>Returns</h4>
+<a name="mm-modem-signal-get-umts.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> that must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -549,7 +549,7 @@ it is only safe to use this function on the thread where
 <em class="parameter"><code>self</code></em> was constructed. Use <a class="link" href="MMModemSignal.html#mm-modem-signal-get-lte" title="mm_modem_signal_get_lte ()"><code class="function">mm_modem_signal_get_lte()</code></a> if on another
 thread.</div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.13.6"></a><h4>Parameters</h4>
+<a name="mm-modem-signal-peek-lte.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -564,7 +564,7 @@ thread.</div>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.13.7"></a><h4>Returns</h4>
+<a name="mm-modem-signal-peek-lte.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a>. Do not free the returned value, it belongs to <em class="parameter"><code>self</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -581,7 +581,7 @@ interface change. Instead, the client is expected to call
 <a class="link" href="MMModemSignal.html#mm-modem-signal-get-lte" title="mm_modem_signal_get_lte ()"><code class="function">mm_modem_signal_get_lte()</code></a> again to get a new <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> with the
 new values.</div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.14.6"></a><h4>Parameters</h4>
+<a name="mm-modem-signal-get-lte.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -596,7 +596,7 @@ new values.</div>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.14.7"></a><h4>Returns</h4>
+<a name="mm-modem-signal-get-lte.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMSignal.html" title="MMSignal"><span class="type">MMSignal</span></a> that must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unknown. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -607,7 +607,7 @@ new values.</div>
 <pre class="programlisting"><span class="returnvalue">void</span>
 mm_modem_signal_setup (<em class="parameter"><code><a class="link" href="MMModemSignal.html" title="MMModemSignal"><span class="type">MMModemSignal</span></a> *self</code></em>,
                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> rate</code></em>,
-                       <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                       <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                        <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                        <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>Asynchronously setups the extended signal quality retrieval.</p>
@@ -616,7 +616,7 @@ mm_modem_signal_setup (<em class="parameter"><code><a class="link" href="MMModem
 You can then call <a class="link" href="MMModemSignal.html#mm-modem-signal-setup-finish" title="mm_modem_signal_setup_finish ()"><code class="function">mm_modem_signal_setup_finish()</code></a> to get the result of the operation.</p>
 <p>See <a class="link" href="MMModemSignal.html#mm-modem-signal-setup-sync" title="mm_modem_signal_setup_sync ()"><code class="function">mm_modem_signal_setup_sync()</code></a> for the synchronous, blocking version of this method.</p>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.15.7"></a><h4>Parameters</h4>
+<a name="mm-modem-signal-setup.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -636,7 +636,7 @@ You can then call <a class="link" href="MMModemSignal.html#mm-modem-signal-setup
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -659,11 +659,11 @@ You can then call <a class="link" href="MMModemSignal.html#mm-modem-signal-setup
 <a name="mm-modem-signal-setup-finish"></a><h3>mm_modem_signal_setup_finish ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 mm_modem_signal_setup_finish (<em class="parameter"><code><a class="link" href="MMModemSignal.html" title="MMModemSignal"><span class="type">MMModemSignal</span></a> *self</code></em>,
-                              <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                              <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *res</code></em>,
                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes an operation started with <a class="link" href="MMModemSignal.html#mm-modem-signal-setup" title="mm_modem_signal_setup ()"><code class="function">mm_modem_signal_setup()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.16.5"></a><h4>Parameters</h4>
+<a name="mm-modem-signal-setup-finish.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -678,7 +678,7 @@ mm_modem_signal_setup_finish (<em class="parameter"><code><a class="link" href="
 </tr>
 <tr>
 <td class="parameter_name"><p>res</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemSignal.html#mm-modem-signal-setup" title="mm_modem_signal_setup ()"><code class="function">mm_modem_signal_setup()</code></a>.</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemSignal.html#mm-modem-signal-setup" title="mm_modem_signal_setup ()"><code class="function">mm_modem_signal_setup()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -690,7 +690,7 @@ mm_modem_signal_setup_finish (<em class="parameter"><code><a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.16.6"></a><h4>Returns</h4>
+<a name="mm-modem-signal-setup-finish.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the setup was successful, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
 </div>
@@ -701,13 +701,13 @@ is set.</p>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 mm_modem_signal_setup_sync (<em class="parameter"><code><a class="link" href="MMModemSignal.html" title="MMModemSignal"><span class="type">MMModemSignal</span></a> *self</code></em>,
                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> rate</code></em>,
-                            <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                            <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                             <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Synchronously setups the extended signal quality retrieval.</p>
 <p>The calling thread is blocked until a reply is received. See <a class="link" href="MMModemSignal.html#mm-modem-signal-setup" title="mm_modem_signal_setup ()"><code class="function">mm_modem_signal_setup()</code></a>
 for the asynchronous version of this method.</p>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.17.6"></a><h4>Parameters</h4>
+<a name="mm-modem-signal-setup-sync.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -727,7 +727,7 @@ for the asynchronous version of this method.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -739,7 +739,7 @@ for the asynchronous version of this method.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.9.2.8.17.7"></a><h4>Returns</h4>
+<a name="mm-modem-signal-setup-sync.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the setup was successful, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
 </div>
@@ -756,6 +756,6 @@ using the provided API.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

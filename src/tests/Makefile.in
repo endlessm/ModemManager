@@ -88,26 +88,19 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+@WITH_QMI_TRUE@am__append_1 = $(QMI_CFLAGS)
+@WITH_QMI_TRUE@am__append_2 = $(QMI_LIBS)
+@WITH_MBIM_TRUE@am__append_3 = $(MBIM_CFLAGS)
+@WITH_MBIM_TRUE@am__append_4 = $(MBIM_LIBS)
 noinst_PROGRAMS = test-modem-helpers$(EXEEXT) test-charsets$(EXEEXT) \
 	test-qcdm-serial-port$(EXEEXT) test-at-serial-port$(EXEEXT) \
 	test-sms-part-3gpp$(EXEEXT) test-sms-part-cdma$(EXEEXT) \
 	$(am__EXEEXT_1)
-@WITH_QMI_TRUE@am__append_1 = test-modem-helpers-qmi
-@WITH_QMI_TRUE@am__append_2 = $(QMI_CFLAGS)
-@WITH_QMI_TRUE@am__append_3 = $(QMI_LIBS)
-@WITH_QMI_TRUE@am__append_4 = $(QMI_CFLAGS)
-@WITH_QMI_TRUE@am__append_5 = $(QMI_LIBS)
-@WITH_QMI_TRUE@am__append_6 = $(QMI_CFLAGS)
-@WITH_QMI_TRUE@am__append_7 = $(QMI_LIBS)
-@WITH_QMI_TRUE@am__append_8 = $(QMI_CFLAGS)
-@WITH_QMI_TRUE@am__append_9 = $(QMI_LIBS)
-@WITH_QMI_TRUE@am__append_10 = $(QMI_CFLAGS)
-@WITH_QMI_TRUE@am__append_11 = $(QMI_LIBS)
-@WITH_QMI_TRUE@am__append_12 = $(QMI_CFLAGS)
-@WITH_QMI_TRUE@am__append_13 = $(QMI_LIBS)
+@WITH_QMI_TRUE@am__append_5 = test-modem-helpers-qmi
 subdir = src/tests
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/compiler_warnings.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/m4/ax_code_coverage.m4 \
+	$(top_srcdir)/m4/compiler_warnings.m4 \
 	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
 	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
 	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/introspection.m4 \
@@ -127,53 +120,31 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 @WITH_QMI_TRUE@am__EXEEXT_1 = test-modem-helpers-qmi$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
-am_test_at_serial_port_OBJECTS =  \
-	test_at_serial_port-test-at-serial-port.$(OBJEXT)
-test_at_serial_port_OBJECTS = $(am_test_at_serial_port_OBJECTS)
-am__DEPENDENCIES_1 =
-@WITH_QMI_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1)
-test_at_serial_port_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(top_builddir)/src/libport.la \
-	$(top_builddir)/src/libmodem-helpers.la $(am__DEPENDENCIES_2)
+test_at_serial_port_SOURCES = test-at-serial-port.c
+test_at_serial_port_OBJECTS = test-at-serial-port.$(OBJEXT)
+test_at_serial_port_LDADD = $(LDADD)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-am_test_charsets_OBJECTS = test_charsets-test-charsets.$(OBJEXT)
-test_charsets_OBJECTS = $(am_test_charsets_OBJECTS)
-test_charsets_DEPENDENCIES = $(top_builddir)/src/libmodem-helpers.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2)
-am_test_modem_helpers_OBJECTS =  \
-	test_modem_helpers-test-modem-helpers.$(OBJEXT)
-test_modem_helpers_OBJECTS = $(am_test_modem_helpers_OBJECTS)
-test_modem_helpers_DEPENDENCIES =  \
-	$(top_builddir)/src/libmodem-helpers.la $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_2)
-am__test_modem_helpers_qmi_SOURCES_DIST = test-modem-helpers-qmi.c
-@WITH_QMI_TRUE@am_test_modem_helpers_qmi_OBJECTS = test_modem_helpers_qmi-test-modem-helpers-qmi.$(OBJEXT)
-test_modem_helpers_qmi_OBJECTS = $(am_test_modem_helpers_qmi_OBJECTS)
-@WITH_QMI_TRUE@test_modem_helpers_qmi_DEPENDENCIES =  \
-@WITH_QMI_TRUE@	$(top_builddir)/src/libmodem-helpers.la \
-@WITH_QMI_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_test_qcdm_serial_port_OBJECTS =  \
-	test_qcdm_serial_port-test-qcdm-serial-port.$(OBJEXT)
-test_qcdm_serial_port_OBJECTS = $(am_test_qcdm_serial_port_OBJECTS)
-test_qcdm_serial_port_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(top_builddir)/src/libport.la \
-	$(top_builddir)/src/libmodem-helpers.la \
-	$(top_builddir)/libqcdm/src/libqcdm.la $(am__DEPENDENCIES_2)
-am_test_sms_part_3gpp_OBJECTS =  \
-	test_sms_part_3gpp-test-sms-part-3gpp.$(OBJEXT)
-test_sms_part_3gpp_OBJECTS = $(am_test_sms_part_3gpp_OBJECTS)
-test_sms_part_3gpp_DEPENDENCIES =  \
-	$(top_builddir)/src/libmodem-helpers.la $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_2)
-am_test_sms_part_cdma_OBJECTS =  \
-	test_sms_part_cdma-test-sms-part-cdma.$(OBJEXT)
-test_sms_part_cdma_OBJECTS = $(am_test_sms_part_cdma_OBJECTS)
-test_sms_part_cdma_DEPENDENCIES =  \
-	$(top_builddir)/src/libmodem-helpers.la $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_2)
+test_charsets_SOURCES = test-charsets.c
+test_charsets_OBJECTS = test-charsets.$(OBJEXT)
+test_charsets_LDADD = $(LDADD)
+test_modem_helpers_SOURCES = test-modem-helpers.c
+test_modem_helpers_OBJECTS = test-modem-helpers.$(OBJEXT)
+test_modem_helpers_LDADD = $(LDADD)
+test_modem_helpers_qmi_SOURCES = test-modem-helpers-qmi.c
+test_modem_helpers_qmi_OBJECTS = test-modem-helpers-qmi.$(OBJEXT)
+test_modem_helpers_qmi_LDADD = $(LDADD)
+test_qcdm_serial_port_SOURCES = test-qcdm-serial-port.c
+test_qcdm_serial_port_OBJECTS = test-qcdm-serial-port.$(OBJEXT)
+test_qcdm_serial_port_LDADD = $(LDADD)
+test_sms_part_3gpp_SOURCES = test-sms-part-3gpp.c
+test_sms_part_3gpp_OBJECTS = test-sms-part-3gpp.$(OBJEXT)
+test_sms_part_3gpp_LDADD = $(LDADD)
+test_sms_part_cdma_SOURCES = test-sms-part-cdma.c
+test_sms_part_cdma_OBJECTS = test-sms-part-cdma.$(OBJEXT)
+test_sms_part_cdma_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -208,16 +179,13 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(test_at_serial_port_SOURCES) $(test_charsets_SOURCES) \
-	$(test_modem_helpers_SOURCES) \
-	$(test_modem_helpers_qmi_SOURCES) \
-	$(test_qcdm_serial_port_SOURCES) $(test_sms_part_3gpp_SOURCES) \
-	$(test_sms_part_cdma_SOURCES)
-DIST_SOURCES = $(test_at_serial_port_SOURCES) $(test_charsets_SOURCES) \
-	$(test_modem_helpers_SOURCES) \
-	$(am__test_modem_helpers_qmi_SOURCES_DIST) \
-	$(test_qcdm_serial_port_SOURCES) $(test_sms_part_3gpp_SOURCES) \
-	$(test_sms_part_cdma_SOURCES)
+SOURCES = test-at-serial-port.c test-charsets.c test-modem-helpers.c \
+	test-modem-helpers-qmi.c test-qcdm-serial-port.c \
+	test-sms-part-3gpp.c test-sms-part-cdma.c
+DIST_SOURCES = test-at-serial-port.c test-charsets.c \
+	test-modem-helpers.c test-modem-helpers-qmi.c \
+	test-qcdm-serial-port.c test-sms-part-3gpp.c \
+	test-sms-part-cdma.c
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -257,12 +225,13 @@ AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
+CODE_COVERAGE_CFLAGS = @CODE_COVERAGE_CFLAGS@
+CODE_COVERAGE_ENABLED = @CODE_COVERAGE_ENABLED@
+CODE_COVERAGE_LDFLAGS = @CODE_COVERAGE_LDFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DBUS_SYS_DIR = @DBUS_SYS_DIR@
-DBUS_TEST_SUPPORT_CFLAGS = @DBUS_TEST_SUPPORT_CFLAGS@
-DBUS_TEST_SUPPORT_LIBS = @DBUS_TEST_SUPPORT_LIBS@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
@@ -274,7 +243,9 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+GCOV = @GCOV@
 GDBUS_CODEGEN = @GDBUS_CODEGEN@
+GENHTML = @GENHTML@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GLIB_MKENUMS = @GLIB_MKENUMS@
@@ -313,15 +284,19 @@ INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
 INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
 INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
 INTROSPECTION_TYPELIBDIR = @INTROSPECTION_TYPELIBDIR@
+LCOV = @LCOV@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
 LIBMM_GLIB_CFLAGS = @LIBMM_GLIB_CFLAGS@
 LIBMM_GLIB_LIBS = @LIBMM_GLIB_LIBS@
-LIBMM_LIBS = @LIBMM_LIBS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
+LIBSYSTEMD_CFLAGS = @LIBSYSTEMD_CFLAGS@
+LIBSYSTEMD_LIBS = @LIBSYSTEMD_LIBS@
+LIBSYSTEMD_LOGIN_CFLAGS = @LIBSYSTEMD_LOGIN_CFLAGS@
+LIBSYSTEMD_LOGIN_LIBS = @LIBSYSTEMD_LOGIN_LIBS@
 LIBTOOL = @LIBTOOL@
 LIPO = @LIPO@
 LN_S = @LN_S@
@@ -448,100 +423,18 @@ GTESTER_REPORT = gtester-report
 EXTRA_DIST = 
 TEST_PROGS = $(noinst_PROGRAMS)
 
-################
-test_modem_helpers_SOURCES = \
-	test-modem-helpers.c
-
-test_modem_helpers_CPPFLAGS = $(MM_CFLAGS) -I$(top_srcdir) \
-	-I$(top_srcdir)/src -I$(top_srcdir)/include \
-	-I$(top_builddir)/include -I$(top_srcdir)/libmm-glib \
-	-I$(top_srcdir)/libmm-glib/generated \
-	-I$(top_builddir)/libmm-glib/generated $(am__append_2)
-test_modem_helpers_LDADD = $(top_builddir)/src/libmodem-helpers.la \
-	$(MM_LIBS) $(am__append_3)
-
-################
-@WITH_QMI_TRUE@test_modem_helpers_qmi_SOURCES = \
-@WITH_QMI_TRUE@	test-modem-helpers-qmi.c
-
-@WITH_QMI_TRUE@test_modem_helpers_qmi_CPPFLAGS = \
-@WITH_QMI_TRUE@	$(MM_CFLAGS) \
-@WITH_QMI_TRUE@	-I$(top_srcdir) \
-@WITH_QMI_TRUE@	-I$(top_srcdir)/src \
-@WITH_QMI_TRUE@	-I$(top_srcdir)/include \
-@WITH_QMI_TRUE@	-I$(top_builddir)/include \
-@WITH_QMI_TRUE@	-I$(top_srcdir)/libmm-glib \
-@WITH_QMI_TRUE@	-I$(top_srcdir)/libmm-glib/generated \
-@WITH_QMI_TRUE@	-I$(top_builddir)/libmm-glib/generated \
-@WITH_QMI_TRUE@	$(QMI_CFLAGS)
-
-@WITH_QMI_TRUE@test_modem_helpers_qmi_LDADD = \
-@WITH_QMI_TRUE@	$(top_builddir)/src/libmodem-helpers.la \
-@WITH_QMI_TRUE@	$(MM_LIBS) \
-@WITH_QMI_TRUE@	$(QMI_LIBS)
-
-
-################
-test_charsets_SOURCES = \
-	test-charsets.c
-
-test_charsets_CPPFLAGS = $(MM_CFLAGS) -I$(top_srcdir) \
-	-I$(top_srcdir)/src -I$(top_srcdir)/include \
-	-I$(top_builddir)/include -I$(top_srcdir)/libmm-glib \
-	-I$(top_srcdir)/libmm-glib/generated \
-	-I$(top_builddir)/libmm-glib/generated $(am__append_4)
-test_charsets_LDADD = $(top_builddir)/src/libmodem-helpers.la \
-	$(MM_LIBS) $(am__append_5)
-
-################
-test_qcdm_serial_port_SOURCES = \
-	test-qcdm-serial-port.c
-
-test_qcdm_serial_port_CPPFLAGS = $(MM_CFLAGS) -I$(top_srcdir) \
-	-I$(top_srcdir)/src -I$(top_srcdir)/include \
-	-I$(top_builddir)/include -I$(top_srcdir)/libmm-glib \
-	-I$(top_srcdir)/libmm-glib/generated \
-	-I$(top_builddir)/libmm-glib/generated $(am__append_6)
-test_qcdm_serial_port_LDADD = $(MM_LIBS) \
-	$(top_builddir)/src/libport.la \
-	$(top_builddir)/src/libmodem-helpers.la \
-	$(top_builddir)/libqcdm/src/libqcdm.la -lutil $(am__append_7)
-
-################
-test_at_serial_port_SOURCES = \
-	test-at-serial-port.c
-
-test_at_serial_port_CPPFLAGS = $(MM_CFLAGS) -I$(top_srcdir) \
-	-I$(top_srcdir)/src -I$(top_srcdir)/include \
-	-I$(top_builddir)/include -I$(top_srcdir)/libmm-glib \
-	-I$(top_srcdir)/libmm-glib/generated \
-	-I$(top_builddir)/libmm-glib/generated $(am__append_8)
-test_at_serial_port_LDADD = $(MM_LIBS) $(top_builddir)/src/libport.la \
-	$(top_builddir)/src/libmodem-helpers.la -lutil $(am__append_9)
-
-################
-test_sms_part_3gpp_SOURCES = \
-	test-sms-part-3gpp.c
-
-test_sms_part_3gpp_CPPFLAGS = $(MM_CFLAGS) -I$(top_srcdir) \
-	-I$(top_srcdir)/src -I$(top_srcdir)/include \
-	-I$(top_builddir)/include -I$(top_srcdir)/libmm-glib \
-	-I$(top_srcdir)/libmm-glib/generated \
-	-I$(top_builddir)/libmm-glib/generated $(am__append_10)
-test_sms_part_3gpp_LDADD = $(top_builddir)/src/libmodem-helpers.la \
-	$(MM_LIBS) $(am__append_11)
-
-################
-test_sms_part_cdma_SOURCES = \
-	test-sms-part-cdma.c
-
-test_sms_part_cdma_CPPFLAGS = $(MM_CFLAGS) -I$(top_srcdir) \
-	-I$(top_srcdir)/src -I$(top_srcdir)/include \
-	-I$(top_builddir)/include -I$(top_srcdir)/libmm-glib \
-	-I$(top_srcdir)/libmm-glib/generated \
-	-I$(top_builddir)/libmm-glib/generated $(am__append_12)
-test_sms_part_cdma_LDADD = $(top_builddir)/src/libmodem-helpers.la \
-	$(MM_LIBS) $(am__append_13)
+################################################################################
+# common
+################################################################################
+AM_CFLAGS = $(MM_CFLAGS) $(CODE_COVERAGE_CFLAGS) -I$(top_srcdir) \
+	-I$(top_srcdir)/include -I$(top_builddir)/include \
+	-I$(top_srcdir)/libqcdm/src -I$(top_srcdir)/libmm-glib \
+	-I${top_builddir}/libmm-glib/generated -I${top_srcdir}/src/ \
+	-I${top_builddir}/src/ $(NULL) $(am__append_1) $(am__append_3)
+AM_LDFLAGS = $(MM_LIBS) $(CODE_COVERAGE_LDFLAGS) \
+	$(top_builddir)/src/libhelpers.la \
+	$(top_builddir)/src/libport.la -lutil $(NULL) $(am__append_2) \
+	$(am__append_4)
 all: all-am
 
 .SUFFIXES:
@@ -620,13 +513,13 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_at_serial_port-test-at-serial-port.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_charsets-test-charsets.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_modem_helpers-test-modem-helpers.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_modem_helpers_qmi-test-modem-helpers-qmi.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_qcdm_serial_port-test-qcdm-serial-port.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_sms_part_3gpp-test-sms-part-3gpp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_sms_part_cdma-test-sms-part-cdma.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-at-serial-port.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-charsets.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-modem-helpers-qmi.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-modem-helpers.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-qcdm-serial-port.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-sms-part-3gpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-sms-part-cdma.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -651,104 +544,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
-
-test_at_serial_port-test-at-serial-port.o: test-at-serial-port.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_at_serial_port_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT test_at_serial_port-test-at-serial-port.o -MD -MP -MF $(DEPDIR)/test_at_serial_port-test-at-serial-port.Tpo -c -o test_at_serial_port-test-at-serial-port.o `test -f 'test-at-serial-port.c' || echo '$(srcdir)/'`test-at-serial-port.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_at_serial_port-test-at-serial-port.Tpo $(DEPDIR)/test_at_serial_port-test-at-serial-port.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-at-serial-port.c' object='test_at_serial_port-test-at-serial-port.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_at_serial_port_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o test_at_serial_port-test-at-serial-port.o `test -f 'test-at-serial-port.c' || echo '$(srcdir)/'`test-at-serial-port.c
-
-test_at_serial_port-test-at-serial-port.obj: test-at-serial-port.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_at_serial_port_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT test_at_serial_port-test-at-serial-port.obj -MD -MP -MF $(DEPDIR)/test_at_serial_port-test-at-serial-port.Tpo -c -o test_at_serial_port-test-at-serial-port.obj `if test -f 'test-at-serial-port.c'; then $(CYGPATH_W) 'test-at-serial-port.c'; else $(CYGPATH_W) '$(srcdir)/test-at-serial-port.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_at_serial_port-test-at-serial-port.Tpo $(DEPDIR)/test_at_serial_port-test-at-serial-port.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-at-serial-port.c' object='test_at_serial_port-test-at-serial-port.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_at_serial_port_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o test_at_serial_port-test-at-serial-port.obj `if test -f 'test-at-serial-port.c'; then $(CYGPATH_W) 'test-at-serial-port.c'; else $(CYGPATH_W) '$(srcdir)/test-at-serial-port.c'; fi`
-
-test_charsets-test-charsets.o: test-charsets.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_charsets_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT test_charsets-test-charsets.o -MD -MP -MF $(DEPDIR)/test_charsets-test-charsets.Tpo -c -o test_charsets-test-charsets.o `test -f 'test-charsets.c' || echo '$(srcdir)/'`test-charsets.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_charsets-test-charsets.Tpo $(DEPDIR)/test_charsets-test-charsets.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-charsets.c' object='test_charsets-test-charsets.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_charsets_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o test_charsets-test-charsets.o `test -f 'test-charsets.c' || echo '$(srcdir)/'`test-charsets.c
-
-test_charsets-test-charsets.obj: test-charsets.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_charsets_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT test_charsets-test-charsets.obj -MD -MP -MF $(DEPDIR)/test_charsets-test-charsets.Tpo -c -o test_charsets-test-charsets.obj `if test -f 'test-charsets.c'; then $(CYGPATH_W) 'test-charsets.c'; else $(CYGPATH_W) '$(srcdir)/test-charsets.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_charsets-test-charsets.Tpo $(DEPDIR)/test_charsets-test-charsets.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-charsets.c' object='test_charsets-test-charsets.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_charsets_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o test_charsets-test-charsets.obj `if test -f 'test-charsets.c'; then $(CYGPATH_W) 'test-charsets.c'; else $(CYGPATH_W) '$(srcdir)/test-charsets.c'; fi`
-
-test_modem_helpers-test-modem-helpers.o: test-modem-helpers.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_modem_helpers_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT test_modem_helpers-test-modem-helpers.o -MD -MP -MF $(DEPDIR)/test_modem_helpers-test-modem-helpers.Tpo -c -o test_modem_helpers-test-modem-helpers.o `test -f 'test-modem-helpers.c' || echo '$(srcdir)/'`test-modem-helpers.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_modem_helpers-test-modem-helpers.Tpo $(DEPDIR)/test_modem_helpers-test-modem-helpers.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-modem-helpers.c' object='test_modem_helpers-test-modem-helpers.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_modem_helpers_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o test_modem_helpers-test-modem-helpers.o `test -f 'test-modem-helpers.c' || echo '$(srcdir)/'`test-modem-helpers.c
-
-test_modem_helpers-test-modem-helpers.obj: test-modem-helpers.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_modem_helpers_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT test_modem_helpers-test-modem-helpers.obj -MD -MP -MF $(DEPDIR)/test_modem_helpers-test-modem-helpers.Tpo -c -o test_modem_helpers-test-modem-helpers.obj `if test -f 'test-modem-helpers.c'; then $(CYGPATH_W) 'test-modem-helpers.c'; else $(CYGPATH_W) '$(srcdir)/test-modem-helpers.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_modem_helpers-test-modem-helpers.Tpo $(DEPDIR)/test_modem_helpers-test-modem-helpers.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-modem-helpers.c' object='test_modem_helpers-test-modem-helpers.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_modem_helpers_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o test_modem_helpers-test-modem-helpers.obj `if test -f 'test-modem-helpers.c'; then $(CYGPATH_W) 'test-modem-helpers.c'; else $(CYGPATH_W) '$(srcdir)/test-modem-helpers.c'; fi`
-
-test_modem_helpers_qmi-test-modem-helpers-qmi.o: test-modem-helpers-qmi.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_modem_helpers_qmi_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT test_modem_helpers_qmi-test-modem-helpers-qmi.o -MD -MP -MF $(DEPDIR)/test_modem_helpers_qmi-test-modem-helpers-qmi.Tpo -c -o test_modem_helpers_qmi-test-modem-helpers-qmi.o `test -f 'test-modem-helpers-qmi.c' || echo '$(srcdir)/'`test-modem-helpers-qmi.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_modem_helpers_qmi-test-modem-helpers-qmi.Tpo $(DEPDIR)/test_modem_helpers_qmi-test-modem-helpers-qmi.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-modem-helpers-qmi.c' object='test_modem_helpers_qmi-test-modem-helpers-qmi.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_modem_helpers_qmi_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o test_modem_helpers_qmi-test-modem-helpers-qmi.o `test -f 'test-modem-helpers-qmi.c' || echo '$(srcdir)/'`test-modem-helpers-qmi.c
-
-test_modem_helpers_qmi-test-modem-helpers-qmi.obj: test-modem-helpers-qmi.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_modem_helpers_qmi_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT test_modem_helpers_qmi-test-modem-helpers-qmi.obj -MD -MP -MF $(DEPDIR)/test_modem_helpers_qmi-test-modem-helpers-qmi.Tpo -c -o test_modem_helpers_qmi-test-modem-helpers-qmi.obj `if test -f 'test-modem-helpers-qmi.c'; then $(CYGPATH_W) 'test-modem-helpers-qmi.c'; else $(CYGPATH_W) '$(srcdir)/test-modem-helpers-qmi.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_modem_helpers_qmi-test-modem-helpers-qmi.Tpo $(DEPDIR)/test_modem_helpers_qmi-test-modem-helpers-qmi.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-modem-helpers-qmi.c' object='test_modem_helpers_qmi-test-modem-helpers-qmi.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_modem_helpers_qmi_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o test_modem_helpers_qmi-test-modem-helpers-qmi.obj `if test -f 'test-modem-helpers-qmi.c'; then $(CYGPATH_W) 'test-modem-helpers-qmi.c'; else $(CYGPATH_W) '$(srcdir)/test-modem-helpers-qmi.c'; fi`
-
-test_qcdm_serial_port-test-qcdm-serial-port.o: test-qcdm-serial-port.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_qcdm_serial_port_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT test_qcdm_serial_port-test-qcdm-serial-port.o -MD -MP -MF $(DEPDIR)/test_qcdm_serial_port-test-qcdm-serial-port.Tpo -c -o test_qcdm_serial_port-test-qcdm-serial-port.o `test -f 'test-qcdm-serial-port.c' || echo '$(srcdir)/'`test-qcdm-serial-port.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_qcdm_serial_port-test-qcdm-serial-port.Tpo $(DEPDIR)/test_qcdm_serial_port-test-qcdm-serial-port.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-qcdm-serial-port.c' object='test_qcdm_serial_port-test-qcdm-serial-port.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_qcdm_serial_port_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o test_qcdm_serial_port-test-qcdm-serial-port.o `test -f 'test-qcdm-serial-port.c' || echo '$(srcdir)/'`test-qcdm-serial-port.c
-
-test_qcdm_serial_port-test-qcdm-serial-port.obj: test-qcdm-serial-port.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_qcdm_serial_port_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT test_qcdm_serial_port-test-qcdm-serial-port.obj -MD -MP -MF $(DEPDIR)/test_qcdm_serial_port-test-qcdm-serial-port.Tpo -c -o test_qcdm_serial_port-test-qcdm-serial-port.obj `if test -f 'test-qcdm-serial-port.c'; then $(CYGPATH_W) 'test-qcdm-serial-port.c'; else $(CYGPATH_W) '$(srcdir)/test-qcdm-serial-port.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_qcdm_serial_port-test-qcdm-serial-port.Tpo $(DEPDIR)/test_qcdm_serial_port-test-qcdm-serial-port.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-qcdm-serial-port.c' object='test_qcdm_serial_port-test-qcdm-serial-port.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_qcdm_serial_port_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o test_qcdm_serial_port-test-qcdm-serial-port.obj `if test -f 'test-qcdm-serial-port.c'; then $(CYGPATH_W) 'test-qcdm-serial-port.c'; else $(CYGPATH_W) '$(srcdir)/test-qcdm-serial-port.c'; fi`
-
-test_sms_part_3gpp-test-sms-part-3gpp.o: test-sms-part-3gpp.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_sms_part_3gpp_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT test_sms_part_3gpp-test-sms-part-3gpp.o -MD -MP -MF $(DEPDIR)/test_sms_part_3gpp-test-sms-part-3gpp.Tpo -c -o test_sms_part_3gpp-test-sms-part-3gpp.o `test -f 'test-sms-part-3gpp.c' || echo '$(srcdir)/'`test-sms-part-3gpp.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_sms_part_3gpp-test-sms-part-3gpp.Tpo $(DEPDIR)/test_sms_part_3gpp-test-sms-part-3gpp.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-sms-part-3gpp.c' object='test_sms_part_3gpp-test-sms-part-3gpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_sms_part_3gpp_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o test_sms_part_3gpp-test-sms-part-3gpp.o `test -f 'test-sms-part-3gpp.c' || echo '$(srcdir)/'`test-sms-part-3gpp.c
-
-test_sms_part_3gpp-test-sms-part-3gpp.obj: test-sms-part-3gpp.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_sms_part_3gpp_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT test_sms_part_3gpp-test-sms-part-3gpp.obj -MD -MP -MF $(DEPDIR)/test_sms_part_3gpp-test-sms-part-3gpp.Tpo -c -o test_sms_part_3gpp-test-sms-part-3gpp.obj `if test -f 'test-sms-part-3gpp.c'; then $(CYGPATH_W) 'test-sms-part-3gpp.c'; else $(CYGPATH_W) '$(srcdir)/test-sms-part-3gpp.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_sms_part_3gpp-test-sms-part-3gpp.Tpo $(DEPDIR)/test_sms_part_3gpp-test-sms-part-3gpp.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-sms-part-3gpp.c' object='test_sms_part_3gpp-test-sms-part-3gpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_sms_part_3gpp_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o test_sms_part_3gpp-test-sms-part-3gpp.obj `if test -f 'test-sms-part-3gpp.c'; then $(CYGPATH_W) 'test-sms-part-3gpp.c'; else $(CYGPATH_W) '$(srcdir)/test-sms-part-3gpp.c'; fi`
-
-test_sms_part_cdma-test-sms-part-cdma.o: test-sms-part-cdma.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_sms_part_cdma_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT test_sms_part_cdma-test-sms-part-cdma.o -MD -MP -MF $(DEPDIR)/test_sms_part_cdma-test-sms-part-cdma.Tpo -c -o test_sms_part_cdma-test-sms-part-cdma.o `test -f 'test-sms-part-cdma.c' || echo '$(srcdir)/'`test-sms-part-cdma.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_sms_part_cdma-test-sms-part-cdma.Tpo $(DEPDIR)/test_sms_part_cdma-test-sms-part-cdma.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-sms-part-cdma.c' object='test_sms_part_cdma-test-sms-part-cdma.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_sms_part_cdma_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o test_sms_part_cdma-test-sms-part-cdma.o `test -f 'test-sms-part-cdma.c' || echo '$(srcdir)/'`test-sms-part-cdma.c
-
-test_sms_part_cdma-test-sms-part-cdma.obj: test-sms-part-cdma.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_sms_part_cdma_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT test_sms_part_cdma-test-sms-part-cdma.obj -MD -MP -MF $(DEPDIR)/test_sms_part_cdma-test-sms-part-cdma.Tpo -c -o test_sms_part_cdma-test-sms-part-cdma.obj `if test -f 'test-sms-part-cdma.c'; then $(CYGPATH_W) 'test-sms-part-cdma.c'; else $(CYGPATH_W) '$(srcdir)/test-sms-part-cdma.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_sms_part_cdma-test-sms-part-cdma.Tpo $(DEPDIR)/test_sms_part_cdma-test-sms-part-cdma.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='test-sms-part-cdma.c' object='test_sms_part_cdma-test-sms-part-cdma.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(test_sms_part_cdma_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o test_sms_part_cdma-test-sms-part-cdma.obj `if test -f 'test-sms-part-cdma.c'; then $(CYGPATH_W) 'test-sms-part-cdma.c'; else $(CYGPATH_W) '$(srcdir)/test-sms-part-cdma.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -1023,26 +818,6 @@ test-report perf-report full-report:	${TEST_PROGS}
 	    ${GTESTER_REPORT} --version 2>/dev/null 1>&2 ; test "$$?" != 0 || ${GTESTER_REPORT} $@.xml >$@.html ; \
 	  }
 .PHONY: test test-report perf-report full-report test-nonrecursive
-
-.PHONY: lcov genlcov lcov-clean
-# use recursive makes in order to ignore errors during check
-lcov:
-	-$(MAKE) $(AM_MAKEFLAGS) -k check
-	$(MAKE) $(AM_MAKEFLAGS) genlcov
-
-# we have to massage the lcov.info file slightly to hide the effect of libtool
-# placing the objects files in the .libs/ directory separate from the *.c
-# we also have to delete tests/.libs/libmoduletestplugin_*.gcda
-genlcov:
-	rm -f $(top_builddir)/tests/.libs/libmoduletestplugin_*.gcda
-	$(LTP) --directory $(top_builddir) --capture --output-file glib-lcov.info --test-name GLIB_PERF --no-checksum --compat-libtool
-	LANG=C $(LTP_GENHTML) --prefix $(top_builddir) --output-directory glib-lcov --title "GLib Code Coverage" --legend --show-details glib-lcov.info
-	@echo "file://$(abs_top_builddir)/glib-lcov/index.html"
-
-lcov-clean:
-	-$(LTP) --directory $(top_builddir) -z
-	-rm -rf glib-lcov.info glib-lcov
-	-find -name '*.gcda' -print | xargs rm
 
 # run tests in cwd as part of make check
 check-local: test-nonrecursive

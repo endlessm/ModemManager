@@ -38,7 +38,16 @@
 
   <action id="org.freedesktop.ModemManager1.Messaging">
     <_description>Send, save, modify, and delete text messages</_description>
-    <_message>System policy prevents sending or maniuplating this device's text messages.</_message>
+    <_message>System policy prevents sending or manipulating this device's text messages.</_message>
+    <defaults>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>@MM_DEFAULT_USER_POLICY@</allow_active>
+    </defaults>
+  </action>
+
+  <action id="org.freedesktop.ModemManager1.Voice">
+    <_description>Accept incoming voice calls or start outgoing voice calls.</_description>
+    <_message>System policy prevents voice calls.</_message>
     <defaults>
       <allow_inactive>no</allow_inactive>
       <allow_active>@MM_DEFAULT_USER_POLICY@</allow_active>

@@ -7,8 +7,8 @@
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
 <link rel="up" href="ch03s08.html" title="OMA support">
 <link rel="prev" href="ch03s08.html" title="OMA support">
-<link rel="next" href="ch04.html" title="The Bearer object">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<link rel="next" href="ch03s09.html" title="Voice support">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -22,7 +22,7 @@
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch03s08.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="ch03s08.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="ch04.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="ch03s09.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="MMModemOma"></a><div class="titlepage"></div>
@@ -216,8 +216,8 @@
 </div>
 <div class="refsect1">
 <a name="MMModemOma.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gio/unstable/GDBusProxy.html">GDBusProxy</a>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gio/unstable/GDBusProxy.html#GDBusProxy-struct">GDBusProxy</a>
         <span class="lineart">╰──</span> <a class="link" href="MmGdbusModemOmaProxy.html" title="MmGdbusModemOmaProxy">MmGdbusModemOmaProxy</a>
             <span class="lineart">╰──</span> MMModemOma
 </pre>
@@ -226,7 +226,7 @@
 <a name="MMModemOma.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 MMModemOma implements
- <a href="https://developer.gnome.org/gio/unstable/GDBusInterface.html">GDBusInterface</a>,  <a href="https://developer.gnome.org/gio/unstable/GInitable.html">GInitable</a>,  <a href="https://developer.gnome.org/gio/unstable/GAsyncInitable.html">GAsyncInitable</a> and  <a class="link" href="MmGdbusModemOma.html" title="MmGdbusModemOma">MmGdbusModemOma</a>.</p>
+ <a href="https://developer.gnome.org/gio/unstable/GDBusInterface.html#GDBusInterface-struct">GDBusInterface</a>,  <a href="https://developer.gnome.org/gio/unstable/GInitable.html#GInitable-struct">GInitable</a>,  <a href="https://developer.gnome.org/gio/unstable/GAsyncInitable.html#GAsyncInitable-struct">GAsyncInitable</a> and  <a class="link" href="MmGdbusModemOma.html" title="MmGdbusModemOma">MmGdbusModemOma</a>.</p>
 </div>
 <div class="refsect1">
 <a name="MMModemOma.description"></a><h2>Description</h2>
@@ -242,7 +242,7 @@ properties of the OMA interface.</p>
 mm_modem_oma_get_path (<em class="parameter"><code><a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> *self</code></em>);</pre>
 <p>Gets the DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> which implements this interface.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.2.5"></a><h4>Parameters</h4>
+<a name="mm-modem-oma-get-path.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -257,7 +257,7 @@ mm_modem_oma_get_path (<em class="parameter"><code><a class="link" href="MMModem
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.2.6"></a><h4>Returns</h4>
+<a name="mm-modem-oma-get-path.returns"></a><h4>Returns</h4>
 <p> The DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> object. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -269,7 +269,7 @@ mm_modem_oma_get_path (<em class="parameter"><code><a class="link" href="MMModem
 mm_modem_oma_dup_path (<em class="parameter"><code><a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> *self</code></em>);</pre>
 <p>Gets a copy of the DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> object which implements this interface.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.3.5"></a><h4>Parameters</h4>
+<a name="mm-modem-oma-dup-path.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -284,7 +284,7 @@ mm_modem_oma_dup_path (<em class="parameter"><code><a class="link" href="MMModem
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.3.6"></a><h4>Returns</h4>
+<a name="mm-modem-oma-dup-path.returns"></a><h4>Returns</h4>
 <p> The DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a>. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -295,7 +295,7 @@ mm_modem_oma_dup_path (<em class="parameter"><code><a class="link" href="MMModem
 <pre class="programlisting"><span class="returnvalue">void</span>
 mm_modem_oma_setup (<em class="parameter"><code><a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> *self</code></em>,
                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMOmaFeature"><span class="type">MMOmaFeature</span></a> features</code></em>,
-                    <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                    <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                     <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>Asynchronously sets up the OMA device management service.</p>
@@ -304,7 +304,7 @@ mm_modem_oma_setup (<em class="parameter"><code><a class="link" href="MMModemOma
 You can then call <a class="link" href="MMModemOma.html#mm-modem-oma-setup-finish" title="mm_modem_oma_setup_finish ()"><code class="function">mm_modem_oma_setup_finish()</code></a> to get the result of the operation.</p>
 <p>See <a class="link" href="MMModemOma.html#mm-modem-oma-setup-sync" title="mm_modem_oma_setup_sync ()"><code class="function">mm_modem_oma_setup_sync()</code></a> for the synchronous, blocking version of this method.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.4.7"></a><h4>Parameters</h4>
+<a name="mm-modem-oma-setup.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -324,7 +324,7 @@ You can then call <a class="link" href="MMModemOma.html#mm-modem-oma-setup-finis
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -347,11 +347,11 @@ You can then call <a class="link" href="MMModemOma.html#mm-modem-oma-setup-finis
 <a name="mm-modem-oma-setup-finish"></a><h3>mm_modem_oma_setup_finish ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 mm_modem_oma_setup_finish (<em class="parameter"><code><a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> *self</code></em>,
-                           <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *res</code></em>,
                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes an operation started with <a class="link" href="MMModemOma.html#mm-modem-oma-setup" title="mm_modem_oma_setup ()"><code class="function">mm_modem_oma_setup()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.5.5"></a><h4>Parameters</h4>
+<a name="mm-modem-oma-setup-finish.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -366,7 +366,7 @@ mm_modem_oma_setup_finish (<em class="parameter"><code><a class="link" href="MMM
 </tr>
 <tr>
 <td class="parameter_name"><p>res</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemOma.html#mm-modem-oma-setup" title="mm_modem_oma_setup ()"><code class="function">mm_modem_oma_setup()</code></a>.</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemOma.html#mm-modem-oma-setup" title="mm_modem_oma_setup ()"><code class="function">mm_modem_oma_setup()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -378,7 +378,7 @@ mm_modem_oma_setup_finish (<em class="parameter"><code><a class="link" href="MMM
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.5.6"></a><h4>Returns</h4>
+<a name="mm-modem-oma-setup-finish.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the setup was successful, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
 </div>
@@ -389,13 +389,13 @@ is set.</p>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 mm_modem_oma_setup_sync (<em class="parameter"><code><a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> *self</code></em>,
                          <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMOmaFeature"><span class="type">MMOmaFeature</span></a> features</code></em>,
-                         <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                         <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Synchronously sets up the OMA device management service.</p>
 <p>The calling thread is blocked until a reply is received. See <a class="link" href="MMModemOma.html#mm-modem-oma-setup" title="mm_modem_oma_setup ()"><code class="function">mm_modem_oma_setup()</code></a>
 for the asynchronous version of this method.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.6.6"></a><h4>Parameters</h4>
+<a name="mm-modem-oma-setup-sync.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -415,7 +415,7 @@ for the asynchronous version of this method.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -427,7 +427,7 @@ for the asynchronous version of this method.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.6.7"></a><h4>Returns</h4>
+<a name="mm-modem-oma-setup-sync.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the setup was successful, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
 </div>
@@ -439,7 +439,7 @@ is set.</p>
 mm_modem_oma_start_client_initiated_session
                                (<em class="parameter"><code><a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> *self</code></em>,
                                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMOmaSessionType"><span class="type">MMOmaSessionType</span></a> session_type</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>Asynchronously starts a client-initiated OMA device management session.</p>
@@ -448,7 +448,7 @@ mm_modem_oma_start_client_initiated_session
 You can then call <a class="link" href="MMModemOma.html#mm-modem-oma-start-client-initiated-session-finish" title="mm_modem_oma_start_client_initiated_session_finish ()"><code class="function">mm_modem_oma_start_client_initiated_session_finish()</code></a> to get the result of the operation.</p>
 <p>See <a class="link" href="MMModemOma.html#mm-modem-oma-start-client-initiated-session-sync" title="mm_modem_oma_start_client_initiated_session_sync ()"><code class="function">mm_modem_oma_start_client_initiated_session_sync()</code></a> for the synchronous, blocking version of this method.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.7.7"></a><h4>Parameters</h4>
+<a name="mm-modem-oma-start-client-initiated-session.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -468,7 +468,7 @@ You can then call <a class="link" href="MMModemOma.html#mm-modem-oma-start-clien
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -492,11 +492,11 @@ You can then call <a class="link" href="MMModemOma.html#mm-modem-oma-start-clien
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 mm_modem_oma_start_client_initiated_session_finish
                                (<em class="parameter"><code><a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> *self</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes an operation started with <a class="link" href="MMModemOma.html#mm-modem-oma-start-client-initiated-session" title="mm_modem_oma_start_client_initiated_session ()"><code class="function">mm_modem_oma_start_client_initiated_session()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.8.5"></a><h4>Parameters</h4>
+<a name="mm-modem-oma-start-client-initiated-session-finish.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -511,7 +511,7 @@ mm_modem_oma_start_client_initiated_session_finish
 </tr>
 <tr>
 <td class="parameter_name"><p>res</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemOma.html#mm-modem-oma-start-client-initiated-session" title="mm_modem_oma_start_client_initiated_session ()"><code class="function">mm_modem_oma_start_client_initiated_session()</code></a>.</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemOma.html#mm-modem-oma-start-client-initiated-session" title="mm_modem_oma_start_client_initiated_session ()"><code class="function">mm_modem_oma_start_client_initiated_session()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -523,7 +523,7 @@ mm_modem_oma_start_client_initiated_session_finish
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.8.6"></a><h4>Returns</h4>
+<a name="mm-modem-oma-start-client-initiated-session-finish.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the session was started, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
 </div>
@@ -535,13 +535,13 @@ is set.</p>
 mm_modem_oma_start_client_initiated_session_sync
                                (<em class="parameter"><code><a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> *self</code></em>,
                                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMOmaSessionType"><span class="type">MMOmaSessionType</span></a> session_type</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Synchronously starts a client-initiated OMA device management session.</p>
 <p>The calling thread is blocked until a reply is received. See <a class="link" href="MMModemOma.html#mm-modem-oma-start-client-initiated-session" title="mm_modem_oma_start_client_initiated_session ()"><code class="function">mm_modem_oma_start_client_initiated_session()</code></a>
 for the asynchronous version of this method.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.9.6"></a><h4>Parameters</h4>
+<a name="mm-modem-oma-start-client-initiated-session-sync.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -561,7 +561,7 @@ for the asynchronous version of this method.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -573,7 +573,7 @@ for the asynchronous version of this method.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.9.7"></a><h4>Returns</h4>
+<a name="mm-modem-oma-start-client-initiated-session-sync.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the session was started, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
 </div>
@@ -586,7 +586,7 @@ mm_modem_oma_accept_network_initiated_session
                                (<em class="parameter"><code><a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> *self</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> session_id</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> accept</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>Asynchronously accepts a nework-initiated OMA device management session.</p>
@@ -595,7 +595,7 @@ mm_modem_oma_accept_network_initiated_session
 You can then call <a class="link" href="MMModemOma.html#mm-modem-oma-accept-network-initiated-session-finish" title="mm_modem_oma_accept_network_initiated_session_finish ()"><code class="function">mm_modem_oma_accept_network_initiated_session_finish()</code></a> to get the result of the operation.</p>
 <p>See <a class="link" href="MMModemOma.html#mm-modem-oma-accept-network-initiated-session-sync" title="mm_modem_oma_accept_network_initiated_session_sync ()"><code class="function">mm_modem_oma_accept_network_initiated_session_sync()</code></a> for the synchronous, blocking version of this method.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.10.7"></a><h4>Parameters</h4>
+<a name="mm-modem-oma-accept-network-initiated-session.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -620,7 +620,7 @@ You can then call <a class="link" href="MMModemOma.html#mm-modem-oma-accept-netw
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -644,11 +644,11 @@ You can then call <a class="link" href="MMModemOma.html#mm-modem-oma-accept-netw
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 mm_modem_oma_accept_network_initiated_session_finish
                                (<em class="parameter"><code><a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> *self</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes an operation started with <a class="link" href="MMModemOma.html#mm-modem-oma-accept-network-initiated-session" title="mm_modem_oma_accept_network_initiated_session ()"><code class="function">mm_modem_oma_accept_network_initiated_session()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.11.5"></a><h4>Parameters</h4>
+<a name="mm-modem-oma-accept-network-initiated-session-finish.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -663,7 +663,7 @@ mm_modem_oma_accept_network_initiated_session_finish
 </tr>
 <tr>
 <td class="parameter_name"><p>res</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemOma.html#mm-modem-oma-accept-network-initiated-session" title="mm_modem_oma_accept_network_initiated_session ()"><code class="function">mm_modem_oma_accept_network_initiated_session()</code></a>.</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemOma.html#mm-modem-oma-accept-network-initiated-session" title="mm_modem_oma_accept_network_initiated_session ()"><code class="function">mm_modem_oma_accept_network_initiated_session()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -675,7 +675,7 @@ mm_modem_oma_accept_network_initiated_session_finish
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.11.6"></a><h4>Returns</h4>
+<a name="mm-modem-oma-accept-network-initiated-session-finish.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the session was started, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
 </div>
@@ -688,13 +688,13 @@ mm_modem_oma_accept_network_initiated_session_sync
                                (<em class="parameter"><code><a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> *self</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> session_id</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> accept</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Synchronously accepts a nework-initiated OMA device management session.</p>
 <p>The calling thread is blocked until a reply is received. See <a class="link" href="MMModemOma.html#mm-modem-oma-accept-network-initiated-session" title="mm_modem_oma_accept_network_initiated_session ()"><code class="function">mm_modem_oma_accept_network_initiated_session()</code></a>
 for the asynchronous version of this method.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.12.6"></a><h4>Parameters</h4>
+<a name="mm-modem-oma-accept-network-initiated-session-sync.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -719,7 +719,7 @@ for the asynchronous version of this method.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -731,7 +731,7 @@ for the asynchronous version of this method.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.12.7"></a><h4>Returns</h4>
+<a name="mm-modem-oma-accept-network-initiated-session-sync.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the session was started, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
 </div>
@@ -741,7 +741,7 @@ is set.</p>
 <a name="mm-modem-oma-cancel-session"></a><h3>mm_modem_oma_cancel_session ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 mm_modem_oma_cancel_session (<em class="parameter"><code><a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> *self</code></em>,
-                             <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                             <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                              <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                              <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>Asynchronously cancels the current OMA device management session.</p>
@@ -750,7 +750,7 @@ mm_modem_oma_cancel_session (<em class="parameter"><code><a class="link" href="M
 You can then call <a class="link" href="MMModemOma.html#mm-modem-oma-cancel-session-finish" title="mm_modem_oma_cancel_session_finish ()"><code class="function">mm_modem_oma_cancel_session_finish()</code></a> to get the result of the operation.</p>
 <p>See <a class="link" href="MMModemOma.html#mm-modem-oma-cancel-session-sync" title="mm_modem_oma_cancel_session_sync ()"><code class="function">mm_modem_oma_cancel_session_sync()</code></a> for the synchronous, blocking version of this method.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.13.7"></a><h4>Parameters</h4>
+<a name="mm-modem-oma-cancel-session.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -765,7 +765,7 @@ You can then call <a class="link" href="MMModemOma.html#mm-modem-oma-cancel-sess
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -788,11 +788,11 @@ You can then call <a class="link" href="MMModemOma.html#mm-modem-oma-cancel-sess
 <a name="mm-modem-oma-cancel-session-finish"></a><h3>mm_modem_oma_cancel_session_finish ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 mm_modem_oma_cancel_session_finish (<em class="parameter"><code><a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> *self</code></em>,
-                                    <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                    <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                     <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes an operation started with <a class="link" href="MMModemOma.html#mm-modem-oma-cancel-session" title="mm_modem_oma_cancel_session ()"><code class="function">mm_modem_oma_cancel_session()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.14.5"></a><h4>Parameters</h4>
+<a name="mm-modem-oma-cancel-session-finish.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -807,7 +807,7 @@ mm_modem_oma_cancel_session_finish (<em class="parameter"><code><a class="link" 
 </tr>
 <tr>
 <td class="parameter_name"><p>res</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemOma.html#mm-modem-oma-cancel-session" title="mm_modem_oma_cancel_session ()"><code class="function">mm_modem_oma_cancel_session()</code></a>.</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemOma.html#mm-modem-oma-cancel-session" title="mm_modem_oma_cancel_session ()"><code class="function">mm_modem_oma_cancel_session()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -819,7 +819,7 @@ mm_modem_oma_cancel_session_finish (<em class="parameter"><code><a class="link" 
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.14.6"></a><h4>Returns</h4>
+<a name="mm-modem-oma-cancel-session-finish.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the session was started, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
 </div>
@@ -829,13 +829,13 @@ is set.</p>
 <a name="mm-modem-oma-cancel-session-sync"></a><h3>mm_modem_oma_cancel_session_sync ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 mm_modem_oma_cancel_session_sync (<em class="parameter"><code><a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> *self</code></em>,
-                                  <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Synchronously cancels the current OMA device management session.</p>
 <p>The calling thread is blocked until a reply is received. See <a class="link" href="MMModemOma.html#mm-modem-oma-cancel-session" title="mm_modem_oma_cancel_session ()"><code class="function">mm_modem_oma_cancel_session()</code></a>
 for the asynchronous version of this method.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.15.6"></a><h4>Parameters</h4>
+<a name="mm-modem-oma-cancel-session-sync.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -850,7 +850,7 @@ for the asynchronous version of this method.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -862,7 +862,7 @@ for the asynchronous version of this method.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.15.7"></a><h4>Returns</h4>
+<a name="mm-modem-oma-cancel-session-sync.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the session was started, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
 </div>
@@ -874,7 +874,7 @@ is set.</p>
 mm_modem_oma_get_features (<em class="parameter"><code><a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> *self</code></em>);</pre>
 <p>Gets the currently enabled OMA features.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.16.5"></a><h4>Parameters</h4>
+<a name="mm-modem-oma-get-features.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -889,7 +889,7 @@ mm_modem_oma_get_features (<em class="parameter"><code><a class="link" href="MMM
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.16.6"></a><h4>Returns</h4>
+<a name="mm-modem-oma-get-features.returns"></a><h4>Returns</h4>
 <p> a bitmask of <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMOmaFeature"><span class="type">MMOmaFeature</span></a> values.</p>
 </div>
 </div>
@@ -900,7 +900,7 @@ mm_modem_oma_get_features (<em class="parameter"><code><a class="link" href="MMM
 mm_modem_oma_get_session_type (<em class="parameter"><code><a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> *self</code></em>);</pre>
 <p>Gets the type of the current OMA device management session.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.17.5"></a><h4>Parameters</h4>
+<a name="mm-modem-oma-get-session-type.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -915,7 +915,7 @@ mm_modem_oma_get_session_type (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.17.6"></a><h4>Returns</h4>
+<a name="mm-modem-oma-get-session-type.returns"></a><h4>Returns</h4>
 <p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMOmaSessionType"><span class="type">MMOmaSessionType</span></a>.</p>
 </div>
 </div>
@@ -926,7 +926,7 @@ mm_modem_oma_get_session_type (<em class="parameter"><code><a class="link" href=
 mm_modem_oma_get_session_state (<em class="parameter"><code><a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> *self</code></em>);</pre>
 <p>Gets the state of the current OMA device management session.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.18.5"></a><h4>Parameters</h4>
+<a name="mm-modem-oma-get-session-state.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -941,7 +941,7 @@ mm_modem_oma_get_session_state (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.18.6"></a><h4>Returns</h4>
+<a name="mm-modem-oma-get-session-state.returns"></a><h4>Returns</h4>
 <p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMOmaSessionState"><span class="type">MMOmaSessionState</span></a>.</p>
 </div>
 </div>
@@ -955,7 +955,7 @@ mm_modem_peek_pending_network_initiated_sessions
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_sessions</code></em>);</pre>
 <p>Gets the list of pending network-initiated OMA sessions.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.19.5"></a><h4>Parameters</h4>
+<a name="mm-modem-peek-pending-network-initiated-sessions.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -984,7 +984,7 @@ mm_modem_peek_pending_network_initiated_sessions
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.19.6"></a><h4>Returns</h4>
+<a name="mm-modem-peek-pending-network-initiated-sessions.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>sessions</code></em>
 and <em class="parameter"><code>n_sessions</code></em>
 are set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
@@ -1000,7 +1000,7 @@ mm_modem_get_pending_network_initiated_sessions
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_sessions</code></em>);</pre>
 <p>Gets the list of pending network-initiated OMA sessions.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.20.5"></a><h4>Parameters</h4>
+<a name="mm-modem-get-pending-network-initiated-sessions.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1028,7 +1028,7 @@ mm_modem_get_pending_network_initiated_sessions
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.8.20.6"></a><h4>Returns</h4>
+<a name="mm-modem-get-pending-network-initiated-sessions.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>sessions</code></em>
 and <em class="parameter"><code>n_sessions</code></em>
 are set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
@@ -1054,7 +1054,7 @@ using the provided API.</p>
 <p><a class="link" href="MMModemOma.html#MMOmaPendingNetworkInitiatedSession" title="struct MMOmaPendingNetworkInitiatedSession"><span class="type">MMOmaPendingNetworkInitiatedSession</span></a> is a simple struct specifying the
 information available for a pending network-initiated OMA session.</p>
 <div class="refsect3">
-<a name="id-1.2.4.10.2.9.3.5"></a><h4>Members</h4>
+<a name="MMOmaPendingNetworkInitiatedSession.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -1079,6 +1079,6 @@ information available for a pending network-initiated OMA session.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

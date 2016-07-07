@@ -113,12 +113,12 @@ void     mm_port_probe_run        (MMPortProbe *self,
                                    gboolean at_send_lf,
                                    const MMPortProbeAtCommand *at_custom_probe,
                                    const MMAsyncMethod *at_custom_init,
+                                   GCancellable *cancellable,
                                    GAsyncReadyCallback callback,
                                    gpointer user_data);
 gboolean mm_port_probe_run_finish (MMPortProbe *self,
                                    GAsyncResult *result,
                                    GError **error);
-gboolean mm_port_probe_run_cancel (MMPortProbe *self);
 
 gboolean mm_port_probe_run_cancel_at_probing (MMPortProbe *self);
 
@@ -131,6 +131,7 @@ gboolean      mm_port_probe_is_mbim          (MMPortProbe *self);
 const gchar  *mm_port_probe_get_vendor       (MMPortProbe *self);
 const gchar  *mm_port_probe_get_product      (MMPortProbe *self);
 gboolean      mm_port_probe_is_icera         (MMPortProbe *self);
+gboolean      mm_port_probe_is_ignored       (MMPortProbe *self);
 
 /* Additional helpers */
 gboolean mm_port_probe_list_has_at_port   (GList *list);

@@ -8,7 +8,7 @@
 <link rel="up" href="pt02.html" title="Part II. Low level API">
 <link rel="prev" href="MmGdbusModem3gppUssdSkeleton.html" title="MmGdbusModem3gppUssdSkeleton">
 <link rel="next" href="MmGdbusModemCdmaProxy.html" title="MmGdbusModemCdmaProxy">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -262,7 +262,7 @@
 </div>
 <div class="refsect1">
 <a name="MmGdbusModemCdma.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GInterface
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/GTypeModule.html">GInterface</a>
     <span class="lineart">╰──</span> MmGdbusModemCdma
 </pre>
 </div>
@@ -270,7 +270,7 @@
 <a name="MmGdbusModemCdma.prerequisites"></a><h2>Prerequisites</h2>
 <p>
 MmGdbusModemCdma requires
- <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>.</p>
+ <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>.</p>
 </div>
 <div class="refsect1">
 <a name="MmGdbusModemCdma.implementations"></a><h2>Known Implementations</h2>
@@ -293,7 +293,7 @@ mm_gdbus_modem_cdma_get_cdma1x_registration_state
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.18.11.2.7"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-cdma-get-cdma1x-registration-state.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -308,7 +308,7 @@ mm_gdbus_modem_cdma_get_cdma1x_registration_state
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.18.11.2.8"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-cdma-get-cdma1x-registration-state.returns"></a><h4>Returns</h4>
 <p> The property value.</p>
 </div>
 </div>
@@ -322,7 +322,7 @@ mm_gdbus_modem_cdma_get_evdo_registration_state
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.18.11.3.7"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-cdma-get-evdo-registration-state.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -337,7 +337,7 @@ mm_gdbus_modem_cdma_get_evdo_registration_state
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.18.11.3.8"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-cdma-get-evdo-registration-state.returns"></a><h4>Returns</h4>
 <p> The property value.</p>
 </div>
 </div>
@@ -351,7 +351,7 @@ mm_gdbus_modem_cdma_get_activation_state
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.18.11.4.7"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-cdma-get-activation-state.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -366,7 +366,7 @@ mm_gdbus_modem_cdma_get_activation_state
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.18.11.4.8"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-cdma-get-activation-state.returns"></a><h4>Returns</h4>
 <p> The property value.</p>
 </div>
 </div>
@@ -380,7 +380,7 @@ mm_gdbus_modem_cdma_get_esn (<em class="parameter"><code><a class="link" href="M
 <div class="warning">The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where <em class="parameter"><code>object</code></em> was constructed. Use <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdma-dup-esn" title="mm_gdbus_modem_cdma_dup_esn ()"><code class="function">mm_gdbus_modem_cdma_dup_esn()</code></a> if on another thread.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.18.11.5.8"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-cdma-get-esn.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -395,7 +395,7 @@ mm_gdbus_modem_cdma_get_esn (<em class="parameter"><code><a class="link" href="M
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.18.11.5.9"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-cdma-get-esn.returns"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -410,7 +410,7 @@ mm_gdbus_modem_cdma_dup_esn (<em class="parameter"><code><a class="link" href="M
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.18.11.6.7"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-cdma-dup-esn.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -425,7 +425,7 @@ mm_gdbus_modem_cdma_dup_esn (<em class="parameter"><code><a class="link" href="M
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.18.11.6.8"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-cdma-dup-esn.returns"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -440,7 +440,7 @@ mm_gdbus_modem_cdma_get_meid (<em class="parameter"><code><a class="link" href="
 <div class="warning">The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where <em class="parameter"><code>object</code></em> was constructed. Use <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdma-dup-meid" title="mm_gdbus_modem_cdma_dup_meid ()"><code class="function">mm_gdbus_modem_cdma_dup_meid()</code></a> if on another thread.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.18.11.7.8"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-cdma-get-meid.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -455,7 +455,7 @@ mm_gdbus_modem_cdma_get_meid (<em class="parameter"><code><a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.18.11.7.9"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-cdma-get-meid.returns"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. Do not free the returned value, it belongs to <em class="parameter"><code>object</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -470,7 +470,7 @@ mm_gdbus_modem_cdma_dup_meid (<em class="parameter"><code><a class="link" href="
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.18.11.8.7"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-cdma-dup-meid.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -485,7 +485,7 @@ mm_gdbus_modem_cdma_dup_meid (<em class="parameter"><code><a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.18.11.8.8"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-cdma-dup-meid.returns"></a><h4>Returns</h4>
 <p> The property value or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the property is not set. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -499,7 +499,7 @@ mm_gdbus_modem_cdma_get_nid (<em class="parameter"><code><a class="link" href="M
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.18.11.9.7"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-cdma-get-nid.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -514,7 +514,7 @@ mm_gdbus_modem_cdma_get_nid (<em class="parameter"><code><a class="link" href="M
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.18.11.9.8"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-cdma-get-nid.returns"></a><h4>Returns</h4>
 <p> The property value.</p>
 </div>
 </div>
@@ -527,7 +527,7 @@ mm_gdbus_modem_cdma_get_sid (<em class="parameter"><code><a class="link" href="M
 <p>Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.3.18.11.10.7"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-cdma-get-sid.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -542,7 +542,7 @@ mm_gdbus_modem_cdma_get_sid (<em class="parameter"><code><a class="link" href="M
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.18.11.10.8"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-cdma-get-sid.returns"></a><h4>Returns</h4>
 <p> The property value.</p>
 </div>
 </div>
@@ -552,7 +552,7 @@ mm_gdbus_modem_cdma_get_sid (<em class="parameter"><code><a class="link" href="M
 <pre class="programlisting"><span class="returnvalue">void</span>
 mm_gdbus_modem_cdma_call_activate (<em class="parameter"><code><a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemCdma"><span class="type">MmGdbusModemCdma</span></a> *proxy</code></em>,
                                    <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *arg_carrier_code</code></em>,
-                                   <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                   <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                    <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                    <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-method-org-freedesktop-ModemManager1-Modem-ModemCdma.Activate"><GTKDOCLINK HREF="Activate"><code class="function">Activate()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>
@@ -562,7 +562,7 @@ When the operation is finished, <em class="parameter"><code>callback</code></em>
 You can then call <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdma-call-activate-finish" title="mm_gdbus_modem_cdma_call_activate_finish ()"><code class="function">mm_gdbus_modem_cdma_call_activate_finish()</code></a> to get the result of the operation.</p>
 <p>See <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdma-call-activate-sync" title="mm_gdbus_modem_cdma_call_activate_sync ()"><code class="function">mm_gdbus_modem_cdma_call_activate_sync()</code></a> for the synchronous, blocking version of this method.</p>
 <div class="refsect3">
-<a name="id-1.3.18.11.11.6"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-cdma-call-activate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -582,7 +582,7 @@ You can then call <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdm
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -606,11 +606,11 @@ You can then call <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdm
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 mm_gdbus_modem_cdma_call_activate_finish
                                (<em class="parameter"><code><a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemCdma"><span class="type">MmGdbusModemCdma</span></a> *proxy</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes an operation started with <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdma-call-activate" title="mm_gdbus_modem_cdma_call_activate ()"><code class="function">mm_gdbus_modem_cdma_call_activate()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.18.11.12.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-cdma-call-activate-finish.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -625,7 +625,7 @@ mm_gdbus_modem_cdma_call_activate_finish
 </tr>
 <tr>
 <td class="parameter_name"><p>res</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdma-call-activate" title="mm_gdbus_modem_cdma_call_activate ()"><code class="function">mm_gdbus_modem_cdma_call_activate()</code></a>.</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdma-call-activate" title="mm_gdbus_modem_cdma_call_activate ()"><code class="function">mm_gdbus_modem_cdma_call_activate()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -637,7 +637,7 @@ mm_gdbus_modem_cdma_call_activate_finish
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.18.11.12.6"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-cdma-call-activate-finish.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
@@ -650,13 +650,13 @@ is set. </p>
 mm_gdbus_modem_cdma_call_activate_sync
                                (<em class="parameter"><code><a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemCdma"><span class="type">MmGdbusModemCdma</span></a> *proxy</code></em>,
                                 <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *arg_carrier_code</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-method-org-freedesktop-ModemManager1-Modem-ModemCdma.Activate"><GTKDOCLINK HREF="Activate"><code class="function">Activate()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>
 . The calling thread is blocked until a reply is received.</p>
 <p>See <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdma-call-activate" title="mm_gdbus_modem_cdma_call_activate ()"><code class="function">mm_gdbus_modem_cdma_call_activate()</code></a> for the asynchronous version of this method.</p>
 <div class="refsect3">
-<a name="id-1.3.18.11.13.6"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-cdma-call-activate-sync.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -676,7 +676,7 @@ mm_gdbus_modem_cdma_call_activate_sync
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -688,7 +688,7 @@ mm_gdbus_modem_cdma_call_activate_sync
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.18.11.13.7"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-cdma-call-activate-sync.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
@@ -701,7 +701,7 @@ is set. </p>
 mm_gdbus_modem_cdma_call_activate_manual
                                (<em class="parameter"><code><a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemCdma"><span class="type">MmGdbusModemCdma</span></a> *proxy</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> *arg_properties</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>Asynchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-method-org-freedesktop-ModemManager1-Modem-ModemCdma.ActivateManual"><GTKDOCLINK HREF="ActivateManual"><code class="function">ActivateManual()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>
@@ -711,7 +711,7 @@ When the operation is finished, <em class="parameter"><code>callback</code></em>
 You can then call <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdma-call-activate-manual-finish" title="mm_gdbus_modem_cdma_call_activate_manual_finish ()"><code class="function">mm_gdbus_modem_cdma_call_activate_manual_finish()</code></a> to get the result of the operation.</p>
 <p>See <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdma-call-activate-manual-sync" title="mm_gdbus_modem_cdma_call_activate_manual_sync ()"><code class="function">mm_gdbus_modem_cdma_call_activate_manual_sync()</code></a> for the synchronous, blocking version of this method.</p>
 <div class="refsect3">
-<a name="id-1.3.18.11.14.6"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-cdma-call-activate-manual.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -731,7 +731,7 @@ You can then call <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdm
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -755,11 +755,11 @@ You can then call <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdm
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 mm_gdbus_modem_cdma_call_activate_manual_finish
                                (<em class="parameter"><code><a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemCdma"><span class="type">MmGdbusModemCdma</span></a> *proxy</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes an operation started with <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdma-call-activate-manual" title="mm_gdbus_modem_cdma_call_activate_manual ()"><code class="function">mm_gdbus_modem_cdma_call_activate_manual()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.3.18.11.15.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-cdma-call-activate-manual-finish.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -774,7 +774,7 @@ mm_gdbus_modem_cdma_call_activate_manual_finish
 </tr>
 <tr>
 <td class="parameter_name"><p>res</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdma-call-activate-manual" title="mm_gdbus_modem_cdma_call_activate_manual ()"><code class="function">mm_gdbus_modem_cdma_call_activate_manual()</code></a>.</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdma-call-activate-manual" title="mm_gdbus_modem_cdma_call_activate_manual ()"><code class="function">mm_gdbus_modem_cdma_call_activate_manual()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -786,7 +786,7 @@ mm_gdbus_modem_cdma_call_activate_manual_finish
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.18.11.15.6"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-cdma-call-activate-manual-finish.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
@@ -799,13 +799,13 @@ is set. </p>
 mm_gdbus_modem_cdma_call_activate_manual_sync
                                (<em class="parameter"><code><a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemCdma"><span class="type">MmGdbusModemCdma</span></a> *proxy</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> *arg_properties</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Synchronously invokes the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-method-org-freedesktop-ModemManager1-Modem-ModemCdma.ActivateManual"><GTKDOCLINK HREF="ActivateManual"><code class="function">ActivateManual()</code></a></GTKDOCLINK> D-Bus method on <em class="parameter"><code>proxy</code></em>
 . The calling thread is blocked until a reply is received.</p>
 <p>See <a class="link" href="MmGdbusModemCdma.html#mm-gdbus-modem-cdma-call-activate-manual" title="mm_gdbus_modem_cdma_call_activate_manual ()"><code class="function">mm_gdbus_modem_cdma_call_activate_manual()</code></a> for the asynchronous version of this method.</p>
 <div class="refsect3">
-<a name="id-1.3.18.11.16.6"></a><h4>Parameters</h4>
+<a name="mm-gdbus-modem-cdma-call-activate-manual-sync.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -825,7 +825,7 @@ mm_gdbus_modem_cdma_call_activate_manual_sync
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -837,7 +837,7 @@ mm_gdbus_modem_cdma_call_activate_manual_sync
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.18.11.16.7"></a><h4>Returns</h4>
+<a name="mm-gdbus-modem-cdma-call-activate-manual-sync.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the call succeded, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set. </p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
@@ -892,7 +892,7 @@ is set. </p>
 </pre>
 <p>Virtual table for the D-Bus interface org.freedesktop.ModemManager1.Modem.ModemCdma.</p>
 <div class="refsect3">
-<a name="id-1.3.18.12.3.5"></a><h4>Members</h4>
+<a name="MmGdbusModemCdmaIface.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
@@ -966,7 +966,7 @@ is set. </p>
 <a name="MmGdbusModemCdma--activation-state"></a><h3>The <code class="literal">“activation-state”</code> property</h3>
 <pre class="programlisting">  “activation-state”         <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a></pre>
 <p>Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.ActivationState">"ActivationState"</a>.</p>
-<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
+<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: 0</p>
 </div>
@@ -975,7 +975,7 @@ is set. </p>
 <a name="MmGdbusModemCdma--cdma1x-registration-state"></a><h3>The <code class="literal">“cdma1x-registration-state”</code> property</h3>
 <pre class="programlisting">  “cdma1x-registration-state” <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a></pre>
 <p>Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.Cdma1xRegistrationState">"Cdma1xRegistrationState"</a>.</p>
-<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
+<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: 0</p>
 </div>
@@ -984,7 +984,7 @@ is set. </p>
 <a name="MmGdbusModemCdma--esn"></a><h3>The <code class="literal">“esn”</code> property</h3>
 <pre class="programlisting">  “esn”                      <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
 <p>Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.Esn">"Esn"</a>.</p>
-<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
+<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: NULL</p>
 </div>
@@ -993,7 +993,7 @@ is set. </p>
 <a name="MmGdbusModemCdma--evdo-registration-state"></a><h3>The <code class="literal">“evdo-registration-state”</code> property</h3>
 <pre class="programlisting">  “evdo-registration-state”  <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a></pre>
 <p>Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.EvdoRegistrationState">"EvdoRegistrationState"</a>.</p>
-<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
+<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: 0</p>
 </div>
@@ -1002,7 +1002,7 @@ is set. </p>
 <a name="MmGdbusModemCdma--meid"></a><h3>The <code class="literal">“meid”</code> property</h3>
 <pre class="programlisting">  “meid”                     <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
 <p>Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.Meid">"Meid"</a>.</p>
-<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
+<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: NULL</p>
 </div>
@@ -1011,7 +1011,7 @@ is set. </p>
 <a name="MmGdbusModemCdma--nid"></a><h3>The <code class="literal">“nid”</code> property</h3>
 <pre class="programlisting">  “nid”                      <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a></pre>
 <p>Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.Nid">"Nid"</a>.</p>
-<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
+<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: 0</p>
 </div>
@@ -1020,7 +1020,7 @@ is set. </p>
 <a name="MmGdbusModemCdma--sid"></a><h3>The <code class="literal">“sid”</code> property</h3>
 <pre class="programlisting">  “sid”                      <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a></pre>
 <p>Represents the D-Bus property <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-property-org-freedesktop-ModemManager1-Modem-ModemCdma.Sid">"Sid"</a>.</p>
-<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
+<p>Since the D-Bus property for this <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct"><span class="type">GObject</span></a> property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.</p>
 <p>Flags: Read / Write</p>
 <p>Default value: 0</p>
 </div>
@@ -1038,7 +1038,7 @@ user_function (<a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemC
 <p>On the client-side, this signal is emitted whenever the D-Bus signal <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-ModemCdma.ActivationStateChanged">"ActivationStateChanged"</a> is received.</p>
 <p>On the service-side, this signal can be used with e.g. <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#g-signal-emit-by-name"><code class="function">g_signal_emit_by_name()</code></a> to make the object emit the D-Bus signal.</p>
 <div class="refsect3">
-<a name="id-1.3.18.14.2.6"></a><h4>Parameters</h4>
+<a name="MmGdbusModemCdma-activation-state-changed.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1081,14 +1081,14 @@ user_function (<a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemC
 <a name="MmGdbusModemCdma-handle-activate"></a><h3>The <code class="literal">“handle-activate”</code> signal</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 user_function (<a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemCdma"><span class="type">MmGdbusModemCdma</span></a>      *object,
-               <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a> *invocation,
+               <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a> *invocation,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>                 *arg_carrier_code,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)</pre>
 <p>Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-method-org-freedesktop-ModemManager1-Modem-ModemCdma.Activate"><GTKDOCLINK HREF="Activate"><code class="function">Activate()</code></a></GTKDOCLINK> D-Bus method.</p>
 <p>If a signal handler returns <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em>
  and eventually call <code class="function">mm_gdbus_modem_cdma_complete_activate()</code> or e.g. <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="https://developer.gnome.org/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
 <div class="refsect3">
-<a name="id-1.3.18.14.3.6"></a><h4>Parameters</h4>
+<a name="MmGdbusModemCdma-handle-activate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1103,7 +1103,7 @@ user_function (<a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemC
 </tr>
 <tr>
 <td class="parameter_name"><p>invocation</p></td>
-<td class="parameter_description"><p>A <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a>.</p></td>
+<td class="parameter_description"><p>A <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1120,7 +1120,7 @@ user_function (<a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemC
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.18.14.3.7"></a><h4>Returns</h4>
+<a name="MmGdbusModemCdma-handle-activate.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</p>
 </div>
 <p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
@@ -1130,14 +1130,14 @@ user_function (<a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemC
 <a name="MmGdbusModemCdma-handle-activate-manual"></a><h3>The <code class="literal">“handle-activate-manual”</code> signal</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 user_function (<a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemCdma"><span class="type">MmGdbusModemCdma</span></a>      *object,
-               <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a> *invocation,
+               <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a> *invocation,
                <a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a>              *arg_properties,
                <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>               user_data)</pre>
 <p>Signal emitted when a remote caller is invoking the <a href="/usr/share/gtk-doc/html/ModemManager/gdbus-org.freedesktop.ModemManager1.Modem.ModemCdma.html#gdbus-method-org-freedesktop-ModemManager1-Modem-ModemCdma.ActivateManual"><GTKDOCLINK HREF="ActivateManual"><code class="function">ActivateManual()</code></a></GTKDOCLINK> D-Bus method.</p>
 <p>If a signal handler returns <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, it means the signal handler will handle the invocation (e.g. take a reference to <em class="parameter"><code>invocation</code></em>
  and eventually call <code class="function">mm_gdbus_modem_cdma_complete_activate_manual()</code> or e.g. <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#g-dbus-method-invocation-return-error"><code class="function">g_dbus_method_invocation_return_error()</code></a> on it) and no order signal handlers will run. If no signal handler handles the invocation, the <a href="https://developer.gnome.org/gio/unstable/gio-GDBusError.html#G-DBUS-ERROR-UNKNOWN-METHOD:CAPS"><code class="literal">G_DBUS_ERROR_UNKNOWN_METHOD</code></a> error is returned.</p>
 <div class="refsect3">
-<a name="id-1.3.18.14.4.6"></a><h4>Parameters</h4>
+<a name="MmGdbusModemCdma-handle-activate-manual.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1152,7 +1152,7 @@ user_function (<a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemC
 </tr>
 <tr>
 <td class="parameter_name"><p>invocation</p></td>
-<td class="parameter_description"><p>A <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html"><span class="type">GDBusMethodInvocation</span></a>.</p></td>
+<td class="parameter_description"><p>A <a href="https://developer.gnome.org/gio/unstable/GDBusMethodInvocation.html#GDBusMethodInvocation-struct"><span class="type">GDBusMethodInvocation</span></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1169,7 +1169,7 @@ user_function (<a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemC
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.18.14.4.7"></a><h4>Returns</h4>
+<a name="MmGdbusModemCdma-handle-activate-manual.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the invocation was handled, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to let other signal handlers run.</p>
 </div>
 <p>Flags: <a href="https://developer.gnome.org/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS">Run Last</a></p>
@@ -1177,6 +1177,6 @@ user_function (<a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemC
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>
