@@ -1,6 +1,7 @@
 modemmanager (1.5.993-1) UNRELEASED; urgency=medium
 
   * New upstream release (1.6-rc4).
+  * Update Build-Depends as per configure.ac.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 08 Jul 2016 00:40:14 +0200
 
