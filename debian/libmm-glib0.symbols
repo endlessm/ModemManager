@@ -16,6 +16,7 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_bearer_get_ipv6_config@Base 0.7.991
  mm_bearer_get_path@Base 0.7.991
  mm_bearer_get_properties@Base 0.7.991
+ mm_bearer_get_stats@Base 1.5.993
  mm_bearer_get_suspended@Base 0.7.991
  mm_bearer_get_type@Base 0.7.991
  mm_bearer_ip_config_dup@Base 0.7.991
@@ -42,6 +43,7 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_bearer_peek_ipv4_config@Base 0.7.991
  mm_bearer_peek_ipv6_config@Base 0.7.991
  mm_bearer_peek_properties@Base 0.7.991
+ mm_bearer_peek_stats@Base 1.5.993
  mm_bearer_properties_cmp@Base 0.7.991
  mm_bearer_properties_consume_string@Base 0.7.991
  mm_bearer_properties_consume_variant@Base 0.7.991
@@ -67,6 +69,56 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_bearer_properties_set_password@Base 0.7.991
  mm_bearer_properties_set_rm_protocol@Base 0.7.991
  mm_bearer_properties_set_user@Base 0.7.991
+ mm_bearer_stats_get_dictionary@Base 1.5.993
+ mm_bearer_stats_get_duration@Base 1.5.993
+ mm_bearer_stats_get_rx_bytes@Base 1.5.993
+ mm_bearer_stats_get_tx_bytes@Base 1.5.993
+ mm_bearer_stats_get_type@Base 1.5.993
+ mm_bearer_stats_new@Base 1.5.993
+ mm_bearer_stats_new_from_dictionary@Base 1.5.993
+ mm_bearer_stats_set_duration@Base 1.5.993
+ mm_bearer_stats_set_rx_bytes@Base 1.5.993
+ mm_bearer_stats_set_tx_bytes@Base 1.5.993
+ mm_call_accept@Base 1.5.993
+ mm_call_accept_finish@Base 1.5.993
+ mm_call_accept_sync@Base 1.5.993
+ mm_call_direction_get_string@Base 1.5.993
+ mm_call_direction_get_type@Base 1.5.993
+ mm_call_dup_number@Base 1.5.993
+ mm_call_dup_path@Base 1.5.993
+ mm_call_get_direction@Base 1.5.993
+ mm_call_get_number@Base 1.5.993
+ mm_call_get_path@Base 1.5.993
+ mm_call_get_state@Base 1.5.993
+ mm_call_get_state_reason@Base 1.5.993
+ mm_call_get_type@Base 1.5.993
+ mm_call_hangup@Base 1.5.993
+ mm_call_hangup_finish@Base 1.5.993
+ mm_call_hangup_sync@Base 1.5.993
+ mm_call_properties_dup@Base 1.5.993
+ mm_call_properties_get_dictionary@Base 1.5.993
+ mm_call_properties_get_direction@Base 1.5.993
+ mm_call_properties_get_number@Base 1.5.993
+ mm_call_properties_get_state@Base 1.5.993
+ mm_call_properties_get_state_reason@Base 1.5.993
+ mm_call_properties_get_type@Base 1.5.993
+ mm_call_properties_new@Base 1.5.993
+ mm_call_properties_new_from_dictionary@Base 1.5.993
+ mm_call_properties_new_from_string@Base 1.5.993
+ mm_call_properties_set_direction@Base 1.5.993
+ mm_call_properties_set_number@Base 1.5.993
+ mm_call_properties_set_state@Base 1.5.993
+ mm_call_properties_set_state_reason@Base 1.5.993
+ mm_call_send_dtmf@Base 1.5.993
+ mm_call_send_dtmf_finish@Base 1.5.993
+ mm_call_send_dtmf_sync@Base 1.5.993
+ mm_call_start@Base 1.5.993
+ mm_call_start_finish@Base 1.5.993
+ mm_call_start_sync@Base 1.5.993
+ mm_call_state_get_string@Base 1.5.993
+ mm_call_state_get_type@Base 1.5.993
+ mm_call_state_reason_get_string@Base 1.5.993
+ mm_call_state_reason_get_type@Base 1.5.993
  mm_cdma_activation_error_get_type@Base 0.7.991
  mm_cdma_activation_error_quark@Base 0.7.991
  mm_cdma_manual_activation_properties_get_dictionary@Base 1.2.0
@@ -114,6 +166,9 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_common_get_allowed_auth_from_string@Base 0.7.991
  mm_common_get_bands_from_string@Base 0.7.991
  mm_common_get_boolean_from_string@Base 0.7.991
+ mm_common_get_call_direction_from_string@Base 1.5.993
+ mm_common_get_call_state_from_string@Base 1.5.993
+ mm_common_get_call_state_reason_from_string@Base 1.5.993
  mm_common_get_capabilities_from_string@Base 0.7.991
  mm_common_get_ip_type_from_string@Base 0.7.991
  mm_common_get_modes_from_string@Base 0.7.991
@@ -174,12 +229,14 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_gdbus_bearer_dup_ip4_config@Base 0.7.991
  mm_gdbus_bearer_dup_ip6_config@Base 0.7.991
  mm_gdbus_bearer_dup_properties@Base 0.7.991
+ mm_gdbus_bearer_dup_stats@Base 1.5.993
  mm_gdbus_bearer_get_connected@Base 0.7.991
  mm_gdbus_bearer_get_interface@Base 0.7.991
  mm_gdbus_bearer_get_ip4_config@Base 0.7.991
  mm_gdbus_bearer_get_ip6_config@Base 0.7.991
  mm_gdbus_bearer_get_ip_timeout@Base 0.7.991
  mm_gdbus_bearer_get_properties@Base 0.7.991
+ mm_gdbus_bearer_get_stats@Base 1.5.993
  mm_gdbus_bearer_get_suspended@Base 0.7.991
  mm_gdbus_bearer_get_type@Base 0.7.991
  mm_gdbus_bearer_interface_info@Base 0.7.991
@@ -197,9 +254,49 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_gdbus_bearer_set_ip6_config@Base 0.7.991
  mm_gdbus_bearer_set_ip_timeout@Base 0.7.991
  mm_gdbus_bearer_set_properties@Base 0.7.991
+ mm_gdbus_bearer_set_stats@Base 1.5.993
  mm_gdbus_bearer_set_suspended@Base 0.7.991
  mm_gdbus_bearer_skeleton_get_type@Base 0.7.991
  mm_gdbus_bearer_skeleton_new@Base 0.7.991
+ mm_gdbus_call_call_accept@Base 1.5.993
+ mm_gdbus_call_call_accept_finish@Base 1.5.993
+ mm_gdbus_call_call_accept_sync@Base 1.5.993
+ mm_gdbus_call_call_hangup@Base 1.5.993
+ mm_gdbus_call_call_hangup_finish@Base 1.5.993
+ mm_gdbus_call_call_hangup_sync@Base 1.5.993
+ mm_gdbus_call_call_send_dtmf@Base 1.5.993
+ mm_gdbus_call_call_send_dtmf_finish@Base 1.5.993
+ mm_gdbus_call_call_send_dtmf_sync@Base 1.5.993
+ mm_gdbus_call_call_start@Base 1.5.993
+ mm_gdbus_call_call_start_finish@Base 1.5.993
+ mm_gdbus_call_call_start_sync@Base 1.5.993
+ mm_gdbus_call_complete_accept@Base 1.5.993
+ mm_gdbus_call_complete_hangup@Base 1.5.993
+ mm_gdbus_call_complete_send_dtmf@Base 1.5.993
+ mm_gdbus_call_complete_start@Base 1.5.993
+ mm_gdbus_call_dup_number@Base 1.5.993
+ mm_gdbus_call_emit_dtmf_received@Base 1.5.993
+ mm_gdbus_call_emit_state_changed@Base 1.5.993
+ mm_gdbus_call_get_direction@Base 1.5.993
+ mm_gdbus_call_get_number@Base 1.5.993
+ mm_gdbus_call_get_state@Base 1.5.993
+ mm_gdbus_call_get_state_reason@Base 1.5.993
+ mm_gdbus_call_get_type@Base 1.5.993
+ mm_gdbus_call_interface_info@Base 1.5.993
+ mm_gdbus_call_override_properties@Base 1.5.993
+ mm_gdbus_call_proxy_get_type@Base 1.5.993
+ mm_gdbus_call_proxy_new@Base 1.5.993
+ mm_gdbus_call_proxy_new_finish@Base 1.5.993
+ mm_gdbus_call_proxy_new_for_bus@Base 1.5.993
+ mm_gdbus_call_proxy_new_for_bus_finish@Base 1.5.993
+ mm_gdbus_call_proxy_new_for_bus_sync@Base 1.5.993
+ mm_gdbus_call_proxy_new_sync@Base 1.5.993
+ mm_gdbus_call_set_direction@Base 1.5.993
+ mm_gdbus_call_set_number@Base 1.5.993
+ mm_gdbus_call_set_state@Base 1.5.993
+ mm_gdbus_call_set_state_reason@Base 1.5.993
+ mm_gdbus_call_skeleton_get_type@Base 1.5.993
+ mm_gdbus_call_skeleton_new@Base 1.5.993
  mm_gdbus_modem3gpp_call_register@Base 0.7.991
  mm_gdbus_modem3gpp_call_register_finish@Base 0.7.991
  mm_gdbus_modem3gpp_call_register_sync@Base 0.7.991
@@ -423,16 +520,27 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_gdbus_modem_location_call_get_location@Base 0.7.991
  mm_gdbus_modem_location_call_get_location_finish@Base 0.7.991
  mm_gdbus_modem_location_call_get_location_sync@Base 0.7.991
+ mm_gdbus_modem_location_call_set_gps_refresh_rate@Base 1.5.993
+ mm_gdbus_modem_location_call_set_gps_refresh_rate_finish@Base 1.5.993
+ mm_gdbus_modem_location_call_set_gps_refresh_rate_sync@Base 1.5.993
+ mm_gdbus_modem_location_call_set_supl_server@Base 1.5.993
+ mm_gdbus_modem_location_call_set_supl_server_finish@Base 1.5.993
+ mm_gdbus_modem_location_call_set_supl_server_sync@Base 1.5.993
  mm_gdbus_modem_location_call_setup@Base 0.7.991
  mm_gdbus_modem_location_call_setup_finish@Base 0.7.991
  mm_gdbus_modem_location_call_setup_sync@Base 0.7.991
  mm_gdbus_modem_location_complete_get_location@Base 0.7.991
+ mm_gdbus_modem_location_complete_set_gps_refresh_rate@Base 1.5.993
+ mm_gdbus_modem_location_complete_set_supl_server@Base 1.5.993
  mm_gdbus_modem_location_complete_setup@Base 0.7.991
  mm_gdbus_modem_location_dup_location@Base 0.7.991
+ mm_gdbus_modem_location_dup_supl_server@Base 1.5.993
  mm_gdbus_modem_location_get_capabilities@Base 0.7.991
  mm_gdbus_modem_location_get_enabled@Base 0.7.991
+ mm_gdbus_modem_location_get_gps_refresh_rate@Base 1.5.993
  mm_gdbus_modem_location_get_location@Base 0.7.991
  mm_gdbus_modem_location_get_signals_location@Base 0.7.991
+ mm_gdbus_modem_location_get_supl_server@Base 1.5.993
  mm_gdbus_modem_location_get_type@Base 0.7.991
  mm_gdbus_modem_location_interface_info@Base 0.7.991
  mm_gdbus_modem_location_override_properties@Base 0.7.991
@@ -445,8 +553,10 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_gdbus_modem_location_proxy_new_sync@Base 0.7.991
  mm_gdbus_modem_location_set_capabilities@Base 0.7.991
  mm_gdbus_modem_location_set_enabled@Base 0.7.991
+ mm_gdbus_modem_location_set_gps_refresh_rate@Base 1.5.993
  mm_gdbus_modem_location_set_location@Base 0.7.991
  mm_gdbus_modem_location_set_signals_location@Base 0.7.991
+ mm_gdbus_modem_location_set_supl_server@Base 1.5.993
  mm_gdbus_modem_location_skeleton_get_type@Base 0.7.991
  mm_gdbus_modem_location_skeleton_new@Base 0.7.991
  mm_gdbus_modem_messaging_call_create@Base 0.7.991
@@ -637,6 +747,35 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_gdbus_modem_time_set_network_timezone@Base 0.7.991
  mm_gdbus_modem_time_skeleton_get_type@Base 0.7.991
  mm_gdbus_modem_time_skeleton_new@Base 0.7.991
+ mm_gdbus_modem_voice_call_create_call@Base 1.5.993
+ mm_gdbus_modem_voice_call_create_call_finish@Base 1.5.993
+ mm_gdbus_modem_voice_call_create_call_sync@Base 1.5.993
+ mm_gdbus_modem_voice_call_delete_call@Base 1.5.993
+ mm_gdbus_modem_voice_call_delete_call_finish@Base 1.5.993
+ mm_gdbus_modem_voice_call_delete_call_sync@Base 1.5.993
+ mm_gdbus_modem_voice_call_list_calls@Base 1.5.993
+ mm_gdbus_modem_voice_call_list_calls_finish@Base 1.5.993
+ mm_gdbus_modem_voice_call_list_calls_sync@Base 1.5.993
+ mm_gdbus_modem_voice_complete_create_call@Base 1.5.993
+ mm_gdbus_modem_voice_complete_delete_call@Base 1.5.993
+ mm_gdbus_modem_voice_complete_list_calls@Base 1.5.993
+ mm_gdbus_modem_voice_dup_calls@Base 1.5.993
+ mm_gdbus_modem_voice_emit_call_added@Base 1.5.993
+ mm_gdbus_modem_voice_emit_call_deleted@Base 1.5.993
+ mm_gdbus_modem_voice_get_calls@Base 1.5.993
+ mm_gdbus_modem_voice_get_type@Base 1.5.993
+ mm_gdbus_modem_voice_interface_info@Base 1.5.993
+ mm_gdbus_modem_voice_override_properties@Base 1.5.993
+ mm_gdbus_modem_voice_proxy_get_type@Base 1.5.993
+ mm_gdbus_modem_voice_proxy_new@Base 1.5.993
+ mm_gdbus_modem_voice_proxy_new_finish@Base 1.5.993
+ mm_gdbus_modem_voice_proxy_new_for_bus@Base 1.5.993
+ mm_gdbus_modem_voice_proxy_new_for_bus_finish@Base 1.5.993
+ mm_gdbus_modem_voice_proxy_new_for_bus_sync@Base 1.5.993
+ mm_gdbus_modem_voice_proxy_new_sync@Base 1.5.993
+ mm_gdbus_modem_voice_set_calls@Base 1.5.993
+ mm_gdbus_modem_voice_skeleton_get_type@Base 1.5.993
+ mm_gdbus_modem_voice_skeleton_new@Base 1.5.993
  mm_gdbus_object_get_modem3gpp@Base 0.7.991
  mm_gdbus_object_get_modem3gpp_ussd@Base 0.7.991
  mm_gdbus_object_get_modem@Base 0.7.991
@@ -648,6 +787,7 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_gdbus_object_get_modem_signal@Base 1.2.0
  mm_gdbus_object_get_modem_simple@Base 0.7.991
  mm_gdbus_object_get_modem_time@Base 0.7.991
+ mm_gdbus_object_get_modem_voice@Base 1.5.993
  mm_gdbus_object_get_type@Base 0.7.991
  mm_gdbus_object_manager_client_get_proxy_type@Base 0.7.991
  mm_gdbus_object_manager_client_get_type@Base 0.7.991
@@ -668,6 +808,7 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_gdbus_object_peek_modem_signal@Base 1.2.0
  mm_gdbus_object_peek_modem_simple@Base 0.7.991
  mm_gdbus_object_peek_modem_time@Base 0.7.991
+ mm_gdbus_object_peek_modem_voice@Base 1.5.993
  mm_gdbus_object_proxy_get_type@Base 0.7.991
  mm_gdbus_object_proxy_new@Base 0.7.991
  mm_gdbus_object_skeleton_get_type@Base 0.7.991
@@ -683,6 +824,7 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_gdbus_object_skeleton_set_modem_signal@Base 1.2.0
  mm_gdbus_object_skeleton_set_modem_simple@Base 0.7.991
  mm_gdbus_object_skeleton_set_modem_time@Base 0.7.991
+ mm_gdbus_object_skeleton_set_modem_voice@Base 1.5.993
  mm_gdbus_org_freedesktop_modem_manager1_call_scan_devices@Base 0.7.991
  mm_gdbus_org_freedesktop_modem_manager1_call_scan_devices_finish@Base 0.7.991
  mm_gdbus_org_freedesktop_modem_manager1_call_scan_devices_sync@Base 0.7.991
@@ -1022,6 +1164,7 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_modem_list_bearers_finish@Base 0.7.991
  mm_modem_list_bearers_sync@Base 0.7.991
  mm_modem_location_dup_path@Base 0.7.991
+ mm_modem_location_dup_supl_server@Base 1.5.993
  mm_modem_location_get_3gpp@Base 0.7.991
  mm_modem_location_get_3gpp_finish@Base 0.7.991
  mm_modem_location_get_3gpp_sync@Base 0.7.991
@@ -1039,8 +1182,16 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_modem_location_get_gps_raw@Base 0.7.991
  mm_modem_location_get_gps_raw_finish@Base 0.7.991
  mm_modem_location_get_gps_raw_sync@Base 0.7.991
+ mm_modem_location_get_gps_refresh_rate@Base 1.5.993
  mm_modem_location_get_path@Base 0.7.991
+ mm_modem_location_get_supl_server@Base 1.5.993
  mm_modem_location_get_type@Base 0.7.991
+ mm_modem_location_set_gps_refresh_rate@Base 1.5.993
+ mm_modem_location_set_gps_refresh_rate_finish@Base 1.5.993
+ mm_modem_location_set_gps_refresh_rate_sync@Base 1.5.993
+ mm_modem_location_set_supl_server@Base 1.5.993
+ mm_modem_location_set_supl_server_finish@Base 1.5.993
+ mm_modem_location_set_supl_server_sync@Base 1.5.993
  mm_modem_location_setup@Base 0.7.991
  mm_modem_location_setup_finish@Base 0.7.991
  mm_modem_location_setup_sync@Base 0.7.991
@@ -1154,6 +1305,18 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_modem_time_get_path@Base 0.7.991
  mm_modem_time_get_type@Base 0.7.991
  mm_modem_time_peek_network_timezone@Base 0.7.991
+ mm_modem_voice_create_call@Base 1.5.993
+ mm_modem_voice_create_call_finish@Base 1.5.993
+ mm_modem_voice_create_call_sync@Base 1.5.993
+ mm_modem_voice_delete_call@Base 1.5.993
+ mm_modem_voice_delete_call_finish@Base 1.5.993
+ mm_modem_voice_delete_call_sync@Base 1.5.993
+ mm_modem_voice_dup_path@Base 1.5.993
+ mm_modem_voice_get_path@Base 1.5.993
+ mm_modem_voice_get_type@Base 1.5.993
+ mm_modem_voice_list_calls@Base 1.5.993
+ mm_modem_voice_list_calls_finish@Base 1.5.993
+ mm_modem_voice_list_calls_sync@Base 1.5.993
  mm_network_timezone_get_dictionary@Base 0.7.991
  mm_network_timezone_get_dst_offset@Base 0.7.991
  mm_network_timezone_get_leap_seconds@Base 0.7.991
@@ -1176,6 +1339,7 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_object_get_modem_signal@Base 1.2.0
  mm_object_get_modem_simple@Base 0.7.991
  mm_object_get_modem_time@Base 0.7.991
+ mm_object_get_modem_voice@Base 1.5.993
  mm_object_get_path@Base 0.7.991
  mm_object_get_type@Base 0.7.991
  mm_object_peek_modem@Base 0.7.991
@@ -1189,6 +1353,7 @@ libmm-glib.so.0 libmm-glib0 #MINVER#
  mm_object_peek_modem_signal@Base 1.2.0
  mm_object_peek_modem_simple@Base 0.7.991
  mm_object_peek_modem_time@Base 0.7.991
+ mm_object_peek_modem_voice@Base 1.5.993
  mm_oma_feature_build_string_from_mask@Base 1.2.0
  mm_oma_feature_get_type@Base 1.2.0
  mm_oma_session_state_failed_reason_get_string@Base 1.2.0
