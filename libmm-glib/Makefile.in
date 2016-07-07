@@ -93,7 +93,8 @@ host_triplet = @host@
 @HAVE_INTROSPECTION_TRUE@am__append_1 = $(nodist_gir_DATA) $(nodist_typelib_DATA)
 subdir = libmm-glib
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/compiler_warnings.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/m4/ax_code_coverage.m4 \
+	$(top_srcdir)/m4/compiler_warnings.m4 \
 	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
 	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
 	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/introspection.m4 \
@@ -157,13 +158,16 @@ am_libmm_glib_la_OBJECTS = libmm_glib_la-mm-helper-types.lo \
 	libmm_glib_la-mm-modem-firmware.lo \
 	libmm_glib_la-mm-modem-signal.lo libmm_glib_la-mm-modem-oma.lo \
 	libmm_glib_la-mm-sim.lo libmm_glib_la-mm-sms.lo \
-	libmm_glib_la-mm-modem-messaging.lo libmm_glib_la-mm-bearer.lo \
-	libmm_glib_la-mm-common-helpers.lo \
+	libmm_glib_la-mm-modem-messaging.lo \
+	libmm_glib_la-mm-modem-voice.lo libmm_glib_la-mm-call.lo \
+	libmm_glib_la-mm-bearer.lo libmm_glib_la-mm-common-helpers.lo \
 	libmm_glib_la-mm-simple-status.lo \
 	libmm_glib_la-mm-simple-connect-properties.lo \
 	libmm_glib_la-mm-bearer-properties.lo \
 	libmm_glib_la-mm-sms-properties.lo \
+	libmm_glib_la-mm-call-properties.lo \
 	libmm_glib_la-mm-bearer-ip-config.lo \
+	libmm_glib_la-mm-bearer-stats.lo \
 	libmm_glib_la-mm-location-3gpp.lo \
 	libmm_glib_la-mm-location-gps-raw.lo \
 	libmm_glib_la-mm-location-gps-nmea.lo \
@@ -299,12 +303,13 @@ AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
+CODE_COVERAGE_CFLAGS = @CODE_COVERAGE_CFLAGS@
+CODE_COVERAGE_ENABLED = @CODE_COVERAGE_ENABLED@
+CODE_COVERAGE_LDFLAGS = @CODE_COVERAGE_LDFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DBUS_SYS_DIR = @DBUS_SYS_DIR@
-DBUS_TEST_SUPPORT_CFLAGS = @DBUS_TEST_SUPPORT_CFLAGS@
-DBUS_TEST_SUPPORT_LIBS = @DBUS_TEST_SUPPORT_LIBS@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
@@ -316,7 +321,9 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+GCOV = @GCOV@
 GDBUS_CODEGEN = @GDBUS_CODEGEN@
+GENHTML = @GENHTML@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GLIB_MKENUMS = @GLIB_MKENUMS@
@@ -355,15 +362,19 @@ INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
 INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
 INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
 INTROSPECTION_TYPELIBDIR = @INTROSPECTION_TYPELIBDIR@
+LCOV = @LCOV@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
 LIBMM_GLIB_CFLAGS = @LIBMM_GLIB_CFLAGS@
 LIBMM_GLIB_LIBS = @LIBMM_GLIB_LIBS@
-LIBMM_LIBS = @LIBMM_LIBS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
+LIBSYSTEMD_CFLAGS = @LIBSYSTEMD_CFLAGS@
+LIBSYSTEMD_LIBS = @LIBSYSTEMD_LIBS@
+LIBSYSTEMD_LOGIN_CFLAGS = @LIBSYSTEMD_LOGIN_CFLAGS@
+LIBSYSTEMD_LOGIN_LIBS = @LIBSYSTEMD_LOGIN_LIBS@
 LIBTOOL = @LIBTOOL@
 LIPO = @LIPO@
 LN_S = @LN_S@
@@ -484,6 +495,8 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = generated . tests
+AM_CFLAGS = $(CODE_COVERAGE_CFLAGS)
+AM_LDFLAGS = $(CODE_COVERAGE_LDFLAGS)
 lib_LTLIBRARIES = libmm-glib.la
 libmm_glib_la_SOURCES = \
 	libmm-glib.h \
@@ -520,6 +533,10 @@ libmm_glib_la_SOURCES = \
 	mm-sms.c \
 	mm-modem-messaging.h \
 	mm-modem-messaging.c \
+	mm-modem-voice.h \
+	mm-modem-voice.c \
+	mm-call.h \
+	mm-call.c \
 	mm-bearer.h \
 	mm-bearer.c \
 	mm-common-helpers.h \
@@ -532,8 +549,12 @@ libmm_glib_la_SOURCES = \
 	mm-bearer-properties.c \
 	mm-sms-properties.h \
 	mm-sms-properties.c \
+	mm-call-properties.h \
+	mm-call-properties.c \
 	mm-bearer-ip-config.h \
 	mm-bearer-ip-config.c \
+	mm-bearer-stats.h \
+	mm-bearer-stats.c \
 	mm-location-common.h \
 	mm-location-3gpp.h \
 	mm-location-3gpp.c \
@@ -552,7 +573,8 @@ libmm_glib_la_SOURCES = \
 	mm-cdma-manual-activation-properties.h \
 	mm-cdma-manual-activation-properties.c \
 	mm-signal.h \
-	mm-signal.c
+	mm-signal.c \
+	$(NULL)
 
 libmm_glib_la_CPPFLAGS = \
 	-I$(srcdir) \
@@ -563,18 +585,23 @@ libmm_glib_la_CPPFLAGS = \
 	-I${top_srcdir}/libmm-glib/generated \
 	-I${top_builddir}/libmm-glib/generated \
 	-DLIBMM_GLIB_COMPILATION \
-	$(AM_CPPFLAGS)
+	$(AM_CPPFLAGS) \
+	$(NULL)
 
 libmm_glib_la_CFLAGS = \
 	$(LIBMM_GLIB_CFLAGS) \
-	$(AM_CFLAGS)
+	$(AM_CFLAGS) \
+	$(NULL)
 
 libmm_glib_la_LIBADD = \
 	${top_builddir}/libmm-glib/generated/libmm-generated.la \
-	$(LIBMM_GLIB_LIBS)
+	$(LIBMM_GLIB_LIBS) \
+	$(NULL)
 
 libmm_glib_la_LDFLAGS = \
-	-version-info $(MM_GLIB_LT_CURRENT):$(MM_GLIB_LT_REVISION):$(MM_GLIB_LT_AGE)
+	-version-info $(MM_GLIB_LT_CURRENT):$(MM_GLIB_LT_REVISION):$(MM_GLIB_LT_AGE) \
+	$(AM_LDFLAGS) \
+	$(NULL)
 
 include_HEADERS = \
 	libmm-glib.h \
@@ -594,12 +621,16 @@ include_HEADERS = \
 	mm-modem-simple.h \
 	mm-sim.h \
 	mm-sms.h \
+	mm-modem-voice.h \
+	mm-call.h \
 	mm-bearer.h \
 	mm-simple-status.h \
 	mm-simple-connect-properties.h \
 	mm-bearer-properties.h \
 	mm-sms-properties.h \
+	mm-call-properties.h \
 	mm-bearer-ip-config.h \
+	mm-bearer-stats.h \
 	mm-location-common.h \
 	mm-location-3gpp.h \
 	mm-location-gps-nmea.h \
@@ -609,7 +640,8 @@ include_HEADERS = \
 	mm-network-timezone.h \
 	mm-firmware-properties.h \
 	mm-cdma-manual-activation-properties.h \
-	mm-signal.h
+	mm-signal.h \
+	$(NULL)
 
 CLEANFILES = $(am__append_1)
 
@@ -621,7 +653,8 @@ CLEANFILES = $(am__append_1)
 @HAVE_INTROSPECTION_TRUE@	mm-gdbus-sim.h \
 @HAVE_INTROSPECTION_TRUE@	mm-gdbus-sms.h \
 @HAVE_INTROSPECTION_TRUE@	mm-gdbus-bearer.h \
-@HAVE_INTROSPECTION_TRUE@	mm-gdbus-modem.h
+@HAVE_INTROSPECTION_TRUE@	mm-gdbus-modem.h \
+@HAVE_INTROSPECTION_TRUE@	$(NULL)
 
 @HAVE_INTROSPECTION_TRUE@GENERATED_C = \
 @HAVE_INTROSPECTION_TRUE@	mm-enums-types.c \
@@ -631,7 +664,8 @@ CLEANFILES = $(am__append_1)
 @HAVE_INTROSPECTION_TRUE@	mm-gdbus-sim.c \
 @HAVE_INTROSPECTION_TRUE@	mm-gdbus-sms.c \
 @HAVE_INTROSPECTION_TRUE@	mm-gdbus-bearer.c \
-@HAVE_INTROSPECTION_TRUE@	mm-gdbus-modem.c
+@HAVE_INTROSPECTION_TRUE@	mm-gdbus-modem.c \
+@HAVE_INTROSPECTION_TRUE@	$(NULL)
 
 @HAVE_INTROSPECTION_TRUE@PUBLIC_H = \
 @HAVE_INTROSPECTION_TRUE@	ModemManager-names.h \
@@ -648,7 +682,8 @@ CLEANFILES = $(am__append_1)
 @HAVE_INTROSPECTION_TRUE@	--c-include "libmm-glib.h" \
 @HAVE_INTROSPECTION_TRUE@	--identifier-prefix=MM \
 @HAVE_INTROSPECTION_TRUE@	--identifier-prefix=Mm \
-@HAVE_INTROSPECTION_TRUE@	--symbol-prefix=mm
+@HAVE_INTROSPECTION_TRUE@	--symbol-prefix=mm \
+@HAVE_INTROSPECTION_TRUE@	$(NULL)
 
 @HAVE_INTROSPECTION_TRUE@ModemManager_1_0_gir_FILES = \
 @HAVE_INTROSPECTION_TRUE@	$(include_HEADERS) \
@@ -743,7 +778,10 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_glib_la-mm-bearer-ip-config.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_glib_la-mm-bearer-properties.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_glib_la-mm-bearer-stats.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_glib_la-mm-bearer.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_glib_la-mm-call-properties.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_glib_la-mm-call.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_glib_la-mm-cdma-manual-activation-properties.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_glib_la-mm-common-helpers.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_glib_la-mm-firmware-properties.Plo@am__quote@
@@ -763,6 +801,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_glib_la-mm-modem-signal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_glib_la-mm-modem-simple.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_glib_la-mm-modem-time.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_glib_la-mm-modem-voice.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_glib_la-mm-modem.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_glib_la-mm-network-timezone.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_glib_la-mm-object.Plo@am__quote@
@@ -910,6 +949,20 @@ libmm_glib_la-mm-modem-messaging.lo: mm-modem-messaging.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_glib_la_CPPFLAGS) $(CPPFLAGS) $(libmm_glib_la_CFLAGS) $(CFLAGS) -c -o libmm_glib_la-mm-modem-messaging.lo `test -f 'mm-modem-messaging.c' || echo '$(srcdir)/'`mm-modem-messaging.c
 
+libmm_glib_la-mm-modem-voice.lo: mm-modem-voice.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_glib_la_CPPFLAGS) $(CPPFLAGS) $(libmm_glib_la_CFLAGS) $(CFLAGS) -MT libmm_glib_la-mm-modem-voice.lo -MD -MP -MF $(DEPDIR)/libmm_glib_la-mm-modem-voice.Tpo -c -o libmm_glib_la-mm-modem-voice.lo `test -f 'mm-modem-voice.c' || echo '$(srcdir)/'`mm-modem-voice.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmm_glib_la-mm-modem-voice.Tpo $(DEPDIR)/libmm_glib_la-mm-modem-voice.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-modem-voice.c' object='libmm_glib_la-mm-modem-voice.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_glib_la_CPPFLAGS) $(CPPFLAGS) $(libmm_glib_la_CFLAGS) $(CFLAGS) -c -o libmm_glib_la-mm-modem-voice.lo `test -f 'mm-modem-voice.c' || echo '$(srcdir)/'`mm-modem-voice.c
+
+libmm_glib_la-mm-call.lo: mm-call.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_glib_la_CPPFLAGS) $(CPPFLAGS) $(libmm_glib_la_CFLAGS) $(CFLAGS) -MT libmm_glib_la-mm-call.lo -MD -MP -MF $(DEPDIR)/libmm_glib_la-mm-call.Tpo -c -o libmm_glib_la-mm-call.lo `test -f 'mm-call.c' || echo '$(srcdir)/'`mm-call.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmm_glib_la-mm-call.Tpo $(DEPDIR)/libmm_glib_la-mm-call.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-call.c' object='libmm_glib_la-mm-call.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_glib_la_CPPFLAGS) $(CPPFLAGS) $(libmm_glib_la_CFLAGS) $(CFLAGS) -c -o libmm_glib_la-mm-call.lo `test -f 'mm-call.c' || echo '$(srcdir)/'`mm-call.c
+
 libmm_glib_la-mm-bearer.lo: mm-bearer.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_glib_la_CPPFLAGS) $(CPPFLAGS) $(libmm_glib_la_CFLAGS) $(CFLAGS) -MT libmm_glib_la-mm-bearer.lo -MD -MP -MF $(DEPDIR)/libmm_glib_la-mm-bearer.Tpo -c -o libmm_glib_la-mm-bearer.lo `test -f 'mm-bearer.c' || echo '$(srcdir)/'`mm-bearer.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmm_glib_la-mm-bearer.Tpo $(DEPDIR)/libmm_glib_la-mm-bearer.Plo
@@ -952,12 +1005,26 @@ libmm_glib_la-mm-sms-properties.lo: mm-sms-properties.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_glib_la_CPPFLAGS) $(CPPFLAGS) $(libmm_glib_la_CFLAGS) $(CFLAGS) -c -o libmm_glib_la-mm-sms-properties.lo `test -f 'mm-sms-properties.c' || echo '$(srcdir)/'`mm-sms-properties.c
 
+libmm_glib_la-mm-call-properties.lo: mm-call-properties.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_glib_la_CPPFLAGS) $(CPPFLAGS) $(libmm_glib_la_CFLAGS) $(CFLAGS) -MT libmm_glib_la-mm-call-properties.lo -MD -MP -MF $(DEPDIR)/libmm_glib_la-mm-call-properties.Tpo -c -o libmm_glib_la-mm-call-properties.lo `test -f 'mm-call-properties.c' || echo '$(srcdir)/'`mm-call-properties.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmm_glib_la-mm-call-properties.Tpo $(DEPDIR)/libmm_glib_la-mm-call-properties.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-call-properties.c' object='libmm_glib_la-mm-call-properties.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_glib_la_CPPFLAGS) $(CPPFLAGS) $(libmm_glib_la_CFLAGS) $(CFLAGS) -c -o libmm_glib_la-mm-call-properties.lo `test -f 'mm-call-properties.c' || echo '$(srcdir)/'`mm-call-properties.c
+
 libmm_glib_la-mm-bearer-ip-config.lo: mm-bearer-ip-config.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_glib_la_CPPFLAGS) $(CPPFLAGS) $(libmm_glib_la_CFLAGS) $(CFLAGS) -MT libmm_glib_la-mm-bearer-ip-config.lo -MD -MP -MF $(DEPDIR)/libmm_glib_la-mm-bearer-ip-config.Tpo -c -o libmm_glib_la-mm-bearer-ip-config.lo `test -f 'mm-bearer-ip-config.c' || echo '$(srcdir)/'`mm-bearer-ip-config.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmm_glib_la-mm-bearer-ip-config.Tpo $(DEPDIR)/libmm_glib_la-mm-bearer-ip-config.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-bearer-ip-config.c' object='libmm_glib_la-mm-bearer-ip-config.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_glib_la_CPPFLAGS) $(CPPFLAGS) $(libmm_glib_la_CFLAGS) $(CFLAGS) -c -o libmm_glib_la-mm-bearer-ip-config.lo `test -f 'mm-bearer-ip-config.c' || echo '$(srcdir)/'`mm-bearer-ip-config.c
+
+libmm_glib_la-mm-bearer-stats.lo: mm-bearer-stats.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_glib_la_CPPFLAGS) $(CPPFLAGS) $(libmm_glib_la_CFLAGS) $(CFLAGS) -MT libmm_glib_la-mm-bearer-stats.lo -MD -MP -MF $(DEPDIR)/libmm_glib_la-mm-bearer-stats.Tpo -c -o libmm_glib_la-mm-bearer-stats.lo `test -f 'mm-bearer-stats.c' || echo '$(srcdir)/'`mm-bearer-stats.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmm_glib_la-mm-bearer-stats.Tpo $(DEPDIR)/libmm_glib_la-mm-bearer-stats.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-bearer-stats.c' object='libmm_glib_la-mm-bearer-stats.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_glib_la_CPPFLAGS) $(CPPFLAGS) $(libmm_glib_la_CFLAGS) $(CFLAGS) -c -o libmm_glib_la-mm-bearer-stats.lo `test -f 'mm-bearer-stats.c' || echo '$(srcdir)/'`mm-bearer-stats.c
 
 libmm_glib_la-mm-location-3gpp.lo: mm-location-3gpp.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_glib_la_CPPFLAGS) $(CPPFLAGS) $(libmm_glib_la_CFLAGS) $(CFLAGS) -MT libmm_glib_la-mm-location-3gpp.lo -MD -MP -MF $(DEPDIR)/libmm_glib_la-mm-location-3gpp.Tpo -c -o libmm_glib_la-mm-location-3gpp.lo `test -f 'mm-location-3gpp.c' || echo '$(srcdir)/'`mm-location-3gpp.c
@@ -1381,7 +1448,8 @@ uninstall-am: uninstall-includeHEADERS uninstall-libLTLIBRARIES \
 
 @HAVE_INTROSPECTION_TRUE@	ModemManager-enums.h \
 @HAVE_INTROSPECTION_TRUE@	ModemManager-errors.h \
-@HAVE_INTROSPECTION_TRUE@	ModemManager.h
+@HAVE_INTROSPECTION_TRUE@	ModemManager.h \
+@HAVE_INTROSPECTION_TRUE@	$(NULL)
 
 @HAVE_INTROSPECTION_TRUE@ModemManager-1.0.gir: libmm-glib.la
 

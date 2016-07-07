@@ -90,46 +90,42 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-
-# Additional QMI support in libmodem-helpers
-@WITH_QMI_TRUE@am__append_1 = \
-@WITH_QMI_TRUE@	mm-modem-helpers-qmi.c \
-@WITH_QMI_TRUE@	mm-modem-helpers-qmi.h
-
-@WITH_QMI_TRUE@am__append_2 = $(QMI_CFLAGS)
-
-# Additional MBIM support in libmodem-helpers
-@WITH_MBIM_TRUE@am__append_3 = \
-@WITH_MBIM_TRUE@	mm-modem-helpers-mbim.c \
-@WITH_MBIM_TRUE@	mm-modem-helpers-mbim.h
-
-@WITH_MBIM_TRUE@am__append_4 = $(MBIM_CFLAGS)
-
-# Additional QMI support in libserial
-@WITH_QMI_TRUE@am__append_5 = \
-@WITH_QMI_TRUE@	mm-port-qmi.c \
-@WITH_QMI_TRUE@	mm-port-qmi.h
-
-@WITH_QMI_TRUE@am__append_6 = $(QMI_CFLAGS)
-
-# Additional MBIM support in libserial
-@WITH_MBIM_TRUE@am__append_7 = \
-@WITH_MBIM_TRUE@	mm-port-mbim.c \
-@WITH_MBIM_TRUE@	mm-port-mbim.h
-
-@WITH_MBIM_TRUE@am__append_8 = $(MBIM_CFLAGS)
 sbin_PROGRAMS = ModemManager$(EXEEXT)
+@WITH_QMI_TRUE@am__append_1 = $(QMI_CFLAGS)
+@WITH_QMI_TRUE@am__append_2 = $(QMI_LIBS)
+@WITH_MBIM_TRUE@am__append_3 = $(MBIM_CFLAGS)
+@WITH_MBIM_TRUE@am__append_4 = $(MBIM_LIBS)
+@WITH_POLKIT_TRUE@am__append_5 = $(POLKIT_CFLAGS)
+@WITH_POLKIT_TRUE@am__append_6 = $(POLKIT_LIBS)
+@WITH_QMI_TRUE@am__append_7 = \
+@WITH_QMI_TRUE@	mm-modem-helpers-qmi.c \
+@WITH_QMI_TRUE@	mm-modem-helpers-qmi.h \
+@WITH_QMI_TRUE@	$(NULL)
+
+@WITH_MBIM_TRUE@am__append_8 = \
+@WITH_MBIM_TRUE@	mm-modem-helpers-mbim.c \
+@WITH_MBIM_TRUE@	mm-modem-helpers-mbim.h \
+@WITH_MBIM_TRUE@	$(NULL)
+
+@WITH_QMI_TRUE@am__append_9 = \
+@WITH_QMI_TRUE@	mm-port-qmi.c \
+@WITH_QMI_TRUE@	mm-port-qmi.h \
+@WITH_QMI_TRUE@	$(NULL)
+
+@WITH_MBIM_TRUE@am__append_10 = \
+@WITH_MBIM_TRUE@	mm-port-mbim.c \
+@WITH_MBIM_TRUE@	mm-port-mbim.h \
+@WITH_MBIM_TRUE@	$(NULL)
+
 
 # Additional Polkit support
-@WITH_POLKIT_TRUE@am__append_9 = \
-@WITH_POLKIT_TRUE@	mm-auth-provider-polkit.c \
-@WITH_POLKIT_TRUE@	mm-auth-provider-polkit.h
+@WITH_POLKIT_TRUE@am__append_11 = mm-auth-provider-polkit.h mm-auth-provider-polkit.c
 
-@WITH_POLKIT_TRUE@am__append_10 = $(POLKIT_LIBS)
-@WITH_POLKIT_TRUE@am__append_11 = $(POLKIT_CFLAGS)
+# Additional suspend/resume support via systemd
+@SUSPEND_RESUME_SYSTEMD_TRUE@am__append_12 = mm-sleep-monitor.h mm-sleep-monitor.c
 
 # Additional QMI support in ModemManager
-@WITH_QMI_TRUE@am__append_12 = \
+@WITH_QMI_TRUE@am__append_13 = \
 @WITH_QMI_TRUE@	mm-sms-qmi.h \
 @WITH_QMI_TRUE@	mm-sms-qmi.c \
 @WITH_QMI_TRUE@	mm-sim-qmi.h \
@@ -137,13 +133,12 @@ sbin_PROGRAMS = ModemManager$(EXEEXT)
 @WITH_QMI_TRUE@	mm-bearer-qmi.h \
 @WITH_QMI_TRUE@	mm-bearer-qmi.c \
 @WITH_QMI_TRUE@	mm-broadband-modem-qmi.h \
-@WITH_QMI_TRUE@	mm-broadband-modem-qmi.c
+@WITH_QMI_TRUE@	mm-broadband-modem-qmi.c \
+@WITH_QMI_TRUE@	$(NULL)
 
-@WITH_QMI_TRUE@am__append_13 = $(QMI_CFLAGS)
-@WITH_QMI_TRUE@am__append_14 = $(QMI_LIBS)
 
 # Additional MBIM support in ModemManager
-@WITH_MBIM_TRUE@am__append_15 = \
+@WITH_MBIM_TRUE@am__append_14 = \
 @WITH_MBIM_TRUE@	mm-sms-mbim.h \
 @WITH_MBIM_TRUE@	mm-sms-mbim.c \
 @WITH_MBIM_TRUE@	mm-sim-mbim.h \
@@ -151,13 +146,13 @@ sbin_PROGRAMS = ModemManager$(EXEEXT)
 @WITH_MBIM_TRUE@	mm-bearer-mbim.h \
 @WITH_MBIM_TRUE@	mm-bearer-mbim.c \
 @WITH_MBIM_TRUE@	mm-broadband-modem-mbim.h \
-@WITH_MBIM_TRUE@	mm-broadband-modem-mbim.c
+@WITH_MBIM_TRUE@	mm-broadband-modem-mbim.c \
+@WITH_MBIM_TRUE@	$(NULL)
 
-@WITH_MBIM_TRUE@am__append_16 = $(MBIM_CFLAGS)
-@WITH_MBIM_TRUE@am__append_17 = $(MBIM_LIBS)
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/compiler_warnings.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/m4/ax_code_coverage.m4 \
+	$(top_srcdir)/m4/compiler_warnings.m4 \
 	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
 	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
 	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/introspection.m4 \
@@ -176,52 +171,46 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
-libmodem_helpers_la_DEPENDENCIES =  \
-	$(top_builddir)/libmm-glib/libmm-glib.la
-am__libmodem_helpers_la_SOURCES_DIST = mm-error-helpers.c \
-	mm-error-helpers.h mm-modem-helpers.c mm-modem-helpers.h \
-	mm-charsets.c mm-charsets.h mm-sms-part.h mm-sms-part.c \
-	mm-sms-part-3gpp.h mm-sms-part-3gpp.c mm-sms-part-cdma.h \
-	mm-sms-part-cdma.c mm-modem-helpers-qmi.c \
-	mm-modem-helpers-qmi.h mm-modem-helpers-mbim.c \
-	mm-modem-helpers-mbim.h
-@WITH_QMI_TRUE@am__objects_1 =  \
-@WITH_QMI_TRUE@	libmodem_helpers_la-mm-modem-helpers-qmi.lo
-@WITH_MBIM_TRUE@am__objects_2 =  \
-@WITH_MBIM_TRUE@	libmodem_helpers_la-mm-modem-helpers-mbim.lo
-am_libmodem_helpers_la_OBJECTS =  \
-	libmodem_helpers_la-mm-error-helpers.lo \
-	libmodem_helpers_la-mm-modem-helpers.lo \
-	libmodem_helpers_la-mm-charsets.lo \
-	libmodem_helpers_la-mm-sms-part.lo \
-	libmodem_helpers_la-mm-sms-part-3gpp.lo \
-	libmodem_helpers_la-mm-sms-part-cdma.lo $(am__objects_1) \
-	$(am__objects_2)
-libmodem_helpers_la_OBJECTS = $(am_libmodem_helpers_la_OBJECTS)
+libhelpers_la_LIBADD =
+am__libhelpers_la_SOURCES_DIST = mm-error-helpers.c mm-error-helpers.h \
+	mm-modem-helpers.c mm-modem-helpers.h mm-charsets.c \
+	mm-charsets.h mm-sms-part.h mm-sms-part.c mm-sms-part-3gpp.h \
+	mm-sms-part-3gpp.c mm-sms-part-cdma.h mm-sms-part-cdma.c \
+	mm-modem-helpers-qmi.c mm-modem-helpers-qmi.h \
+	mm-modem-helpers-mbim.c mm-modem-helpers-mbim.h
+@WITH_QMI_TRUE@am__objects_1 = mm-modem-helpers-qmi.lo
+@WITH_MBIM_TRUE@am__objects_2 = mm-modem-helpers-mbim.lo
+am_libhelpers_la_OBJECTS = mm-error-helpers.lo mm-modem-helpers.lo \
+	mm-charsets.lo mm-sms-part.lo mm-sms-part-3gpp.lo \
+	mm-sms-part-cdma.lo $(am__objects_1) $(am__objects_2)
+libhelpers_la_OBJECTS = $(am_libhelpers_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-libport_la_LIBADD =
+libport_la_DEPENDENCIES = $(top_builddir)/libqcdm/src/libqcdm.la \
+	$(top_builddir)/libmm-glib/libmm-glib.la \
+	$(builddir)/libhelpers.la
 am__libport_la_SOURCES_DIST = mm-port.c mm-port.h mm-port-serial.c \
 	mm-port-serial.h mm-port-serial-at.c mm-port-serial-at.h \
 	mm-port-serial-qcdm.c mm-port-serial-qcdm.h \
-	mm-port-serial-gps.c mm-port-serial-gps.h mm-port-qmi.c \
-	mm-port-qmi.h mm-port-mbim.c mm-port-mbim.h
-@WITH_QMI_TRUE@am__objects_3 = libport_la-mm-port-qmi.lo
-@WITH_MBIM_TRUE@am__objects_4 = libport_la-mm-port-mbim.lo
-am_libport_la_OBJECTS = libport_la-mm-port.lo \
-	libport_la-mm-port-serial.lo libport_la-mm-port-serial-at.lo \
-	libport_la-mm-port-serial-qcdm.lo \
-	libport_la-mm-port-serial-gps.lo $(am__objects_3) \
+	mm-port-serial-gps.c mm-port-serial-gps.h mm-serial-parsers.c \
+	mm-serial-parsers.h mm-port-qmi.c mm-port-qmi.h mm-port-mbim.c \
+	mm-port-mbim.h
+@WITH_QMI_TRUE@am__objects_3 = mm-port-qmi.lo
+@WITH_MBIM_TRUE@am__objects_4 = mm-port-mbim.lo
+am_libport_la_OBJECTS = mm-port.lo mm-port-serial.lo \
+	mm-port-serial-at.lo mm-port-serial-qcdm.lo \
+	mm-port-serial-gps.lo mm-serial-parsers.lo $(am__objects_3) \
 	$(am__objects_4)
-nodist_libport_la_OBJECTS = libport_la-mm-port-enums-types.lo
+am__objects_5 = mm-port-enums-types.lo
+nodist_libport_la_OBJECTS = $(am__objects_5)
 libport_la_OBJECTS = $(am_libport_la_OBJECTS) \
 	$(nodist_libport_la_OBJECTS)
 am__installdirs = "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(udevrulesdir)"
 PROGRAMS = $(sbin_PROGRAMS)
 am__ModemManager_SOURCES_DIST = main.c mm-context.h mm-context.c \
-	mm-log.c mm-log.h mm-private-boxed-types.h \
+	mm-log.c mm-log.h mm-utils.h mm-private-boxed-types.h \
 	mm-private-boxed-types.c mm-auth.h mm-auth.c \
 	mm-auth-provider.h mm-auth-provider.c mm-base-manager.c \
 	mm-base-manager.h mm-device.c mm-device.h mm-plugin-manager.c \
@@ -229,33 +218,36 @@ am__ModemManager_SOURCES_DIST = main.c mm-context.h mm-context.c \
 	mm-base-bearer.h mm-base-bearer.c mm-broadband-bearer.h \
 	mm-broadband-bearer.c mm-bearer-list.h mm-bearer-list.c \
 	mm-base-modem-at.h mm-base-modem-at.c mm-base-modem.h \
-	mm-base-modem.c mm-base-sms.h mm-base-sms.c mm-sms-list.h \
-	mm-sms-list.c mm-iface-modem.h mm-iface-modem.c \
+	mm-base-modem.c mm-base-sms.h mm-base-sms.c mm-base-call.h \
+	mm-base-call.c mm-sms-list.h mm-sms-list.c mm-call-list.h \
+	mm-call-list.c mm-iface-modem.h mm-iface-modem.c \
 	mm-iface-modem-3gpp.h mm-iface-modem-3gpp.c \
 	mm-iface-modem-3gpp-ussd.h mm-iface-modem-3gpp-ussd.c \
 	mm-iface-modem-cdma.h mm-iface-modem-cdma.c \
 	mm-iface-modem-simple.h mm-iface-modem-simple.c \
 	mm-iface-modem-location.h mm-iface-modem-location.c \
 	mm-iface-modem-messaging.h mm-iface-modem-messaging.c \
+	mm-iface-modem-voice.h mm-iface-modem-voice.c \
 	mm-iface-modem-time.h mm-iface-modem-time.c \
 	mm-iface-modem-firmware.h mm-iface-modem-firmware.c \
 	mm-iface-modem-signal.h mm-iface-modem-signal.c \
 	mm-iface-modem-oma.h mm-iface-modem-oma.c mm-broadband-modem.h \
-	mm-broadband-modem.c mm-serial-parsers.c mm-serial-parsers.h \
-	mm-port-probe.h mm-port-probe.c mm-port-probe-at.h \
-	mm-port-probe-at.c mm-plugin.c mm-plugin.h \
-	mm-auth-provider-polkit.c mm-auth-provider-polkit.h \
-	mm-sms-qmi.h mm-sms-qmi.c mm-sim-qmi.h mm-sim-qmi.c \
-	mm-bearer-qmi.h mm-bearer-qmi.c mm-broadband-modem-qmi.h \
+	mm-broadband-modem.c mm-port-probe.h mm-port-probe.c \
+	mm-port-probe-at.h mm-port-probe-at.c mm-plugin.c mm-plugin.h \
+	mm-auth-provider-polkit.h mm-auth-provider-polkit.c \
+	mm-sleep-monitor.h mm-sleep-monitor.c mm-sms-qmi.h \
+	mm-sms-qmi.c mm-sim-qmi.h mm-sim-qmi.c mm-bearer-qmi.h \
+	mm-bearer-qmi.c mm-broadband-modem-qmi.h \
 	mm-broadband-modem-qmi.c mm-sms-mbim.h mm-sms-mbim.c \
 	mm-sim-mbim.h mm-sim-mbim.c mm-bearer-mbim.h mm-bearer-mbim.c \
 	mm-broadband-modem-mbim.h mm-broadband-modem-mbim.c
-@WITH_POLKIT_TRUE@am__objects_5 = ModemManager-mm-auth-provider-polkit.$(OBJEXT)
-@WITH_QMI_TRUE@am__objects_6 = ModemManager-mm-sms-qmi.$(OBJEXT) \
+@WITH_POLKIT_TRUE@am__objects_6 = ModemManager-mm-auth-provider-polkit.$(OBJEXT)
+@SUSPEND_RESUME_SYSTEMD_TRUE@am__objects_7 = ModemManager-mm-sleep-monitor.$(OBJEXT)
+@WITH_QMI_TRUE@am__objects_8 = ModemManager-mm-sms-qmi.$(OBJEXT) \
 @WITH_QMI_TRUE@	ModemManager-mm-sim-qmi.$(OBJEXT) \
 @WITH_QMI_TRUE@	ModemManager-mm-bearer-qmi.$(OBJEXT) \
 @WITH_QMI_TRUE@	ModemManager-mm-broadband-modem-qmi.$(OBJEXT)
-@WITH_MBIM_TRUE@am__objects_7 = ModemManager-mm-sms-mbim.$(OBJEXT) \
+@WITH_MBIM_TRUE@am__objects_9 = ModemManager-mm-sms-mbim.$(OBJEXT) \
 @WITH_MBIM_TRUE@	ModemManager-mm-sim-mbim.$(OBJEXT) \
 @WITH_MBIM_TRUE@	ModemManager-mm-bearer-mbim.$(OBJEXT) \
 @WITH_MBIM_TRUE@	ModemManager-mm-broadband-modem-mbim.$(OBJEXT)
@@ -275,7 +267,9 @@ am_ModemManager_OBJECTS = ModemManager-main.$(OBJEXT) \
 	ModemManager-mm-base-modem-at.$(OBJEXT) \
 	ModemManager-mm-base-modem.$(OBJEXT) \
 	ModemManager-mm-base-sms.$(OBJEXT) \
+	ModemManager-mm-base-call.$(OBJEXT) \
 	ModemManager-mm-sms-list.$(OBJEXT) \
+	ModemManager-mm-call-list.$(OBJEXT) \
 	ModemManager-mm-iface-modem.$(OBJEXT) \
 	ModemManager-mm-iface-modem-3gpp.$(OBJEXT) \
 	ModemManager-mm-iface-modem-3gpp-ussd.$(OBJEXT) \
@@ -283,30 +277,24 @@ am_ModemManager_OBJECTS = ModemManager-main.$(OBJEXT) \
 	ModemManager-mm-iface-modem-simple.$(OBJEXT) \
 	ModemManager-mm-iface-modem-location.$(OBJEXT) \
 	ModemManager-mm-iface-modem-messaging.$(OBJEXT) \
+	ModemManager-mm-iface-modem-voice.$(OBJEXT) \
 	ModemManager-mm-iface-modem-time.$(OBJEXT) \
 	ModemManager-mm-iface-modem-firmware.$(OBJEXT) \
 	ModemManager-mm-iface-modem-signal.$(OBJEXT) \
 	ModemManager-mm-iface-modem-oma.$(OBJEXT) \
 	ModemManager-mm-broadband-modem.$(OBJEXT) \
-	ModemManager-mm-serial-parsers.$(OBJEXT) \
 	ModemManager-mm-port-probe.$(OBJEXT) \
 	ModemManager-mm-port-probe-at.$(OBJEXT) \
-	ModemManager-mm-plugin.$(OBJEXT) $(am__objects_5) \
-	$(am__objects_6) $(am__objects_7)
-nodist_ModemManager_OBJECTS =  \
-	ModemManager-mm-daemon-enums-types.$(OBJEXT)
+	ModemManager-mm-plugin.$(OBJEXT) $(am__objects_6) \
+	$(am__objects_7) $(am__objects_8) $(am__objects_9)
+am__objects_10 = ModemManager-mm-daemon-enums-types.$(OBJEXT)
+nodist_ModemManager_OBJECTS = $(am__objects_10)
 ModemManager_OBJECTS = $(am_ModemManager_OBJECTS) \
 	$(nodist_ModemManager_OBJECTS)
-am__DEPENDENCIES_1 =
-@WITH_POLKIT_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1)
-@WITH_QMI_TRUE@am__DEPENDENCIES_3 = $(am__DEPENDENCIES_1)
-@WITH_MBIM_TRUE@am__DEPENDENCIES_4 = $(am__DEPENDENCIES_1)
-ModemManager_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(builddir)/libmodem-helpers.la \
-	$(builddir)/libport.la $(top_builddir)/libqcdm/src/libqcdm.la \
+ModemManager_DEPENDENCIES = $(top_builddir)/libqcdm/src/libqcdm.la \
+	$(top_builddir)/libmm-glib/libmm-glib.la \
 	$(top_builddir)/libmm-glib/generated/tests/libmm-test-generated.la \
-	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
-	$(am__DEPENDENCIES_4)
+	$(builddir)/libhelpers.la $(builddir)/libport.la
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -341,10 +329,10 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libmodem_helpers_la_SOURCES) $(libport_la_SOURCES) \
+SOURCES = $(libhelpers_la_SOURCES) $(libport_la_SOURCES) \
 	$(nodist_libport_la_SOURCES) $(ModemManager_SOURCES) \
 	$(nodist_ModemManager_SOURCES)
-DIST_SOURCES = $(am__libmodem_helpers_la_SOURCES_DIST) \
+DIST_SOURCES = $(am__libhelpers_la_SOURCES_DIST) \
 	$(am__libport_la_SOURCES_DIST) \
 	$(am__ModemManager_SOURCES_DIST)
 RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
@@ -455,12 +443,13 @@ AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
+CODE_COVERAGE_CFLAGS = @CODE_COVERAGE_CFLAGS@
+CODE_COVERAGE_ENABLED = @CODE_COVERAGE_ENABLED@
+CODE_COVERAGE_LDFLAGS = @CODE_COVERAGE_LDFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DBUS_SYS_DIR = @DBUS_SYS_DIR@
-DBUS_TEST_SUPPORT_CFLAGS = @DBUS_TEST_SUPPORT_CFLAGS@
-DBUS_TEST_SUPPORT_LIBS = @DBUS_TEST_SUPPORT_LIBS@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
@@ -472,7 +461,9 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+GCOV = @GCOV@
 GDBUS_CODEGEN = @GDBUS_CODEGEN@
+GENHTML = @GENHTML@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GLIB_MKENUMS = @GLIB_MKENUMS@
@@ -511,15 +502,19 @@ INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
 INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
 INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
 INTROSPECTION_TYPELIBDIR = @INTROSPECTION_TYPELIBDIR@
+LCOV = @LCOV@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
 LIBMM_GLIB_CFLAGS = @LIBMM_GLIB_CFLAGS@
 LIBMM_GLIB_LIBS = @LIBMM_GLIB_LIBS@
-LIBMM_LIBS = @LIBMM_LIBS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
+LIBSYSTEMD_CFLAGS = @LIBSYSTEMD_CFLAGS@
+LIBSYSTEMD_LIBS = @LIBSYSTEMD_LIBS@
+LIBSYSTEMD_LOGIN_CFLAGS = @LIBSYSTEMD_LOGIN_CFLAGS@
+LIBSYSTEMD_LOGIN_LIBS = @LIBSYSTEMD_LOGIN_LIBS@
 LIBTOOL = @LIBTOOL@
 LIPO = @LIPO@
 LN_S = @LN_S@
@@ -640,110 +635,121 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = . tests
+
+################################################################################
+# helpers library
+################################################################################
+
+################################################################################
+# ports library
+################################################################################
+noinst_LTLIBRARIES = libhelpers.la libport.la
+EXTRA_DIST = $(udevrules_DATA)
+
+# Request to build enum types before anything else
+
+# Request to build enum types before anything else
+BUILT_SOURCES = $(PORT_ENUMS_GENERATED) $(DAEMON_ENUMS_GENERATED)
+CLEANFILES = $(PORT_ENUMS_GENERATED) $(DAEMON_ENUMS_GENERATED)
+AM_CFLAGS = $(MM_CFLAGS) $(CODE_COVERAGE_CFLAGS) $(GUDEV_CFLAGS) \
+	-I$(top_srcdir) -I$(top_srcdir)/include \
+	-I$(top_builddir)/include -I$(top_srcdir)/libqcdm/src \
+	-I$(top_srcdir)/libmm-glib \
+	-I${top_builddir}/libmm-glib/generated \
+	-I${top_builddir}/libmm-glib/generated/tests $(NULL) \
+	$(am__append_1) $(am__append_3) $(am__append_5)
+AM_LDFLAGS = $(MM_LIBS) $(CODE_COVERAGE_LDFLAGS) $(GUDEV_LIBS) $(NULL) \
+	$(am__append_2) $(am__append_4) $(am__append_6)
+
+################################################################################
+# generic udev rules
+################################################################################
 udevrulesdir = $(UDEV_BASE_DIR)/rules.d
 udevrules_DATA = \
 	77-mm-usb-device-blacklist.rules \
 	77-mm-pcmcia-device-blacklist.rules \
 	77-mm-platform-serial-whitelist.rules \
 	77-mm-usb-serial-adapters-greylist.rules \
-	80-mm-candidate.rules
+	80-mm-candidate.rules \
+	$(NULL)
 
-noinst_LTLIBRARIES = libmodem-helpers.la libport.la
-libmodem_helpers_la_CPPFLAGS = $(MM_CFLAGS) -I$(top_srcdir) \
-	-I$(top_srcdir)/include -I$(top_builddir)/include \
-	-I$(top_srcdir)/libmm-glib \
-	-I${top_srcdir}/libmm-glib/generated \
-	-I${top_builddir}/libmm-glib/generated $(am__append_2) \
-	$(am__append_4)
-libmodem_helpers_la_LIBADD = \
-	$(top_builddir)/libmm-glib/libmm-glib.la
-
-libmodem_helpers_la_SOURCES = mm-error-helpers.c mm-error-helpers.h \
+libhelpers_la_SOURCES = mm-error-helpers.c mm-error-helpers.h \
 	mm-modem-helpers.c mm-modem-helpers.h mm-charsets.c \
 	mm-charsets.h mm-sms-part.h mm-sms-part.c mm-sms-part-3gpp.h \
 	mm-sms-part-3gpp.c mm-sms-part-cdma.h mm-sms-part-cdma.c \
-	$(am__append_1) $(am__append_3)
-
-# libport specific enum types
-PORT_ENUMS = \
+	$(NULL) $(am__append_7) $(am__append_8)
+PORT_ENUMS_INPUTS = \
 	$(srcdir)/mm-port.h \
-	$(srcdir)/mm-port-serial-at.h
+	$(srcdir)/mm-port-serial-at.h \
+	$(NULL)
 
-libport_la_CPPFLAGS = $(MM_CFLAGS) -I$(top_srcdir) \
-	-I$(top_srcdir)/include -I$(top_builddir)/include \
-	-I$(top_srcdir)/libmm-glib \
-	-I${top_srcdir}/libmm-glib/generated \
-	-I${top_builddir}/libmm-glib/generated $(am__append_6) \
-	$(am__append_8)
-nodist_libport_la_SOURCES = \
+PORT_ENUMS_GENERATED = \
 	mm-port-enums-types.h \
-	mm-port-enums-types.c
+	mm-port-enums-types.c \
+	$(NULL)
 
 libport_la_SOURCES = mm-port.c mm-port.h mm-port-serial.c \
 	mm-port-serial.h mm-port-serial-at.c mm-port-serial-at.h \
 	mm-port-serial-qcdm.c mm-port-serial-qcdm.h \
-	mm-port-serial-gps.c mm-port-serial-gps.h $(am__append_5) \
-	$(am__append_7)
-
-# Daemon specific enum types
-DAEMON_ENUMS = \
-	$(srcdir)/mm-base-bearer.h \
-	$(srcdir)/mm-port-probe.h
-
-ModemManager_CPPFLAGS = $(MM_CFLAGS) $(GUDEV_CFLAGS) -I$(top_srcdir) \
-	-I$(top_srcdir)/include -I$(top_builddir)/include \
-	-I$(top_srcdir)/libmm-glib -I$(top_builddir)/libmm-glib \
-	-I${top_srcdir}/libmm-glib/generated \
-	-I${top_builddir}/libmm-glib/generated \
-	-I${top_srcdir}/libmm-glib/generated/tests \
-	-I${top_builddir}/libmm-glib/generated/tests \
-	-DPLUGINDIR=\"$(pkglibdir)\" $(am__append_11) $(am__append_13) \
-	$(am__append_16)
-ModemManager_LDADD = $(MM_LIBS) $(GUDEV_LIBS) \
-	$(builddir)/libmodem-helpers.la $(builddir)/libport.la \
+	mm-port-serial-gps.c mm-port-serial-gps.h mm-serial-parsers.c \
+	mm-serial-parsers.h $(NULL) $(am__append_9) $(am__append_10)
+nodist_libport_la_SOURCES = $(PORT_ENUMS_GENERATED)
+libport_la_LIBADD = \
 	$(top_builddir)/libqcdm/src/libqcdm.la \
-	$(top_builddir)/libmm-glib/generated/tests/libmm-test-generated.la \
-	$(am__append_10) $(am__append_14) $(am__append_17)
-nodist_ModemManager_SOURCES = \
+	$(top_builddir)/libmm-glib/libmm-glib.la \
+	$(builddir)/libhelpers.la \
+	$(NULL)
+
+DAEMON_ENUMS_INPUTS = \
+	$(srcdir)/mm-base-bearer.h \
+	$(srcdir)/mm-port-probe.h  \
+	$(NULL)
+
+DAEMON_ENUMS_GENERATED = \
 	mm-daemon-enums-types.h \
-	mm-daemon-enums-types.c
+	mm-daemon-enums-types.c \
+	$(NULL)
+
+ModemManager_CPPFLAGS = \
+	-DPLUGINDIR=\"$(pkglibdir)\" \
+	$(NULL)
+
+ModemManager_LDADD = \
+	$(top_builddir)/libqcdm/src/libqcdm.la \
+	$(top_builddir)/libmm-glib/libmm-glib.la \
+	$(top_builddir)/libmm-glib/generated/tests/libmm-test-generated.la \
+	$(builddir)/libhelpers.la \
+	$(builddir)/libport.la \
+	$(NULL)
 
 ModemManager_SOURCES = main.c mm-context.h mm-context.c mm-log.c \
-	mm-log.h mm-private-boxed-types.h mm-private-boxed-types.c \
-	mm-auth.h mm-auth.c mm-auth-provider.h mm-auth-provider.c \
-	mm-base-manager.c mm-base-manager.h mm-device.c mm-device.h \
-	mm-plugin-manager.c mm-plugin-manager.h mm-base-sim.h \
-	mm-base-sim.c mm-base-bearer.h mm-base-bearer.c \
-	mm-broadband-bearer.h mm-broadband-bearer.c mm-bearer-list.h \
-	mm-bearer-list.c mm-base-modem-at.h mm-base-modem-at.c \
-	mm-base-modem.h mm-base-modem.c mm-base-sms.h mm-base-sms.c \
-	mm-sms-list.h mm-sms-list.c mm-iface-modem.h mm-iface-modem.c \
+	mm-log.h mm-utils.h mm-private-boxed-types.h \
+	mm-private-boxed-types.c mm-auth.h mm-auth.c \
+	mm-auth-provider.h mm-auth-provider.c mm-base-manager.c \
+	mm-base-manager.h mm-device.c mm-device.h mm-plugin-manager.c \
+	mm-plugin-manager.h mm-base-sim.h mm-base-sim.c \
+	mm-base-bearer.h mm-base-bearer.c mm-broadband-bearer.h \
+	mm-broadband-bearer.c mm-bearer-list.h mm-bearer-list.c \
+	mm-base-modem-at.h mm-base-modem-at.c mm-base-modem.h \
+	mm-base-modem.c mm-base-sms.h mm-base-sms.c mm-base-call.h \
+	mm-base-call.c mm-sms-list.h mm-sms-list.c mm-call-list.h \
+	mm-call-list.c mm-iface-modem.h mm-iface-modem.c \
 	mm-iface-modem-3gpp.h mm-iface-modem-3gpp.c \
 	mm-iface-modem-3gpp-ussd.h mm-iface-modem-3gpp-ussd.c \
 	mm-iface-modem-cdma.h mm-iface-modem-cdma.c \
 	mm-iface-modem-simple.h mm-iface-modem-simple.c \
 	mm-iface-modem-location.h mm-iface-modem-location.c \
 	mm-iface-modem-messaging.h mm-iface-modem-messaging.c \
+	mm-iface-modem-voice.h mm-iface-modem-voice.c \
 	mm-iface-modem-time.h mm-iface-modem-time.c \
 	mm-iface-modem-firmware.h mm-iface-modem-firmware.c \
 	mm-iface-modem-signal.h mm-iface-modem-signal.c \
 	mm-iface-modem-oma.h mm-iface-modem-oma.c mm-broadband-modem.h \
-	mm-broadband-modem.c mm-serial-parsers.c mm-serial-parsers.h \
-	mm-port-probe.h mm-port-probe.c mm-port-probe-at.h \
-	mm-port-probe-at.c mm-plugin.c mm-plugin.h $(am__append_9) \
-	$(am__append_12) $(am__append_15)
-EXTRA_DIST = \
-	$(udevrules_DATA)
-
-
-# Request to build enum types before anything else
-BUILT_SOURCES = \
-	mm-daemon-enums-types.h \
-	mm-daemon-enums-types.c \
-	mm-port-enums-types.h \
-	mm-port-enums-types.c
-
-CLEANFILES = $(BUILT_SOURCES)
+	mm-broadband-modem.c mm-port-probe.h mm-port-probe.c \
+	mm-port-probe-at.h mm-port-probe-at.c mm-plugin.c mm-plugin.h \
+	$(NULL) $(am__append_11) $(am__append_12) $(am__append_13) \
+	$(am__append_14)
+nodist_ModemManager_SOURCES = $(DAEMON_ENUMS_GENERATED)
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -790,8 +796,8 @@ clean-noinstLTLIBRARIES:
 	  rm -f $${locs}; \
 	}
 
-libmodem-helpers.la: $(libmodem_helpers_la_OBJECTS) $(libmodem_helpers_la_DEPENDENCIES) $(EXTRA_libmodem_helpers_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK)  $(libmodem_helpers_la_OBJECTS) $(libmodem_helpers_la_LIBADD) $(LIBS)
+libhelpers.la: $(libhelpers_la_OBJECTS) $(libhelpers_la_DEPENDENCIES) $(EXTRA_libhelpers_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libhelpers_la_OBJECTS) $(libhelpers_la_LIBADD) $(LIBS)
 
 libport.la: $(libport_la_OBJECTS) $(libport_la_DEPENDENCIES) $(EXTRA_libport_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK)  $(libport_la_OBJECTS) $(libport_la_LIBADD) $(LIBS)
@@ -860,6 +866,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-auth-provider.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-auth.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-base-bearer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-base-call.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-base-manager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-base-modem-at.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-base-modem.Po@am__quote@
@@ -872,6 +879,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-broadband-modem-mbim.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-broadband-modem-qmi.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-broadband-modem.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-call-list.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-context.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-daemon-enums-types.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-device.Po@am__quote@
@@ -885,6 +893,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-iface-modem-signal.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-iface-modem-simple.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-iface-modem-time.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-iface-modem-voice.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-iface-modem.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-log.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-plugin-manager.Po@am__quote@
@@ -892,28 +901,29 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-port-probe-at.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-port-probe.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-private-boxed-types.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-serial-parsers.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-sim-mbim.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-sim-qmi.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-sleep-monitor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-sms-list.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-sms-mbim.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModemManager-mm-sms-qmi.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmodem_helpers_la-mm-charsets.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmodem_helpers_la-mm-error-helpers.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmodem_helpers_la-mm-modem-helpers-mbim.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmodem_helpers_la-mm-modem-helpers-qmi.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmodem_helpers_la-mm-modem-helpers.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmodem_helpers_la-mm-sms-part-3gpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmodem_helpers_la-mm-sms-part-cdma.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmodem_helpers_la-mm-sms-part.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libport_la-mm-port-enums-types.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libport_la-mm-port-mbim.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libport_la-mm-port-qmi.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libport_la-mm-port-serial-at.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libport_la-mm-port-serial-gps.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libport_la-mm-port-serial-qcdm.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libport_la-mm-port-serial.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libport_la-mm-port.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mm-charsets.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mm-error-helpers.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mm-modem-helpers-mbim.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mm-modem-helpers-qmi.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mm-modem-helpers.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mm-port-enums-types.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mm-port-mbim.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mm-port-qmi.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mm-port-serial-at.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mm-port-serial-gps.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mm-port-serial-qcdm.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mm-port-serial.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mm-port.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mm-serial-parsers.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mm-sms-part-3gpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mm-sms-part-cdma.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mm-sms-part.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -938,118 +948,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
-
-libmodem_helpers_la-mm-error-helpers.lo: mm-error-helpers.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libmodem_helpers_la-mm-error-helpers.lo -MD -MP -MF $(DEPDIR)/libmodem_helpers_la-mm-error-helpers.Tpo -c -o libmodem_helpers_la-mm-error-helpers.lo `test -f 'mm-error-helpers.c' || echo '$(srcdir)/'`mm-error-helpers.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmodem_helpers_la-mm-error-helpers.Tpo $(DEPDIR)/libmodem_helpers_la-mm-error-helpers.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-error-helpers.c' object='libmodem_helpers_la-mm-error-helpers.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libmodem_helpers_la-mm-error-helpers.lo `test -f 'mm-error-helpers.c' || echo '$(srcdir)/'`mm-error-helpers.c
-
-libmodem_helpers_la-mm-modem-helpers.lo: mm-modem-helpers.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libmodem_helpers_la-mm-modem-helpers.lo -MD -MP -MF $(DEPDIR)/libmodem_helpers_la-mm-modem-helpers.Tpo -c -o libmodem_helpers_la-mm-modem-helpers.lo `test -f 'mm-modem-helpers.c' || echo '$(srcdir)/'`mm-modem-helpers.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmodem_helpers_la-mm-modem-helpers.Tpo $(DEPDIR)/libmodem_helpers_la-mm-modem-helpers.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-modem-helpers.c' object='libmodem_helpers_la-mm-modem-helpers.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libmodem_helpers_la-mm-modem-helpers.lo `test -f 'mm-modem-helpers.c' || echo '$(srcdir)/'`mm-modem-helpers.c
-
-libmodem_helpers_la-mm-charsets.lo: mm-charsets.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libmodem_helpers_la-mm-charsets.lo -MD -MP -MF $(DEPDIR)/libmodem_helpers_la-mm-charsets.Tpo -c -o libmodem_helpers_la-mm-charsets.lo `test -f 'mm-charsets.c' || echo '$(srcdir)/'`mm-charsets.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmodem_helpers_la-mm-charsets.Tpo $(DEPDIR)/libmodem_helpers_la-mm-charsets.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-charsets.c' object='libmodem_helpers_la-mm-charsets.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libmodem_helpers_la-mm-charsets.lo `test -f 'mm-charsets.c' || echo '$(srcdir)/'`mm-charsets.c
-
-libmodem_helpers_la-mm-sms-part.lo: mm-sms-part.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libmodem_helpers_la-mm-sms-part.lo -MD -MP -MF $(DEPDIR)/libmodem_helpers_la-mm-sms-part.Tpo -c -o libmodem_helpers_la-mm-sms-part.lo `test -f 'mm-sms-part.c' || echo '$(srcdir)/'`mm-sms-part.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmodem_helpers_la-mm-sms-part.Tpo $(DEPDIR)/libmodem_helpers_la-mm-sms-part.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-sms-part.c' object='libmodem_helpers_la-mm-sms-part.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libmodem_helpers_la-mm-sms-part.lo `test -f 'mm-sms-part.c' || echo '$(srcdir)/'`mm-sms-part.c
-
-libmodem_helpers_la-mm-sms-part-3gpp.lo: mm-sms-part-3gpp.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libmodem_helpers_la-mm-sms-part-3gpp.lo -MD -MP -MF $(DEPDIR)/libmodem_helpers_la-mm-sms-part-3gpp.Tpo -c -o libmodem_helpers_la-mm-sms-part-3gpp.lo `test -f 'mm-sms-part-3gpp.c' || echo '$(srcdir)/'`mm-sms-part-3gpp.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmodem_helpers_la-mm-sms-part-3gpp.Tpo $(DEPDIR)/libmodem_helpers_la-mm-sms-part-3gpp.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-sms-part-3gpp.c' object='libmodem_helpers_la-mm-sms-part-3gpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libmodem_helpers_la-mm-sms-part-3gpp.lo `test -f 'mm-sms-part-3gpp.c' || echo '$(srcdir)/'`mm-sms-part-3gpp.c
-
-libmodem_helpers_la-mm-sms-part-cdma.lo: mm-sms-part-cdma.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libmodem_helpers_la-mm-sms-part-cdma.lo -MD -MP -MF $(DEPDIR)/libmodem_helpers_la-mm-sms-part-cdma.Tpo -c -o libmodem_helpers_la-mm-sms-part-cdma.lo `test -f 'mm-sms-part-cdma.c' || echo '$(srcdir)/'`mm-sms-part-cdma.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmodem_helpers_la-mm-sms-part-cdma.Tpo $(DEPDIR)/libmodem_helpers_la-mm-sms-part-cdma.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-sms-part-cdma.c' object='libmodem_helpers_la-mm-sms-part-cdma.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libmodem_helpers_la-mm-sms-part-cdma.lo `test -f 'mm-sms-part-cdma.c' || echo '$(srcdir)/'`mm-sms-part-cdma.c
-
-libmodem_helpers_la-mm-modem-helpers-qmi.lo: mm-modem-helpers-qmi.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libmodem_helpers_la-mm-modem-helpers-qmi.lo -MD -MP -MF $(DEPDIR)/libmodem_helpers_la-mm-modem-helpers-qmi.Tpo -c -o libmodem_helpers_la-mm-modem-helpers-qmi.lo `test -f 'mm-modem-helpers-qmi.c' || echo '$(srcdir)/'`mm-modem-helpers-qmi.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmodem_helpers_la-mm-modem-helpers-qmi.Tpo $(DEPDIR)/libmodem_helpers_la-mm-modem-helpers-qmi.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-modem-helpers-qmi.c' object='libmodem_helpers_la-mm-modem-helpers-qmi.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libmodem_helpers_la-mm-modem-helpers-qmi.lo `test -f 'mm-modem-helpers-qmi.c' || echo '$(srcdir)/'`mm-modem-helpers-qmi.c
-
-libmodem_helpers_la-mm-modem-helpers-mbim.lo: mm-modem-helpers-mbim.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libmodem_helpers_la-mm-modem-helpers-mbim.lo -MD -MP -MF $(DEPDIR)/libmodem_helpers_la-mm-modem-helpers-mbim.Tpo -c -o libmodem_helpers_la-mm-modem-helpers-mbim.lo `test -f 'mm-modem-helpers-mbim.c' || echo '$(srcdir)/'`mm-modem-helpers-mbim.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmodem_helpers_la-mm-modem-helpers-mbim.Tpo $(DEPDIR)/libmodem_helpers_la-mm-modem-helpers-mbim.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-modem-helpers-mbim.c' object='libmodem_helpers_la-mm-modem-helpers-mbim.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmodem_helpers_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libmodem_helpers_la-mm-modem-helpers-mbim.lo `test -f 'mm-modem-helpers-mbim.c' || echo '$(srcdir)/'`mm-modem-helpers-mbim.c
-
-libport_la-mm-port.lo: mm-port.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libport_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libport_la-mm-port.lo -MD -MP -MF $(DEPDIR)/libport_la-mm-port.Tpo -c -o libport_la-mm-port.lo `test -f 'mm-port.c' || echo '$(srcdir)/'`mm-port.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libport_la-mm-port.Tpo $(DEPDIR)/libport_la-mm-port.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-port.c' object='libport_la-mm-port.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libport_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libport_la-mm-port.lo `test -f 'mm-port.c' || echo '$(srcdir)/'`mm-port.c
-
-libport_la-mm-port-serial.lo: mm-port-serial.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libport_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libport_la-mm-port-serial.lo -MD -MP -MF $(DEPDIR)/libport_la-mm-port-serial.Tpo -c -o libport_la-mm-port-serial.lo `test -f 'mm-port-serial.c' || echo '$(srcdir)/'`mm-port-serial.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libport_la-mm-port-serial.Tpo $(DEPDIR)/libport_la-mm-port-serial.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-port-serial.c' object='libport_la-mm-port-serial.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libport_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libport_la-mm-port-serial.lo `test -f 'mm-port-serial.c' || echo '$(srcdir)/'`mm-port-serial.c
-
-libport_la-mm-port-serial-at.lo: mm-port-serial-at.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libport_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libport_la-mm-port-serial-at.lo -MD -MP -MF $(DEPDIR)/libport_la-mm-port-serial-at.Tpo -c -o libport_la-mm-port-serial-at.lo `test -f 'mm-port-serial-at.c' || echo '$(srcdir)/'`mm-port-serial-at.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libport_la-mm-port-serial-at.Tpo $(DEPDIR)/libport_la-mm-port-serial-at.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-port-serial-at.c' object='libport_la-mm-port-serial-at.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libport_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libport_la-mm-port-serial-at.lo `test -f 'mm-port-serial-at.c' || echo '$(srcdir)/'`mm-port-serial-at.c
-
-libport_la-mm-port-serial-qcdm.lo: mm-port-serial-qcdm.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libport_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libport_la-mm-port-serial-qcdm.lo -MD -MP -MF $(DEPDIR)/libport_la-mm-port-serial-qcdm.Tpo -c -o libport_la-mm-port-serial-qcdm.lo `test -f 'mm-port-serial-qcdm.c' || echo '$(srcdir)/'`mm-port-serial-qcdm.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libport_la-mm-port-serial-qcdm.Tpo $(DEPDIR)/libport_la-mm-port-serial-qcdm.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-port-serial-qcdm.c' object='libport_la-mm-port-serial-qcdm.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libport_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libport_la-mm-port-serial-qcdm.lo `test -f 'mm-port-serial-qcdm.c' || echo '$(srcdir)/'`mm-port-serial-qcdm.c
-
-libport_la-mm-port-serial-gps.lo: mm-port-serial-gps.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libport_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libport_la-mm-port-serial-gps.lo -MD -MP -MF $(DEPDIR)/libport_la-mm-port-serial-gps.Tpo -c -o libport_la-mm-port-serial-gps.lo `test -f 'mm-port-serial-gps.c' || echo '$(srcdir)/'`mm-port-serial-gps.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libport_la-mm-port-serial-gps.Tpo $(DEPDIR)/libport_la-mm-port-serial-gps.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-port-serial-gps.c' object='libport_la-mm-port-serial-gps.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libport_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libport_la-mm-port-serial-gps.lo `test -f 'mm-port-serial-gps.c' || echo '$(srcdir)/'`mm-port-serial-gps.c
-
-libport_la-mm-port-qmi.lo: mm-port-qmi.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libport_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libport_la-mm-port-qmi.lo -MD -MP -MF $(DEPDIR)/libport_la-mm-port-qmi.Tpo -c -o libport_la-mm-port-qmi.lo `test -f 'mm-port-qmi.c' || echo '$(srcdir)/'`mm-port-qmi.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libport_la-mm-port-qmi.Tpo $(DEPDIR)/libport_la-mm-port-qmi.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-port-qmi.c' object='libport_la-mm-port-qmi.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libport_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libport_la-mm-port-qmi.lo `test -f 'mm-port-qmi.c' || echo '$(srcdir)/'`mm-port-qmi.c
-
-libport_la-mm-port-mbim.lo: mm-port-mbim.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libport_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libport_la-mm-port-mbim.lo -MD -MP -MF $(DEPDIR)/libport_la-mm-port-mbim.Tpo -c -o libport_la-mm-port-mbim.lo `test -f 'mm-port-mbim.c' || echo '$(srcdir)/'`mm-port-mbim.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libport_la-mm-port-mbim.Tpo $(DEPDIR)/libport_la-mm-port-mbim.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-port-mbim.c' object='libport_la-mm-port-mbim.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libport_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libport_la-mm-port-mbim.lo `test -f 'mm-port-mbim.c' || echo '$(srcdir)/'`mm-port-mbim.c
-
-libport_la-mm-port-enums-types.lo: mm-port-enums-types.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libport_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libport_la-mm-port-enums-types.lo -MD -MP -MF $(DEPDIR)/libport_la-mm-port-enums-types.Tpo -c -o libport_la-mm-port-enums-types.lo `test -f 'mm-port-enums-types.c' || echo '$(srcdir)/'`mm-port-enums-types.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libport_la-mm-port-enums-types.Tpo $(DEPDIR)/libport_la-mm-port-enums-types.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-port-enums-types.c' object='libport_la-mm-port-enums-types.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libport_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libport_la-mm-port-enums-types.lo `test -f 'mm-port-enums-types.c' || echo '$(srcdir)/'`mm-port-enums-types.c
 
 ModemManager-main.o: main.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ModemManager-main.o -MD -MP -MF $(DEPDIR)/ModemManager-main.Tpo -c -o ModemManager-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
@@ -1275,6 +1173,20 @@ ModemManager-mm-base-sms.obj: mm-base-sms.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o ModemManager-mm-base-sms.obj `if test -f 'mm-base-sms.c'; then $(CYGPATH_W) 'mm-base-sms.c'; else $(CYGPATH_W) '$(srcdir)/mm-base-sms.c'; fi`
 
+ModemManager-mm-base-call.o: mm-base-call.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ModemManager-mm-base-call.o -MD -MP -MF $(DEPDIR)/ModemManager-mm-base-call.Tpo -c -o ModemManager-mm-base-call.o `test -f 'mm-base-call.c' || echo '$(srcdir)/'`mm-base-call.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ModemManager-mm-base-call.Tpo $(DEPDIR)/ModemManager-mm-base-call.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-base-call.c' object='ModemManager-mm-base-call.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o ModemManager-mm-base-call.o `test -f 'mm-base-call.c' || echo '$(srcdir)/'`mm-base-call.c
+
+ModemManager-mm-base-call.obj: mm-base-call.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ModemManager-mm-base-call.obj -MD -MP -MF $(DEPDIR)/ModemManager-mm-base-call.Tpo -c -o ModemManager-mm-base-call.obj `if test -f 'mm-base-call.c'; then $(CYGPATH_W) 'mm-base-call.c'; else $(CYGPATH_W) '$(srcdir)/mm-base-call.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ModemManager-mm-base-call.Tpo $(DEPDIR)/ModemManager-mm-base-call.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-base-call.c' object='ModemManager-mm-base-call.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o ModemManager-mm-base-call.obj `if test -f 'mm-base-call.c'; then $(CYGPATH_W) 'mm-base-call.c'; else $(CYGPATH_W) '$(srcdir)/mm-base-call.c'; fi`
+
 ModemManager-mm-sms-list.o: mm-sms-list.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ModemManager-mm-sms-list.o -MD -MP -MF $(DEPDIR)/ModemManager-mm-sms-list.Tpo -c -o ModemManager-mm-sms-list.o `test -f 'mm-sms-list.c' || echo '$(srcdir)/'`mm-sms-list.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ModemManager-mm-sms-list.Tpo $(DEPDIR)/ModemManager-mm-sms-list.Po
@@ -1288,6 +1200,20 @@ ModemManager-mm-sms-list.obj: mm-sms-list.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-sms-list.c' object='ModemManager-mm-sms-list.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o ModemManager-mm-sms-list.obj `if test -f 'mm-sms-list.c'; then $(CYGPATH_W) 'mm-sms-list.c'; else $(CYGPATH_W) '$(srcdir)/mm-sms-list.c'; fi`
+
+ModemManager-mm-call-list.o: mm-call-list.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ModemManager-mm-call-list.o -MD -MP -MF $(DEPDIR)/ModemManager-mm-call-list.Tpo -c -o ModemManager-mm-call-list.o `test -f 'mm-call-list.c' || echo '$(srcdir)/'`mm-call-list.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ModemManager-mm-call-list.Tpo $(DEPDIR)/ModemManager-mm-call-list.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-call-list.c' object='ModemManager-mm-call-list.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o ModemManager-mm-call-list.o `test -f 'mm-call-list.c' || echo '$(srcdir)/'`mm-call-list.c
+
+ModemManager-mm-call-list.obj: mm-call-list.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ModemManager-mm-call-list.obj -MD -MP -MF $(DEPDIR)/ModemManager-mm-call-list.Tpo -c -o ModemManager-mm-call-list.obj `if test -f 'mm-call-list.c'; then $(CYGPATH_W) 'mm-call-list.c'; else $(CYGPATH_W) '$(srcdir)/mm-call-list.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ModemManager-mm-call-list.Tpo $(DEPDIR)/ModemManager-mm-call-list.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-call-list.c' object='ModemManager-mm-call-list.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o ModemManager-mm-call-list.obj `if test -f 'mm-call-list.c'; then $(CYGPATH_W) 'mm-call-list.c'; else $(CYGPATH_W) '$(srcdir)/mm-call-list.c'; fi`
 
 ModemManager-mm-iface-modem.o: mm-iface-modem.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ModemManager-mm-iface-modem.o -MD -MP -MF $(DEPDIR)/ModemManager-mm-iface-modem.Tpo -c -o ModemManager-mm-iface-modem.o `test -f 'mm-iface-modem.c' || echo '$(srcdir)/'`mm-iface-modem.c
@@ -1387,6 +1313,20 @@ ModemManager-mm-iface-modem-messaging.obj: mm-iface-modem-messaging.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o ModemManager-mm-iface-modem-messaging.obj `if test -f 'mm-iface-modem-messaging.c'; then $(CYGPATH_W) 'mm-iface-modem-messaging.c'; else $(CYGPATH_W) '$(srcdir)/mm-iface-modem-messaging.c'; fi`
 
+ModemManager-mm-iface-modem-voice.o: mm-iface-modem-voice.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ModemManager-mm-iface-modem-voice.o -MD -MP -MF $(DEPDIR)/ModemManager-mm-iface-modem-voice.Tpo -c -o ModemManager-mm-iface-modem-voice.o `test -f 'mm-iface-modem-voice.c' || echo '$(srcdir)/'`mm-iface-modem-voice.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ModemManager-mm-iface-modem-voice.Tpo $(DEPDIR)/ModemManager-mm-iface-modem-voice.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-iface-modem-voice.c' object='ModemManager-mm-iface-modem-voice.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o ModemManager-mm-iface-modem-voice.o `test -f 'mm-iface-modem-voice.c' || echo '$(srcdir)/'`mm-iface-modem-voice.c
+
+ModemManager-mm-iface-modem-voice.obj: mm-iface-modem-voice.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ModemManager-mm-iface-modem-voice.obj -MD -MP -MF $(DEPDIR)/ModemManager-mm-iface-modem-voice.Tpo -c -o ModemManager-mm-iface-modem-voice.obj `if test -f 'mm-iface-modem-voice.c'; then $(CYGPATH_W) 'mm-iface-modem-voice.c'; else $(CYGPATH_W) '$(srcdir)/mm-iface-modem-voice.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ModemManager-mm-iface-modem-voice.Tpo $(DEPDIR)/ModemManager-mm-iface-modem-voice.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-iface-modem-voice.c' object='ModemManager-mm-iface-modem-voice.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o ModemManager-mm-iface-modem-voice.obj `if test -f 'mm-iface-modem-voice.c'; then $(CYGPATH_W) 'mm-iface-modem-voice.c'; else $(CYGPATH_W) '$(srcdir)/mm-iface-modem-voice.c'; fi`
+
 ModemManager-mm-iface-modem-time.o: mm-iface-modem-time.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ModemManager-mm-iface-modem-time.o -MD -MP -MF $(DEPDIR)/ModemManager-mm-iface-modem-time.Tpo -c -o ModemManager-mm-iface-modem-time.o `test -f 'mm-iface-modem-time.c' || echo '$(srcdir)/'`mm-iface-modem-time.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ModemManager-mm-iface-modem-time.Tpo $(DEPDIR)/ModemManager-mm-iface-modem-time.Po
@@ -1457,20 +1397,6 @@ ModemManager-mm-broadband-modem.obj: mm-broadband-modem.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o ModemManager-mm-broadband-modem.obj `if test -f 'mm-broadband-modem.c'; then $(CYGPATH_W) 'mm-broadband-modem.c'; else $(CYGPATH_W) '$(srcdir)/mm-broadband-modem.c'; fi`
 
-ModemManager-mm-serial-parsers.o: mm-serial-parsers.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ModemManager-mm-serial-parsers.o -MD -MP -MF $(DEPDIR)/ModemManager-mm-serial-parsers.Tpo -c -o ModemManager-mm-serial-parsers.o `test -f 'mm-serial-parsers.c' || echo '$(srcdir)/'`mm-serial-parsers.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ModemManager-mm-serial-parsers.Tpo $(DEPDIR)/ModemManager-mm-serial-parsers.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-serial-parsers.c' object='ModemManager-mm-serial-parsers.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o ModemManager-mm-serial-parsers.o `test -f 'mm-serial-parsers.c' || echo '$(srcdir)/'`mm-serial-parsers.c
-
-ModemManager-mm-serial-parsers.obj: mm-serial-parsers.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ModemManager-mm-serial-parsers.obj -MD -MP -MF $(DEPDIR)/ModemManager-mm-serial-parsers.Tpo -c -o ModemManager-mm-serial-parsers.obj `if test -f 'mm-serial-parsers.c'; then $(CYGPATH_W) 'mm-serial-parsers.c'; else $(CYGPATH_W) '$(srcdir)/mm-serial-parsers.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ModemManager-mm-serial-parsers.Tpo $(DEPDIR)/ModemManager-mm-serial-parsers.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-serial-parsers.c' object='ModemManager-mm-serial-parsers.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o ModemManager-mm-serial-parsers.obj `if test -f 'mm-serial-parsers.c'; then $(CYGPATH_W) 'mm-serial-parsers.c'; else $(CYGPATH_W) '$(srcdir)/mm-serial-parsers.c'; fi`
-
 ModemManager-mm-port-probe.o: mm-port-probe.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ModemManager-mm-port-probe.o -MD -MP -MF $(DEPDIR)/ModemManager-mm-port-probe.Tpo -c -o ModemManager-mm-port-probe.o `test -f 'mm-port-probe.c' || echo '$(srcdir)/'`mm-port-probe.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ModemManager-mm-port-probe.Tpo $(DEPDIR)/ModemManager-mm-port-probe.Po
@@ -1526,6 +1452,20 @@ ModemManager-mm-auth-provider-polkit.obj: mm-auth-provider-polkit.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-auth-provider-polkit.c' object='ModemManager-mm-auth-provider-polkit.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o ModemManager-mm-auth-provider-polkit.obj `if test -f 'mm-auth-provider-polkit.c'; then $(CYGPATH_W) 'mm-auth-provider-polkit.c'; else $(CYGPATH_W) '$(srcdir)/mm-auth-provider-polkit.c'; fi`
+
+ModemManager-mm-sleep-monitor.o: mm-sleep-monitor.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ModemManager-mm-sleep-monitor.o -MD -MP -MF $(DEPDIR)/ModemManager-mm-sleep-monitor.Tpo -c -o ModemManager-mm-sleep-monitor.o `test -f 'mm-sleep-monitor.c' || echo '$(srcdir)/'`mm-sleep-monitor.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ModemManager-mm-sleep-monitor.Tpo $(DEPDIR)/ModemManager-mm-sleep-monitor.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-sleep-monitor.c' object='ModemManager-mm-sleep-monitor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o ModemManager-mm-sleep-monitor.o `test -f 'mm-sleep-monitor.c' || echo '$(srcdir)/'`mm-sleep-monitor.c
+
+ModemManager-mm-sleep-monitor.obj: mm-sleep-monitor.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ModemManager-mm-sleep-monitor.obj -MD -MP -MF $(DEPDIR)/ModemManager-mm-sleep-monitor.Tpo -c -o ModemManager-mm-sleep-monitor.obj `if test -f 'mm-sleep-monitor.c'; then $(CYGPATH_W) 'mm-sleep-monitor.c'; else $(CYGPATH_W) '$(srcdir)/mm-sleep-monitor.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ModemManager-mm-sleep-monitor.Tpo $(DEPDIR)/ModemManager-mm-sleep-monitor.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-sleep-monitor.c' object='ModemManager-mm-sleep-monitor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o ModemManager-mm-sleep-monitor.obj `if test -f 'mm-sleep-monitor.c'; then $(CYGPATH_W) 'mm-sleep-monitor.c'; else $(CYGPATH_W) '$(srcdir)/mm-sleep-monitor.c'; fi`
 
 ModemManager-mm-sms-qmi.o: mm-sms-qmi.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ModemManager_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ModemManager-mm-sms-qmi.o -MD -MP -MF $(DEPDIR)/ModemManager-mm-sms-qmi.Tpo -c -o ModemManager-mm-sms-qmi.o `test -f 'mm-sms-qmi.c' || echo '$(srcdir)/'`mm-sms-qmi.c
@@ -1969,31 +1909,31 @@ uninstall-am: uninstall-sbinPROGRAMS uninstall-udevrulesDATA
 .PRECIOUS: Makefile
 
 
-mm-port-enums-types.h: Makefile.am $(PORT_ENUMS) $(top_srcdir)/build-aux/mm-enums-template.h
+mm-port-enums-types.h: Makefile.am $(PORT_ENUMS_INPUTS) $(top_srcdir)/build-aux/mm-enums-template.h
 	$(AM_V_GEN) $(GLIB_MKENUMS) \
 		--fhead "#include \"mm-port.h\"\n#include \"mm-port-serial-at.h\"\n#ifndef __MM_PORT_ENUMS_TYPES_H__\n#define __MM_PORT_ENUMS_TYPES_H__\n" \
 		--template $(top_srcdir)/build-aux/mm-enums-template.h \
 		--ftail "#endif /* __MM_PORT_ENUMS_TYPES_H__ */\n" \
-		$(PORT_ENUMS) > $@
+		$(PORT_ENUMS_INPUTS) > $@
 
 mm-port-enums-types.c: Makefile.am $(top_srcdir)/build-aux/mm-enums-template.c mm-port-enums-types.h
 	$(AM_V_GEN) $(GLIB_MKENUMS) \
 		--fhead "#include \"mm-port-enums-types.h\"" \
 		--template $(top_srcdir)/build-aux/mm-enums-template.c \
-		$(PORT_ENUMS) > $@
+		$(PORT_ENUMS_INPUTS) > $@
 
-mm-daemon-enums-types.h: Makefile.am $(DAEMON_ENUMS) $(top_srcdir)/build-aux/mm-enums-template.h
+mm-daemon-enums-types.h: Makefile.am $(DAEMON_ENUMS_INPUTS) $(top_srcdir)/build-aux/mm-enums-template.h
 	$(AM_V_GEN) $(GLIB_MKENUMS) \
 		--fhead "#include \"mm-base-bearer.h\"\n#include \"mm-port-probe.h\"\n#ifndef __MM_DAEMON_ENUMS_TYPES_H__\n#define __MM_DAEMON_ENUMS_TYPES_H__\n" \
 		--template $(top_srcdir)/build-aux/mm-enums-template.h \
 		--ftail "#endif /* __MM_DAEMON_ENUMS_TYPES_H__ */\n" \
-		$(DAEMON_ENUMS) > $@
+		$(DAEMON_ENUMS_INPUTS) > $@
 
 mm-daemon-enums-types.c: Makefile.am $(top_srcdir)/build-aux/mm-enums-template.c mm-daemon-enums-types.h
 	$(AM_V_GEN) $(GLIB_MKENUMS) \
 		--fhead "#include \"mm-daemon-enums-types.h\"" \
 		--template $(top_srcdir)/build-aux/mm-enums-template.c \
-		$(DAEMON_ENUMS) > $@
+		$(DAEMON_ENUMS_INPUTS) > $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -8,7 +8,7 @@
 <link rel="up" href="ch03.html" title="The Modem object">
 <link rel="prev" href="ch03.html" title="The Modem object">
 <link rel="next" href="MMModem.html" title="MMModem">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -232,6 +232,22 @@
 <a class="link" href="MMObject.html#mm-object-get-modem-signal" title="mm_object_get_modem_signal ()">mm_object_get_modem_signal</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
+<tr>
+<td class="function_type">
+<a class="link" href="MMModemVoice.html" title="MMModemVoice"><span class="returnvalue">MMModemVoice</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMObject.html#mm-object-peek-modem-voice" title="mm_object_peek_modem_voice ()">mm_object_peek_modem_voice</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="MMModemVoice.html" title="MMModemVoice"><span class="returnvalue">MMModemVoice</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="MMObject.html#mm-object-get-modem-voice" title="mm_object_get_modem_voice ()">mm_object_get_modem_voice</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -250,8 +266,8 @@
 </div>
 <div class="refsect1">
 <a name="MMObject.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gio/unstable/GDBusObjectProxy.html">GDBusObjectProxy</a>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gio/unstable/GDBusObjectProxy.html#GDBusObjectProxy-struct">GDBusObjectProxy</a>
         <span class="lineart">╰──</span> <a class="link" href="MmGdbusObjectProxy.html" title="MmGdbusObjectProxy">MmGdbusObjectProxy</a>
             <span class="lineart">╰──</span> MMObject
 </pre>
@@ -260,7 +276,7 @@
 <a name="MMObject.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 MMObject implements
- <a href="https://developer.gnome.org/gio/unstable/GDBusObject.html">GDBusObject</a> and  <a class="link" href="MmGdbusObject.html" title="MmGdbusObject">MmGdbusObject</a>.</p>
+ <a href="https://developer.gnome.org/gio/unstable/GDBusObject.html#GDBusObject-struct">GDBusObject</a> and  <a class="link" href="MmGdbusObject.html" title="MmGdbusObject">MmGdbusObject</a>.</p>
 </div>
 <div class="refsect1">
 <a name="MMObject.description"></a><h2>Description</h2>
@@ -278,7 +294,7 @@ mm_object_get_path (<em class="parameter"><code><a class="link" href="MMObject.h
 <p>Gets the DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> object.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.2.6"></a><h4>Parameters</h4>
+<a name="mm-object-get-path.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -293,7 +309,7 @@ mm_object_get_path (<em class="parameter"><code><a class="link" href="MMObject.h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.2.7"></a><h4>Returns</h4>
+<a name="mm-object-get-path.returns"></a><h4>Returns</h4>
 <p> The DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> object. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -305,7 +321,7 @@ mm_object_get_path (<em class="parameter"><code><a class="link" href="MMObject.h
 mm_object_dup_path (<em class="parameter"><code><a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> *self</code></em>);</pre>
 <p>Gets a copy of the DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> object.</p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.3.5"></a><h4>Parameters</h4>
+<a name="mm-object-dup-path.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -320,7 +336,7 @@ mm_object_dup_path (<em class="parameter"><code><a class="link" href="MMObject.h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.3.6"></a><h4>Returns</h4>
+<a name="mm-object-dup-path.returns"></a><h4>Returns</h4>
 <p> The DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a>. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -334,7 +350,7 @@ mm_object_peek_modem (<em class="parameter"><code><a class="link" href="MMObject
 <div class="warning">It is not safe to use the returned object if you are on another thread than the one where the <a class="link" href="MMManager.html" title="MMManager"><span class="type">MMManager</span></a> is running.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.4.7"></a><h4>Parameters</h4>
+<a name="mm-object-peek-modem.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -349,7 +365,7 @@ mm_object_peek_modem (<em class="parameter"><code><a class="link" href="MMObject
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.4.8"></a><h4>Returns</h4>
+<a name="mm-object-peek-modem.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. Do not free the returned object, it is owned by <em class="parameter"><code>self</code></em>
 . </p>
@@ -364,7 +380,7 @@ mm_object_get_modem (<em class="parameter"><code><a class="link" href="MMObject.
 <p>Gets the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem on <em class="parameter"><code>self</code></em>
 , if any.</p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.5.5"></a><h4>Parameters</h4>
+<a name="mm-object-get-modem.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -379,7 +395,7 @@ mm_object_get_modem (<em class="parameter"><code><a class="link" href="MMObject.
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.5.6"></a><h4>Returns</h4>
+<a name="mm-object-get-modem.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a> that must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -394,7 +410,7 @@ mm_object_peek_modem_3gpp (<em class="parameter"><code><a class="link" href="MMO
 <div class="warning">It is not safe to use the returned object if you are on another thread than the one where the <a class="link" href="MMManager.html" title="MMManager"><span class="type">MMManager</span></a> is running.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.6.7"></a><h4>Parameters</h4>
+<a name="mm-object-peek-modem-3gpp.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -409,7 +425,7 @@ mm_object_peek_modem_3gpp (<em class="parameter"><code><a class="link" href="MMO
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.6.8"></a><h4>Returns</h4>
+<a name="mm-object-peek-modem-3gpp.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModem3gpp.html" title="MMModem3gpp"><span class="type">MMModem3gpp</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. Do not free the returned object, it is owned by <em class="parameter"><code>self</code></em>
 . </p>
@@ -424,7 +440,7 @@ mm_object_get_modem_3gpp (<em class="parameter"><code><a class="link" href="MMOb
 <p>Gets the <a class="link" href="MMModem3gpp.html" title="MMModem3gpp"><span class="type">MMModem3gpp</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Modem3gpp on <em class="parameter"><code>self</code></em>
 , if any.</p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.7.5"></a><h4>Parameters</h4>
+<a name="mm-object-get-modem-3gpp.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -439,7 +455,7 @@ mm_object_get_modem_3gpp (<em class="parameter"><code><a class="link" href="MMOb
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.7.6"></a><h4>Returns</h4>
+<a name="mm-object-get-modem-3gpp.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModem3gpp.html" title="MMModem3gpp"><span class="type">MMModem3gpp</span></a> that must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -454,7 +470,7 @@ mm_object_peek_modem_3gpp_ussd (<em class="parameter"><code><a class="link" href
 <div class="warning">It is not safe to use the returned object if you are on another thread than the one where the <a class="link" href="MMManager.html" title="MMManager"><span class="type">MMManager</span></a> is running.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.8.7"></a><h4>Parameters</h4>
+<a name="mm-object-peek-modem-3gpp-ussd.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -469,7 +485,7 @@ mm_object_peek_modem_3gpp_ussd (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.8.8"></a><h4>Returns</h4>
+<a name="mm-object-peek-modem-3gpp-ussd.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModem3gppUssd.html" title="MMModem3gppUssd"><span class="type">MMModem3gppUssd</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. Do not free the returned object, it is owned by <em class="parameter"><code>self</code></em>
 . </p>
@@ -484,7 +500,7 @@ mm_object_get_modem_3gpp_ussd (<em class="parameter"><code><a class="link" href=
 <p>Gets the <a class="link" href="MMModem3gppUssd.html" title="MMModem3gppUssd"><span class="type">MMModem3gppUssd</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Modem3gpp-Ussd on <em class="parameter"><code>self</code></em>
 , if any.</p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.9.5"></a><h4>Parameters</h4>
+<a name="mm-object-get-modem-3gpp-ussd.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -499,7 +515,7 @@ mm_object_get_modem_3gpp_ussd (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.9.6"></a><h4>Returns</h4>
+<a name="mm-object-get-modem-3gpp-ussd.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModem3gppUssd.html" title="MMModem3gppUssd"><span class="type">MMModem3gppUssd</span></a> that must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -514,7 +530,7 @@ mm_object_peek_modem_cdma (<em class="parameter"><code><a class="link" href="MMO
 <div class="warning">It is not safe to use the returned object if you are on another thread than the one where the <a class="link" href="MMManager.html" title="MMManager"><span class="type">MMManager</span></a> is running.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.10.7"></a><h4>Parameters</h4>
+<a name="mm-object-peek-modem-cdma.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -529,7 +545,7 @@ mm_object_peek_modem_cdma (<em class="parameter"><code><a class="link" href="MMO
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.10.8"></a><h4>Returns</h4>
+<a name="mm-object-peek-modem-cdma.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. Do not free the returned object, it is owned by <em class="parameter"><code>self</code></em>
 . </p>
@@ -544,7 +560,7 @@ mm_object_get_modem_cdma (<em class="parameter"><code><a class="link" href="MMOb
 <p>Gets the <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.ModemCdma on <em class="parameter"><code>self</code></em>
 , if any.</p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.11.5"></a><h4>Parameters</h4>
+<a name="mm-object-get-modem-cdma.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -559,7 +575,7 @@ mm_object_get_modem_cdma (<em class="parameter"><code><a class="link" href="MMOb
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.11.6"></a><h4>Returns</h4>
+<a name="mm-object-get-modem-cdma.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModemCdma.html" title="MMModemCdma"><span class="type">MMModemCdma</span></a> that must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -574,7 +590,7 @@ mm_object_peek_modem_location (<em class="parameter"><code><a class="link" href=
 <div class="warning">It is not safe to use the returned object if you are on another thread than the one where the <a class="link" href="MMManager.html" title="MMManager"><span class="type">MMManager</span></a> is running.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.12.7"></a><h4>Parameters</h4>
+<a name="mm-object-peek-modem-location.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -589,7 +605,7 @@ mm_object_peek_modem_location (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.12.8"></a><h4>Returns</h4>
+<a name="mm-object-peek-modem-location.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. Do not free the returned object, it is owned by <em class="parameter"><code>self</code></em>
 . </p>
@@ -604,7 +620,7 @@ mm_object_get_modem_location (<em class="parameter"><code><a class="link" href="
 <p>Gets the <a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Modemlocation on <em class="parameter"><code>self</code></em>
 , if any.</p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.13.5"></a><h4>Parameters</h4>
+<a name="mm-object-get-modem-location.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -619,7 +635,7 @@ mm_object_get_modem_location (<em class="parameter"><code><a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.13.6"></a><h4>Returns</h4>
+<a name="mm-object-get-modem-location.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModemLocation.html" title="MMModemLocation"><span class="type">MMModemLocation</span></a> that must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -634,7 +650,7 @@ mm_object_peek_modem_messaging (<em class="parameter"><code><a class="link" href
 <div class="warning">It is not safe to use the returned object if you are on another thread than the one where the <a class="link" href="MMManager.html" title="MMManager"><span class="type">MMManager</span></a> is running.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.14.7"></a><h4>Parameters</h4>
+<a name="mm-object-peek-modem-messaging.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -649,7 +665,7 @@ mm_object_peek_modem_messaging (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.14.8"></a><h4>Returns</h4>
+<a name="mm-object-peek-modem-messaging.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. Do not free the returned object, it is owned by <em class="parameter"><code>self</code></em>
 . </p>
@@ -664,7 +680,7 @@ mm_object_get_modem_messaging (<em class="parameter"><code><a class="link" href=
 <p>Gets the <a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Modemmessaging on <em class="parameter"><code>self</code></em>
 , if any.</p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.15.5"></a><h4>Parameters</h4>
+<a name="mm-object-get-modem-messaging.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -679,7 +695,7 @@ mm_object_get_modem_messaging (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.15.6"></a><h4>Returns</h4>
+<a name="mm-object-get-modem-messaging.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> that must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -694,7 +710,7 @@ mm_object_peek_modem_time (<em class="parameter"><code><a class="link" href="MMO
 <div class="warning">It is not safe to use the returned object if you are on another thread than the one where the <a class="link" href="MMManager.html" title="MMManager"><span class="type">MMManager</span></a> is running.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.16.7"></a><h4>Parameters</h4>
+<a name="mm-object-peek-modem-time.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -709,7 +725,7 @@ mm_object_peek_modem_time (<em class="parameter"><code><a class="link" href="MMO
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.16.8"></a><h4>Returns</h4>
+<a name="mm-object-peek-modem-time.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModemTime.html" title="MMModemTime"><span class="type">MMModemTime</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. Do not free the returned object, it is owned by <em class="parameter"><code>self</code></em>
 . </p>
@@ -724,7 +740,7 @@ mm_object_get_modem_time (<em class="parameter"><code><a class="link" href="MMOb
 <p>Gets the <a class="link" href="MMModemTime.html" title="MMModemTime"><span class="type">MMModemTime</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Time on <em class="parameter"><code>self</code></em>
 , if any.</p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.17.5"></a><h4>Parameters</h4>
+<a name="mm-object-get-modem-time.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -739,7 +755,7 @@ mm_object_get_modem_time (<em class="parameter"><code><a class="link" href="MMOb
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.17.6"></a><h4>Returns</h4>
+<a name="mm-object-get-modem-time.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModemTime.html" title="MMModemTime"><span class="type">MMModemTime</span></a> that must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -754,7 +770,7 @@ mm_object_peek_modem_firmware (<em class="parameter"><code><a class="link" href=
 <div class="warning">It is not safe to use the returned object if you are on another thread than the one where the <a class="link" href="MMManager.html" title="MMManager"><span class="type">MMManager</span></a> is running.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.18.7"></a><h4>Parameters</h4>
+<a name="mm-object-peek-modem-firmware.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -769,7 +785,7 @@ mm_object_peek_modem_firmware (<em class="parameter"><code><a class="link" href=
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.18.8"></a><h4>Returns</h4>
+<a name="mm-object-peek-modem-firmware.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModemFirmware.html" title="MMModemFirmware"><span class="type">MMModemFirmware</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. Do not free the returned object, it is owned by <em class="parameter"><code>self</code></em>
 . </p>
@@ -784,7 +800,7 @@ mm_object_get_modem_firmware (<em class="parameter"><code><a class="link" href="
 <p>Gets the <a class="link" href="MMModemFirmware.html" title="MMModemFirmware"><span class="type">MMModemFirmware</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Firmware on <em class="parameter"><code>self</code></em>
 , if any.</p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.19.5"></a><h4>Parameters</h4>
+<a name="mm-object-get-modem-firmware.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -799,7 +815,7 @@ mm_object_get_modem_firmware (<em class="parameter"><code><a class="link" href="
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.19.6"></a><h4>Returns</h4>
+<a name="mm-object-get-modem-firmware.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModemFirmware.html" title="MMModemFirmware"><span class="type">MMModemFirmware</span></a> that must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -814,7 +830,7 @@ mm_object_peek_modem_oma (<em class="parameter"><code><a class="link" href="MMOb
 <div class="warning">It is not safe to use the returned object if you are on another thread than the one where the <a class="link" href="MMManager.html" title="MMManager"><span class="type">MMManager</span></a> is running.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.20.7"></a><h4>Parameters</h4>
+<a name="mm-object-peek-modem-oma.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -829,7 +845,7 @@ mm_object_peek_modem_oma (<em class="parameter"><code><a class="link" href="MMOb
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.20.8"></a><h4>Returns</h4>
+<a name="mm-object-peek-modem-oma.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. Do not free the returned object, it is owned by <em class="parameter"><code>self</code></em>
 . </p>
@@ -844,7 +860,7 @@ mm_object_get_modem_oma (<em class="parameter"><code><a class="link" href="MMObj
 <p>Gets the <a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Oma on <em class="parameter"><code>self</code></em>
 , if any.</p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.21.5"></a><h4>Parameters</h4>
+<a name="mm-object-get-modem-oma.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -859,7 +875,7 @@ mm_object_get_modem_oma (<em class="parameter"><code><a class="link" href="MMObj
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.21.6"></a><h4>Returns</h4>
+<a name="mm-object-get-modem-oma.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModemOma.html" title="MMModemOma"><span class="type">MMModemOma</span></a> that must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -874,7 +890,7 @@ mm_object_peek_modem_simple (<em class="parameter"><code><a class="link" href="M
 <div class="warning">It is not safe to use the returned object if you are on another thread than the one where the <a class="link" href="MMManager.html" title="MMManager"><span class="type">MMManager</span></a> is running.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.22.7"></a><h4>Parameters</h4>
+<a name="mm-object-peek-modem-simple.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -889,7 +905,7 @@ mm_object_peek_modem_simple (<em class="parameter"><code><a class="link" href="M
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.22.8"></a><h4>Returns</h4>
+<a name="mm-object-peek-modem-simple.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModemSimple.html" title="MMModemSimple"><span class="type">MMModemSimple</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. Do not free the returned object, it is owned by <em class="parameter"><code>self</code></em>
 . </p>
@@ -904,7 +920,7 @@ mm_object_get_modem_simple (<em class="parameter"><code><a class="link" href="MM
 <p>Gets the <a class="link" href="MMModemSimple.html" title="MMModemSimple"><span class="type">MMModemSimple</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Modemsimple on <em class="parameter"><code>self</code></em>
 , if any.</p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.23.5"></a><h4>Parameters</h4>
+<a name="mm-object-get-modem-simple.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -919,7 +935,7 @@ mm_object_get_modem_simple (<em class="parameter"><code><a class="link" href="MM
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.23.6"></a><h4>Returns</h4>
+<a name="mm-object-get-modem-simple.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModemSimple.html" title="MMModemSimple"><span class="type">MMModemSimple</span></a> that must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -934,7 +950,7 @@ mm_object_peek_modem_signal (<em class="parameter"><code><a class="link" href="M
 <div class="warning">It is not safe to use the returned object if you are on another thread than the one where the <a class="link" href="MMManager.html" title="MMManager"><span class="type">MMManager</span></a> is running.</div>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.24.7"></a><h4>Parameters</h4>
+<a name="mm-object-peek-modem-signal.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -949,7 +965,7 @@ mm_object_peek_modem_signal (<em class="parameter"><code><a class="link" href="M
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.24.8"></a><h4>Returns</h4>
+<a name="mm-object-peek-modem-signal.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModemSignal.html" title="MMModemSignal"><span class="type">MMModemSignal</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. Do not free the returned object, it is owned by <em class="parameter"><code>self</code></em>
 . </p>
@@ -964,7 +980,7 @@ mm_object_get_modem_signal (<em class="parameter"><code><a class="link" href="MM
 <p>Gets the <a class="link" href="MMModemSignal.html" title="MMModemSignal"><span class="type">MMModemSignal</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Signal on <em class="parameter"><code>self</code></em>
 , if any.</p>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.25.5"></a><h4>Parameters</h4>
+<a name="mm-object-get-modem-signal.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -979,8 +995,68 @@ mm_object_get_modem_signal (<em class="parameter"><code><a class="link" href="MM
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.2.8.25.6"></a><h4>Returns</h4>
+<a name="mm-object-get-modem-signal.returns"></a><h4>Returns</h4>
 <p> A <a class="link" href="MMModemSignal.html" title="MMModemSignal"><span class="type">MMModemSignal</span></a> that must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
+does not implement the interface. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-object-peek-modem-voice"></a><h3>mm_object_peek_modem_voice ()</h3>
+<pre class="programlisting"><a class="link" href="MMModemVoice.html" title="MMModemVoice"><span class="returnvalue">MMModemVoice</span></a> *
+mm_object_peek_modem_voice (<em class="parameter"><code><a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> *self</code></em>);</pre>
+<p>Like <a class="link" href="MMObject.html#mm-object-get-modem-voice" title="mm_object_get_modem_voice ()"><code class="function">mm_object_get_modem_voice()</code></a> but doesn't increase the reference count on the returned object.</p>
+<div class="warning">It is not safe to use the returned object if you are on another thread than the one where the <a class="link" href="MMManager.html" title="MMManager"><span class="type">MMManager</span></a> is running.</div>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
+<div class="refsect3">
+<a name="mm-object-peek-modem-voice.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="mm-object-peek-modem-voice.returns"></a><h4>Returns</h4>
+<p> A <a class="link" href="MMModemVoice.html" title="MMModemVoice"><span class="type">MMModemVoice</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
+does not implement the interface. Do not free the returned object, it is owned by <em class="parameter"><code>self</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-object-get-modem-voice"></a><h3>mm_object_get_modem_voice ()</h3>
+<pre class="programlisting"><a class="link" href="MMModemVoice.html" title="MMModemVoice"><span class="returnvalue">MMModemVoice</span></a> *
+mm_object_get_modem_voice (<em class="parameter"><code><a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> *self</code></em>);</pre>
+<p>Gets the <a class="link" href="MMModemVoice.html" title="MMModemVoice"><span class="type">MMModemVoice</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Modemvoice on <em class="parameter"><code>self</code></em>
+, if any.</p>
+<div class="refsect3">
+<a name="mm-object-get-modem-voice.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="mm-object-get-modem-voice.returns"></a><h4>Returns</h4>
+<p> A <a class="link" href="MMModemVoice.html" title="MMModemVoice"><span class="type">MMModemVoice</span></a> that must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>self</code></em>
 does not implement the interface. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -997,6 +1073,6 @@ using the provided API.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

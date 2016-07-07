@@ -8,7 +8,7 @@
 <link rel="up" href="ch03s04.html" title="Messaging support">
 <link rel="prev" href="ch03s04.html" title="Messaging support">
 <link rel="next" href="ch03s05.html" title="Time support">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -170,8 +170,8 @@
 </div>
 <div class="refsect1">
 <a name="MMModemMessaging.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gio/unstable/GDBusProxy.html">GDBusProxy</a>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gio/unstable/GDBusProxy.html#GDBusProxy-struct">GDBusProxy</a>
         <span class="lineart">╰──</span> <a class="link" href="MmGdbusModemMessagingProxy.html" title="MmGdbusModemMessagingProxy">MmGdbusModemMessagingProxy</a>
             <span class="lineart">╰──</span> MMModemMessaging
 </pre>
@@ -180,7 +180,7 @@
 <a name="MMModemMessaging.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 MMModemMessaging implements
- <a href="https://developer.gnome.org/gio/unstable/GDBusInterface.html">GDBusInterface</a>,  <a href="https://developer.gnome.org/gio/unstable/GInitable.html">GInitable</a>,  <a href="https://developer.gnome.org/gio/unstable/GAsyncInitable.html">GAsyncInitable</a> and  <a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging">MmGdbusModemMessaging</a>.</p>
+ <a href="https://developer.gnome.org/gio/unstable/GDBusInterface.html#GDBusInterface-struct">GDBusInterface</a>,  <a href="https://developer.gnome.org/gio/unstable/GInitable.html#GInitable-struct">GInitable</a>,  <a href="https://developer.gnome.org/gio/unstable/GAsyncInitable.html#GAsyncInitable-struct">GAsyncInitable</a> and  <a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging">MmGdbusModemMessaging</a>.</p>
 </div>
 <div class="refsect1">
 <a name="MMModemMessaging.description"></a><h2>Description</h2>
@@ -196,7 +196,7 @@ properties of the Messaging interface.</p>
 mm_modem_messaging_get_path (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>);</pre>
 <p>Gets the DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> which implements this interface.</p>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.2.5"></a><h4>Parameters</h4>
+<a name="mm-modem-messaging-get-path.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -211,7 +211,7 @@ mm_modem_messaging_get_path (<em class="parameter"><code><a class="link" href="M
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.2.6"></a><h4>Returns</h4>
+<a name="mm-modem-messaging-get-path.returns"></a><h4>Returns</h4>
 <p> The DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> object. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -223,7 +223,7 @@ mm_modem_messaging_get_path (<em class="parameter"><code><a class="link" href="M
 mm_modem_messaging_dup_path (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>);</pre>
 <p>Gets a copy of the DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a> object which implements this interface.</p>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.3.5"></a><h4>Parameters</h4>
+<a name="mm-modem-messaging-dup-path.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -238,7 +238,7 @@ mm_modem_messaging_dup_path (<em class="parameter"><code><a class="link" href="M
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.3.6"></a><h4>Returns</h4>
+<a name="mm-modem-messaging-dup-path.returns"></a><h4>Returns</h4>
 <p> The DBus path of the <a class="link" href="MMObject.html" title="MMObject"><span class="type">MMObject</span></a>. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -253,7 +253,7 @@ mm_modem_messaging_peek_supported_storages
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_storages</code></em>);</pre>
 <p>Gets the list of SMS storages supported by the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.4.5"></a><h4>Parameters</h4>
+<a name="mm-modem-messaging-peek-supported-storages.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -282,7 +282,7 @@ mm_modem_messaging_peek_supported_storages
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.4.6"></a><h4>Returns</h4>
+<a name="mm-modem-messaging-peek-supported-storages.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>storages</code></em>
 and <em class="parameter"><code>n_storages</code></em>
 are set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
@@ -298,7 +298,7 @@ mm_modem_messaging_get_supported_storages
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_storages</code></em>);</pre>
 <p>Gets the list of SMS storages supported by the <a class="link" href="MMModem.html" title="MMModem"><span class="type">MMModem</span></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.5.5"></a><h4>Parameters</h4>
+<a name="mm-modem-messaging-get-supported-storages.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -326,7 +326,7 @@ mm_modem_messaging_get_supported_storages
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.5.6"></a><h4>Returns</h4>
+<a name="mm-modem-messaging-get-supported-storages.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>storages</code></em>
 and <em class="parameter"><code>n_storages</code></em>
 are set, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</p>
@@ -340,7 +340,7 @@ mm_modem_messaging_get_default_storage
                                (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>);</pre>
 <p>Gets the default SMS storage used when storing or receiving SMS messages.</p>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.6.5"></a><h4>Parameters</h4>
+<a name="mm-modem-messaging-get-default-storage.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -355,7 +355,7 @@ mm_modem_messaging_get_default_storage
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.6.6"></a><h4>Returns</h4>
+<a name="mm-modem-messaging-get-default-storage.returns"></a><h4>Returns</h4>
 <p> the default <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a>.</p>
 </div>
 </div>
@@ -365,65 +365,16 @@ mm_modem_messaging_get_default_storage
 <pre class="programlisting"><span class="returnvalue">void</span>
 mm_modem_messaging_create (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>,
                            <em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *properties</code></em>,
-                           <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                            <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-messaging-create-finish"></a><h3>mm_modem_messaging_create_finish ()</h3>
-<pre class="programlisting"><a class="link" href="MMSms.html" title="MMSms"><span class="returnvalue">MMSms</span></a> *
-mm_modem_messaging_create_finish (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>,
-                                  <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
-                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
-<p>Finishes an operation started with <a class="link" href="MMModemMessaging.html#mm-modem-messaging-create" title="mm_modem_messaging_create ()"><code class="function">mm_modem_messaging_create()</code></a>.</p>
+<p>Asynchronously creates a new <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> in the modem.</p>
+<p>When the operation is finished, <em class="parameter"><code>callback</code></em>
+ will be invoked in the <a href="https://developer.gnome.org/glib/unstable/glib-The-Main-Event-Loop.html#g-main-context-push-thread-default">thread-default main loop</a> of the thread you are calling this method from.
+You can then call <a class="link" href="MMModemMessaging.html#mm-modem-messaging-create-finish" title="mm_modem_messaging_create_finish ()"><code class="function">mm_modem_messaging_create_finish()</code></a> to get the result of the operation.</p>
+<p>See <a class="link" href="MMModemMessaging.html#mm-modem-messaging-create-sync" title="mm_modem_messaging_create_sync ()"><code class="function">mm_modem_messaging_create_sync()</code></a> for the synchronous, blocking version of this method.</p>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.8.5"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>self</p></td>
-<td class="parameter_description"><p>A <a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a>.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>res</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemMessaging.html#mm-modem-messaging-create" title="mm_modem_messaging_create ()"><code class="function">mm_modem_messaging_create()</code></a>.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p>Return location for error or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="id-1.2.4.6.2.8.8.6"></a><h4>Returns</h4>
-<p> A newly created <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a>, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>error</code></em>
-is set. The returned value should be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. </p>
-<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="mm-modem-messaging-create-sync"></a><h3>mm_modem_messaging_create_sync ()</h3>
-<pre class="programlisting"><a class="link" href="MMSms.html" title="MMSms"><span class="returnvalue">MMSms</span></a> *
-mm_modem_messaging_create_sync (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>,
-                                <em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *properties</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
-<p>Synchronously creates a new <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> in the modem.</p>
-<p>The calling thread is blocked until a reply is received. See <a class="link" href="MMModemMessaging.html#mm-modem-messaging-create" title="mm_modem_messaging_create ()"><code class="function">mm_modem_messaging_create()</code></a>
-for the asynchronous version of this method.</p>
-<div class="refsect3">
-<a name="id-1.2.4.6.2.8.9.6"></a><h4>Parameters</h4>
+<a name="mm-modem-messaging-create.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -443,7 +394,99 @@ for the asynchronous version of this method.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>callback</p></td>
+<td class="parameter_description"><p>A <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to call when the request is satisfied or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>User data to pass to <em class="parameter"><code>callback</code></em>
+.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-messaging-create-finish"></a><h3>mm_modem_messaging_create_finish ()</h3>
+<pre class="programlisting"><a class="link" href="MMSms.html" title="MMSms"><span class="returnvalue">MMSms</span></a> *
+mm_modem_messaging_create_finish (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>Finishes an operation started with <a class="link" href="MMModemMessaging.html#mm-modem-messaging-create" title="mm_modem_messaging_create ()"><code class="function">mm_modem_messaging_create()</code></a>.</p>
+<div class="refsect3">
+<a name="mm-modem-messaging-create-finish.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>res</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemMessaging.html#mm-modem-messaging-create" title="mm_modem_messaging_create ()"><code class="function">mm_modem_messaging_create()</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>error</p></td>
+<td class="parameter_description"><p>Return location for error or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="mm-modem-messaging-create-finish.returns"></a><h4>Returns</h4>
+<p> A newly created <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a>, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>error</code></em>
+is set. The returned value should be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-modem-messaging-create-sync"></a><h3>mm_modem_messaging_create_sync ()</h3>
+<pre class="programlisting"><a class="link" href="MMSms.html" title="MMSms"><span class="returnvalue">MMSms</span></a> *
+mm_modem_messaging_create_sync (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>,
+                                <em class="parameter"><code><a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> *properties</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>Synchronously creates a new <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> in the modem.</p>
+<p>The calling thread is blocked until a reply is received. See <a class="link" href="MMModemMessaging.html#mm-modem-messaging-create" title="mm_modem_messaging_create ()"><code class="function">mm_modem_messaging_create()</code></a>
+for the asynchronous version of this method.</p>
+<div class="refsect3">
+<a name="mm-modem-messaging-create-sync.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>properties</p></td>
+<td class="parameter_description"><p>A #<a class="link" href="MMSmsProperties.html" title="MMSmsProperties"><span class="type">MMSmsProperties</span></a> object with the properties to use.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>cancellable</p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -455,7 +498,7 @@ for the asynchronous version of this method.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.9.7"></a><h4>Returns</h4>
+<a name="mm-modem-messaging-create-sync.returns"></a><h4>Returns</h4>
 <p> A newly created <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a>, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if <em class="parameter"><code>error</code></em>
 is set. The returned value should be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -467,7 +510,7 @@ is set. The returned value should be freed with <a href="https://developer.gnome
 <pre class="programlisting"><span class="returnvalue">void</span>
 mm_modem_messaging_delete (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>,
                            <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sms</code></em>,
-                           <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                           <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                            <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                            <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>Asynchronously deletes a given <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> from the modem.</p>
@@ -476,7 +519,7 @@ mm_modem_messaging_delete (<em class="parameter"><code><a class="link" href="MMM
 You can then call <a class="link" href="MMModemMessaging.html#mm-modem-messaging-delete-finish" title="mm_modem_messaging_delete_finish ()"><code class="function">mm_modem_messaging_delete_finish()</code></a> to get the result of the operation.</p>
 <p>See <a class="link" href="MMModemMessaging.html#mm-modem-messaging-delete-sync" title="mm_modem_messaging_delete_sync ()"><code class="function">mm_modem_messaging_delete_sync()</code></a> for the synchronous, blocking version of this method.</p>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.10.7"></a><h4>Parameters</h4>
+<a name="mm-modem-messaging-delete.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -496,7 +539,7 @@ You can then call <a class="link" href="MMModemMessaging.html#mm-modem-messaging
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -519,11 +562,11 @@ You can then call <a class="link" href="MMModemMessaging.html#mm-modem-messaging
 <a name="mm-modem-messaging-delete-finish"></a><h3>mm_modem_messaging_delete_finish ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 mm_modem_messaging_delete_finish (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>,
-                                  <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                   <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes an operation started with <a class="link" href="MMModemMessaging.html#mm-modem-messaging-delete" title="mm_modem_messaging_delete ()"><code class="function">mm_modem_messaging_delete()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.11.5"></a><h4>Parameters</h4>
+<a name="mm-modem-messaging-delete-finish.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -538,7 +581,7 @@ mm_modem_messaging_delete_finish (<em class="parameter"><code><a class="link" hr
 </tr>
 <tr>
 <td class="parameter_name"><p>res</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemMessaging.html#mm-modem-messaging-delete" title="mm_modem_messaging_delete ()"><code class="function">mm_modem_messaging_delete()</code></a>.</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemMessaging.html#mm-modem-messaging-delete" title="mm_modem_messaging_delete ()"><code class="function">mm_modem_messaging_delete()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -550,7 +593,7 @@ mm_modem_messaging_delete_finish (<em class="parameter"><code><a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.11.6"></a><h4>Returns</h4>
+<a name="mm-modem-messaging-delete-finish.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the sms was deleted, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
 </div>
@@ -561,13 +604,13 @@ is set.</p>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
 mm_modem_messaging_delete_sync (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>,
                                 <em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sms</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Synchronously deletes a given <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> from the modem.</p>
 <p>The calling thread is blocked until a reply is received. See <a class="link" href="MMModemMessaging.html#mm-modem-messaging-delete" title="mm_modem_messaging_delete ()"><code class="function">mm_modem_messaging_delete()</code></a>
 for the asynchronous version of this method.</p>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.12.6"></a><h4>Parameters</h4>
+<a name="mm-modem-messaging-delete-sync.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -587,7 +630,7 @@ for the asynchronous version of this method.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -599,7 +642,7 @@ for the asynchronous version of this method.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.12.7"></a><h4>Returns</h4>
+<a name="mm-modem-messaging-delete-sync.returns"></a><h4>Returns</h4>
 <p> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the SMS was deleted, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if <em class="parameter"><code>error</code></em>
 is set.</p>
 </div>
@@ -609,7 +652,7 @@ is set.</p>
 <a name="mm-modem-messaging-list"></a><h3>mm_modem_messaging_list ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 mm_modem_messaging_list (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>,
-                         <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                         <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                          <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
                          <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>Asynchronously lists the <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> objects in the modem.</p>
@@ -618,7 +661,7 @@ mm_modem_messaging_list (<em class="parameter"><code><a class="link" href="MMMod
 You can then call <a class="link" href="MMModemMessaging.html#mm-modem-messaging-list-finish" title="mm_modem_messaging_list_finish ()"><code class="function">mm_modem_messaging_list_finish()</code></a> to get the result of the operation.</p>
 <p>See <a class="link" href="MMModemMessaging.html#mm-modem-messaging-list-sync" title="mm_modem_messaging_list_sync ()"><code class="function">mm_modem_messaging_list_sync()</code></a> for the synchronous, blocking version of this method.</p>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.13.7"></a><h4>Parameters</h4>
+<a name="mm-modem-messaging-list.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -633,7 +676,7 @@ You can then call <a class="link" href="MMModemMessaging.html#mm-modem-messaging
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -656,11 +699,11 @@ You can then call <a class="link" href="MMModemMessaging.html#mm-modem-messaging
 <a name="mm-modem-messaging-list-finish"></a><h3>mm_modem_messaging_list_finish ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
 mm_modem_messaging_list_finish (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes an operation started with <a class="link" href="MMModemMessaging.html#mm-modem-messaging-list" title="mm_modem_messaging_list ()"><code class="function">mm_modem_messaging_list()</code></a>.</p>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.14.5"></a><h4>Parameters</h4>
+<a name="mm-modem-messaging-list-finish.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -675,7 +718,7 @@ mm_modem_messaging_list_finish (<em class="parameter"><code><a class="link" href
 </tr>
 <tr>
 <td class="parameter_name"><p>res</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemMessaging.html#mm-modem-messaging-list" title="mm_modem_messaging_list ()"><code class="function">mm_modem_messaging_list()</code></a>.</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> obtained from the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> passed to <a class="link" href="MMModemMessaging.html#mm-modem-messaging-list" title="mm_modem_messaging_list ()"><code class="function">mm_modem_messaging_list()</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -687,7 +730,7 @@ mm_modem_messaging_list_finish (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.14.6"></a><h4>Returns</h4>
+<a name="mm-modem-messaging-list-finish.returns"></a><h4>Returns</h4>
 <p> A list of <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> objects, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if either not found or <em class="parameter"><code>error</code></em>
 is set. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free-full"><code class="function">g_list_free_full()</code></a> using <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> as <a href="https://developer.gnome.org/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> function. </p>
 <p><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> ModemManager.Sms][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -698,13 +741,13 @@ is set. The returned value should be freed with <a href="https://developer.gnome
 <a name="mm-modem-messaging-list-sync"></a><h3>mm_modem_messaging_list_sync ()</h3>
 <pre class="programlisting"><a href="https://developer.gnome.org/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *
 mm_modem_messaging_list_sync (<em class="parameter"><code><a class="link" href="MMModemMessaging.html" title="MMModemMessaging"><span class="type">MMModemMessaging</span></a> *self</code></em>,
-                              <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                              <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                               <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Synchronously lists the <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> objects in the modem.</p>
 <p>The calling thread is blocked until a reply is received. See <a class="link" href="MMModemMessaging.html#mm-modem-messaging-list" title="mm_modem_messaging_list ()"><code class="function">mm_modem_messaging_list()</code></a>
 for the asynchronous version of this method.</p>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.15.6"></a><h4>Parameters</h4>
+<a name="mm-modem-messaging-list-sync.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -719,7 +762,7 @@ for the asynchronous version of this method.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
+<td class="parameter_description"><p> A <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -731,7 +774,7 @@ for the asynchronous version of this method.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.4.6.2.8.15.7"></a><h4>Returns</h4>
+<a name="mm-modem-messaging-list-sync.returns"></a><h4>Returns</h4>
 <p> A list of <a class="link" href="MMSms.html" title="MMSms"><span class="type">MMSms</span></a> objects, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if either not found or <em class="parameter"><code>error</code></em>
 is set. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free-full"><code class="function">g_list_free_full()</code></a> using <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> as <a href="https://developer.gnome.org/glib/unstable/glib-Datasets.html#GDestroyNotify"><span class="type">GDestroyNotify</span></a> function. </p>
 <p><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> MMSms][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
@@ -749,6 +792,6 @@ using the provided API.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

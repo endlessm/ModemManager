@@ -7,8 +7,8 @@
 <link rel="home" href="index.html" title="libmm-glib Reference Manual">
 <link rel="up" href="ch04.html" title="The Bearer object">
 <link rel="prev" href="MMBearerProperties.html" title="MMBearerProperties">
-<link rel="next" href="ch05.html" title="The SIM object">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<link rel="next" href="libmm-glib-MMBearerStats.html" title="MMBearerStats">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -21,7 +21,7 @@
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch04.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="MMBearerProperties.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="ch05.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="libmm-glib-MMBearerStats.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="MMBearerIpConfig"></a><div class="titlepage"></div>
@@ -103,7 +103,7 @@
 </div>
 <div class="refsect1">
 <a name="MMBearerIpConfig.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
     <span class="lineart">╰──</span> MMBearerIpConfig
 </pre>
 </div>
@@ -123,7 +123,7 @@ the bearer to finish the connection.</p>
 mm_bearer_ip_config_get_method (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);</pre>
 <p>Gets the IP method to be used with this bearer.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.7.2.5"></a><h4>Parameters</h4>
+<a name="mm-bearer-ip-config-get-method.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -138,7 +138,7 @@ mm_bearer_ip_config_get_method (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.5.4.7.2.6"></a><h4>Returns</h4>
+<a name="mm-bearer-ip-config-get-method.returns"></a><h4>Returns</h4>
 <p> a <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpMethod"><span class="type">MMBearerIpMethod</span></a>.</p>
 </div>
 </div>
@@ -149,7 +149,7 @@ mm_bearer_ip_config_get_method (<em class="parameter"><code><a class="link" href
 mm_bearer_ip_config_get_address (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);</pre>
 <p>Gets the IP address to be used with this bearer.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.7.3.5"></a><h4>Parameters</h4>
+<a name="mm-bearer-ip-config-get-address.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -164,7 +164,7 @@ mm_bearer_ip_config_get_address (<em class="parameter"><code><a class="link" hre
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.5.4.7.3.6"></a><h4>Returns</h4>
+<a name="mm-bearer-ip-config-get-address.returns"></a><h4>Returns</h4>
 <p> a string with the IP address, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if unknown. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
 .</p>
 </div>
@@ -176,7 +176,7 @@ mm_bearer_ip_config_get_address (<em class="parameter"><code><a class="link" hre
 mm_bearer_ip_config_get_prefix (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);</pre>
 <p>Gets the network prefix to be used with this bearer.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.7.4.5"></a><h4>Parameters</h4>
+<a name="mm-bearer-ip-config-get-prefix.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -191,7 +191,7 @@ mm_bearer_ip_config_get_prefix (<em class="parameter"><code><a class="link" href
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.5.4.7.4.6"></a><h4>Returns</h4>
+<a name="mm-bearer-ip-config-get-prefix.returns"></a><h4>Returns</h4>
 <p> the network prefix.</p>
 </div>
 </div>
@@ -202,7 +202,7 @@ mm_bearer_ip_config_get_prefix (<em class="parameter"><code><a class="link" href
 mm_bearer_ip_config_get_dns (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);</pre>
 <p>Gets the list of IP addresses of DNS servers to be used with this bearer.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.7.5.5"></a><h4>Parameters</h4>
+<a name="mm-bearer-ip-config-get-dns.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -217,7 +217,7 @@ mm_bearer_ip_config_get_dns (<em class="parameter"><code><a class="link" href="M
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.5.4.7.5.6"></a><h4>Returns</h4>
+<a name="mm-bearer-ip-config-get-dns.returns"></a><h4>Returns</h4>
 <p> a NULL-terminated array of strings. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
 . </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> zero-terminated=1]</span></p>
@@ -230,7 +230,7 @@ mm_bearer_ip_config_get_dns (<em class="parameter"><code><a class="link" href="M
 mm_bearer_ip_config_get_gateway (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);</pre>
 <p>Gets the IP address of the gateway to be used with this bearer.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.7.6.5"></a><h4>Parameters</h4>
+<a name="mm-bearer-ip-config-get-gateway.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -245,7 +245,7 @@ mm_bearer_ip_config_get_gateway (<em class="parameter"><code><a class="link" hre
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.5.4.7.6.6"></a><h4>Returns</h4>
+<a name="mm-bearer-ip-config-get-gateway.returns"></a><h4>Returns</h4>
 <p> a string with the IP address, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if unknown. Do not free the returned value, it is owned by <em class="parameter"><code>self</code></em>
 .</p>
 </div>
@@ -257,7 +257,7 @@ mm_bearer_ip_config_get_gateway (<em class="parameter"><code><a class="link" hre
 mm_bearer_ip_config_get_mtu (<em class="parameter"><code><a class="link" href="MMBearerIpConfig.html" title="MMBearerIpConfig"><span class="type">MMBearerIpConfig</span></a> *self</code></em>);</pre>
 <p>Gets the MTU to be used with this bearer.</p>
 <div class="refsect3">
-<a name="id-1.2.5.4.7.7.5"></a><h4>Parameters</h4>
+<a name="mm-bearer-ip-config-get-mtu.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -272,7 +272,7 @@ mm_bearer_ip_config_get_mtu (<em class="parameter"><code><a class="link" href="M
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.5.4.7.7.6"></a><h4>Returns</h4>
+<a name="mm-bearer-ip-config-get-mtu.returns"></a><h4>Returns</h4>
 <p> the MTU.</p>
 </div>
 </div>
@@ -288,6 +288,6 @@ only be accessed using the provided API.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

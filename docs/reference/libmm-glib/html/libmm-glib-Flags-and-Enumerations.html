@@ -8,7 +8,7 @@
 <link rel="up" href="ch01.html" title="Common enums and flags helpers">
 <link rel="prev" href="ch01.html" title="Common enums and flags helpers">
 <link rel="next" href="ch02.html" title="The Manager object">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -291,6 +291,27 @@
 <a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-oma-session-state-failed-reason-get-string" title="mm_oma_session_state_failed_reason_get_string ()">mm_oma_session_state_failed_reason_get_string</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
+<tr>
+<td class="function_type">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-call-direction-get-string" title="mm_call_direction_get_string ()">mm_call_direction_get_string</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-call-state-get-string" title="mm_call_state_get_string ()">mm_call_state_get_string</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="libmm-glib-Flags-and-Enumerations.html#mm-call-state-reason-get-string" title="mm_call_state_reason_get_string ()">mm_call_state_reason_get_string</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -306,7 +327,7 @@ mm_bearer_ip_method_get_string (<em class="parameter"><code><a href="/usr/share/
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpMethod"><span class="type">MMBearerIpMethod</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.2.5"></a><h4>Parameters</h4>
+<a name="mm-bearer-ip-method-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -321,7 +342,7 @@ mm_bearer_ip_method_get_string (<em class="parameter"><code><a href="/usr/share/
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.2.6"></a><h4>Returns</h4>
+<a name="mm-bearer-ip-method-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -334,7 +355,7 @@ mm_bearer_ip_family_get_string (<em class="parameter"><code><a href="/usr/share/
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"><span class="type">MMBearerIpFamily</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.3.5"></a><h4>Parameters</h4>
+<a name="mm-bearer-ip-family-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -349,7 +370,7 @@ mm_bearer_ip_family_get_string (<em class="parameter"><code><a href="/usr/share/
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.3.6"></a><h4>Returns</h4>
+<a name="mm-bearer-ip-family-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -364,7 +385,7 @@ mm_bearer_allowed_auth_build_string_from_mask
 each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth"><span class="type">MMBearerAllowedAuth</span></a> in <em class="parameter"><code>mask</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.4.5"></a><h4>Parameters</h4>
+<a name="mm-bearer-allowed-auth-build-string-from-mask.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -379,7 +400,7 @@ each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumer
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.4.6"></a><h4>Returns</h4>
+<a name="mm-bearer-allowed-auth-build-string-from-mask.returns"></a><h4>Returns</h4>
 <p> a string with the list of nicknames, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none given. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -394,7 +415,7 @@ mm_modem_capability_build_string_from_mask
 each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCapability"><span class="type">MMModemCapability</span></a> in <em class="parameter"><code>mask</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.5.5"></a><h4>Parameters</h4>
+<a name="mm-modem-capability-build-string-from-mask.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -409,7 +430,7 @@ each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumer
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.5.6"></a><h4>Returns</h4>
+<a name="mm-modem-capability-build-string-from-mask.returns"></a><h4>Returns</h4>
 <p> a string with the list of nicknames, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none given. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -422,7 +443,7 @@ mm_modem_state_get_string (<em class="parameter"><code><a href="/usr/share/gtk-d
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemState"><span class="type">MMModemState</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.6.5"></a><h4>Parameters</h4>
+<a name="mm-modem-state-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -437,7 +458,7 @@ mm_modem_state_get_string (<em class="parameter"><code><a href="/usr/share/gtk-d
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.6.6"></a><h4>Returns</h4>
+<a name="mm-modem-state-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -451,7 +472,7 @@ mm_modem_state_failed_reason_get_string
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemStateFailedReason"><span class="type">MMModemStateFailedReason</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.7.5"></a><h4>Parameters</h4>
+<a name="mm-modem-state-failed-reason-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -466,7 +487,7 @@ mm_modem_state_failed_reason_get_string
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.7.6"></a><h4>Returns</h4>
+<a name="mm-modem-state-failed-reason-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -480,7 +501,7 @@ mm_modem_state_change_reason_get_string
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemStateChangeReason"><span class="type">MMModemStateChangeReason</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.8.5"></a><h4>Parameters</h4>
+<a name="mm-modem-state-change-reason-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -495,7 +516,7 @@ mm_modem_state_change_reason_get_string
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.8.6"></a><h4>Returns</h4>
+<a name="mm-modem-state-change-reason-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -508,7 +529,7 @@ mm_modem_power_state_get_string (<em class="parameter"><code><a href="/usr/share
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPowerState"><span class="type">MMModemPowerState</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.9.5"></a><h4>Parameters</h4>
+<a name="mm-modem-power-state-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -523,7 +544,7 @@ mm_modem_power_state_get_string (<em class="parameter"><code><a href="/usr/share
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.9.6"></a><h4>Returns</h4>
+<a name="mm-modem-power-state-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -536,7 +557,7 @@ mm_modem_lock_get_string (<em class="parameter"><code><a href="/usr/share/gtk-do
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLock"><span class="type">MMModemLock</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.10.5"></a><h4>Parameters</h4>
+<a name="mm-modem-lock-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -551,7 +572,7 @@ mm_modem_lock_get_string (<em class="parameter"><code><a href="/usr/share/gtk-do
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.10.6"></a><h4>Returns</h4>
+<a name="mm-modem-lock-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -566,7 +587,7 @@ mm_modem_access_technology_build_string_from_mask
 each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemAccessTechnology"><span class="type">MMModemAccessTechnology</span></a> in <em class="parameter"><code>mask</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.11.5"></a><h4>Parameters</h4>
+<a name="mm-modem-access-technology-build-string-from-mask.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -581,7 +602,7 @@ each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumer
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.11.6"></a><h4>Returns</h4>
+<a name="mm-modem-access-technology-build-string-from-mask.returns"></a><h4>Returns</h4>
 <p> a string with the list of nicknames, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none given. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -595,7 +616,7 @@ mm_modem_mode_build_string_from_mask (<em class="parameter"><code><a href="/usr/
 each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemMode"><span class="type">MMModemMode</span></a> in <em class="parameter"><code>mask</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.12.5"></a><h4>Parameters</h4>
+<a name="mm-modem-mode-build-string-from-mask.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -610,7 +631,7 @@ each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumer
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.12.6"></a><h4>Returns</h4>
+<a name="mm-modem-mode-build-string-from-mask.returns"></a><h4>Returns</h4>
 <p> a string with the list of nicknames, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none given. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -623,7 +644,7 @@ mm_modem_band_get_string (<em class="parameter"><code><a href="/usr/share/gtk-do
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemBand"><span class="type">MMModemBand</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.13.5"></a><h4>Parameters</h4>
+<a name="mm-modem-band-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -638,7 +659,7 @@ mm_modem_band_get_string (<em class="parameter"><code><a href="/usr/share/gtk-do
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.13.6"></a><h4>Returns</h4>
+<a name="mm-modem-band-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -651,7 +672,7 @@ mm_modem_port_type_get_string (<em class="parameter"><code><a href="/usr/share/g
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemPortType"><span class="type">MMModemPortType</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.14.5"></a><h4>Parameters</h4>
+<a name="mm-modem-port-type-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -666,7 +687,7 @@ mm_modem_port_type_get_string (<em class="parameter"><code><a href="/usr/share/g
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.14.6"></a><h4>Returns</h4>
+<a name="mm-modem-port-type-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -680,7 +701,7 @@ mm_modem_3gpp_registration_state_get_string
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppRegistrationState"><span class="type">MMModem3gppRegistrationState</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.15.5"></a><h4>Parameters</h4>
+<a name="mm-modem-3gpp-registration-state-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -695,7 +716,7 @@ mm_modem_3gpp_registration_state_get_string
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.15.6"></a><h4>Returns</h4>
+<a name="mm-modem-3gpp-registration-state-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -709,7 +730,7 @@ mm_modem_3gpp_subscription_state_get_string
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppSubscriptionState"><span class="type">MMModem3gppSubscriptionState</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.16.5"></a><h4>Parameters</h4>
+<a name="mm-modem-3gpp-subscription-state-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -724,7 +745,7 @@ mm_modem_3gpp_subscription_state_get_string
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.16.6"></a><h4>Returns</h4>
+<a name="mm-modem-3gpp-subscription-state-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -739,7 +760,7 @@ mm_modem_3gpp_facility_build_string_from_mask
 each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppFacility"><span class="type">MMModem3gppFacility</span></a> in <em class="parameter"><code>mask</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.17.5"></a><h4>Parameters</h4>
+<a name="mm-modem-3gpp-facility-build-string-from-mask.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -754,7 +775,7 @@ each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumer
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.17.6"></a><h4>Returns</h4>
+<a name="mm-modem-3gpp-facility-build-string-from-mask.returns"></a><h4>Returns</h4>
 <p> a string with the list of nicknames, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none given. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -768,7 +789,7 @@ mm_modem_3gpp_network_availability_get_string
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppNetworkAvailability"><span class="type">MMModem3gppNetworkAvailability</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.18.5"></a><h4>Parameters</h4>
+<a name="mm-modem-3gpp-network-availability-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -783,7 +804,7 @@ mm_modem_3gpp_network_availability_get_string
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.18.6"></a><h4>Returns</h4>
+<a name="mm-modem-3gpp-network-availability-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -797,7 +818,7 @@ mm_modem_3gpp_ussd_session_state_get_string
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModem3gppUssdSessionState"><span class="type">MMModem3gppUssdSessionState</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.19.5"></a><h4>Parameters</h4>
+<a name="mm-modem-3gpp-ussd-session-state-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -812,7 +833,7 @@ mm_modem_3gpp_ussd_session_state_get_string
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.19.6"></a><h4>Returns</h4>
+<a name="mm-modem-3gpp-ussd-session-state-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -826,7 +847,7 @@ mm_modem_cdma_registration_state_get_string
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRegistrationState"><span class="type">MMModemCdmaRegistrationState</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.20.5"></a><h4>Parameters</h4>
+<a name="mm-modem-cdma-registration-state-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -841,7 +862,7 @@ mm_modem_cdma_registration_state_get_string
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.20.6"></a><h4>Returns</h4>
+<a name="mm-modem-cdma-registration-state-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -855,7 +876,7 @@ mm_modem_cdma_activation_state_get_string
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaActivationState"><span class="type">MMModemCdmaActivationState</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.21.5"></a><h4>Parameters</h4>
+<a name="mm-modem-cdma-activation-state-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -870,7 +891,7 @@ mm_modem_cdma_activation_state_get_string
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.21.6"></a><h4>Returns</h4>
+<a name="mm-modem-cdma-activation-state-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -883,7 +904,7 @@ mm_modem_cdma_rm_protocol_get_string (<em class="parameter"><code><a href="/usr/
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemCdmaRmProtocol"><span class="type">MMModemCdmaRmProtocol</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.22.5"></a><h4>Parameters</h4>
+<a name="mm-modem-cdma-rm-protocol-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -898,7 +919,7 @@ mm_modem_cdma_rm_protocol_get_string (<em class="parameter"><code><a href="/usr/
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.22.6"></a><h4>Returns</h4>
+<a name="mm-modem-cdma-rm-protocol-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -913,7 +934,7 @@ mm_modem_location_source_build_string_from_mask
 each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemLocationSource"><span class="type">MMModemLocationSource</span></a> in <em class="parameter"><code>mask</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.23.5"></a><h4>Parameters</h4>
+<a name="mm-modem-location-source-build-string-from-mask.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -928,7 +949,7 @@ each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumer
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.23.6"></a><h4>Returns</h4>
+<a name="mm-modem-location-source-build-string-from-mask.returns"></a><h4>Returns</h4>
 <p> a string with the list of nicknames, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none given. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -941,7 +962,7 @@ mm_modem_contacts_storage_get_string (<em class="parameter"><code><a href="/usr/
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemContactsStorage"><span class="type">MMModemContactsStorage</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.24.5"></a><h4>Parameters</h4>
+<a name="mm-modem-contacts-storage-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -956,7 +977,7 @@ mm_modem_contacts_storage_get_string (<em class="parameter"><code><a href="/usr/
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.24.6"></a><h4>Returns</h4>
+<a name="mm-modem-contacts-storage-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -969,7 +990,7 @@ mm_sms_pdu_type_get_string (<em class="parameter"><code><a href="/usr/share/gtk-
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsPduType"><span class="type">MMSmsPduType</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.25.5"></a><h4>Parameters</h4>
+<a name="mm-sms-pdu-type-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -984,7 +1005,7 @@ mm_sms_pdu_type_get_string (<em class="parameter"><code><a href="/usr/share/gtk-
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.25.6"></a><h4>Returns</h4>
+<a name="mm-sms-pdu-type-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -997,7 +1018,7 @@ mm_sms_state_get_string (<em class="parameter"><code><a href="/usr/share/gtk-doc
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsState"><span class="type">MMSmsState</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.26.5"></a><h4>Parameters</h4>
+<a name="mm-sms-state-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1012,7 +1033,7 @@ mm_sms_state_get_string (<em class="parameter"><code><a href="/usr/share/gtk-doc
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.26.6"></a><h4>Returns</h4>
+<a name="mm-sms-state-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -1025,7 +1046,7 @@ mm_sms_delivery_state_get_string (<em class="parameter"><code><a href="/usr/shar
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsDeliveryState"><span class="type">MMSmsDeliveryState</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.27.5"></a><h4>Parameters</h4>
+<a name="mm-sms-delivery-state-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1040,7 +1061,7 @@ mm_sms_delivery_state_get_string (<em class="parameter"><code><a href="/usr/shar
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.27.6"></a><h4>Returns</h4>
+<a name="mm-sms-delivery-state-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -1053,7 +1074,7 @@ mm_sms_storage_get_string (<em class="parameter"><code><a href="/usr/share/gtk-d
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsStorage"><span class="type">MMSmsStorage</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.28.5"></a><h4>Parameters</h4>
+<a name="mm-sms-storage-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1068,7 +1089,7 @@ mm_sms_storage_get_string (<em class="parameter"><code><a href="/usr/share/gtk-d
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.28.6"></a><h4>Returns</h4>
+<a name="mm-sms-storage-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -1081,7 +1102,7 @@ mm_sms_validity_type_get_string (<em class="parameter"><code><a href="/usr/share
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsValidityType"><span class="type">MMSmsValidityType</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.29.5"></a><h4>Parameters</h4>
+<a name="mm-sms-validity-type-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1096,7 +1117,7 @@ mm_sms_validity_type_get_string (<em class="parameter"><code><a href="/usr/share
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.29.6"></a><h4>Returns</h4>
+<a name="mm-sms-validity-type-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -1109,7 +1130,7 @@ mm_sms_cdma_teleservice_id_get_string (<em class="parameter"><code><a href="/usr
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsCdmaTeleserviceId"><span class="type">MMSmsCdmaTeleserviceId</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.30.5"></a><h4>Parameters</h4>
+<a name="mm-sms-cdma-teleservice-id-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1124,7 +1145,7 @@ mm_sms_cdma_teleservice_id_get_string (<em class="parameter"><code><a href="/usr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.30.6"></a><h4>Returns</h4>
+<a name="mm-sms-cdma-teleservice-id-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -1138,7 +1159,7 @@ mm_sms_cdma_service_category_get_string
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMSmsCdmaServiceCategory"><span class="type">MMSmsCdmaServiceCategory</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.31.5"></a><h4>Parameters</h4>
+<a name="mm-sms-cdma-service-category-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1153,7 +1174,7 @@ mm_sms_cdma_service_category_get_string
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.31.6"></a><h4>Returns</h4>
+<a name="mm-sms-cdma-service-category-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -1166,7 +1187,7 @@ mm_firmware_image_type_get_string (<em class="parameter"><code><a href="/usr/sha
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMFirmwareImageType"><span class="type">MMFirmwareImageType</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.32.5"></a><h4>Parameters</h4>
+<a name="mm-firmware-image-type-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1181,7 +1202,7 @@ mm_firmware_image_type_get_string (<em class="parameter"><code><a href="/usr/sha
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.32.6"></a><h4>Returns</h4>
+<a name="mm-firmware-image-type-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -1195,7 +1216,7 @@ mm_oma_feature_build_string_from_mask (<em class="parameter"><code><a href="/usr
 each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMOmaFeature"><span class="type">MMOmaFeature</span></a> in <em class="parameter"><code>mask</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.33.5"></a><h4>Parameters</h4>
+<a name="mm-oma-feature-build-string-from-mask.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1210,7 +1231,7 @@ each <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumer
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.33.6"></a><h4>Returns</h4>
+<a name="mm-oma-feature-build-string-from-mask.returns"></a><h4>Returns</h4>
 <p> a string with the list of nicknames, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none given. The returned value should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -1223,7 +1244,7 @@ mm_oma_session_type_get_string (<em class="parameter"><code><a href="/usr/share/
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMOmaSessionType"><span class="type">MMOmaSessionType</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.34.5"></a><h4>Parameters</h4>
+<a name="mm-oma-session-type-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1238,7 +1259,7 @@ mm_oma_session_type_get_string (<em class="parameter"><code><a href="/usr/share/
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.34.6"></a><h4>Returns</h4>
+<a name="mm-oma-session-type-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -1251,7 +1272,7 @@ mm_oma_session_state_get_string (<em class="parameter"><code><a href="/usr/share
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMOmaSessionState"><span class="type">MMOmaSessionState</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.35.5"></a><h4>Parameters</h4>
+<a name="mm-oma-session-state-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1266,7 +1287,7 @@ mm_oma_session_state_get_string (<em class="parameter"><code><a href="/usr/share
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.35.6"></a><h4>Returns</h4>
+<a name="mm-oma-session-state-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -1280,7 +1301,7 @@ mm_oma_session_state_failed_reason_get_string
 <p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMOmaSessionStateFailedReason"><span class="type">MMOmaSessionStateFailedReason</span></a> specified at <em class="parameter"><code>val</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.36.5"></a><h4>Parameters</h4>
+<a name="mm-oma-session-state-failed-reason-get-string.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -1295,7 +1316,91 @@ mm_oma_session_state_failed_reason_get_string
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.2.2.2.5.36.6"></a><h4>Returns</h4>
+<a name="mm-oma-session-state-failed-reason-get-string.returns"></a><h4>Returns</h4>
+<p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-call-direction-get-string"></a><h3>mm_call_direction_get_string ()</h3>
+<pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_call_direction_get_string (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMCallDirection"><span class="type">MMCallDirection</span></a> val</code></em>);</pre>
+<p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMCallDirection"><span class="type">MMCallDirection</span></a> specified at <em class="parameter"><code>val</code></em>
+.</p>
+<div class="refsect3">
+<a name="mm-call-direction-get-string.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>val</p></td>
+<td class="parameter_description"><p>a MMCallDirection.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="mm-call-direction-get-string.returns"></a><h4>Returns</h4>
+<p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-call-state-get-string"></a><h3>mm_call_state_get_string ()</h3>
+<pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_call_state_get_string (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMCallState"><span class="type">MMCallState</span></a> val</code></em>);</pre>
+<p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMCallState"><span class="type">MMCallState</span></a> specified at <em class="parameter"><code>val</code></em>
+.</p>
+<div class="refsect3">
+<a name="mm-call-state-get-string.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>val</p></td>
+<td class="parameter_description"><p>a MMCallState.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="mm-call-state-get-string.returns"></a><h4>Returns</h4>
+<p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mm-call-state-reason-get-string"></a><h3>mm_call_state_reason_get_string ()</h3>
+<pre class="programlisting">const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+mm_call_state_reason_get_string (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMCallStateReason"><span class="type">MMCallStateReason</span></a> val</code></em>);</pre>
+<p>Gets the nickname string for the <a href="/usr/share/gtk-doc/html/ModemManager/ModemManager-Flags-and-Enumerations.html#MMCallStateReason"><span class="type">MMCallStateReason</span></a> specified at <em class="parameter"><code>val</code></em>
+.</p>
+<div class="refsect3">
+<a name="mm-call-state-reason-get-string.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>val</p></td>
+<td class="parameter_description"><p>a MMCallStateReason.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="mm-call-state-reason-get-string.returns"></a><h4>Returns</h4>
 <p> a string with the nickname, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not found. Do not free the returned value. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -1306,6 +1411,6 @@ mm_oma_session_state_failed_reason_get_string
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

@@ -8,7 +8,7 @@
 <link rel="up" href="pt02.html" title="Part II. Low level API">
 <link rel="prev" href="MmGdbusObjectProxy.html" title="MmGdbusObjectProxy">
 <link rel="next" href="MmGdbusModem.html" title="MmGdbusModem">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -137,6 +137,14 @@
 <a class="link" href="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem-signal" title="mm_gdbus_object_skeleton_set_modem_signal ()">mm_gdbus_object_skeleton_set_modem_signal</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="MmGdbusObjectSkeleton.html#mm-gdbus-object-skeleton-set-modem-voice" title="mm_gdbus_object_skeleton_set_modem_voice ()">mm_gdbus_object_skeleton_set_modem_voice</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -155,8 +163,8 @@
 </div>
 <div class="refsect1">
 <a name="MmGdbusObjectSkeleton.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
-    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gio/unstable/GDBusObjectSkeleton.html">GDBusObjectSkeleton</a>
+<pre class="screen">    <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">╰──</span> <a href="https://developer.gnome.org/gio/unstable/GDBusObjectSkeleton.html#GDBusObjectSkeleton-struct">GDBusObjectSkeleton</a>
         <span class="lineart">╰──</span> MmGdbusObjectSkeleton
 </pre>
 </div>
@@ -164,7 +172,7 @@
 <a name="MmGdbusObjectSkeleton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 MmGdbusObjectSkeleton implements
- <a href="https://developer.gnome.org/gio/unstable/GDBusObject.html">GDBusObject</a> and  <a class="link" href="MmGdbusObject.html" title="MmGdbusObject">MmGdbusObject</a>.</p>
+ <a href="https://developer.gnome.org/gio/unstable/GDBusObject.html#GDBusObject-struct">GDBusObject</a> and  <a class="link" href="MmGdbusObject.html" title="MmGdbusObject">MmGdbusObject</a>.</p>
 </div>
 <div class="refsect1">
 <a name="MmGdbusObjectSkeleton.description"></a><h2>Description</h2>
@@ -177,7 +185,7 @@ MmGdbusObjectSkeleton implements
 mm_gdbus_object_skeleton_new (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *object_path</code></em>);</pre>
 <p>Creates a new skeleton object.</p>
 <div class="refsect3">
-<a name="id-1.3.8.8.2.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-object-skeleton-new.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -192,7 +200,7 @@ mm_gdbus_object_skeleton_new (<em class="parameter"><code>const <a href="https:/
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.8.8.2.6"></a><h4>Returns</h4>
+<a name="mm-gdbus-object-skeleton-new.returns"></a><h4>Returns</h4>
 <p> The skeleton object. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -206,7 +214,7 @@ mm_gdbus_object_skeleton_set_modem (<em class="parameter"><code><a class="link" 
 <p>Sets the <a class="link" href="MmGdbusModem.html" title="MmGdbusModem"><span class="type">MmGdbusModem</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem on <em class="parameter"><code>object</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.3.8.8.3.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-object-skeleton-set-modem.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -238,7 +246,7 @@ mm_gdbus_object_skeleton_set_modem3gpp
 <p>Sets the <a class="link" href="MmGdbusModem3gpp.html" title="MmGdbusModem3gpp"><span class="type">MmGdbusModem3gpp</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Modem3gpp on <em class="parameter"><code>object</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.3.8.8.4.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-object-skeleton-set-modem3gpp.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -270,7 +278,7 @@ mm_gdbus_object_skeleton_set_modem3gpp_ussd
 <p>Sets the <a class="link" href="MmGdbusModem3gppUssd.html" title="MmGdbusModem3gppUssd"><span class="type">MmGdbusModem3gppUssd</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd on <em class="parameter"><code>object</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.3.8.8.5.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-object-skeleton-set-modem3gpp-ussd.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -302,7 +310,7 @@ mm_gdbus_object_skeleton_set_modem_cdma
 <p>Sets the <a class="link" href="MmGdbusModemCdma.html" title="MmGdbusModemCdma"><span class="type">MmGdbusModemCdma</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.ModemCdma on <em class="parameter"><code>object</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.3.8.8.6.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-object-skeleton-set-modem-cdma.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -334,7 +342,7 @@ mm_gdbus_object_skeleton_set_modem_firmware
 <p>Sets the <a class="link" href="MmGdbusModemFirmware.html" title="MmGdbusModemFirmware"><span class="type">MmGdbusModemFirmware</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Firmware on <em class="parameter"><code>object</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.3.8.8.7.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-object-skeleton-set-modem-firmware.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -366,7 +374,7 @@ mm_gdbus_object_skeleton_set_modem_oma
 <p>Sets the <a class="link" href="MmGdbusModemOma.html" title="MmGdbusModemOma"><span class="type">MmGdbusModemOma</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Oma on <em class="parameter"><code>object</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.3.8.8.8.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-object-skeleton-set-modem-oma.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -398,7 +406,7 @@ mm_gdbus_object_skeleton_set_modem_location
 <p>Sets the <a class="link" href="MmGdbusModemLocation.html" title="MmGdbusModemLocation"><span class="type">MmGdbusModemLocation</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Location on <em class="parameter"><code>object</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.3.8.8.9.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-object-skeleton-set-modem-location.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -430,7 +438,7 @@ mm_gdbus_object_skeleton_set_modem_messaging
 <p>Sets the <a class="link" href="MmGdbusModemMessaging.html" title="MmGdbusModemMessaging"><span class="type">MmGdbusModemMessaging</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Messaging on <em class="parameter"><code>object</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.3.8.8.10.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-object-skeleton-set-modem-messaging.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -462,7 +470,7 @@ mm_gdbus_object_skeleton_set_modem_simple
 <p>Sets the <a class="link" href="MmGdbusModemSimple.html" title="MmGdbusModemSimple"><span class="type">MmGdbusModemSimple</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Simple on <em class="parameter"><code>object</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.3.8.8.11.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-object-skeleton-set-modem-simple.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -494,7 +502,7 @@ mm_gdbus_object_skeleton_set_modem_time
 <p>Sets the <a class="link" href="MmGdbusModemTime.html" title="MmGdbusModemTime"><span class="type">MmGdbusModemTime</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Time on <em class="parameter"><code>object</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.3.8.8.12.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-object-skeleton-set-modem-time.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -526,7 +534,7 @@ mm_gdbus_object_skeleton_set_modem_signal
 <p>Sets the <a class="link" href="MmGdbusModemSignal.html" title="MmGdbusModemSignal"><span class="type">MmGdbusModemSignal</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Signal on <em class="parameter"><code>object</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.3.8.8.13.5"></a><h4>Parameters</h4>
+<a name="mm-gdbus-object-skeleton-set-modem-signal.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -548,6 +556,38 @@ mm_gdbus_object_skeleton_set_modem_signal
 </table></div>
 </div>
 </div>
+<hr>
+<div class="refsect2">
+<a name="mm-gdbus-object-skeleton-set-modem-voice"></a><h3>mm_gdbus_object_skeleton_set_modem_voice ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+mm_gdbus_object_skeleton_set_modem_voice
+                               (<em class="parameter"><code><a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a> *object</code></em>,
+                                <em class="parameter"><code><a class="link" href="MmGdbusModemVoice.html" title="MmGdbusModemVoice"><span class="type">MmGdbusModemVoice</span></a> *interface_</code></em>);</pre>
+<p>Sets the <a class="link" href="MmGdbusModemVoice.html" title="MmGdbusModemVoice"><span class="type">MmGdbusModemVoice</span></a> instance for the D-Bus interface org.freedesktop.ModemManager1.Modem.Voice on <em class="parameter"><code>object</code></em>
+.</p>
+<div class="refsect3">
+<a name="mm-gdbus-object-skeleton-set-modem-voice.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>object</p></td>
+<td class="parameter_description"><p>A <a class="link" href="MmGdbusObjectSkeleton.html" title="MmGdbusObjectSkeleton"><span class="type">MmGdbusObjectSkeleton</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>interface_</p></td>
+<td class="parameter_description"><p> A <a class="link" href="MmGdbusModemVoice.html" title="MmGdbusModemVoice"><span class="type">MmGdbusModemVoice</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to clear the interface. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
 </div>
 <div class="refsect1">
 <a name="MmGdbusObjectSkeleton.other_details"></a><h2>Types and Values</h2>
@@ -559,6 +599,6 @@ mm_gdbus_object_skeleton_set_modem_signal
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

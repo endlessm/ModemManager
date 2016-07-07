@@ -27,7 +27,6 @@
 #include "mm-error-helpers.h"
 #include "mm-log.h"
 #include "mm-sim-mbim.h"
-#include "mm-modem-helpers-mbim.h"
 
 G_DEFINE_TYPE (MMSimMbim, mm_sim_mbim, MM_TYPE_BASE_SIM)
 
@@ -88,7 +87,7 @@ simid_subscriber_ready_state_ready (MbimDevice *device,
 
     response = mbim_device_command_finish (device, res, &error);
     if (response &&
-        mm_mbim_helper_response_get_result (response, &error) &&
+        mbim_message_response_get_result (response, MBIM_MESSAGE_TYPE_COMMAND_DONE, &error) &&
         mbim_message_subscriber_ready_status_response_parse (
             response,
             NULL, /* ready_state */
@@ -156,7 +155,7 @@ imsi_subscriber_ready_state_ready (MbimDevice *device,
 
     response = mbim_device_command_finish (device, res, &error);
     if (response &&
-        mm_mbim_helper_response_get_result (response, &error) &&
+        mbim_message_response_get_result (response, MBIM_MESSAGE_TYPE_COMMAND_DONE, &error) &&
         mbim_message_subscriber_ready_status_response_parse (
             response,
             NULL, /* ready_state */
@@ -228,7 +227,7 @@ load_operator_identifier_ready (MbimDevice *device,
 
     response = mbim_device_command_finish (device, res, &error);
     if (response &&
-        mm_mbim_helper_response_get_result (response, &error) &&
+        mbim_message_response_get_result (response, MBIM_MESSAGE_TYPE_COMMAND_DONE, &error) &&
         mbim_message_home_provider_response_parse (
             response,
             &provider,
@@ -295,7 +294,7 @@ load_operator_name_ready (MbimDevice *device,
 
     response = mbim_device_command_finish (device, res, &error);
     if (response &&
-        mm_mbim_helper_response_get_result (response, &error) &&
+        mbim_message_response_get_result (response, MBIM_MESSAGE_TYPE_COMMAND_DONE, &error) &&
         mbim_message_home_provider_response_parse (
             response,
             &provider,
@@ -357,7 +356,7 @@ pin_set_enter_ready (MbimDevice *device,
 
     response = mbim_device_command_finish (device, res, &error);
     if (response &&
-        !mm_mbim_helper_response_get_result (response, &error)) {
+        !mbim_message_response_get_result (response, MBIM_MESSAGE_TYPE_COMMAND_DONE, &error)) {
         /* Sending PIN failed, build a better error to report */
         if (mbim_message_pin_response_parse (
                 response,
@@ -449,7 +448,7 @@ puk_set_enter_ready (MbimDevice *device,
 
     response = mbim_device_command_finish (device, res, &error);
     if (response &&
-        !mm_mbim_helper_response_get_result (response, &error)) {
+        !mbim_message_response_get_result (response, MBIM_MESSAGE_TYPE_COMMAND_DONE, &error)) {
         /* Sending PUK failed, build a better error to report */
         if (mbim_message_pin_response_parse (
                 response,
@@ -539,7 +538,7 @@ pin_set_enable_ready (MbimDevice *device,
 
     response = mbim_device_command_finish (device, res, &error);
     if (response) {
-        mm_mbim_helper_response_get_result (response, &error);
+        mbim_message_response_get_result (response, MBIM_MESSAGE_TYPE_COMMAND_DONE, &error);
         mbim_message_unref (response);
     }
 
@@ -619,7 +618,7 @@ pin_set_change_ready (MbimDevice *device,
 
     response = mbim_device_command_finish (device, res, &error);
     if (response) {
-        mm_mbim_helper_response_get_result (response, &error);
+        mbim_message_response_get_result (response, MBIM_MESSAGE_TYPE_COMMAND_DONE, &error);
         mbim_message_unref (response);
     }
 

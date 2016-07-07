@@ -45,6 +45,7 @@
         <sub name="org.freedesktop.ModemManager1.Modem.Messaging" link="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html"/>
         <sub name="org.freedesktop.ModemManager1.Modem.Location" link="gdbus-org.freedesktop.ModemManager1.Modem.Location.html"/>
         <sub name="org.freedesktop.ModemManager1.Modem.Time" link="gdbus-org.freedesktop.ModemManager1.Modem.Time.html"/>
+        <sub name="org.freedesktop.ModemManager1.Modem.Voice" link="gdbus-org.freedesktop.ModemManager1.Modem.Voice.html"/>
         <sub name="org.freedesktop.ModemManager1.Modem.Firmware" link="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html"/>
         <sub name="org.freedesktop.ModemManager1.Modem.Signal" link="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html"/>
         <sub name="org.freedesktop.ModemManager1.Modem.Oma" link="gdbus-org.freedesktop.ModemManager1.Modem.Oma.html"/>
@@ -58,25 +59,31 @@
       <sub name="The /org/freedesktop/ModemManager/SMSs objects" link="ref-dbus-object-sms.html">
         <sub name="org.freedesktop.ModemManager1.Sms" link="gdbus-org.freedesktop.ModemManager1.Sms.html"/>
       </sub>
+      <sub name="The /org/freedesktop/ModemManager/Calls objects" link="ref-dbus-object-call.html">
+        <sub name="org.freedesktop.ModemManager1.Call" link="gdbus-org.freedesktop.ModemManager1.Call.html"/>
+      </sub>
     </sub>
     <sub name="Migrating from ModemManager 0.6 to ModemManager 1.0" link="ref-migrating.html">
-      <sub name="" link="ch12.html">
-        <sub name="Listing available modems" link="ch12.html#id-1.5.3.1"/>
-        <sub name="PIN unlocking" link="ch12s02.html"/>
-        <sub name="Connection and disconnection" link="ch12s03.html"/>
-        <sub name="Simple connection" link="ch12s04.html"/>
+      <sub name="" link="ch13.html">
+        <sub name="Listing available modems" link="ch13.html#id-1.5.3.1"/>
+        <sub name="PIN unlocking" link="ch13s02.html"/>
+        <sub name="Connection and disconnection" link="ch13s03.html"/>
+        <sub name="Simple connection" link="ch13s04.html"/>
       </sub>
     </sub>
     <sub name="Index" link="ix01.html"/>
   </chapters>
   <functions>
+    <keyword type="macro" name="MM_CHECK_VERSION()" link="ModemManager-Version-checks.html#MM-CHECK-VERSION:CAPS"/>
     <keyword type="macro" name="MM_MAJOR_VERSION" link="ModemManager-Version-checks.html#MM-MAJOR-VERSION:CAPS"/>
     <keyword type="macro" name="MM_MINOR_VERSION" link="ModemManager-Version-checks.html#MM-MINOR-VERSION:CAPS"/>
     <keyword type="macro" name="MM_MICRO_VERSION" link="ModemManager-Version-checks.html#MM-MICRO-VERSION:CAPS"/>
-    <keyword type="macro" name="MM_CHECK_VERSION()" link="ModemManager-Version-checks.html#MM-CHECK-VERSION:CAPS"/>
     <keyword type="enum" name="enum MMBearerIpFamily" link="ModemManager-Flags-and-Enumerations.html#MMBearerIpFamily"/>
     <keyword type="enum" name="enum MMBearerIpMethod" link="ModemManager-Flags-and-Enumerations.html#MMBearerIpMethod"/>
     <keyword type="enum" name="enum MMBearerAllowedAuth" link="ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth"/>
+    <keyword type="enum" name="enum MMCallDirection" link="ModemManager-Flags-and-Enumerations.html#MMCallDirection"/>
+    <keyword type="enum" name="enum MMCallState" link="ModemManager-Flags-and-Enumerations.html#MMCallState"/>
+    <keyword type="enum" name="enum MMCallStateReason" link="ModemManager-Flags-and-Enumerations.html#MMCallStateReason"/>
     <keyword type="enum" name="enum MMFirmwareImageType" link="ModemManager-Flags-and-Enumerations.html#MMFirmwareImageType"/>
     <keyword type="enum" name="enum MMModem3gppFacility" link="ModemManager-Flags-and-Enumerations.html#MMModem3gppFacility"/>
     <keyword type="enum" name="enum MMModem3gppNetworkAvailability" link="ModemManager-Flags-and-Enumerations.html#MMModem3gppNetworkAvailability"/>
@@ -195,13 +202,23 @@
     <keyword type="property" name="The &quot;DefaultStorage&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Messaging.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Messaging.DefaultStorage"/>
     <keyword type="method" name="The Setup() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Location.Setup"/>
     <keyword type="method" name="The GetLocation() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Location.GetLocation"/>
+    <keyword type="method" name="The SetSuplServer() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Location.SetSuplServer"/>
+    <keyword type="method" name="The SetGpsRefreshRate() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Location.SetGpsRefreshRate"/>
     <keyword type="property" name="The &quot;Capabilities&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Location.Capabilities"/>
     <keyword type="property" name="The &quot;Enabled&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Location.Enabled"/>
     <keyword type="property" name="The &quot;SignalsLocation&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Location.SignalsLocation"/>
     <keyword type="property" name="The &quot;Location&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Location.Location"/>
+    <keyword type="property" name="The &quot;SuplServer&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Location.SuplServer"/>
+    <keyword type="property" name="The &quot;GpsRefreshRate&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Location.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Location.GpsRefreshRate"/>
     <keyword type="method" name="The GetNetworkTime() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Time.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Time.GetNetworkTime"/>
     <keyword type="signal" name="The &quot;NetworkTimeChanged&quot; signal" link="gdbus-org.freedesktop.ModemManager1.Modem.Time.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Time.NetworkTimeChanged"/>
     <keyword type="property" name="The &quot;NetworkTimezone&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Time.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Time.NetworkTimezone"/>
+    <keyword type="method" name="The ListCalls() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Voice.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Voice.ListCalls"/>
+    <keyword type="method" name="The DeleteCall() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Voice.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Voice.DeleteCall"/>
+    <keyword type="method" name="The CreateCall() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Voice.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Voice.CreateCall"/>
+    <keyword type="signal" name="The &quot;CallAdded&quot; signal" link="gdbus-org.freedesktop.ModemManager1.Modem.Voice.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Voice.CallAdded"/>
+    <keyword type="signal" name="The &quot;CallDeleted&quot; signal" link="gdbus-org.freedesktop.ModemManager1.Modem.Voice.html#gdbus-signal-org-freedesktop-ModemManager1-Modem-Voice.CallDeleted"/>
+    <keyword type="property" name="The &quot;Calls&quot; property" link="gdbus-org.freedesktop.ModemManager1.Modem.Voice.html#gdbus-property-org-freedesktop-ModemManager1-Modem-Voice.Calls"/>
     <keyword type="method" name="The List() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Firmware.List"/>
     <keyword type="method" name="The Select() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Firmware.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Firmware.Select"/>
     <keyword type="method" name="The Setup() method" link="gdbus-org.freedesktop.ModemManager1.Modem.Signal.html#gdbus-method-org-freedesktop-ModemManager1-Modem-Signal.Setup"/>
@@ -227,6 +244,7 @@
     <keyword type="property" name="The &quot;Suspended&quot; property" link="gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.Suspended"/>
     <keyword type="property" name="The &quot;Ip4Config&quot; property" link="gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.Ip4Config"/>
     <keyword type="property" name="The &quot;Ip6Config&quot; property" link="gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.Ip6Config"/>
+    <keyword type="property" name="The &quot;Stats&quot; property" link="gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.Stats"/>
     <keyword type="property" name="The &quot;IpTimeout&quot; property" link="gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.IpTimeout"/>
     <keyword type="property" name="The &quot;Properties&quot; property" link="gdbus-org.freedesktop.ModemManager1.Bearer.html#gdbus-property-org-freedesktop-ModemManager1-Bearer.Properties"/>
     <keyword type="method" name="The SendPin() method" link="gdbus-org.freedesktop.ModemManager1.Sim.html#gdbus-method-org-freedesktop-ModemManager1-Sim.SendPin"/>
@@ -255,6 +273,16 @@
     <keyword type="property" name="The &quot;DischargeTimestamp&quot; property" link="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.DischargeTimestamp"/>
     <keyword type="property" name="The &quot;DeliveryState&quot; property" link="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.DeliveryState"/>
     <keyword type="property" name="The &quot;Storage&quot; property" link="gdbus-org.freedesktop.ModemManager1.Sms.html#gdbus-property-org-freedesktop-ModemManager1-Sms.Storage"/>
+    <keyword type="method" name="The Start() method" link="gdbus-org.freedesktop.ModemManager1.Call.html#gdbus-method-org-freedesktop-ModemManager1-Call.Start"/>
+    <keyword type="method" name="The Accept() method" link="gdbus-org.freedesktop.ModemManager1.Call.html#gdbus-method-org-freedesktop-ModemManager1-Call.Accept"/>
+    <keyword type="method" name="The Hangup() method" link="gdbus-org.freedesktop.ModemManager1.Call.html#gdbus-method-org-freedesktop-ModemManager1-Call.Hangup"/>
+    <keyword type="method" name="The SendDtmf() method" link="gdbus-org.freedesktop.ModemManager1.Call.html#gdbus-method-org-freedesktop-ModemManager1-Call.SendDtmf"/>
+    <keyword type="signal" name="The &quot;DtmfReceived&quot; signal" link="gdbus-org.freedesktop.ModemManager1.Call.html#gdbus-signal-org-freedesktop-ModemManager1-Call.DtmfReceived"/>
+    <keyword type="signal" name="The &quot;StateChanged&quot; signal" link="gdbus-org.freedesktop.ModemManager1.Call.html#gdbus-signal-org-freedesktop-ModemManager1-Call.StateChanged"/>
+    <keyword type="property" name="The &quot;State&quot; property" link="gdbus-org.freedesktop.ModemManager1.Call.html#gdbus-property-org-freedesktop-ModemManager1-Call.State"/>
+    <keyword type="property" name="The &quot;StateReason&quot; property" link="gdbus-org.freedesktop.ModemManager1.Call.html#gdbus-property-org-freedesktop-ModemManager1-Call.StateReason"/>
+    <keyword type="property" name="The &quot;Direction&quot; property" link="gdbus-org.freedesktop.ModemManager1.Call.html#gdbus-property-org-freedesktop-ModemManager1-Call.Direction"/>
+    <keyword type="property" name="The &quot;Number&quot; property" link="gdbus-org.freedesktop.ModemManager1.Call.html#gdbus-property-org-freedesktop-ModemManager1-Call.Number"/>
     <keyword type="constant" name="MM_BEARER_IP_FAMILY_NONE" link="ModemManager-Flags-and-Enumerations.html#MM-BEARER-IP-FAMILY-NONE:CAPS"/>
     <keyword type="constant" name="MM_BEARER_IP_FAMILY_IPV4" link="ModemManager-Flags-and-Enumerations.html#MM-BEARER-IP-FAMILY-IPV4:CAPS"/>
     <keyword type="constant" name="MM_BEARER_IP_FAMILY_IPV6" link="ModemManager-Flags-and-Enumerations.html#MM-BEARER-IP-FAMILY-IPV6:CAPS"/>
@@ -271,6 +299,24 @@
     <keyword type="constant" name="MM_BEARER_ALLOWED_AUTH_MSCHAP" link="ModemManager-Flags-and-Enumerations.html#MM-BEARER-ALLOWED-AUTH-MSCHAP:CAPS"/>
     <keyword type="constant" name="MM_BEARER_ALLOWED_AUTH_MSCHAPV2" link="ModemManager-Flags-and-Enumerations.html#MM-BEARER-ALLOWED-AUTH-MSCHAPV2:CAPS"/>
     <keyword type="constant" name="MM_BEARER_ALLOWED_AUTH_EAP" link="ModemManager-Flags-and-Enumerations.html#MM-BEARER-ALLOWED-AUTH-EAP:CAPS"/>
+    <keyword type="constant" name="MM_CALL_DIRECTION_UNKNOWN" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-DIRECTION-UNKNOWN:CAPS"/>
+    <keyword type="constant" name="MM_CALL_DIRECTION_INCOMING" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-DIRECTION-INCOMING:CAPS"/>
+    <keyword type="constant" name="MM_CALL_DIRECTION_OUTGOING" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-DIRECTION-OUTGOING:CAPS"/>
+    <keyword type="constant" name="MM_CALL_STATE_UNKNOWN" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-STATE-UNKNOWN:CAPS"/>
+    <keyword type="constant" name="MM_CALL_STATE_DIALING" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-STATE-DIALING:CAPS"/>
+    <keyword type="constant" name="MM_CALL_STATE_RINGING_OUT" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-STATE-RINGING-OUT:CAPS"/>
+    <keyword type="constant" name="MM_CALL_STATE_RINGING_IN" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-STATE-RINGING-IN:CAPS"/>
+    <keyword type="constant" name="MM_CALL_STATE_ACTIVE" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-STATE-ACTIVE:CAPS"/>
+    <keyword type="constant" name="MM_CALL_STATE_HELD" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-STATE-HELD:CAPS"/>
+    <keyword type="constant" name="MM_CALL_STATE_WAITING" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-STATE-WAITING:CAPS"/>
+    <keyword type="constant" name="MM_CALL_STATE_TERMINATED" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-STATE-TERMINATED:CAPS"/>
+    <keyword type="constant" name="MM_CALL_STATE_REASON_UNKNOWN" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-STATE-REASON-UNKNOWN:CAPS"/>
+    <keyword type="constant" name="MM_CALL_STATE_REASON_OUTGOING_STARTED" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-STATE-REASON-OUTGOING-STARTED:CAPS"/>
+    <keyword type="constant" name="MM_CALL_STATE_REASON_INCOMING_NEW" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-STATE-REASON-INCOMING-NEW:CAPS"/>
+    <keyword type="constant" name="MM_CALL_STATE_REASON_ACCEPTED" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-STATE-REASON-ACCEPTED:CAPS"/>
+    <keyword type="constant" name="MM_CALL_STATE_REASON_TERMINATED" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-STATE-REASON-TERMINATED:CAPS"/>
+    <keyword type="constant" name="MM_CALL_STATE_REASON_REFUSED_OR_BUSY" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-STATE-REASON-REFUSED-OR-BUSY:CAPS"/>
+    <keyword type="constant" name="MM_CALL_STATE_REASON_ERROR" link="ModemManager-Flags-and-Enumerations.html#MM-CALL-STATE-REASON-ERROR:CAPS"/>
     <keyword type="constant" name="MM_FIRMWARE_IMAGE_TYPE_UNKNOWN" link="ModemManager-Flags-and-Enumerations.html#MM-FIRMWARE-IMAGE-TYPE-UNKNOWN:CAPS"/>
     <keyword type="constant" name="MM_FIRMWARE_IMAGE_TYPE_GENERIC" link="ModemManager-Flags-and-Enumerations.html#MM-FIRMWARE-IMAGE-TYPE-GENERIC:CAPS"/>
     <keyword type="constant" name="MM_FIRMWARE_IMAGE_TYPE_GOBI" link="ModemManager-Flags-and-Enumerations.html#MM-FIRMWARE-IMAGE-TYPE-GOBI:CAPS"/>
@@ -422,6 +468,7 @@
     <keyword type="constant" name="MM_MODEM_LOCATION_SOURCE_GPS_NMEA" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-LOCATION-SOURCE-GPS-NMEA:CAPS"/>
     <keyword type="constant" name="MM_MODEM_LOCATION_SOURCE_CDMA_BS" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-LOCATION-SOURCE-CDMA-BS:CAPS"/>
     <keyword type="constant" name="MM_MODEM_LOCATION_SOURCE_GPS_UNMANAGED" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-LOCATION-SOURCE-GPS-UNMANAGED:CAPS"/>
+    <keyword type="constant" name="MM_MODEM_LOCATION_SOURCE_AGPS" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-LOCATION-SOURCE-AGPS:CAPS"/>
     <keyword type="constant" name="MM_MODEM_LOCK_UNKNOWN" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-LOCK-UNKNOWN:CAPS"/>
     <keyword type="constant" name="MM_MODEM_LOCK_NONE" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-LOCK-NONE:CAPS"/>
     <keyword type="constant" name="MM_MODEM_LOCK_SIM_PIN" link="ModemManager-Flags-and-Enumerations.html#MM-MODEM-LOCK-SIM-PIN:CAPS"/>
@@ -769,6 +816,7 @@
     <keyword type="constant" name="MM_SERIAL_ERROR_FLASH_FAILED" link="ModemManager-Errors.html#MM-SERIAL-ERROR-FLASH-FAILED:CAPS"/>
     <keyword type="constant" name="MM_SERIAL_ERROR_NOT_OPEN" link="ModemManager-Errors.html#MM-SERIAL-ERROR-NOT-OPEN:CAPS"/>
     <keyword type="constant" name="MM_SERIAL_ERROR_PARSE_FAILED" link="ModemManager-Errors.html#MM-SERIAL-ERROR-PARSE-FAILED:CAPS"/>
+    <keyword type="constant" name="MM_SERIAL_ERROR_FRAME_NOT_FOUND" link="ModemManager-Errors.html#MM-SERIAL-ERROR-FRAME-NOT-FOUND:CAPS"/>
     <keyword type="constant" name="MM_CDMA_ACTIVATION_ERROR_NONE" link="ModemManager-Errors.html#MM-CDMA-ACTIVATION-ERROR-NONE:CAPS"/>
     <keyword type="constant" name="MM_CDMA_ACTIVATION_ERROR_UNKNOWN" link="ModemManager-Errors.html#MM-CDMA-ACTIVATION-ERROR-UNKNOWN:CAPS"/>
     <keyword type="constant" name="MM_CDMA_ACTIVATION_ERROR_ROAMING" link="ModemManager-Errors.html#MM-CDMA-ACTIVATION-ERROR-ROAMING:CAPS"/>

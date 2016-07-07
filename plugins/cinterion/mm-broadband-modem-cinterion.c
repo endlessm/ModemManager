@@ -71,30 +71,6 @@ struct _MMBroadbandModemCinterionPrivate {
     GArray *cnmi_supported_bfr;
 };
 
-/* Setup relationship between the band bitmask in the modem and the bitmask
- * in ModemManager. */
-typedef struct {
-    gchar *cinterion_band;
-    guint n_mm_bands;
-    MMModemBand mm_bands [4];
-} CinterionBand2G;
-
-/* Table checked in both MC75i (GPRS/EDGE) and EGS5 (GPRS) references.
- * Note that the modem's configuration is also based on a bitmask, but as we
- * will just support some of the combinations, we just use strings for them.
- */
-static const CinterionBand2G bands_2g[] = {
-    { "1",  1, { MM_MODEM_BAND_EGSM, 0, 0, 0 }},
-    { "2",  1, { MM_MODEM_BAND_DCS,  0, 0, 0 }},
-    { "4",  1, { MM_MODEM_BAND_PCS,  0, 0, 0 }},
-    { "8",  1, { MM_MODEM_BAND_G850, 0, 0, 0 }},
-    { "3",  2, { MM_MODEM_BAND_EGSM, MM_MODEM_BAND_DCS, 0, 0 }},
-    { "5",  2, { MM_MODEM_BAND_EGSM, MM_MODEM_BAND_PCS, 0, 0 }},
-    { "10", 2, { MM_MODEM_BAND_G850, MM_MODEM_BAND_DCS, 0, 0 }},
-    { "12", 2, { MM_MODEM_BAND_G850, MM_MODEM_BAND_PCS, 0, 0 }},
-    { "15", 4, { MM_MODEM_BAND_EGSM, MM_MODEM_BAND_DCS, MM_MODEM_BAND_PCS, MM_MODEM_BAND_G850 }}
-};
-
 /*****************************************************************************/
 /* Unsolicited events enabling */
 
@@ -553,7 +529,7 @@ power_off_timeout_cb (PowerOffContext *ctx)
                                      "Power off operation timed out");
     power_off_context_complete_and_free (ctx);
 
-    return FALSE;
+    return G_SOURCE_REMOVE;
 }
 
 static void
@@ -1588,7 +1564,7 @@ simstatus_timeout_cb (AfterSimUnlockContext *ctx)
 {
     ctx->timeout_id = 0;
     after_sim_unlock_context_step (ctx);
-    return FALSE;
+    return G_SOURCE_REMOVE;
 }
 
 static void

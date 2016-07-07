@@ -62,6 +62,8 @@ mm_object_peek_modem_simple
 mm_object_get_modem_simple
 mm_object_peek_modem_signal
 mm_object_get_modem_signal
+mm_object_peek_modem_voice
+mm_object_get_modem_voice
 <SUBSECTION Standard>
 MMObjectClass
 MM_IS_OBJECT
@@ -378,10 +380,19 @@ mm_modem_location_dup_path
 mm_modem_location_get_capabilities
 mm_modem_location_get_enabled
 mm_modem_location_signals_location
+mm_modem_location_dup_supl_server
+mm_modem_location_get_supl_server
+mm_modem_location_get_gps_refresh_rate
 <SUBSECTION Methods>
 mm_modem_location_setup
 mm_modem_location_setup_finish
 mm_modem_location_setup_sync
+mm_modem_location_set_supl_server
+mm_modem_location_set_supl_server_finish
+mm_modem_location_set_supl_server_sync
+mm_modem_location_set_gps_refresh_rate
+mm_modem_location_set_gps_refresh_rate_finish
+mm_modem_location_set_gps_refresh_rate_sync
 mm_modem_location_get_3gpp
 mm_modem_location_get_3gpp_finish
 mm_modem_location_get_3gpp_sync
@@ -879,6 +890,36 @@ mm_signal_get_type
 </SECTION>
 
 <SECTION>
+<FILE>mm-modem-voice</FILE>
+<TITLE>MMModemVoice</TITLE>
+MMModemVoice
+<SUBSECTION Getters>
+mm_modem_voice_get_path
+mm_modem_voice_dup_path
+
+<SUBSECTION Methods>
+mm_modem_voice_create_call
+mm_modem_voice_create_call_finish
+mm_modem_voice_create_call_sync
+mm_modem_voice_delete_call
+mm_modem_voice_delete_call_finish
+mm_modem_voice_delete_call_sync
+mm_modem_voice_list_calls
+mm_modem_voice_list_calls_finish
+mm_modem_voice_list_calls_sync
+<SUBSECTION Standard>
+MMModemVoiceClass
+MMModemVoicePrivate
+MM_IS_MODEM_VOICE
+MM_IS_MODEM_VOICE_CLASS
+MM_MODEM_VOICE
+MM_MODEM_VOICE_CLASS
+MM_MODEM_VOICE_GET_CLASS
+MM_TYPE_MODEM_VOICE
+mm_modem_voice_get_type
+</SECTION>
+
+<SECTION>
 <FILE>mm-bearer</FILE>
 <TITLE>MMBearer</TITLE>
 MMBearer
@@ -896,6 +937,8 @@ mm_bearer_peek_ipv6_config
 mm_bearer_get_ipv6_config
 mm_bearer_peek_properties
 mm_bearer_get_properties
+mm_bearer_peek_stats
+mm_bearer_get_stats
 <SUBSECTION Methods>
 mm_bearer_connect
 mm_bearer_connect_finish
@@ -947,6 +990,33 @@ MM_IS_BEARER_IP_CONFIG
 MM_IS_BEARER_IP_CONFIG_CLASS
 MM_TYPE_BEARER_IP_CONFIG
 mm_bearer_ip_config_get_type
+</SECTION>
+
+<SECTION>
+<FILE>mm-bearer-stats</FILE>
+<TITLE>MMBearerStats</TITLE>
+MMBearerStats
+<SUBSECTION Getters>
+mm_bearer_stats_get_duration
+mm_bearer_stats_get_rx_bytes
+mm_bearer_stats_get_tx_bytes
+<SUBSECTION Private>
+mm_bearer_stats_get_dictionary
+mm_bearer_stats_new
+mm_bearer_stats_new_from_dictionary
+mm_bearer_stats_set_duration
+mm_bearer_stats_set_rx_bytes
+mm_bearer_stats_set_tx_bytes
+<SUBSECTION Standard>
+MMBearerStatsClass
+MMBearerStatsPrivate
+MM_BEARER_STATS
+MM_BEARER_STATS_CLASS
+MM_BEARER_STATS_GET_CLASS
+MM_IS_BEARER_STATS
+MM_IS_BEARER_STATS_CLASS
+MM_TYPE_BEARER_STATS
+mm_bearer_stats_get_type
 </SECTION>
 
 <SECTION>
@@ -1129,6 +1199,74 @@ mm_sms_properties_get_type
 </SECTION>
 
 <SECTION>
+<FILE>mm-call</FILE>
+<TITLE>MMCall</TITLE>
+MMCall
+<SUBSECTION Getters>
+mm_call_get_path
+mm_call_dup_path
+mm_call_get_number
+mm_call_dup_number
+mm_call_get_direction
+mm_call_get_state
+mm_call_get_state_reason
+<SUBSECTION Methods>
+mm_call_start
+mm_call_start_finish
+mm_call_start_sync
+mm_call_accept
+mm_call_accept_finish
+mm_call_accept_sync
+mm_call_hangup
+mm_call_hangup_finish
+mm_call_hangup_sync
+mm_call_send_dtmf
+mm_call_send_dtmf_finish
+mm_call_send_dtmf_sync
+<SUBSECTION Standard>
+MMCallClass
+MM_IS_CALL
+MM_IS_CALL_CLASS
+MM_CALL
+MM_CALL_CLASS
+MM_CALL_GET_CLASS
+MM_TYPE_CALL
+mm_call_get_type
+</SECTION>
+
+<SECTION>
+<FILE>mm-call-properties</FILE>
+<TITLE>MMCallProperties</TITLE>
+MMCallProperties
+<SUBSECTION New>
+mm_call_properties_new
+<SUBSECTION GettersSetters>
+mm_call_properties_get_number
+mm_call_properties_set_number
+mm_call_properties_get_direction
+mm_call_properties_set_direction
+mm_call_properties_get_state
+mm_call_properties_set_state
+mm_call_properties_get_state_reason
+mm_call_properties_set_state_reason
+<SUBSECTION Private>
+mm_call_properties_get_dictionary
+mm_call_properties_dup
+mm_call_properties_new_from_dictionary
+mm_call_properties_new_from_string
+<SUBSECTION Standard>
+MMCallPropertiesClass
+MMCallPropertiesPrivate
+MM_IS_CALL_PROPERTIES
+MM_IS_CALL_PROPERTIES_CLASS
+MM_CALL_PROPERTIES
+MM_CALL_PROPERTIES_CLASS
+MM_CALL_PROPERTIES_GET_CLASS
+MM_TYPE_CALL_PROPERTIES
+mm_call_properties_get_type
+</SECTION>
+
+<SECTION>
 <FILE>mm-enums-types</FILE>
 <TITLE>Flags and Enumerations</TITLE>
 mm_bearer_ip_method_get_string
@@ -1166,6 +1304,9 @@ mm_oma_feature_build_string_from_mask
 mm_oma_session_type_get_string
 mm_oma_session_state_get_string
 mm_oma_session_state_failed_reason_get_string
+mm_call_direction_get_string
+mm_call_state_get_string
+mm_call_state_reason_get_string
 <SUBSECTION Private>
 mm_modem_capability_get_string
 mm_modem_lock_build_string_from_mask
@@ -1202,6 +1343,9 @@ mm_oma_feature_get_string
 mm_oma_session_type_build_string_from_mask
 mm_oma_session_state_build_string_from_mask
 mm_oma_session_state_failed_reason_build_string_from_mask
+mm_call_direction_build_string_from_mask
+mm_call_state_build_string_from_mask
+mm_call_state_reason_build_string_from_mask
 <SUBSECTION Standard>
 MM_TYPE_BEARER_IP_FAMILY
 MM_TYPE_BEARER_IP_METHOD
@@ -1238,6 +1382,9 @@ MM_TYPE_OMA_FEATURE
 MM_TYPE_OMA_SESSION_STATE
 MM_TYPE_OMA_SESSION_STATE_FAILED_REASON
 MM_TYPE_OMA_SESSION_TYPE
+MM_TYPE_CALL_DIRECTION
+MM_TYPE_CALL_STATE
+MM_TYPE_CALL_STATE_REASON
 mm_bearer_ip_family_get_type
 mm_bearer_ip_method_get_type
 mm_bearer_allowed_auth_get_type
@@ -1273,6 +1420,9 @@ mm_oma_feature_get_type
 mm_oma_session_state_failed_reason_get_type
 mm_oma_session_state_get_type
 mm_oma_session_type_get_type
+mm_call_direction_get_type
+mm_call_state_get_type
+mm_call_state_reason_get_type
 </SECTION>
 
 <SECTION>
@@ -1322,6 +1472,8 @@ mm_gdbus_bearer_get_properties
 mm_gdbus_bearer_dup_properties
 mm_gdbus_bearer_get_connected
 mm_gdbus_bearer_get_suspended
+mm_gdbus_bearer_get_stats
+mm_gdbus_bearer_dup_stats
 <SUBSECTION Methods>
 mm_gdbus_bearer_call_connect
 mm_gdbus_bearer_call_connect_finish
@@ -1338,6 +1490,7 @@ mm_gdbus_bearer_set_ip6_config
 mm_gdbus_bearer_set_ip_timeout
 mm_gdbus_bearer_set_properties
 mm_gdbus_bearer_set_suspended
+mm_gdbus_bearer_set_stats
 mm_gdbus_bearer_override_properties
 mm_gdbus_bearer_complete_connect
 mm_gdbus_bearer_complete_disconnect
@@ -1895,6 +2048,9 @@ mm_gdbus_modem_location_get_capabilities
 mm_gdbus_modem_location_get_signals_location
 mm_gdbus_modem_location_get_location
 mm_gdbus_modem_location_dup_location
+mm_gdbus_modem_location_dup_supl_server
+mm_gdbus_modem_location_get_supl_server
+mm_gdbus_modem_location_get_gps_refresh_rate
 <SUBSECTION Methods>
 mm_gdbus_modem_location_call_get_location
 mm_gdbus_modem_location_call_get_location_finish
@@ -1902,13 +2058,23 @@ mm_gdbus_modem_location_call_get_location_sync
 mm_gdbus_modem_location_call_setup
 mm_gdbus_modem_location_call_setup_finish
 mm_gdbus_modem_location_call_setup_sync
+mm_gdbus_modem_location_call_set_supl_server
+mm_gdbus_modem_location_call_set_supl_server_finish
+mm_gdbus_modem_location_call_set_supl_server_sync
+mm_gdbus_modem_location_call_set_gps_refresh_rate
+mm_gdbus_modem_location_call_set_gps_refresh_rate_finish
+mm_gdbus_modem_location_call_set_gps_refresh_rate_sync
 <SUBSECTION Private>
 mm_gdbus_modem_location_set_capabilities
 mm_gdbus_modem_location_set_enabled
 mm_gdbus_modem_location_set_location
 mm_gdbus_modem_location_set_signals_location
+mm_gdbus_modem_location_set_supl_server
+mm_gdbus_modem_location_set_gps_refresh_rate
 mm_gdbus_modem_location_complete_get_location
 mm_gdbus_modem_location_complete_setup
+mm_gdbus_modem_location_complete_set_supl_server
+mm_gdbus_modem_location_complete_set_gps_refresh_rate
 mm_gdbus_modem_location_interface_info
 mm_gdbus_modem_location_override_properties
 <SUBSECTION Standard>
@@ -2414,6 +2580,82 @@ mm_gdbus_modem_signal_skeleton_get_type
 </SECTION>
 
 <SECTION>
+<FILE>MmGdbusModemVoice</FILE>
+<TITLE>MmGdbusModemVoice</TITLE>
+MmGdbusModemVoice
+MmGdbusModemVoiceIface
+<SUBSECTION Getters>
+mm_gdbus_modem_voice_get_calls
+mm_gdbus_modem_voice_dup_calls
+<SUBSECTION Methods>
+mm_gdbus_modem_voice_call_create_call
+mm_gdbus_modem_voice_call_create_call_finish
+mm_gdbus_modem_voice_call_create_call_sync
+mm_gdbus_modem_voice_call_delete_call
+mm_gdbus_modem_voice_call_delete_call_finish
+mm_gdbus_modem_voice_call_delete_call_sync
+mm_gdbus_modem_voice_call_list_calls
+mm_gdbus_modem_voice_call_list_calls_finish
+mm_gdbus_modem_voice_call_list_calls_sync
+<SUBSECTION Private>
+mm_gdbus_modem_voice_set_calls
+mm_gdbus_modem_voice_emit_call_added
+mm_gdbus_modem_voice_emit_call_deleted
+mm_gdbus_modem_voice_complete_create_call
+mm_gdbus_modem_voice_complete_delete_call
+mm_gdbus_modem_voice_complete_list_calls
+mm_gdbus_modem_voice_interface_info
+mm_gdbus_modem_voice_override_properties
+<SUBSECTION Standard>
+MM_GDBUS_IS_MODEM_VOICE
+MM_GDBUS_MODEM_VOICE
+MM_GDBUS_MODEM_VOICE_GET_IFACE
+MM_GDBUS_TYPE_MODEM_VOICE
+mm_gdbus_modem_voice_get_type
+</SECTION>
+
+<SECTION>
+<FILE>MmGdbusModemVoiceProxy</FILE>
+<TITLE>MmGdbusModemVoiceProxy</TITLE>
+MmGdbusModemVoiceProxy
+<SUBSECTION New>
+mm_gdbus_modem_voice_proxy_new
+mm_gdbus_modem_voice_proxy_new_finish
+mm_gdbus_modem_voice_proxy_new_for_bus
+mm_gdbus_modem_voice_proxy_new_for_bus_finish
+mm_gdbus_modem_voice_proxy_new_for_bus_sync
+mm_gdbus_modem_voice_proxy_new_sync
+<SUBSECTION Standard>
+MmGdbusModemVoiceProxyClass
+MM_GDBUS_IS_MODEM_VOICE_PROXY
+MM_GDBUS_IS_MODEM_VOICE_PROXY_CLASS
+MM_GDBUS_MODEM_VOICE_PROXY
+MM_GDBUS_MODEM_VOICE_PROXY_CLASS
+MM_GDBUS_MODEM_VOICE_PROXY_GET_CLASS
+MM_GDBUS_TYPE_MODEM_VOICE_PROXY
+MmGdbusModemVoiceProxyPrivate
+mm_gdbus_modem_voice_proxy_get_type
+</SECTION>
+
+<SECTION>
+<FILE>MmGdbusModemVoiceSkeleton</FILE>
+<TITLE>MmGdbusModemVoiceSkeleton</TITLE>
+MmGdbusModemVoiceSkeleton
+<SUBSECTION New>
+mm_gdbus_modem_voice_skeleton_new
+<SUBSECTION Standard>
+MmGdbusModemVoiceSkeletonClass
+MM_GDBUS_IS_MODEM_VOICE_SKELETON
+MM_GDBUS_IS_MODEM_VOICE_SKELETON_CLASS
+MM_GDBUS_MODEM_VOICE_SKELETON
+MM_GDBUS_MODEM_VOICE_SKELETON_CLASS
+MM_GDBUS_MODEM_VOICE_SKELETON_GET_CLASS
+MM_GDBUS_TYPE_MODEM_VOICE_SKELETON
+MmGdbusModemVoiceSkeletonPrivate
+mm_gdbus_modem_voice_skeleton_get_type
+</SECTION>
+
+<SECTION>
 <FILE>MmGdbusObject</FILE>
 <TITLE>MmGdbusObject</TITLE>
 MmGdbusObject
@@ -2441,6 +2683,8 @@ mm_gdbus_object_peek_modem_simple
 mm_gdbus_object_get_modem_simple
 mm_gdbus_object_peek_modem_signal
 mm_gdbus_object_get_modem_signal
+mm_gdbus_object_peek_modem_voice
+mm_gdbus_object_get_modem_voice
 <SUBSECTION Methods>
 <SUBSECTION Private>
 <SUBSECTION Standard>
@@ -2487,6 +2731,7 @@ mm_gdbus_object_skeleton_set_modem_messaging
 mm_gdbus_object_skeleton_set_modem_simple
 mm_gdbus_object_skeleton_set_modem_time
 mm_gdbus_object_skeleton_set_modem_signal
+mm_gdbus_object_skeleton_set_modem_voice
 <SUBSECTION Standard>
 MmGdbusObjectSkeletonClass
 MM_GDBUS_IS_OBJECT_SKELETON
@@ -2715,4 +2960,90 @@ MM_GDBUS_SMS_SKELETON_GET_CLASS
 MM_GDBUS_TYPE_SMS_SKELETON
 MmGdbusSmsSkeletonPrivate
 mm_gdbus_sms_skeleton_get_type
+</SECTION>
+
+<SECTION>
+<FILE>MmGdbusCall</FILE>
+<TITLE>MmGdbusCall</TITLE>
+MmGdbusCall
+MmGdbusCallIface
+<SUBSECTION Getters>
+mm_gdbus_call_get_direction
+mm_gdbus_call_get_number
+mm_gdbus_call_dup_number
+mm_gdbus_call_get_state
+mm_gdbus_call_get_state_reason
+mm_gdbus_call_emit_dtmf_received
+mm_gdbus_call_emit_state_changed
+<SUBSECTION Methods>
+mm_gdbus_call_call_accept
+mm_gdbus_call_call_accept_finish
+mm_gdbus_call_call_accept_sync
+mm_gdbus_call_call_start
+mm_gdbus_call_call_start_finish
+mm_gdbus_call_call_start_sync
+mm_gdbus_call_call_hangup
+mm_gdbus_call_call_hangup_finish
+mm_gdbus_call_call_hangup_sync
+mm_gdbus_call_call_send_dtmf
+mm_gdbus_call_call_send_dtmf_finish
+mm_gdbus_call_call_send_dtmf_sync
+<SUBSECTION Private>
+mm_gdbus_call_set_direction
+mm_gdbus_call_set_number
+mm_gdbus_call_set_state
+mm_gdbus_call_set_state_reason
+mm_gdbus_call_complete_accept
+mm_gdbus_call_complete_hangup
+mm_gdbus_call_complete_send_dtmf
+mm_gdbus_call_complete_start
+mm_gdbus_call_interface_info
+mm_gdbus_call_override_properties
+<SUBSECTION Standard>
+MM_GDBUS_IS_CALL
+MM_GDBUS_CALL
+MM_GDBUS_CALL_GET_IFACE
+MM_GDBUS_TYPE_CALL
+mm_gdbus_call_get_type
+</SECTION>
+
+<SECTION>
+<FILE>MmGdbusCallProxy</FILE>
+<TITLE>MmGdbusCallProxy</TITLE>
+MmGdbusCallProxy
+<SUBSECTION New>
+mm_gdbus_call_proxy_new
+mm_gdbus_call_proxy_new_finish
+mm_gdbus_call_proxy_new_for_bus
+mm_gdbus_call_proxy_new_for_bus_finish
+mm_gdbus_call_proxy_new_for_bus_sync
+mm_gdbus_call_proxy_new_sync
+<SUBSECTION Standard>
+MmGdbusCallProxyClass
+MM_GDBUS_IS_CALL_PROXY
+MM_GDBUS_IS_CALL_PROXY_CLASS
+MM_GDBUS_CALL_PROXY
+MM_GDBUS_CALL_PROXY_CLASS
+MM_GDBUS_CALL_PROXY_GET_CLASS
+MM_GDBUS_TYPE_CALL_PROXY
+MmGdbusCallProxyPrivate
+mm_gdbus_call_proxy_get_type
+</SECTION>
+
+<SECTION>
+<FILE>MmGdbusCallSkeleton</FILE>
+<TITLE>MmGdbusCallSkeleton</TITLE>
+MmGdbusCallSkeleton
+<SUBSECTION New>
+mm_gdbus_call_skeleton_new
+<SUBSECTION Standard>
+MmGdbusCallSkeletonClass
+MM_GDBUS_IS_CALL_SKELETON
+MM_GDBUS_IS_CALL_SKELETON_CLASS
+MM_GDBUS_CALL_SKELETON
+MM_GDBUS_CALL_SKELETON_CLASS
+MM_GDBUS_CALL_SKELETON_GET_CLASS
+MM_GDBUS_TYPE_CALL_SKELETON
+MmGdbusCallSkeletonPrivate
+mm_gdbus_call_skeleton_get_type
 </SECTION>

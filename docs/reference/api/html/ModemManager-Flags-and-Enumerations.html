@@ -8,7 +8,7 @@
 <link rel="up" href="ref-common-types.html" title="Part II. Common types and definitions">
 <link rel="prev" href="ModemManager-Version-checks.html" title="Version checks">
 <link rel="next" href="ModemManager-Errors.html" title="Errors">
-<meta name="generator" content="GTK-Doc V1.24 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -50,6 +50,18 @@
 <tr>
 <td class="datatype_keyword">enum</td>
 <td class="function_name"><a class="link" href="ModemManager-Flags-and-Enumerations.html#MMBearerAllowedAuth" title="enum MMBearerAllowedAuth">MMBearerAllowedAuth</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="ModemManager-Flags-and-Enumerations.html#MMCallDirection" title="enum MMCallDirection">MMCallDirection</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="ModemManager-Flags-and-Enumerations.html#MMCallState" title="enum MMCallState">MMCallState</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="ModemManager-Flags-and-Enumerations.html#MMCallStateReason" title="enum MMCallStateReason">MMCallStateReason</a></td>
 </tr>
 <tr>
 <td class="datatype_keyword">enum</td>
@@ -197,7 +209,7 @@ ModemManager interface.</p>
 <a name="MMBearerIpFamily"></a><h3>enum MMBearerIpFamily</h3>
 <p>Type of IP family to be used in a given Bearer.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.2.4"></a><h4>Members</h4>
+<a name="MMBearerIpFamily.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -249,7 +261,7 @@ ModemManager interface.</p>
 <a name="MMBearerIpMethod"></a><h3>enum MMBearerIpMethod</h3>
 <p>Type of IP method configuration to be used in a given Bearer.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.3.4"></a><h4>Members</h4>
+<a name="MMBearerIpMethod.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -267,7 +279,10 @@ ModemManager interface.</p>
 <tr>
 <td class="enum_member_name"><p><a name="MM-BEARER-IP-METHOD-PPP:CAPS"></a>MM_BEARER_IP_METHOD_PPP</p></td>
 <td class="enum_member_description">
-<p>Use PPP to get the address.</p>
+<p>Use PPP to get IP addresses and DNS information.
+For IPv6, use PPP to retrieve the 64-bit Interface Identifier, use the IID to
+construct an IPv6 link-local address by following RFC 5072, and then run
+DHCP over the PPP link to retrieve DNS settings.</p>
 </td>
 <td class="enum_member_annotations"> </td>
 </tr>
@@ -275,7 +290,8 @@ ModemManager interface.</p>
 <td class="enum_member_name"><p><a name="MM-BEARER-IP-METHOD-STATIC:CAPS"></a>MM_BEARER_IP_METHOD_STATIC</p></td>
 <td class="enum_member_description">
 <p>Use the provided static IP configuration given
-by the modem to configure the IP data interface.</p>
+by the modem to configure the IP data interface.  Note that DNS servers may
+not be provided by the network or modem firmware.</p>
 </td>
 <td class="enum_member_annotations"> </td>
 </tr>
@@ -283,9 +299,11 @@ by the modem to configure the IP data interface.</p>
 <td class="enum_member_name"><p><a name="MM-BEARER-IP-METHOD-DHCP:CAPS"></a>MM_BEARER_IP_METHOD_DHCP</p></td>
 <td class="enum_member_description">
 <p>Begin DHCP or IPv6 SLAAC on the data interface to
-obtain necessary IP configuration details.  For IPv4 bearers DHCP should
-be used.  For IPv6 bearers SLAAC should be used to determine the prefix and
-any additional details.</p>
+obtain any necessary IP configuration details that are not already provided
+by the IP configuration.  For IPv4 bearers DHCP should be used.  For IPv6
+bearers SLAAC should be used, and the IP configuration may already contain
+a link-local address that should be assigned to the interface before SLAAC
+is started to obtain the rest of the configuration.</p>
 </td>
 <td class="enum_member_annotations"> </td>
 </tr>
@@ -298,7 +316,7 @@ any additional details.</p>
 <a name="MMBearerAllowedAuth"></a><h3>enum MMBearerAllowedAuth</h3>
 <p>Allowed authentication methods when authenticating with the network.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.4.4"></a><h4>Members</h4>
+<a name="MMBearerAllowedAuth.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -361,10 +379,185 @@ any additional details.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="MMCallDirection"></a><h3>enum MMCallDirection</h3>
+<div class="refsect3">
+<a name="MMCallDirection.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-DIRECTION-UNKNOWN:CAPS"></a>MM_CALL_DIRECTION_UNKNOWN</p></td>
+<td class="enum_member_description">
+<p>unknown.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-DIRECTION-INCOMING:CAPS"></a>MM_CALL_DIRECTION_INCOMING</p></td>
+<td class="enum_member_description">
+<p>call from network.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-DIRECTION-OUTGOING:CAPS"></a>MM_CALL_DIRECTION_OUTGOING</p></td>
+<td class="enum_member_description">
+<p>call to network.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMCallState"></a><h3>enum MMCallState</h3>
+<p>State of Call</p>
+<div class="refsect3">
+<a name="MMCallState.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-STATE-UNKNOWN:CAPS"></a>MM_CALL_STATE_UNKNOWN</p></td>
+<td class="enum_member_description">
+<p>default state for a new outgoing call.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-STATE-DIALING:CAPS"></a>MM_CALL_STATE_DIALING</p></td>
+<td class="enum_member_description">
+<p>outgoing call started. Wait for free channel.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-STATE-RINGING-OUT:CAPS"></a>MM_CALL_STATE_RINGING_OUT</p></td>
+<td class="enum_member_description">
+<p>incoming call is waiting for an answer.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-STATE-RINGING-IN:CAPS"></a>MM_CALL_STATE_RINGING_IN</p></td>
+<td class="enum_member_description">
+<p>outgoing call attached to GSM network, waiting for an answer.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-STATE-ACTIVE:CAPS"></a>MM_CALL_STATE_ACTIVE</p></td>
+<td class="enum_member_description">
+<p>call is active between two peers.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-STATE-HELD:CAPS"></a>MM_CALL_STATE_HELD</p></td>
+<td class="enum_member_description">
+<p>held call (by +CHLD AT command).</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-STATE-WAITING:CAPS"></a>MM_CALL_STATE_WAITING</p></td>
+<td class="enum_member_description">
+<p>waiting call (by +CCWA AT command).</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-STATE-TERMINATED:CAPS"></a>MM_CALL_STATE_TERMINATED</p></td>
+<td class="enum_member_description">
+<p>call is terminated.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="MMCallStateReason"></a><h3>enum MMCallStateReason</h3>
+<div class="refsect3">
+<a name="MMCallStateReason.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-STATE-REASON-UNKNOWN:CAPS"></a>MM_CALL_STATE_REASON_UNKNOWN</p></td>
+<td class="enum_member_description">
+<p>Default value for a new outgoing call.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-STATE-REASON-OUTGOING-STARTED:CAPS"></a>MM_CALL_STATE_REASON_OUTGOING_STARTED</p></td>
+<td class="enum_member_description">
+<p>Outgoing call is started.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-STATE-REASON-INCOMING-NEW:CAPS"></a>MM_CALL_STATE_REASON_INCOMING_NEW</p></td>
+<td class="enum_member_description">
+<p>Received a new incoming call.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-STATE-REASON-ACCEPTED:CAPS"></a>MM_CALL_STATE_REASON_ACCEPTED</p></td>
+<td class="enum_member_description">
+<p>Dialing or Ringing call is accepted.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-STATE-REASON-TERMINATED:CAPS"></a>MM_CALL_STATE_REASON_TERMINATED</p></td>
+<td class="enum_member_description">
+<p>Call is correctly terminated.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-STATE-REASON-REFUSED-OR-BUSY:CAPS"></a>MM_CALL_STATE_REASON_REFUSED_OR_BUSY</p></td>
+<td class="enum_member_description">
+<p>Remote peer is busy or refused call</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-CALL-STATE-REASON-ERROR:CAPS"></a>MM_CALL_STATE_REASON_ERROR</p></td>
+<td class="enum_member_description">
+<p>Wrong number or generic network error.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="MMFirmwareImageType"></a><h3>enum MMFirmwareImageType</h3>
 <p>Type of firmware image.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.5.4"></a><h4>Members</h4>
+<a name="MMFirmwareImageType.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -405,7 +598,7 @@ requires a pin or unlock code. The facilities include the
 personalizations (device locks) described in 3GPP spec TS 22.022,
 and the PIN and PIN2 locks, which are SIM locks.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.6.4"></a><h4>Members</h4>
+<a name="MMModem3gppFacility.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -485,7 +678,7 @@ and the PIN and PIN2 locks, which are SIM locks.</p>
 <a name="MMModem3gppNetworkAvailability"></a><h3>enum MMModem3gppNetworkAvailability</h3>
 <p>Network availability status as defined in 3GPP TS 27.007 section 7.3</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.7.4"></a><h4>Members</h4>
+<a name="MMModem3gppNetworkAvailability.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -531,7 +724,7 @@ and the PIN and PIN2 locks, which are SIM locks.</p>
 <p>Describes the current subscription status of the SIM.  This value is only available after the
 modem attempts to register with the network.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.8.4"></a><h4>Members</h4>
+<a name="MMModem3gppSubscriptionState.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -576,7 +769,7 @@ modem attempts to register with the network.</p>
 <a name="MMModem3gppRegistrationState"></a><h3>enum MMModem3gppRegistrationState</h3>
 <p>GSM registration code as defined in 3GPP TS 27.007 section 10.1.19.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.9.4"></a><h4>Members</h4>
+<a name="MMModem3gppRegistrationState.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -635,7 +828,7 @@ modem attempts to register with the network.</p>
 <a name="MMModem3gppUssdSessionState"></a><h3>enum MMModem3gppUssdSessionState</h3>
 <p>State of a USSD session.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.10.4"></a><h4>Members</h4>
+<a name="MMModem3gppUssdSessionState.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -681,7 +874,7 @@ modem attempts to register with the network.</p>
 <p>Describes various access technologies that a device uses when registered with
 or connected to a network.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.11.4"></a><h4>Members</h4>
+<a name="MMModemAccessTechnology.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -817,7 +1010,7 @@ or connected to a network.</p>
 <a name="MMModemBand"></a><h3>enum MMModemBand</h3>
 <p>Radio bands supported by the device when connecting to a mobile network.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.12.4"></a><h4>Members</h4>
+<a name="MMModemBand.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1332,7 +1525,7 @@ or connected to a network.</p>
 <p>Flags describing one or more of the general access technology families that a
 modem supports.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.13.4"></a><h4>Members</h4>
+<a name="MMModemCapability.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1405,7 +1598,7 @@ modem supports.</p>
 <a name="MMModemCdmaActivationState"></a><h3>enum MMModemCdmaActivationState</h3>
 <p>Activation state of a CDMA modem.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.14.4"></a><h4>Members</h4>
+<a name="MMModemCdmaActivationState.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1457,7 +1650,7 @@ modem supports.</p>
 <a name="MMModemCdmaRegistrationState"></a><h3>enum MMModemCdmaRegistrationState</h3>
 <p>Registration state of a CDMA modem.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.15.4"></a><h4>Members</h4>
+<a name="MMModemCdmaRegistrationState.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1502,7 +1695,7 @@ modem supports.</p>
 <a name="MMModemCdmaRmProtocol"></a><h3>enum MMModemCdmaRmProtocol</h3>
 <p>Protocol of the Rm interface in modems with CDMA capabilities.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.16.4"></a><h4>Members</h4>
+<a name="MMModemCdmaRmProtocol.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1561,7 +1754,7 @@ modem supports.</p>
 <a name="MMModemContactsStorage"></a><h3>enum MMModemContactsStorage</h3>
 <p>Specifies different storage locations for contact information.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.17.4"></a><h4>Members</h4>
+<a name="MMModemContactsStorage.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1606,7 +1799,7 @@ modem supports.</p>
 <a name="MMModemLocationSource"></a><h3>enum MMModemLocationSource</h3>
 <p>Sources of location information supported by the modem.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.18.4"></a><h4>Members</h4>
+<a name="MMModemLocationSource.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1656,6 +1849,13 @@ modem supports.</p>
 </td>
 <td class="enum_member_annotations"> </td>
 </tr>
+<tr>
+<td class="enum_member_name"><p><a name="MM-MODEM-LOCATION-SOURCE-AGPS:CAPS"></a>MM_MODEM_LOCATION_SOURCE_AGPS</p></td>
+<td class="enum_member_description">
+<p>A-GPS location requested.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -1665,7 +1865,7 @@ modem supports.</p>
 <a name="MMModemLock"></a><h3>enum MMModemLock</h3>
 <p>Enumeration of possible lock reasons.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.19.4"></a><h4>Members</h4>
+<a name="MMModemLock.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1802,7 +2002,7 @@ modem supports.</p>
 <p>Bitfield to indicate which access modes are supported, allowed or
 preferred in a given device.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.20.4"></a><h4>Members</h4>
+<a name="MMModemMode.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1861,7 +2061,7 @@ preferred in a given device.</p>
 <a name="MMModemState"></a><h3>enum MMModemState</h3>
 <p>Enumeration of possible modem states.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.21.4"></a><h4>Members</h4>
+<a name="MMModemState.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -1972,7 +2172,7 @@ preferred in a given device.</p>
 <p>Enumeration of possible errors when the modem is in <em class="parameter"><code>MM_MODEM_STATE_FAILED</code></em>
 .</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.22.4"></a><h4>Members</h4>
+<a name="MMModemStateFailedReason.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2017,7 +2217,7 @@ preferred in a given device.</p>
 <a name="MMModemStateChangeReason"></a><h3>enum MMModemStateChangeReason</h3>
 <p>Enumeration of possible reasons to have changed the modem state.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.23.4"></a><h4>Members</h4>
+<a name="MMModemStateChangeReason.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2062,7 +2262,7 @@ preferred in a given device.</p>
 <a name="MMModemPowerState"></a><h3>enum MMModemPowerState</h3>
 <p>Power state of the modem.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.24.4"></a><h4>Members</h4>
+<a name="MMModemPowerState.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2107,7 +2307,7 @@ preferred in a given device.</p>
 <a name="MMModemPortType"></a><h3>enum MMModemPortType</h3>
 <p>Type of modem port.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.25.4"></a><h4>Members</h4>
+<a name="MMModemPortType.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2173,7 +2373,7 @@ preferred in a given device.</p>
 <a name="MMOmaFeature"></a><h3>enum MMOmaFeature</h3>
 <p>Features that can be enabled or disabled in the OMA device management support.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.26.4"></a><h4>Members</h4>
+<a name="MMOmaFeature.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2218,7 +2418,7 @@ preferred in a given device.</p>
 <a name="MMOmaSessionState"></a><h3>enum MMOmaSessionState</h3>
 <p>State of the OMA device management session.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.27.4"></a><h4>Members</h4>
+<a name="MMOmaSessionState.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2319,7 +2519,7 @@ preferred in a given device.</p>
 <a name="MMOmaSessionStateFailedReason"></a><h3>enum MMOmaSessionStateFailedReason</h3>
 <p>Reason of failure in the OMA device management session.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.28.4"></a><h4>Members</h4>
+<a name="MMOmaSessionStateFailedReason.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2378,7 +2578,7 @@ preferred in a given device.</p>
 <a name="MMOmaSessionType"></a><h3>enum MMOmaSessionType</h3>
 <p>Type of OMA device management session.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.29.4"></a><h4>Members</h4>
+<a name="MMOmaSessionType.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2451,7 +2651,7 @@ preferred in a given device.</p>
 <a name="MMSmsPduType"></a><h3>enum MMSmsPduType</h3>
 <p>Type of PDUs used in the SMS.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.30.4"></a><h4>Members</h4>
+<a name="MMSmsPduType.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2538,7 +2738,7 @@ preferred in a given device.</p>
 <a name="MMSmsState"></a><h3>enum MMSmsState</h3>
 <p>State of a given SMS.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.31.4"></a><h4>Members</h4>
+<a name="MMSmsState.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -2599,7 +2799,7 @@ preferred in a given device.</p>
 3GPP2 N.S0005-O, section 6.5.2.125.</p>
 <p>States out of the known ranges may also be valid (either reserved or SC-specific).</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.32.5"></a><h4>Members</h4>
+<a name="MMSmsDeliveryState.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -3190,7 +3390,7 @@ preferred in a given device.</p>
 <a name="MMSmsStorage"></a><h3>enum MMSmsStorage</h3>
 <p>Storage for SMS messages.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.33.4"></a><h4>Members</h4>
+<a name="MMSmsStorage.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -3256,7 +3456,7 @@ preferred in a given device.</p>
 <a name="MMSmsValidityType"></a><h3>enum MMSmsValidityType</h3>
 <p>Type of SMS validity value.</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.34.4"></a><h4>Members</h4>
+<a name="MMSmsValidityType.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -3302,7 +3502,7 @@ preferred in a given device.</p>
 <p>Teleservice IDs supported for CDMA SMS, as defined in 3GPP2 X.S0004-550-E
 (section 2.256) and 3GPP2 C.S0015-B (section 3.4.3.1).</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.35.4"></a><h4>Members</h4>
+<a name="MMSmsCdmaTeleserviceId.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -3382,7 +3582,7 @@ preferred in a given device.</p>
 <a name="MMSmsCdmaServiceCategory"></a><h3>enum MMSmsCdmaServiceCategory</h3>
 <p>Service category for CDMA SMS, as defined in 3GPP2 C.R1001-D (section 9.3).</p>
 <div class="refsect3">
-<a name="id-1.3.3.6.36.4"></a><h4>Members</h4>
+<a name="MMSmsCdmaServiceCategory.members"></a><h4>Members</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
@@ -3656,6 +3856,6 @@ preferred in a given device.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.24</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

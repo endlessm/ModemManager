@@ -91,7 +91,8 @@ build_triplet = @build@
 host_triplet = @host@
 subdir = libmm-glib/generated
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/compiler_warnings.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/m4/ax_code_coverage.m4 \
+	$(top_srcdir)/m4/compiler_warnings.m4 \
 	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
 	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
 	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/introspection.m4 \
@@ -104,8 +105,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/compiler_warnings.m4 \
 	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-DIST_COMMON = $(srcdir)/Makefile.am $(include_HEADERS) \
-	$(am__DIST_COMMON)
+DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
@@ -120,6 +120,7 @@ am__objects_2 = libmm_generated_la-mm-enums-types.lo \
 	libmm_generated_la-mm-gdbus-manager.lo \
 	libmm_generated_la-mm-gdbus-sim.lo \
 	libmm_generated_la-mm-gdbus-sms.lo \
+	libmm_generated_la-mm-gdbus-call.lo \
 	libmm_generated_la-mm-gdbus-bearer.lo \
 	libmm_generated_la-mm-gdbus-modem.lo
 nodist_libmm_generated_la_OBJECTS = $(am__objects_1) $(am__objects_2)
@@ -205,7 +206,7 @@ am__uninstall_files_from_dir = { \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
 am__installdirs = "$(DESTDIR)$(includedir)"
-HEADERS = $(include_HEADERS)
+HEADERS = $(nodist_include_HEADERS)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
 am__recursive_targets = \
@@ -273,12 +274,13 @@ AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
+CODE_COVERAGE_CFLAGS = @CODE_COVERAGE_CFLAGS@
+CODE_COVERAGE_ENABLED = @CODE_COVERAGE_ENABLED@
+CODE_COVERAGE_LDFLAGS = @CODE_COVERAGE_LDFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DBUS_SYS_DIR = @DBUS_SYS_DIR@
-DBUS_TEST_SUPPORT_CFLAGS = @DBUS_TEST_SUPPORT_CFLAGS@
-DBUS_TEST_SUPPORT_LIBS = @DBUS_TEST_SUPPORT_LIBS@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
@@ -290,7 +292,9 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+GCOV = @GCOV@
 GDBUS_CODEGEN = @GDBUS_CODEGEN@
+GENHTML = @GENHTML@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GLIB_MKENUMS = @GLIB_MKENUMS@
@@ -329,15 +333,19 @@ INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
 INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
 INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
 INTROSPECTION_TYPELIBDIR = @INTROSPECTION_TYPELIBDIR@
+LCOV = @LCOV@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
 LIBMM_GLIB_CFLAGS = @LIBMM_GLIB_CFLAGS@
 LIBMM_GLIB_LIBS = @LIBMM_GLIB_LIBS@
-LIBMM_LIBS = @LIBMM_LIBS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
+LIBSYSTEMD_CFLAGS = @LIBSYSTEMD_CFLAGS@
+LIBSYSTEMD_LIBS = @LIBSYSTEMD_LIBS@
+LIBSYSTEMD_LOGIN_CFLAGS = @LIBSYSTEMD_LOGIN_CFLAGS@
+LIBSYSTEMD_LOGIN_LIBS = @LIBSYSTEMD_LOGIN_LIBS@
 LIBTOOL = @LIBTOOL@
 LIPO = @LIPO@
 LN_S = @LN_S@
@@ -458,6 +466,8 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = . tests
+AM_CFLAGS = $(CODE_COVERAGE_CFLAGS)
+AM_LDFLAGS = $(CODE_COVERAGE_LDFLAGS)
 noinst_LTLIBRARIES = libmm-generated.la
 GENERATED_H = \
 	mm-enums-types.h \
@@ -465,8 +475,10 @@ GENERATED_H = \
 	mm-gdbus-manager.h \
 	mm-gdbus-sim.h \
 	mm-gdbus-sms.h \
+	mm-gdbus-call.h \
 	mm-gdbus-bearer.h \
-	mm-gdbus-modem.h
+	mm-gdbus-modem.h \
+	$(NULL)
 
 GENERATED_C = \
 	mm-enums-types.c \
@@ -475,16 +487,20 @@ GENERATED_C = \
 	mm-gdbus-manager.c \
 	mm-gdbus-sim.c \
 	mm-gdbus-sms.c \
+	mm-gdbus-call.c \
 	mm-gdbus-bearer.c \
-	mm-gdbus-modem.c
+	mm-gdbus-modem.c   \
+	$(NULL)
 
 GENERATED_DOC = \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.xml \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Sim.xml \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Sms.xml \
+	mm-gdbus-doc-org.freedesktop.ModemManager1.Call.xml \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Bearer.xml \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.xml \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Messaging.xml \
+	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Voice.xml \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Location.xml \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Time.xml \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Firmware.xml \
@@ -493,7 +509,8 @@ GENERATED_DOC = \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Modem3gpp.xml \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.xml \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Simple.xml \
-	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Signal.xml
+	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Signal.xml \
+	$(NULL)
 
 BUILT_SOURCES = $(GENERATED_H) $(GENERATED_C) $(GENERATED_DOC)
 
@@ -501,7 +518,12 @@ BUILT_SOURCES = $(GENERATED_H) $(GENERATED_C) $(GENERATED_DOC)
 mm_gdbus_manager_generated = \
 	mm-gdbus-manager.h \
 	mm-gdbus-manager.c \
-	mm-gdbus-doc-org.freedesktop.ModemManager1.xml
+	mm-gdbus-doc-org.freedesktop.ModemManager1.xml \
+	$(NULL)
+
+mm_gdbus_manager_deps = \
+	$(top_srcdir)/introspection/org.freedesktop.ModemManager1.xml \
+	$(NULL)
 
 
 # Modem interfaces
@@ -510,6 +532,7 @@ mm_gdbus_modem_generated = \
 	mm-gdbus-modem.c \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.xml \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Messaging.xml \
+	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Voice.xml \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Location.xml \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Time.xml \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Firmware.xml \
@@ -518,11 +541,13 @@ mm_gdbus_modem_generated = \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Modem3gpp.xml \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.xml \
 	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Simple.xml \
-	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Signal.xml
+	mm-gdbus-doc-org.freedesktop.ModemManager1.Modem.Signal.xml \
+	$(NULL)
 
 mm_gdbus_modem_deps = \
 	$(top_srcdir)/introspection/org.freedesktop.ModemManager1.Modem.xml \
 	$(top_srcdir)/introspection/org.freedesktop.ModemManager1.Modem.Messaging.xml \
+	$(top_srcdir)/introspection/org.freedesktop.ModemManager1.Modem.Voice.xml \
 	$(top_srcdir)/introspection/org.freedesktop.ModemManager1.Modem.Location.xml \
 	$(top_srcdir)/introspection/org.freedesktop.ModemManager1.Modem.Time.xml \
 	$(top_srcdir)/introspection/org.freedesktop.ModemManager1.Modem.Firmware.xml \
@@ -531,33 +556,58 @@ mm_gdbus_modem_deps = \
 	$(top_srcdir)/introspection/org.freedesktop.ModemManager1.Modem.Modem3gpp.xml \
 	$(top_srcdir)/introspection/org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.xml \
 	$(top_srcdir)/introspection/org.freedesktop.ModemManager1.Modem.Simple.xml \
-	$(top_srcdir)/introspection/org.freedesktop.ModemManager1.Modem.Signal.xml
+	$(top_srcdir)/introspection/org.freedesktop.ModemManager1.Modem.Signal.xml \
+	$(NULL)
 
 
 # SIM interface
 mm_gdbus_sim_generated = \
 	mm-gdbus-sim.h \
 	mm-gdbus-sim.c \
-	mm-gdbus-doc-org.freedesktop.ModemManager1.Sim.xml
+	mm-gdbus-doc-org.freedesktop.ModemManager1.Sim.xml \
+	$(NULL)
+
+mm_gdbus_sim_deps = \
+	$(top_srcdir)/introspection/org.freedesktop.ModemManager1.Sim.xml \
+	$(NULL)
 
 
 # Bearer interface
 mm_gdbus_bearer_generated = \
 	mm-gdbus-bearer.h \
 	mm-gdbus-bearer.c \
-	mm-gdbus-doc-org.freedesktop.ModemManager1.Bearer.xml
+	mm-gdbus-doc-org.freedesktop.ModemManager1.Bearer.xml \
+	$(NULL)
+
+mm_gdbus_bearer_deps = \
+	$(top_srcdir)/introspection/org.freedesktop.ModemManager1.Bearer.xml \
+	$(NULL)
 
 
 # SMS interface
 mm_gdbus_sms_generated = \
 	mm-gdbus-sms.h \
 	mm-gdbus-sms.c \
-	mm-gdbus-doc-org.freedesktop.ModemManager1.Sms.xml
+	mm-gdbus-doc-org.freedesktop.ModemManager1.Sms.xml \
+	$(NULL)
 
-nodist_libmm_generated_la_SOURCES = \
-	$(GENERATED_H) \
-	$(GENERATED_C)
+mm_gdbus_sms_deps = \
+	$(top_srcdir)/introspection/org.freedesktop.ModemManager1.Sms.xml \
+	$(NULL)
 
+
+# Call interface
+mm_gdbus_call_generated = \
+	mm-gdbus-call.h \
+	mm-gdbus-call.c \
+	mm-gdbus-doc-org.freedesktop.ModemManager1.Call.xml \
+	$(NULL)
+
+mm_gdbus_call_deps = \
+	$(top_srcdir)/introspection/org.freedesktop.ModemManager1.Call.xml \
+	$(NULL)
+
+nodist_libmm_generated_la_SOURCES = $(GENERATED_H) $(GENERATED_C)
 libmm_generated_la_CPPFLAGS = \
 	$(LIBMM_GLIB_CFLAGS) \
 	-I$(top_srcdir) \
@@ -565,12 +615,11 @@ libmm_generated_la_CPPFLAGS = \
 	-I$(top_builddir)/include \
 	-Wno-unused-function \
 	-Wno-float-equal \
-	-Wno-shadow
+	-Wno-shadow \
+	$(NULL)
 
-libmm_generated_la_LIBADD = \
-	$(LIBMM_GLIB_LIBS)
-
-include_HEADERS = $(GENERATED_H)
+libmm_generated_la_LIBADD = $(LIBMM_GLIB_LIBS)
+nodist_include_HEADERS = $(GENERATED_H)
 CLEANFILES = $(GENERATED_H) $(GENERATED_C) $(GENERATED_DOC)
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
@@ -631,6 +680,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_generated_la-mm-errors-quarks.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_generated_la-mm-errors-types.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_generated_la-mm-gdbus-bearer.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_generated_la-mm-gdbus-call.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_generated_la-mm-gdbus-manager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_generated_la-mm-gdbus-modem.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmm_generated_la-mm-gdbus-sim.Plo@am__quote@
@@ -702,6 +752,13 @@ libmm_generated_la-mm-gdbus-sms.lo: mm-gdbus-sms.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_generated_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libmm_generated_la-mm-gdbus-sms.lo `test -f 'mm-gdbus-sms.c' || echo '$(srcdir)/'`mm-gdbus-sms.c
 
+libmm_generated_la-mm-gdbus-call.lo: mm-gdbus-call.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_generated_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libmm_generated_la-mm-gdbus-call.lo -MD -MP -MF $(DEPDIR)/libmm_generated_la-mm-gdbus-call.Tpo -c -o libmm_generated_la-mm-gdbus-call.lo `test -f 'mm-gdbus-call.c' || echo '$(srcdir)/'`mm-gdbus-call.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmm_generated_la-mm-gdbus-call.Tpo $(DEPDIR)/libmm_generated_la-mm-gdbus-call.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mm-gdbus-call.c' object='libmm_generated_la-mm-gdbus-call.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_generated_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libmm_generated_la-mm-gdbus-call.lo `test -f 'mm-gdbus-call.c' || echo '$(srcdir)/'`mm-gdbus-call.c
+
 libmm_generated_la-mm-gdbus-bearer.lo: mm-gdbus-bearer.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libmm_generated_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libmm_generated_la-mm-gdbus-bearer.lo -MD -MP -MF $(DEPDIR)/libmm_generated_la-mm-gdbus-bearer.Tpo -c -o libmm_generated_la-mm-gdbus-bearer.lo `test -f 'mm-gdbus-bearer.c' || echo '$(srcdir)/'`mm-gdbus-bearer.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmm_generated_la-mm-gdbus-bearer.Tpo $(DEPDIR)/libmm_generated_la-mm-gdbus-bearer.Plo
@@ -721,9 +778,9 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
-install-includeHEADERS: $(include_HEADERS)
+install-nodist_includeHEADERS: $(nodist_include_HEADERS)
 	@$(NORMAL_INSTALL)
-	@list='$(include_HEADERS)'; test -n "$(includedir)" || list=; \
+	@list='$(nodist_include_HEADERS)'; test -n "$(includedir)" || list=; \
 	if test -n "$$list"; then \
 	  echo " $(MKDIR_P) '$(DESTDIR)$(includedir)'"; \
 	  $(MKDIR_P) "$(DESTDIR)$(includedir)" || exit 1; \
@@ -737,9 +794,9 @@ install-includeHEADERS: $(include_HEADERS)
 	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(includedir)" || exit $$?; \
 	done
 
-uninstall-includeHEADERS:
+uninstall-nodist_includeHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(include_HEADERS)'; test -n "$(includedir)" || list=; \
+	@list='$(nodist_include_HEADERS)'; test -n "$(includedir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(includedir)'; $(am__uninstall_files_from_dir)
 
@@ -962,7 +1019,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-includeHEADERS
+install-data-am: install-nodist_includeHEADERS
 
 install-dvi: install-dvi-recursive
 
@@ -1008,7 +1065,7 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-includeHEADERS
+uninstall-am: uninstall-nodist_includeHEADERS
 
 .MAKE: $(am__recursive_targets) all check install install-am \
 	install-strip
@@ -1020,13 +1077,14 @@ uninstall-am: uninstall-includeHEADERS
 	distclean-tags distdir dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am install-dvi \
 	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-includeHEADERS install-info \
-	install-info-am install-man install-pdf install-pdf-am \
+	install-html-am install-info install-info-am install-man \
+	install-nodist_includeHEADERS install-pdf install-pdf-am \
 	install-ps install-ps-am install-strip installcheck \
 	installcheck-am installdirs installdirs-am maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags tags-am uninstall uninstall-am uninstall-includeHEADERS
+	tags tags-am uninstall uninstall-am \
+	uninstall-nodist_includeHEADERS
 
 .PRECIOUS: Makefile
 
@@ -1064,7 +1122,7 @@ mm-errors-quarks.c: Makefile.am $(top_srcdir)/include/ModemManager-errors.h $(to
 		--fhead "#include <ModemManager.h>\n#include \"mm-errors-types.h\"\n" \
 		--template $(top_srcdir)/build-aux/mm-errors-quarks-template.c \
 		$(top_srcdir)/include/ModemManager-errors.h > $@
-$(mm_gdbus_manager_generated): $(top_srcdir)/introspection/org.freedesktop.ModemManager1.xml
+mm-gdbus-manager.c: $(mm_gdbus_manager_deps)
 	$(AM_V_GEN) $(GDBUS_CODEGEN) \
 		--interface-prefix org.freedesktop.ModemManager1. \
 		--c-namespace=MmGdbus \
@@ -1072,7 +1130,9 @@ $(mm_gdbus_manager_generated): $(top_srcdir)/introspection/org.freedesktop.Modem
 		--generate-c-code mm-gdbus-manager \
 		$< \
 		$(NULL)
-$(mm_gdbus_modem_generated): $(mm_gdbus_modem_deps)
+$(filter-out mm-gdbus-manager.c, $(mm_gdbus_manager_generated)): $(mm_gdbus_manager_deps) mm-gdbus-manager.c
+	@: # nothing to do, generated as a side-effect of the .c
+mm-gdbus-modem.c: $(mm_gdbus_modem_deps)
 	$(AM_V_GEN) $(GDBUS_CODEGEN) \
 		--interface-prefix org.freedesktop.ModemManager1. \
 		--c-namespace=MmGdbus \
@@ -1084,7 +1144,9 @@ $(mm_gdbus_modem_generated): $(mm_gdbus_modem_deps)
 		--annotate "org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd" org.gtk.GDBus.C.Name Modem3gppUssd \
 		$^ \
 		$(NULL)
-$(mm_gdbus_sim_generated): $(top_srcdir)/introspection/org.freedesktop.ModemManager1.Sim.xml
+$(filter-out mm-gdbus-modem.c, $(mm_gdbus_modem_generated)): $(mm_gdbus_modem_deps) mm-gdbus-modem.c
+	@: # nothing to do, generated as a side-effect of the .c
+mm-gdbus-sim.c: $(mm_gdbus_sim_deps)
 	$(AM_V_GEN) $(GDBUS_CODEGEN) \
 		--interface-prefix org.freedesktop.ModemManager1. \
 		--c-namespace=MmGdbus \
@@ -1092,7 +1154,9 @@ $(mm_gdbus_sim_generated): $(top_srcdir)/introspection/org.freedesktop.ModemMana
 		--generate-c-code mm-gdbus-sim \
 		$< \
 		$(NULL)
-$(mm_gdbus_bearer_generated): $(top_srcdir)/introspection/org.freedesktop.ModemManager1.Bearer.xml
+$(filter-out mm-gdbus-sim.c, $(mm_gdbus_sim_generated)): $(mm_gdbus_sim_deps) mm-gdbus-sim.c
+	@: # nothing to do, generated as a side-effect of the .c
+mm-gdbus-bearer.c: $(mm_gdbus_bearer_deps)
 	$(AM_V_GEN) $(GDBUS_CODEGEN) \
 		--interface-prefix org.freedesktop.ModemManager1. \
 		--c-namespace=MmGdbus \
@@ -1100,7 +1164,9 @@ $(mm_gdbus_bearer_generated): $(top_srcdir)/introspection/org.freedesktop.ModemM
 		--generate-c-code mm-gdbus-bearer \
 		$< \
 		$(NULL)
-$(mm_gdbus_sms_generated): $(top_srcdir)/introspection/org.freedesktop.ModemManager1.Sms.xml
+$(filter-out mm-gdbus-bearer.c, $(mm_gdbus_bearer_generated)): $(mm_gdbus_bearer_deps) mm-gdbus-bearer.c
+	@: # nothing to do, generated as a side-effect of the .c
+mm-gdbus-sms.c: $(mm_gdbus_sms_deps)
 	$(AM_V_GEN) $(GDBUS_CODEGEN) \
 		--interface-prefix org.freedesktop.ModemManager1. \
 		--c-namespace=MmGdbus \
@@ -1109,6 +1175,18 @@ $(mm_gdbus_sms_generated): $(top_srcdir)/introspection/org.freedesktop.ModemMana
 		--annotate "org.freedesktop.ModemManager1.Sms:Data" org.gtk.GDBus.C.ForceGVariant True \
 		$< \
 		$(NULL)
+$(filter-out mm-gdbus-sms.c, $(mm_gdbus_sms_generated)): $(mm_gdbus_sms_deps) mm-gdbus-sms.c
+	@: # nothing to do, generated as a side-effect of the .c
+mm-gdbus-call.c: $(mm_gdbus_call_deps)
+	$(AM_V_GEN) $(GDBUS_CODEGEN) \
+		--interface-prefix org.freedesktop.ModemManager1. \
+		--c-namespace=MmGdbus \
+		--generate-docbook mm-gdbus-doc \
+		--generate-c-code mm-gdbus-call \
+		$< \
+		$(NULL)
+$(filter-out mm-gdbus-call.c, $(mm_gdbus_call_generated)): $(mm_gdbus_call_deps) mm-gdbus-call.c
+	@: # nothing to do, generated as a side-effect of the .c
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

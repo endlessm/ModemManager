@@ -23,6 +23,8 @@
  * Copyright (C) 2008 - 2009 Novell, Inc.
  * Copyright (C) 2009 - 2012 Red Hat, Inc.
  * Copyright (C) 2011 - 2012 Google, Inc.
+ * Copyright (C) 2015 - Riccardo Vangelisti riccardo.vangelisti@sadel.it
+ * Copyright (C) 2015 - Marco Bascetta marco.bascetta@sadel.it
  */
 
 #ifndef _MODEM_MANAGER_NAMES_H_
@@ -36,6 +38,7 @@
 #define MM_DBUS_BEARER_PREFIX MM_DBUS_PATH "/Bearer"
 #define MM_DBUS_SIM_PREFIX    MM_DBUS_PATH "/SIM"
 #define MM_DBUS_SMS_PREFIX    MM_DBUS_PATH "/SMS"
+#define MM_DBUS_CALL_PREFIX   MM_DBUS_PATH "/Call"
 
 /* Prefix for DBus errors */
 #define MM_DBUS_ERROR_PREFIX "org.freedesktop.ModemManager1.Error"
@@ -48,7 +51,9 @@
 #define MM_DBUS_INTERFACE_SIM "org.freedesktop.ModemManager1.Sim"
 #define MM_DBUS_INTERFACE_BEARER "org.freedesktop.ModemManager1.Bearer"
 #define MM_DBUS_INTERFACE_SMS "org.freedesktop.ModemManager1.Sms"
+#define MM_DBUS_INTERFACE_CALL "org.freedesktop.ModemManager1.Call"
 #define MM_DBUS_INTERFACE_MODEM "org.freedesktop.ModemManager1.Modem"
+#define MM_DBUS_INTERFACE_MODEM_VOICE "org.freedesktop.ModemManager1.Modem.Voice"
 #define MM_DBUS_INTERFACE_MODEM_MODEM3GPP "org.freedesktop.ModemManager1.Modem.Modem3gpp"
 #define MM_DBUS_INTERFACE_MODEM_MODEM3GPP_USSD "org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd"
 #define MM_DBUS_INTERFACE_MODEM_MODEMCDMA "org.freedesktop.ModemManager1.Modem.ModemCdma"
@@ -92,6 +97,7 @@
 #define MM_BEARER_PROPERTY_SUSPENDED "Suspended"
 #define MM_BEARER_PROPERTY_IP4CONFIG "Ip4Config"
 #define MM_BEARER_PROPERTY_IP6CONFIG "Ip6Config"
+#define MM_BEARER_PROPERTY_STATS "Stats"
 #define MM_BEARER_PROPERTY_IPTIMEOUT "IpTimeout"
 #define MM_BEARER_PROPERTY_PROPERTIES "Properties"
 /*
@@ -116,6 +122,20 @@
 #define MM_SMS_PROPERTY_DISCHARGETIMESTAMP "DischargeTimestamp"
 #define MM_SMS_PROPERTY_DELIVERYSTATE "DeliveryState"
 #define MM_SMS_PROPERTY_STORAGE "Storage"
+/*
+ * Interface 'org.freedesktop.ModemManager1.Call'
+ */
+ 
+#define MM_CALL_METHOD_START "Start"
+#define MM_CALL_METHOD_ACCEPT "Accept"
+#define MM_CALL_METHOD_HANGUP "Hangup"
+#define MM_CALL_METHOD_SENDDTMF "SendDtmf"
+#define MM_CALL_SIGNAL_DTMFRECEIVED "DtmfReceived"
+#define MM_CALL_SIGNAL_STATECHANGED "StateChanged"
+#define MM_CALL_PROPERTY_STATE "State"
+#define MM_CALL_PROPERTY_STATEREASON "StateReason"
+#define MM_CALL_PROPERTY_DIRECTION "Direction"
+#define MM_CALL_PROPERTY_NUMBER "Number"
 /*
  * Interface 'org.freedesktop.ModemManager1.Modem'
  */
@@ -161,6 +181,16 @@
 #define MM_MODEM_PROPERTY_SUPPORTEDBANDS "SupportedBands"
 #define MM_MODEM_PROPERTY_CURRENTBANDS "CurrentBands"
 #define MM_MODEM_PROPERTY_SUPPORTEDIPFAMILIES "SupportedIpFamilies"
+/*
+ * Interface 'org.freedesktop.ModemManager1.Modem.Voice'
+ */
+ 
+#define MM_MODEM_VOICE_METHOD_LISTCALLS "ListCalls"
+#define MM_MODEM_VOICE_METHOD_DELETECALL "DeleteCall"
+#define MM_MODEM_VOICE_METHOD_CREATECALL "CreateCall"
+#define MM_MODEM_VOICE_SIGNAL_CALLADDED "CallAdded"
+#define MM_MODEM_VOICE_SIGNAL_CALLDELETED "CallDeleted"
+#define MM_MODEM_VOICE_PROPERTY_CALLS "Calls"
 /*
  * Interface 'org.freedesktop.ModemManager1.Modem.Modem3gpp'
  */
@@ -215,10 +245,14 @@
  
 #define MM_MODEM_LOCATION_METHOD_SETUP "Setup"
 #define MM_MODEM_LOCATION_METHOD_GETLOCATION "GetLocation"
+#define MM_MODEM_LOCATION_METHOD_SETSUPLSERVER "SetSuplServer"
+#define MM_MODEM_LOCATION_METHOD_SETGPSREFRESHRATE "SetGpsRefreshRate"
 #define MM_MODEM_LOCATION_PROPERTY_CAPABILITIES "Capabilities"
 #define MM_MODEM_LOCATION_PROPERTY_ENABLED "Enabled"
 #define MM_MODEM_LOCATION_PROPERTY_SIGNALSLOCATION "SignalsLocation"
 #define MM_MODEM_LOCATION_PROPERTY_LOCATION "Location"
+#define MM_MODEM_LOCATION_PROPERTY_SUPLSERVER "SuplServer"
+#define MM_MODEM_LOCATION_PROPERTY_GPSREFRESHRATE "GpsRefreshRate"
 /*
  * Interface 'org.freedesktop.ModemManager1.Modem.Time'
  */

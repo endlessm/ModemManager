@@ -141,27 +141,38 @@ find_device_support_context_free (FindDeviceSupportContext *ctx)
 }
 
 static void
-find_device_support_ready (MMPluginManager *plugin_manager,
-                           GAsyncResult *result,
-                           FindDeviceSupportContext *ctx)
+device_support_check_ready (MMPluginManager          *plugin_manager,
+                            GAsyncResult             *res,
+                            FindDeviceSupportContext *ctx)
 {
-    GError *error = NULL;
+    GError   *error = NULL;
+    MMPlugin *plugin;
 
-    if (!mm_plugin_manager_find_device_support_finish (plugin_manager, result, &error)) {
-        mm_info ("Couldn't find support for device at '%s': %s",
-                 mm_device_get_path (ctx->device),
-                 error->message);
+    /* Receive plugin result from the plugin manager */
+    plugin = mm_plugin_manager_device_support_check_finish (plugin_manager, res, &error);
+    if (!plugin) {
+        mm_info ("Couldn't check support for device at '%s': %s",
+                 mm_device_get_path (ctx->device), error->message);
         g_error_free (error);
-    } else if (!mm_device_create_modem (ctx->device, ctx->self->priv->object_manager, &error)) {
-        mm_warn ("Couldn't create modem for device at '%s': %s",
-                 mm_device_get_path (ctx->device),
-                 error->message);
-        g_error_free (error);
-    } else {
-        mm_info ("Modem for device at '%s' successfully created",
-                 mm_device_get_path (ctx->device));
+        find_device_support_context_free (ctx);
+        return;
     }
 
+    /* Set the plugin as the one expected in the device */
+    mm_device_set_plugin (ctx->device, G_OBJECT (plugin));
+    g_object_unref (plugin);
+
+    if (!mm_device_create_modem (ctx->device, ctx->self->priv->object_manager, &error)) {
+        mm_warn ("Couldn't create modem for device at '%s': %s",
+                 mm_device_get_path (ctx->device), error->message);
+        g_error_free (error);
+        find_device_support_context_free (ctx);
+        return;
+    }
+
+    /* Modem now created */
+    mm_info ("Modem for device at '%s' successfully created",
+             mm_device_get_path (ctx->device));
     find_device_support_context_free (ctx);
 }
 
@@ -240,6 +251,63 @@ find_physical_device (GUdevDevice *child)
 }
 
 static void
+device_removed (MMBaseManager *self,
+                GUdevDevice *udev_device)
+{
+    MMDevice *device;
+    const gchar *subsys;
+    const gchar *name;
+
+    g_return_if_fail (udev_device != NULL);
+
+    subsys = g_udev_device_get_subsystem (udev_device);
+    name = g_udev_device_get_name (udev_device);
+
+    if (!g_str_has_prefix (subsys, "usb") ||
+        (name && g_str_has_prefix (name, "cdc-wdm"))) {
+        /* Handle tty/net/wdm port removal */
+        device = find_device_by_port (self, udev_device);
+        if (device) {
+            mm_info ("(%s/%s): released by modem %s",
+                     subsys,
+                     name,
+                     g_udev_device_get_sysfs_path (mm_device_peek_udev_device (device)));
+            mm_device_release_port (device, udev_device);
+
+            /* If port probe list gets empty, remove the device object iself */
+            if (!mm_device_peek_port_probe_list (device)) {
+                mm_dbg ("Removing empty device '%s'", mm_device_get_path (device));
+                if (mm_plugin_manager_device_support_check_cancel (self->priv->plugin_manager, device))
+                    mm_dbg ("Device support check has been cancelled");
+                mm_device_remove_modem (device);
+                g_hash_table_remove (self->priv->devices, mm_device_get_path (device));
+            }
+        }
+
+        return;
+    }
+
+    /* This case is designed to handle the case where, at least with kernel 2.6.31, unplugging
+     * an in-use ttyACMx device results in udev generating remove events for the usb, but the
+     * ttyACMx device (subsystem tty) is not removed, since it was in-use.  So if we have not
+     * found a modem for the port (above), we're going to look here to see if we have a modem
+     * associated with the newly removed device.  If so, we'll remove the modem, since the
+     * device has been removed.  That way, if the device is reinserted later, we'll go through
+     * the process of exporting it.
+     */
+    device = find_device_by_udev_device (self, udev_device);
+    if (device) {
+        mm_dbg ("Removing device '%s'", mm_device_get_path (device));
+        mm_device_remove_modem (device);
+        g_hash_table_remove (self->priv->devices, mm_device_get_path (device));
+        return;
+    }
+
+    /* Maybe a plugin is checking whether or not the port is supported.
+     * TODO: Cancel every possible supports check in this port. */
+}
+
+static void
 device_added (MMBaseManager *manager,
               GUdevDevice *port,
               gboolean hotplugged,
@@ -267,12 +335,12 @@ device_added (MMBaseManager *manager,
      * rules have been processed before handling a device.
      */
     is_candidate = g_udev_device_get_property_as_boolean (port, "ID_MM_CANDIDATE");
-    if (!is_candidate)
-        return;
-
-    /* Is the port blacklisted? */
-    if (g_udev_device_get_property_as_boolean (port, "ID_MM_PORT_IGNORE")) {
-        mm_dbg ("(%s/%s): port is blacklisted", subsys, name);
+    if (!is_candidate) {
+        /* This could mean that device changed, loosing its ID_MM_CANDIDATE
+         * flags (such as Bluetooth RFCOMM devices upon disconnect.
+         * Try to forget it. */
+        if (hotplugged && !manual_scan)
+            device_removed (manager, port);
         return;
     }
 
@@ -342,10 +410,10 @@ device_added (MMBaseManager *manager,
         ctx = g_slice_new (FindDeviceSupportContext);
         ctx->self = g_object_ref (manager);
         ctx->device = g_object_ref (device);
-        mm_plugin_manager_find_device_support (
+        mm_plugin_manager_device_support_check (
             manager->priv->plugin_manager,
             device,
-            (GAsyncReadyCallback)find_device_support_ready,
+            (GAsyncReadyCallback) device_support_check_ready,
             ctx);
     }
 
@@ -355,61 +423,6 @@ device_added (MMBaseManager *manager,
 out:
     if (physdev)
         g_object_unref (physdev);
-}
-
-static void
-device_removed (MMBaseManager *self,
-                GUdevDevice *udev_device)
-{
-    MMDevice *device;
-    const gchar *subsys;
-    const gchar *name;
-
-    g_return_if_fail (udev_device != NULL);
-
-    subsys = g_udev_device_get_subsystem (udev_device);
-    name = g_udev_device_get_name (udev_device);
-
-    if (!g_str_has_prefix (subsys, "usb") ||
-        (name && g_str_has_prefix (name, "cdc-wdm"))) {
-        /* Handle tty/net/wdm port removal */
-        device = find_device_by_port (self, udev_device);
-        if (device) {
-            mm_info ("(%s/%s): released by modem %s",
-                     subsys,
-                     name,
-                     g_udev_device_get_sysfs_path (mm_device_peek_udev_device (device)));
-            mm_device_release_port (device, udev_device);
-
-            /* If port probe list gets empty, remove the device object iself */
-            if (!mm_device_peek_port_probe_list (device)) {
-                mm_dbg ("Removing empty device '%s'", mm_device_get_path (device));
-                mm_device_remove_modem (device);
-                g_hash_table_remove (self->priv->devices, mm_device_get_path (device));
-            }
-        }
-
-        return;
-    }
-
-    /* This case is designed to handle the case where, at least with kernel 2.6.31, unplugging
-     * an in-use ttyACMx device results in udev generating remove events for the usb, but the
-     * ttyACMx device (subsystem tty) is not removed, since it was in-use.  So if we have not
-     * found a modem for the port (above), we're going to look here to see if we have a modem
-     * associated with the newly removed device.  If so, we'll remove the modem, since the
-     * device has been removed.  That way, if the device is reinserted later, we'll go through
-     * the process of exporting it.
-     */
-    device = find_device_by_udev_device (self, udev_device);
-    if (device) {
-        mm_dbg ("Removing device '%s'", mm_device_get_path (device));
-        mm_device_remove_modem (device);
-        g_hash_table_remove (self->priv->devices, mm_device_get_path (device));
-        return;
-    }
-
-    /* Maybe a plugin is checking whether or not the port is supported.
-     * TODO: Cancel every possible supports check in this port. */
 }
 
 static void
@@ -453,7 +466,7 @@ start_device_added_idle (StartDeviceAdded *ctx)
     g_object_unref (ctx->self);
     g_object_unref (ctx->device);
     g_slice_free (StartDeviceAdded, ctx);
-    return FALSE;
+    return G_SOURCE_REMOVE;
 }
 
 static void
@@ -538,6 +551,7 @@ remove_disable_ready (MMBaseModem *modem,
 
     device = find_device_by_modem (self, modem);
     if (device) {
+        g_cancellable_cancel (mm_base_modem_peek_cancellable (modem));
         mm_device_remove_modem (device);
         g_hash_table_remove (self->priv->devices, device);
     }
@@ -555,8 +569,23 @@ foreach_disable (gpointer key,
         mm_base_modem_disable (modem, (GAsyncReadyCallback)remove_disable_ready, self);
 }
 
+static gboolean
+foreach_remove (gpointer key,
+                MMDevice *device,
+                MMBaseManager *self)
+{
+    MMBaseModem *modem;
+
+    modem = mm_device_peek_modem (device);
+    if (modem)
+        g_cancellable_cancel (mm_base_modem_peek_cancellable (modem));
+    mm_device_remove_modem (device);
+    return TRUE;
+}
+
 void
-mm_base_manager_shutdown (MMBaseManager *self)
+mm_base_manager_shutdown (MMBaseManager *self,
+                          gboolean disable)
 {
     g_return_if_fail (self != NULL);
     g_return_if_fail (MM_IS_BASE_MANAGER (self));
@@ -564,12 +593,18 @@ mm_base_manager_shutdown (MMBaseManager *self)
     /* Cancel all ongoing auth requests */
     g_cancellable_cancel (self->priv->authp_cancellable);
 
-    g_hash_table_foreach (self->priv->devices, (GHFunc)foreach_disable, self);
+    if (disable) {
+        g_hash_table_foreach (self->priv->devices, (GHFunc)foreach_disable, self);
 
-    /* Disabling may take a few iterations of the mainloop, so the caller
-     * has to iterate the mainloop until all devices have been disabled and
-     * removed.
-     */
+        /* Disabling may take a few iterations of the mainloop, so the caller
+         * has to iterate the mainloop until all devices have been disabled and
+         * removed.
+         */
+        return;
+    }
+
+    /* Otherwise, just remove directly */
+    g_hash_table_foreach_remove (self->priv->devices, (GHRFunc)foreach_remove, self);
 }
 
 guint32

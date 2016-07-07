@@ -20,6 +20,7 @@
 <link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.Suspended">Suspended</link>   readable   b
 <link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.Ip4Config">Ip4Config</link>   readable   a{sv}
 <link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.Ip6Config">Ip6Config</link>   readable   a{sv}
+<link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.Stats">Stats</link>       readable   a{sv}
 <link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.IpTimeout">IpTimeout</link>   readable   u
 <link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.Properties">Properties</link>  readable   a{sv}
 </synopsis>
@@ -241,6 +242,37 @@ Ip6Config  readable   a{sv}
           <varlistentry><term><literal>"mtu"</literal></term>
             <listitem>
               Maximum transmission unit (MTU), given as an unsigned integer value (signature <literal>"u"</literal>).
+            </listitem>
+          </varlistentry>
+        </variablelist>
+</para>
+</refsect2>
+<refsect2 role="property" id="gdbus-property-org-freedesktop-ModemManager1-Bearer.Stats">
+  <title>The "Stats" property</title>
+  <indexterm zone="gdbus-property-org-freedesktop-ModemManager1-Bearer.Stats"><primary sortas="Bearer:Stats">org.freedesktop.ModemManager1.Bearer:Stats</primary></indexterm>
+<programlisting>
+Stats  readable   a{sv}
+</programlisting>
+<para>        If the modem supports it, this property will show statistics of the
+        ongoing connection.
+</para><para>        When the connection is disconnected automatically or explicitly by the
+        user, the values in this property will show the last values cached.
+        The statistics are reset
+</para><para>        The following items may appear in the list of statistics:
+        <variablelist>
+          <varlistentry><term><literal>"rx-bytes"</literal></term>
+            <listitem>
+              Number of bytes received without error, given as an unsigned 64-bit integer value (signature <literal>"t"</literal>).
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"tx-bytes"</literal></term>
+            <listitem>
+              Number bytes transmitted without error, given as an unsigned 64-bit integer value (signature <literal>"t"</literal>).
+            </listitem>
+            </varlistentry>
+          <varlistentry><term><literal>"duration"</literal></term>
+            <listitem>
+              Duration of the connection, in seconds, given as an unsigned integer value (signature <literal>"u"</literal>).
             </listitem>
           </varlistentry>
         </variablelist>

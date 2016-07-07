@@ -106,38 +106,6 @@ get_hash_key (const gchar *subsys,
     return g_strdup_printf ("%s%s", subsys, name);
 }
 
-MMPort *
-mm_base_modem_get_port (MMBaseModem *self,
-                        const gchar *subsys,
-                        const gchar *name)
-{
-    MMPort *port;
-    gchar *key;
-
-    g_return_val_if_fail (MM_IS_BASE_MODEM (self), NULL);
-    g_return_val_if_fail (name != NULL, NULL);
-    g_return_val_if_fail (subsys != NULL, NULL);
-
-    /* Only 'net' or 'tty' should be given */
-    g_return_val_if_fail (g_str_equal (subsys, "net") ||
-                          g_str_equal (subsys, "tty"),
-                          NULL);
-
-    key = get_hash_key (subsys, name);
-    port = g_hash_table_lookup (self->priv->ports, key);
-    g_free (key);
-
-    return port;
-}
-
-gboolean
-mm_base_modem_owns_port (MMBaseModem *self,
-                         const gchar *subsys,
-                         const gchar *name)
-{
-    return !!mm_base_modem_get_port (self, subsys, name);
-}
-
 static void
 serial_port_timed_out_cb (MMPortSerial *port,
                           guint n_consecutive_timeouts,
@@ -202,8 +170,16 @@ mm_base_modem_grab_port (MMBaseModem *self,
         return FALSE;
     }
 
+    /* Explicitly ignored ports, grab them but explicitly flag them as ignored
+     * right away, all the same way (i.e. regardless of subsystem). */
+    if (ptype == MM_PORT_TYPE_IGNORED) {
+        port = MM_PORT (g_object_new (MM_TYPE_PORT,
+                                      MM_PORT_DEVICE, name,
+                                      MM_PORT_TYPE, MM_PORT_TYPE_IGNORED,
+                                      NULL));
+    }
     /* Serial ports... */
-    if (g_str_equal (subsys, "tty")) {
+    else if (g_str_equal (subsys, "tty")) {
         if (ptype == MM_PORT_TYPE_QCDM)
             /* QCDM port */
             port = MM_PORT (mm_port_serial_qcdm_new (name));
@@ -313,88 +289,6 @@ mm_base_modem_grab_port (MMBaseModem *self,
                   NULL);
 
     return TRUE;
-}
-
-void
-mm_base_modem_release_port (MMBaseModem *self,
-                            const gchar *subsys,
-                            const gchar *name)
-{
-    gchar *key;
-    MMPort *port;
-    GList *l;
-
-    g_return_if_fail (MM_IS_BASE_MODEM (self));
-    g_return_if_fail (name != NULL);
-    g_return_if_fail (subsys != NULL);
-
-    if (!g_str_equal (subsys, "tty") &&
-        !g_str_equal (subsys, "net") &&
-        !(g_str_has_prefix (subsys, "usb") && g_str_has_prefix (name, "cdc-wdm")) &&
-        !g_str_equal (subsys, "virtual"))
-        return;
-
-    key = get_hash_key (subsys, name);
-
-    /* Find the port */
-    port = g_hash_table_lookup (self->priv->ports, key);
-    if (!port) {
-        mm_warn ("(%s/%s): cannot release port, not found",
-                 subsys, name);
-        g_free (key);
-        return;
-    }
-
-    if (port == (MMPort *)self->priv->primary) {
-        /* Cancel modem-wide cancellable; no further actions can be done
-         * without a primary port. */
-        g_cancellable_cancel (self->priv->cancellable);
-
-        g_clear_object (&self->priv->primary);
-    }
-
-    l = g_list_find (self->priv->data, port);
-    if (l) {
-        g_object_unref (l->data);
-        self->priv->data = g_list_delete_link (self->priv->data, l);
-    }
-
-    if (port == (MMPort *)self->priv->secondary)
-        g_clear_object (&self->priv->secondary);
-
-    if (port == (MMPort *)self->priv->qcdm)
-        g_clear_object (&self->priv->qcdm);
-
-    if (port == (MMPort *)self->priv->gps_control)
-        g_clear_object (&self->priv->gps_control);
-
-    if (port == (MMPort *)self->priv->gps)
-        g_clear_object (&self->priv->gps);
-
-#if defined WITH_QMI
-    l = g_list_find (self->priv->qmi, port);
-    if (l) {
-        g_object_unref (l->data);
-        self->priv->qmi = g_list_delete_link (self->priv->qmi, l);
-    }
-#endif
-
-#if defined WITH_MBIM
-    l = g_list_find (self->priv->mbim, port);
-    if (l) {
-        g_object_unref (l->data);
-        self->priv->mbim = g_list_delete_link (self->priv->mbim, l);
-    }
-#endif
-
-    /* Remove it from the tracking HT */
-    mm_dbg ("(%s/%s) type %s released from %s",
-            subsys,
-            name,
-            mm_port_type_get_string (mm_port_get_port_type (port)),
-            mm_port_get_device (port));
-    g_hash_table_remove (self->priv->ports, key);
-    g_free (key);
 }
 
 gboolean
@@ -1349,7 +1243,7 @@ base_modem_invalid_idle (MMBaseModem *self)
      * cancelled */
     mm_base_modem_set_valid (self, FALSE);
     g_object_unref (self);
-    return FALSE;
+    return G_SOURCE_REMOVE;
 }
 
 static void

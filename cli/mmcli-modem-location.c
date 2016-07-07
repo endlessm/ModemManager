@@ -49,6 +49,8 @@ static gboolean status_flag;
 static gboolean enable_3gpp_flag;
 static gboolean disable_3gpp_flag;
 static gboolean get_3gpp_flag;
+static gboolean enable_agps_flag;
+static gboolean disable_agps_flag;
 static gboolean enable_gps_nmea_flag;
 static gboolean disable_gps_nmea_flag;
 static gboolean get_gps_nmea_flag;
@@ -60,7 +62,11 @@ static gboolean disable_cdma_bs_flag;
 static gboolean get_cdma_bs_flag;
 static gboolean enable_gps_unmanaged_flag;
 static gboolean disable_gps_unmanaged_flag;
+static gboolean set_enable_signal_flag;
+static gboolean set_disable_signal_flag;
 static gboolean get_all_flag;
+static gchar *set_supl_server_str;
+static gchar *set_gps_refresh_rate_str;
 
 static GOptionEntry entries[] = {
     { "location-status", 0, 0, G_OPTION_ARG_NONE, &status_flag,
@@ -81,6 +87,14 @@ static GOptionEntry entries[] = {
     },
     { "location-get-3gpp", 0, 0, G_OPTION_ARG_NONE, &get_3gpp_flag,
       "Get 3GPP-based location.",
+      NULL
+    },
+    { "location-enable-agps", 0, 0, G_OPTION_ARG_NONE, &enable_agps_flag,
+      "Enable A-GPS location gathering.",
+      NULL
+    },
+    { "location-disable-agps", 0, 0, G_OPTION_ARG_NONE, &disable_agps_flag,
+      "Disable A-GPS location gathering.",
       NULL
     },
     { "location-enable-gps-nmea", 0, 0, G_OPTION_ARG_NONE, &enable_gps_nmea_flag,
@@ -127,6 +141,22 @@ static GOptionEntry entries[] = {
       "Disable unmanaged GPS location gathering.",
       NULL
     },
+    { "location-set-supl-server", 0, 0, G_OPTION_ARG_STRING, &set_supl_server_str,
+      "Set SUPL server address",
+      "[IP:PORT] or [URL]"
+    },
+    { "location-set-gps-refresh-rate", 0, 0, G_OPTION_ARG_STRING, &set_gps_refresh_rate_str,
+      "Set GPS refresh rate in seconds, or 0 disable the explicit rate.",
+      "[RATE]"
+    },
+    { "location-set-enable-signal", 0, 0, G_OPTION_ARG_NONE, &set_enable_signal_flag,
+      "Enable location update signaling in DBus property.",
+      NULL
+    },
+    { "location-set-disable-signal", 0, 0, G_OPTION_ARG_NONE, &set_disable_signal_flag,
+      "Disable location update signaling in DBus property.",
+      NULL
+    },
     { NULL }
 };
 
@@ -155,11 +185,17 @@ mmcli_modem_location_options_enabled (void)
         return !!n_actions;
 
     if ((enable_3gpp_flag && disable_3gpp_flag) ||
+        (enable_agps_flag && disable_agps_flag) ||
         (enable_gps_nmea_flag && disable_gps_nmea_flag) ||
         (enable_gps_raw_flag && disable_gps_raw_flag) ||
         (enable_gps_unmanaged_flag && disable_gps_unmanaged_flag) ||
         (enable_cdma_bs_flag && disable_cdma_bs_flag)) {
         g_printerr ("error: cannot enable and disable the same source\n");
+        exit (EXIT_FAILURE);
+    }
+
+    if (set_enable_signal_flag && set_disable_signal_flag) {
+        g_printerr ("error: cannot enable and disable location signaling\n");
         exit (EXIT_FAILURE);
     }
 
@@ -173,6 +209,8 @@ mmcli_modem_location_options_enabled (void)
     n_actions = (status_flag +
                  !!(enable_3gpp_flag +
                     disable_3gpp_flag +
+                    enable_agps_flag +
+                    disable_agps_flag +
                     enable_gps_nmea_flag +
                     disable_gps_nmea_flag +
                     enable_gps_raw_flag +
@@ -180,11 +218,15 @@ mmcli_modem_location_options_enabled (void)
                     enable_cdma_bs_flag +
                     disable_cdma_bs_flag +
                     enable_gps_unmanaged_flag +
-                    disable_gps_unmanaged_flag) +
+                    disable_gps_unmanaged_flag +
+                    set_enable_signal_flag +
+                    set_disable_signal_flag) +
                  !!(get_3gpp_flag +
                     get_gps_nmea_flag +
                     get_gps_raw_flag +
-                    get_cdma_bs_flag));
+                    get_cdma_bs_flag) +
+                 !!set_supl_server_str +
+                 !!set_gps_refresh_rate_str);
 
     if (n_actions > 1) {
         g_printerr ("error: too many Location actions requested\n");
@@ -250,13 +292,37 @@ print_location_status (void)
     g_print ("\n"
              "%s\n"
              "  ----------------------------\n"
-             "  Location | capabilities: '%s'\n"
-             "           |      enabled: '%s'\n"
-             "           |      signals: '%s'\n",
+             "  Location |   capabilities: '%s'\n"
+             "           |        enabled: '%s'\n"
+             "           |        signals: '%s'\n",
              mm_modem_location_get_path (ctx->modem_location),
              capabilities_str,
              enabled_str,
              mm_modem_location_signals_location (ctx->modem_location) ? "yes" : "no");
+
+    /* If A-GPS supported, show SUPL server setup */
+    if (mm_modem_location_get_capabilities (ctx->modem_location) & MM_MODEM_LOCATION_SOURCE_AGPS) {
+        const gchar *supl_server;
+
+        supl_server = mm_modem_location_get_supl_server (ctx->modem_location);
+        g_print ("  ----------------------------\n"
+                 "  A-GPS    |    SUPL server: '%s'\n",
+                 supl_server ? supl_server : "unset");
+    }
+
+    /* If GPS supported, show GPS refresh rate */
+    if (mm_modem_location_get_capabilities (ctx->modem_location) & (MM_MODEM_LOCATION_SOURCE_GPS_RAW |
+                                                                    MM_MODEM_LOCATION_SOURCE_GPS_NMEA)) {
+        guint rate;
+
+        rate = mm_modem_location_get_gps_refresh_rate (ctx->modem_location);
+        g_print ("  ----------------------------\n");
+        if (rate > 0)
+            g_print ("  GPS      |  refresh rate: '%u'\n", rate);
+        else
+            g_print ("  GPS      |  refresh rate: disabled\n");
+    }
+
     g_free (capabilities_str);
     g_free (enabled_str);
 }
@@ -287,6 +353,58 @@ setup_ready (MMModemLocation *modem_location,
     mmcli_async_operation_done ();
 }
 
+static void
+set_supl_server_process_reply (gboolean result,
+                               const GError *error)
+{
+    if (!result) {
+        g_printerr ("error: couldn't set SUPL servert address: '%s'\n",
+                    error ? error->message : "unknown error");
+        exit (EXIT_FAILURE);
+    }
+
+    g_print ("successfully set SUPL server address\n");
+}
+
+static void
+set_supl_server_ready (MMModemLocation *modem_location,
+                       GAsyncResult    *result)
+{
+    gboolean operation_result;
+    GError *error = NULL;
+
+    operation_result = mm_modem_location_set_supl_server_finish (modem_location, result, &error);
+    set_supl_server_process_reply (operation_result, error);
+
+    mmcli_async_operation_done ();
+}
+
+static void
+set_gps_refresh_rate_process_reply (gboolean result,
+                                    const GError *error)
+{
+    if (!result) {
+        g_printerr ("error: couldn't set GPS refresh rate: '%s'\n",
+                    error ? error->message : "unknown error");
+        exit (EXIT_FAILURE);
+    }
+
+    g_print ("successfully set GPS refresh rate\n");
+}
+
+static void
+set_gps_refresh_rate_ready (MMModemLocation *modem_location,
+                            GAsyncResult    *result)
+{
+    gboolean operation_result;
+    GError *error = NULL;
+
+    operation_result = mm_modem_location_set_gps_refresh_rate_finish (modem_location, result, &error);
+    set_gps_refresh_rate_process_reply (operation_result, error);
+
+    mmcli_async_operation_done ();
+}
+
 static MMModemLocationSource
 build_sources_from_flags (void)
 {
@@ -299,6 +417,11 @@ build_sources_from_flags (void)
         sources |= MM_MODEM_LOCATION_SOURCE_3GPP_LAC_CI;
     if (disable_3gpp_flag)
         sources &= ~MM_MODEM_LOCATION_SOURCE_3GPP_LAC_CI;
+
+    if (enable_agps_flag)
+        sources |= MM_MODEM_LOCATION_SOURCE_AGPS;
+    if (disable_agps_flag)
+        sources &= ~MM_MODEM_LOCATION_SOURCE_AGPS;
 
     if (enable_gps_nmea_flag)
         sources |= MM_MODEM_LOCATION_SOURCE_GPS_NMEA;
@@ -321,6 +444,16 @@ build_sources_from_flags (void)
         sources &= ~MM_MODEM_LOCATION_SOURCE_GPS_UNMANAGED;
 
     return sources;
+}
+
+static gboolean
+build_signals_location_from_flags (void)
+{
+    if (set_enable_signal_flag)
+        return TRUE;
+    if (set_disable_signal_flag)
+        return FALSE;
+    return mm_modem_location_signals_location (ctx->modem_location);
 }
 
 static void
@@ -486,6 +619,8 @@ get_modem_ready (GObject      *source,
     /* Request to setup location gathering? */
     if (enable_3gpp_flag ||
         disable_3gpp_flag ||
+        enable_agps_flag ||
+        disable_agps_flag ||
         enable_gps_nmea_flag ||
         disable_gps_nmea_flag ||
         enable_gps_raw_flag ||
@@ -493,11 +628,13 @@ get_modem_ready (GObject      *source,
         enable_cdma_bs_flag ||
         disable_cdma_bs_flag ||
         enable_gps_unmanaged_flag ||
-        disable_gps_unmanaged_flag) {
+        disable_gps_unmanaged_flag ||
+        set_enable_signal_flag ||
+        set_disable_signal_flag) {
         g_debug ("Asynchronously setting up location gathering...");
         mm_modem_location_setup (ctx->modem_location,
                                  build_sources_from_flags (),
-                                 mm_modem_location_signals_location (ctx->modem_location),
+                                 build_signals_location_from_flags (),
                                  ctx->cancellable,
                                  (GAsyncReadyCallback)setup_ready,
                                  NULL);
@@ -514,6 +651,35 @@ get_modem_ready (GObject      *source,
                                     ctx->cancellable,
                                     (GAsyncReadyCallback)get_location_ready,
                                     NULL);
+        return;
+    }
+
+    /* Request to set SUPL server? */
+    if (set_supl_server_str) {
+        g_debug ("Asynchronously setting SUPL server...");
+        mm_modem_location_set_supl_server (ctx->modem_location,
+                                           set_supl_server_str,
+                                           ctx->cancellable,
+                                           (GAsyncReadyCallback)set_supl_server_ready,
+                                           NULL);
+        return;
+    }
+
+    /* Request to set GPS refresh rate? */
+    if (set_gps_refresh_rate_str) {
+        guint rate;
+
+        if (!mm_get_uint_from_str (set_gps_refresh_rate_str, &rate)) {
+            g_printerr ("error: couldn't set GPS refresh rate: invalid rate given: '%s'\n",
+                        set_gps_refresh_rate_str);
+            exit (EXIT_FAILURE);
+        }
+        g_debug ("Asynchronously setting GPS refresh rate...");
+        mm_modem_location_set_gps_refresh_rate (ctx->modem_location,
+                                                rate,
+                                                ctx->cancellable,
+                                                (GAsyncReadyCallback)set_gps_refresh_rate_ready,
+                                                NULL);
         return;
     }
 
@@ -565,6 +731,8 @@ mmcli_modem_location_run_synchronous (GDBusConnection *connection)
     /* Request to setup location gathering? */
     if (enable_3gpp_flag ||
         disable_3gpp_flag ||
+        enable_agps_flag ||
+        disable_agps_flag ||
         enable_gps_nmea_flag ||
         disable_gps_nmea_flag ||
         enable_gps_raw_flag ||
@@ -572,13 +740,15 @@ mmcli_modem_location_run_synchronous (GDBusConnection *connection)
         enable_cdma_bs_flag ||
         disable_cdma_bs_flag ||
         enable_gps_unmanaged_flag ||
-        disable_gps_unmanaged_flag) {
+        disable_gps_unmanaged_flag ||
+        set_enable_signal_flag ||
+        set_disable_signal_flag) {
         gboolean result;
 
         g_debug ("Synchronously setting up location gathering...");
         result = mm_modem_location_setup_sync (ctx->modem_location,
                                                build_sources_from_flags (),
-                                               mm_modem_location_signals_location (ctx->modem_location),
+                                               build_signals_location_from_flags (),
                                                NULL,
                                                &error);
         setup_process_reply (result, error);
@@ -604,6 +774,39 @@ mmcli_modem_location_run_synchronous (GDBusConnection *connection)
                                          NULL,
                                          &error);
         get_location_process_reply (location_3gpp, location_gps_nmea, location_gps_raw, location_cdma_bs, error);
+        return;
+    }
+
+    /* Request to set SUPL server? */
+    if (set_supl_server_str) {
+        gboolean result;
+
+        g_debug ("Synchronously setting SUPL server...");
+        result = mm_modem_location_set_supl_server_sync (ctx->modem_location,
+                                                         set_supl_server_str,
+                                                         NULL,
+                                                         &error);
+        set_supl_server_process_reply (result, error);
+        return;
+    }
+
+    /* Request to set GPS refresh rate? */
+    if (set_gps_refresh_rate_str) {
+        gboolean result;
+        guint rate;
+
+        if (!mm_get_uint_from_str (set_gps_refresh_rate_str, &rate)) {
+            g_printerr ("error: couldn't set GPS refresh rate: invalid rate given: '%s'\n",
+                        set_gps_refresh_rate_str);
+            exit (EXIT_FAILURE);
+        }
+
+        g_debug ("Synchronously setting GPS refresh rate...");
+        result = mm_modem_location_set_gps_refresh_rate_sync (ctx->modem_location,
+                                                              rate,
+                                                              NULL,
+                                                              &error);
+        set_gps_refresh_rate_process_reply (result, error);
         return;
     }
 
