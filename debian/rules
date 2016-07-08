@@ -32,8 +32,6 @@ override_dh_strip:
 	dh_strip --dbgsym-migration='modemmanager-dbg (<< 1.4.14-1~)'
 
 override_dh_install:
-	cp $(CURDIR)/debian/77-mm-qdl-device-blacklist.rules \
-		 $(CURDIR)/debian/tmp/lib/udev/rules.d
 	find $(CURDIR)/debian/tmp/ -name \*.a -exec rm {} \;
 	find $(CURDIR)/debian/tmp/ -name \*.la -exec rm {} \;
 	dh_install --fail-missing
