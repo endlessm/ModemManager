@@ -1,4 +1,4 @@
-modemmanager (1.5.993-1) UNRELEASED; urgency=medium
+modemmanager (1.5.993-1) unstable; urgency=medium
 
   * New upstream release (1.6-rc4).
   * Update Build-Depends as per configure.ac.
@@ -7,7 +7,7 @@ modemmanager (1.5.993-1) UNRELEASED; urgency=medium
   * Enable suspend/resume support. Requires libsystemd.
   * Bump Standards-Version to 3.9.8.
 
- -- Michael Biebl <biebl@debian.org>  Fri, 08 Jul 2016 00:40:14 +0200
+ -- Michael Biebl <biebl@debian.org>  Fri, 08 Jul 2016 02:19:24 +0200
 
 modemmanager (1.4.14-1) unstable; urgency=medium
 
