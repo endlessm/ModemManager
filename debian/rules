@@ -22,6 +22,7 @@ override_dh_auto_configure:
 	dh_auto_configure -- \
 		--enable-gtk-doc \
 		--with-polkit=strict \
+		--with-suspend-resume=systemd \
 		--with-systemdsystemunitdir=/lib/systemd/system
 
 override_dh_makeshlibs:
