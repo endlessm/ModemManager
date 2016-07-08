@@ -5,6 +5,7 @@ modemmanager (1.5.993-1) UNRELEASED; urgency=medium
   * Install bash-completion file for mmcli.
   * Update symbols file.
   * Enable suspend/resume support. Requires libsystemd.
+  * Bump Standards-Version to 3.9.8.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 08 Jul 2016 00:40:14 +0200
 
