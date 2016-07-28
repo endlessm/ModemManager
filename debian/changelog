@@ -1,3 +1,9 @@
+modemmanager (1.6.0-1) UNRELEASED; urgency=medium
+
+  * New upstream release.
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 28 Jul 2016 15:30:52 +0200
+
 modemmanager (1.5.993-1) unstable; urgency=medium
 
   * New upstream release (1.6-rc4).
