@@ -9,7 +9,7 @@ DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 DH_ALWAYS_EXCLUDE=.svn:.git:.bzr
 
 %:
-	dh $@ --with autoreconf,systemd,gir
+	dh $@ --with autoreconf,gir
 
 override_dh_autoreconf:
 	NOCONFIGURE=true dh_autoreconf ./autogen.sh

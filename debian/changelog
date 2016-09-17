@@ -1,6 +1,7 @@
 modemmanager (1.6.2-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * Bump debhelper compat level to 10.
 
  -- Michael Biebl <biebl@debian.org>  Sat, 17 Sep 2016 09:25:13 +0200
 
