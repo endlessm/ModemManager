@@ -191,7 +191,7 @@ Umts  readable   a{sv}
 <programlisting>
 Lte  readable   a{sv}
 </programlisting>
-<para>        Dictionary of available signal information for the UMTS (WCDMA) access
+<para>        Dictionary of available signal information for the LTE access
         technology.
 </para><para>        This dictionary is composed of a string key, with an associated data
         which contains type-specific information.
