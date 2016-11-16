@@ -95,12 +95,13 @@ host_triplet = @host@
 @WITH_MBIM_TRUE@am__append_3 = $(MBIM_CFLAGS)
 @WITH_MBIM_TRUE@am__append_4 = $(MBIM_LIBS)
 noinst_PROGRAMS = test-modem-helpers-icera$(EXEEXT) \
-	test-modem-helpers-mbm$(EXEEXT) test-service-generic$(EXEEXT) \
+	test-modem-helpers-mbm$(EXEEXT) \
+	test-modem-helpers-telit$(EXEEXT) \
+	test-service-generic$(EXEEXT) \
 	test-modem-helpers-huawei$(EXEEXT) \
 	test-modem-helpers-cinterion$(EXEEXT) \
 	test-modem-helpers-thuraya$(EXEEXT) \
-	test-modem-helpers-altair-lte$(EXEEXT) \
-	test-modem-helpers-telit$(EXEEXT)
+	test-modem-helpers-altair-lte$(EXEEXT)
 @WITH_QMI_TRUE@am__append_5 = \
 @WITH_QMI_TRUE@	cinterion/mm-broadband-modem-qmi-cinterion.c \
 @WITH_QMI_TRUE@	cinterion/mm-broadband-modem-qmi-cinterion.h \
@@ -233,8 +234,10 @@ libmm_plugin_cinterion_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(AM_CFLAGS) $(CFLAGS) $(libmm_plugin_cinterion_la_LDFLAGS) \
 	$(LDFLAGS) -o $@
+am__DEPENDENCIES_1 = $(builddir)/libhelpers-telit.la \
+	$(builddir)/libmm-utils-telit.la
 libmm_plugin_dell_la_DEPENDENCIES = $(NOVATEL_COMMON_LIBADD_FLAGS) \
-	$(SIERRA_COMMON_LIBADD_FLAGS) $(TELIT_COMMON_LIBADD_FLAGS) \
+	$(SIERRA_COMMON_LIBADD_FLAGS) $(am__DEPENDENCIES_1) \
 	$(MBM_COMMON_LIBADD_FLAGS)
 am_libmm_plugin_dell_la_OBJECTS =  \
 	dell/libmm_plugin_dell_la-mm-plugin-dell.lo
@@ -444,8 +447,7 @@ libmm_plugin_simtech_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(AM_CFLAGS) $(CFLAGS) $(libmm_plugin_simtech_la_LDFLAGS) \
 	$(LDFLAGS) -o $@
-libmm_plugin_telit_la_DEPENDENCIES = $(builddir)/libhelpers-telit.la \
-	$(TELIT_COMMON_LIBADD_FLAGS)
+libmm_plugin_telit_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libmm_plugin_telit_la_OBJECTS =  \
 	telit/libmm_plugin_telit_la-mm-plugin-telit.lo
 libmm_plugin_telit_la_OBJECTS = $(am_libmm_plugin_telit_la_OBJECTS)
@@ -975,6 +977,7 @@ PLUGIN_COMMON_COMPILER_FLAGS = \
 PLUGIN_COMMON_LINKER_FLAGS = \
 	-module        \
 	-avoid-version \
+	-export-symbols-regex '^mm_plugin_major_version$$|^mm_plugin_minor_version$$|^mm_plugin_create$$' \
 	$(NULL)
 
 
@@ -1025,6 +1028,8 @@ dist_udevrules_DATA = huawei/77-mm-huawei-net-port-types.rules \
 # common telit support
 ################################################################################
 
+# Common telit helpers library
+
 # Common telit modem support library
 
 ################################################################################
@@ -1042,17 +1047,13 @@ dist_udevrules_DATA = huawei/77-mm-huawei-net-port-types.rules \
 ################################################################################
 # plugin: altair lte
 ################################################################################
-
-################################################################################
-# plugin: telit
-################################################################################
 noinst_LTLIBRARIES = libmm-test-common.la libhelpers-icera.la \
 	libmm-utils-icera.la libhelpers-mbm.la libmm-utils-mbm.la \
 	libmm-utils-sierra.la libmm-utils-option.la \
-	libmm-utils-novatel.la libmm-utils-telit.la \
-	libhelpers-huawei.la libhelpers-cinterion.la \
-	libhelpers-thuraya.la libhelpers-altair-lte.la \
-	libhelpers-telit.la
+	libmm-utils-novatel.la libhelpers-telit.la \
+	libmm-utils-telit.la libhelpers-huawei.la \
+	libhelpers-cinterion.la libhelpers-thuraya.la \
+	libhelpers-altair-lte.la
 
 # Plugins
 
@@ -1146,6 +1147,10 @@ noinst_LTLIBRARIES = libmm-test-common.la libhelpers-icera.la \
 
 ################################################################################
 # plugin: via
+################################################################################
+
+################################################################################
+# plugin: telit
 ################################################################################
 
 ################################################################################
@@ -1296,6 +1301,25 @@ libmm_utils_novatel_la_SOURCES = \
 
 NOVATEL_COMMON_COMPILER_FLAGS = -I$(top_srcdir)/plugins/novatel
 NOVATEL_COMMON_LIBADD_FLAGS = $(builddir)/libmm-utils-novatel.la
+libhelpers_telit_la_SOURCES = \
+	telit/mm-modem-helpers-telit.c \
+	telit/mm-modem-helpers-telit.h \
+	$(NULL)
+
+test_modem_helpers_telit_SOURCES = \
+	telit/tests/test-mm-modem-helpers-telit.c \
+	$(NULL)
+
+test_modem_helpers_telit_CPPFLAGS = \
+	-I$(top_srcdir)/plugins/telit \
+	$(NULL)
+
+test_modem_helpers_telit_LDADD = \
+	$(builddir)/libhelpers-telit.la \
+	$(top_builddir)/src/libhelpers.la \
+	$(top_builddir)/libmm-glib/libmm-glib.la \
+	$(NULL)
+
 libmm_utils_telit_la_SOURCES = \
 	telit/mm-common-telit.c \
 	telit/mm-common-telit.h \
@@ -1304,7 +1328,11 @@ libmm_utils_telit_la_SOURCES = \
 	$(NULL)
 
 TELIT_COMMON_COMPILER_FLAGS = -I$(top_srcdir)/plugins/telit
-TELIT_COMMON_LIBADD_FLAGS = $(builddir)/libmm-utils-telit.la
+TELIT_COMMON_LIBADD_FLAGS = \
+	$(builddir)/libhelpers-telit.la \
+	$(builddir)/libmm-utils-telit.la \
+	$(NULL)
+
 libmm_plugin_generic_la_SOURCES = \
 	generic/mm-plugin-generic.c \
 	generic/mm-plugin-generic.h \
@@ -1653,25 +1681,6 @@ libmm_plugin_via_la_SOURCES = \
 
 libmm_plugin_via_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
 libmm_plugin_via_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
-libhelpers_telit_la_SOURCES = \
-	telit/mm-modem-helpers-telit.c \
-	telit/mm-modem-helpers-telit.h \
-	$(NULL)
-
-test_modem_helpers_telit_SOURCES = \
-	telit/tests/test-mm-modem-helpers-telit.c \
-	$(NULL)
-
-test_modem_helpers_telit_CPPFLAGS = \
-	-I$(top_srcdir)/plugins/telit \
-	$(NULL)
-
-test_modem_helpers_telit_LDADD = \
-	$(builddir)/libhelpers-telit.la \
-	$(top_builddir)/src/libhelpers.la \
-	$(top_builddir)/libmm-glib/libmm-glib.la \
-	$(NULL)
-
 libmm_plugin_telit_la_SOURCES = \
 	telit/mm-plugin-telit.c \
 	telit/mm-plugin-telit.h \
@@ -1679,7 +1688,7 @@ libmm_plugin_telit_la_SOURCES = \
 
 libmm_plugin_telit_la_CPPFLAGS = $(PLUGIN_COMMON_COMPILER_FLAGS)
 libmm_plugin_telit_la_LDFLAGS = $(PLUGIN_COMMON_LINKER_FLAGS)
-libmm_plugin_telit_la_LIBADD = $(builddir)/libhelpers-telit.la $(TELIT_COMMON_LIBADD_FLAGS)
+libmm_plugin_telit_la_LIBADD = $(TELIT_COMMON_LIBADD_FLAGS)
 libmm_plugin_mtk_la_SOURCES = \
 	mtk/mm-plugin-mtk.c \
 	mtk/mm-plugin-mtk.h \

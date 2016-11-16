@@ -132,6 +132,7 @@ ATTRS{idVendor}=="0425", ATTRS{idProduct}=="0408", ENV{ID_MM_DEVICE_IGNORE}="1"
 
 # Infineon Flashloader used by Intel XMM modem bootloader
 ATTRS{idVendor}=="8087", ATTRS{idProduct}=="0716", ENV{ID_MM_DEVICE_IGNORE}="1"
+ATTRS{idVendor}=="8087", ATTRS{idProduct}=="0801", ENV{ID_MM_DEVICE_IGNORE}="1"
 
 # GW Instek AFG-2225 arbitrary function generator
 ATTRS{idVendor}=="2184", ATTRS{idProduct}=="001c", ENV{ID_MM_DEVICE_IGNORE}="1"
@@ -165,5 +166,10 @@ ATTRS{idVendor}=="1424", ENV{ID_MM_DEVICE_IGNORE}="1"
 
 # proxmark3
 ATTRS{manufacturer}=="proxmark.org", ENV{ID_MM_DEVICE_IGNORE}="1"
+
+# Sigma Sport Docking Station TOPLINE 2009
+ATTRS{idVendor}=="1d9d", ATTRS{idProduct}=="1010", ENV{ID_MM_DEVICE_IGNORE}="1"
+# Sigma Sport Docking Station TOPLINE 2012
+ATTRS{idVendor}=="1d9d", ATTRS{idProduct}=="1011", ENV{ID_MM_DEVICE_IGNORE}="1"
 
 LABEL="mm_usb_device_blacklist_end"

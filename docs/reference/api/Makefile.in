@@ -653,8 +653,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 @ENABLE_GTK_DOC_FALSE@clean-local:
 @ENABLE_GTK_DOC_FALSE@uninstall-local:
-@ENABLE_GTK_DOC_FALSE@install-data-local:
 @ENABLE_GTK_DOC_FALSE@distclean-local:
+@ENABLE_GTK_DOC_FALSE@install-data-local:
 @ENABLE_GTK_DOC_FALSE@maintainer-clean-local:
 clean: clean-am
 
