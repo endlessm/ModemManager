@@ -1740,7 +1740,10 @@ dms_uim_get_pin_status_ready (QmiClientDms *client,
         /* We get InvalidQmiCommand on newer devices which don't like the legacy way */
         if (g_error_matches (error,
                              QMI_PROTOCOL_ERROR,
-                             QMI_PROTOCOL_ERROR_INVALID_QMI_COMMAND)) {
+                             QMI_PROTOCOL_ERROR_INVALID_QMI_COMMAND) ||
+            g_error_matches (error,
+                             QMI_PROTOCOL_ERROR,
+                             QMI_PROTOCOL_ERROR_NOT_SUPPORTED)) {
             g_error_free (error);
             qmi_message_dms_uim_get_pin_status_output_unref (output);
             /* Flag that the command is unsupported, and try with the new way */
@@ -1792,8 +1795,14 @@ dms_uim_get_pin_status_ready (QmiClientDms *client,
             &current_status,
             NULL, /* verify_retries_left */
             NULL, /* unblock_retries_left */
-            NULL))
-        lock = mm_modem_lock_from_qmi_uim_pin_status (current_status, FALSE);
+            NULL)) {
+        MMModemLock lock2;
+
+        /* We only use the PIN2 status if it isn't unknown */
+        lock2 = mm_modem_lock_from_qmi_uim_pin_status (current_status, FALSE);
+        if (lock2 != MM_MODEM_LOCK_UNKNOWN)
+            lock = lock2;
+    }
 
     /* We're done! */
     g_simple_async_result_set_op_res_gpointer (ctx->result, GUINT_TO_POINTER (lock), NULL);
@@ -4319,7 +4328,7 @@ modem_3gpp_scan_networks (MMIfaceModem3gpp *self,
     mm_dbg ("Scanning networks...");
     qmi_client_nas_network_scan (QMI_CLIENT_NAS (client),
                                  NULL,
-                                 100,
+                                 300,
                                  NULL,
                                  (GAsyncReadyCallback)nas_network_scan_ready,
                                  result);
