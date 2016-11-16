@@ -9,7 +9,7 @@ DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 DH_ALWAYS_EXCLUDE=.svn:.git:.bzr
 
 %:
-	dh $@ --with autoreconf,gir
+	dh $@ --with gir
 
 override_dh_autoreconf:
 	NOCONFIGURE=true dh_autoreconf ./autogen.sh
@@ -35,9 +35,3 @@ override_dh_install:
 	find $(CURDIR)/debian/tmp/ -name \*.a -exec rm {} \;
 	find $(CURDIR)/debian/tmp/ -name \*.la -exec rm {} \;
 	dh_install --fail-missing
-
-override_dh_systemd_start:
-	dh_systemd_start --restart-after-upgrade
-
-override_dh_installinit:
-	dh_installinit --restart-after-upgrade
