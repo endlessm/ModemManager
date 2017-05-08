@@ -1,5 +1,5 @@
 usr/lib/*/libmm-glib.so
 usr/lib/*/pkgconfig/mm-glib.pc
-usr/include/libmm-glib
-usr/share/gir-1.0
-usr/share/vala/vapi
+usr/include/libmm-glib/
+usr/share/gir-1.0/
+usr/share/vala/vapi/

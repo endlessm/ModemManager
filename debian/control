@@ -3,9 +3,7 @@ Section: net
 Priority: optional
 Maintainer: Utopia Maintenance Team <pkg-utopia-maintainers@lists.alioth.debian.org>
 Uploaders: Michael Biebl <biebl@debian.org>, Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>
-Build-Depends: debhelper (>= 9.20160114),
-               dh-autoreconf,
-               dh-systemd,
+Build-Depends: debhelper (>= 10),
                automake,
                libtool,
                intltool,
@@ -13,15 +11,16 @@ Build-Depends: debhelper (>= 9.20160114),
                gnome-common,
                gobject-introspection,
                libgirepository1.0-dev,
-               libglib2.0-dev (>= 2.30.2),
+               libglib2.0-dev (>= 2.36.0),
                libgudev-1.0-dev (>= 147),
+               libsystemd-dev (>= 209),
                libpolkit-gobject-1-dev (>= 0.97),
-               libqmi-glib-dev (>= 1.12.4),
-               libmbim-glib-dev (>= 1.10),
+               libqmi-glib-dev (>= 1.16.0),
+               libmbim-glib-dev (>= 1.14.0),
                libglib2.0-doc,
                valac (>= 0.22),
                dbus
-Standards-Version: 3.9.7
+Standards-Version: 3.9.8
 Vcs-Git: https://anonscm.debian.org/git/collab-maint/modemmanager.git
 Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/modemmanager.git
 Homepage: https://www.freedesktop.org/wiki/Software/ModemManager/

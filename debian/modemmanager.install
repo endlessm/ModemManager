@@ -1,10 +1,12 @@
-etc
-lib
-usr/bin
-usr/sbin
-usr/share/dbus-1
-usr/share/polkit-1
-usr/share/icons
-usr/share/man
-usr/share/locale
-usr/lib/*/ModemManager
+debian/77-mm-qdl-device-blacklist.rules lib/udev/rules.d/
+etc/
+lib/
+usr/bin/
+usr/sbin/
+usr/share/bash-completion/
+usr/share/dbus-1/
+usr/share/polkit-1/
+usr/share/icons/
+usr/share/man/
+usr/share/locale/
+usr/lib/*/ModemManager/
