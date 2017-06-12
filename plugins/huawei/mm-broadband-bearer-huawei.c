@@ -391,8 +391,8 @@ connect_3gpp_context_step (Connect3gppContext *ctx)
         gchar               *command;
 
         if (g_strcmp0 (mm_iface_modem_get_model (MM_IFACE_MODEM (ctx->modem)), "E8278") == 0) {
-            mm_dbg ("Skip NDISDUP and NDISSTATQRY for E8278");
-            ctx->step = CONNECT_3GPP_CONTEXT_STEP_LAST;
+            mm_dbg ("Skip NDISDUP for E8278");
+            ctx->step++;
             connect_3gpp_context_step (ctx);
             return;
         }
@@ -436,6 +436,13 @@ connect_3gpp_context_step (Connect3gppContext *ctx)
     }
 
     case CONNECT_3GPP_CONTEXT_STEP_NDISSTATQRY:
+        if (g_strcmp0 (mm_iface_modem_get_model (MM_IFACE_MODEM (ctx->modem)), "E8278") == 0) {
+            mm_dbg ("Skip NDISSTATQRY for E8278");
+            ctx->step++;
+            connect_3gpp_context_step (ctx);
+            return;
+        }
+
         /* Wait for dial up timeout, retries for 60 times
          * (1s between the retries, so it means 1 minute).
          * If too many retries, failed
