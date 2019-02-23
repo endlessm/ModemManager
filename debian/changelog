@@ -1,3 +1,75 @@
+modemmanager (1.10.0-1) unstable; urgency=medium
+
+  * New upstream release
+  * debian/control: Update build dependencies as now libmbim >= 1.18.0 and
+    libqmi >= 1.22.0 are required.
+  * debian/libmm-glib0.symbols: update symbols for new release.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 05 Feb 2019 23:40:29 +0100
+
+modemmanager (1.8.2-1) unstable; urgency=medium
+
+  * New upstream version 1.8.2. (Closes: #910013) (Closes: #900907)
+  * debian/modemmanager.postrm: don't unmask ModemManager on postrm; we were
+    unmasking because we're about to remove ModemManager anyway, and prerm did
+    its mask with --runtime which is supposed to not be persistent.
+    (Closes: #902260)
+  * debian/control: canonicalize Vcs-* URLs.
+  * debian/control: bump to Standard-Version: 4.2.1; no changes required.
+
+ -- Mathieu Trudel-Lapierre <mathieu.tl@gmail.com>  Thu, 04 Oct 2018 10:01:18 -0400
+
+modemmanager (1.7.990-1ubuntu1) cosmic; urgency=low
+
+  * Merge from Debian unstable.  Remaining changes:
+    - Pass --enable-more-warnings so we build without -Werror. Patch
+      m4/compiler_warnings.m4 to allow this.
+
+ -- Gianfranco Costamagna <locutusofborg@debian.org>  Wed, 06 Jun 2018 16:34:06 +0200
+
+modemmanager (1.7.990-1) unstable; urgency=medium
+
+  * New upstream version 1.7.990.
+  * debian/control: Bump libqmi-glib-dev and libmbim-glib-dev Depends to new
+    required versions (libmbim > 1.16, libqmi > 1.20) for this release.
+  * Update Maintainer field for my 'real' address. (Closes: #884617)
+  * debian/control: Update Vcs-* fields: moved project to salsa.d.o.
+  * debian/control: Bump to Standards-Version 4.1.3.
+  * debian/copyright:
+    - Fix Format: URL to use https.
+    - Drop extra stanza for libwmc; it really is only GPL2, not GPL2+.
+  * debian/rules: set DPKG_GENSYMBOLS_CHECK_LEVEL=4; more verbose when there
+    are added/changed symbols.
+  * debian/libmm-glib0.symbols: update symbols for new release.
+  * debian/patches/default_strict_probing_policy.patch: set the filtering
+    policy for probing to 'strict' by default: this will avoid probing devices
+    that are not modems, and potentially interfering with RNGs, braille, etc.
+    (Closes: #683839)
+
+ -- Mathieu Trudel-Lapierre <mathieu.tl@gmail.com>  Thu, 01 Mar 2018 09:20:02 -0500
+
+modemmanager (1.6.8-2ubuntu1) bionic; urgency=medium
+
+  * Pass --enable-more-warnings so we build without -Werror. Patch
+    m4/compiler_warnings.m4 to allow this.
+
+ -- Iain Lane <iain@orangesquash.org.uk>  Tue, 24 Apr 2018 12:06:03 +0100
+
+modemmanager (1.6.8-2) unstable; urgency=medium
+
+  * Remove myself from Uploaders and re-instate Mathieu Trudel-Lapierre as
+    Maintainer.
+
+ -- Michael Biebl <biebl@debian.org>  Sat, 21 Oct 2017 00:45:12 +0200
+
+modemmanager (1.6.8-1) unstable; urgency=medium
+
+  * New upstream version 1.6.8
+  * Drop obsolete Breaks and Replaces from pre-jessie.
+  * Move D-Bus interface files into modemmanager-dev package
+
+ -- Michael Biebl <biebl@debian.org>  Sat, 17 Jun 2017 13:40:08 +0200
+
 modemmanager (1.6.4-1) unstable; urgency=medium
 
   * New upstream release.
@@ -912,3 +984,4 @@ modemmanager (0.2.git.20090806t105932.354a4cb-0ubuntu1) karmic; urgency=low
     - update debian/patches/series
 
  -- Tony Espy <espy@ubuntu.com>  Thu, 06 Aug 2009 12:50:45 +0100
+

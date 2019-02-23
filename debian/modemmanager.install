@@ -4,7 +4,7 @@ lib/
 usr/bin/
 usr/sbin/
 usr/share/bash-completion/
-usr/share/dbus-1/
+usr/share/dbus-1/system-services/
 usr/share/polkit-1/
 usr/share/icons/
 usr/share/man/

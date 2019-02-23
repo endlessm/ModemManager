@@ -1,0 +1,19 @@
+From: Mathieu Trudel-Lapierre <mathieu.tl@gmail.com>
+Subject: Default to strict probing filter policy.
+Bug-Debian: https://bugs.debian.org/683839
+Last-Update: 2018-03-01
+Forwarded: not-needed
+
+Index: modemmanager/data/ModemManager.service.in
+===================================================================
+--- modemmanager.orig/data/ModemManager.service.in
++++ modemmanager/data/ModemManager.service.in
+@@ -4,7 +4,7 @@ Description=Modem Manager
+ [Service]
+ Type=dbus
+ BusName=org.freedesktop.ModemManager1
+-ExecStart=@sbindir@/ModemManager
++ExecStart=@sbindir@/ModemManager --filter-policy=strict
+ StandardError=null
+ Restart=on-abort
+ CapabilityBoundingSet=CAP_SYS_ADMIN

@@ -3,6 +3,8 @@
 #For debhelper debugging
 #export DH_VERBOSE=1
 
+export DPKG_GENSYMBOLS_CHECK_LEVEL=4
+
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
 #always exclude any data from version control systems
@@ -22,6 +24,7 @@ override_dh_auto_configure:
 	dh_auto_configure -- \
 		--enable-gtk-doc \
 		--with-polkit=strict \
+		--enable-more-warnings \
 		--with-suspend-resume=systemd \
 		--with-systemdsystemunitdir=/lib/systemd/system
 

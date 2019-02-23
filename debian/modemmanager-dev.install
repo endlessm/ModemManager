@@ -1,2 +1,3 @@
 usr/include/ModemManager/
 usr/lib/*/pkgconfig/ModemManager.pc
+usr/share/dbus-1/interfaces/

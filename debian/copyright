@@ -1,4 +1,4 @@
-Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: ModemManager
 Source: https://www.freedesktop.org/software/ModemManager/
 
@@ -17,10 +17,6 @@ License: GPL-3.0+
 Files: libwmc/*
 Copyright: 2010, 2011 Red Hat, Inc.
 License: GPL-2.0
-
-Files: libwmc/*
-Copyright: 2010, 2011 Red Hat, Inc.
-License: GPL-2.0+
 
 Files: libmm-glib/*
        include/*

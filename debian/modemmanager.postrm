@@ -1,9 +1,4 @@
 #!/bin/sh
 set -e
 
-# drop the temporary mask from prerm
-if [ -d /run/systemd/system ] && [ "$1" = remove ]; then
-    systemctl unmask --runtime ModemManager
-fi
-
 #DEBHELPER#

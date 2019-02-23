@@ -1,8 +1,7 @@
 Source: modemmanager
 Section: net
 Priority: optional
-Maintainer: Utopia Maintenance Team <pkg-utopia-maintainers@lists.alioth.debian.org>
-Uploaders: Michael Biebl <biebl@debian.org>, Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>
+Maintainer: Mathieu Trudel-Lapierre <mathieu.tl@gmail.com>
 Build-Depends: debhelper (>= 10),
                automake,
                libtool,
@@ -15,14 +14,14 @@ Build-Depends: debhelper (>= 10),
                libgudev-1.0-dev (>= 147),
                libsystemd-dev (>= 209),
                libpolkit-gobject-1-dev (>= 0.97),
-               libqmi-glib-dev (>= 1.16.0),
-               libmbim-glib-dev (>= 1.14.0),
+               libqmi-glib-dev (>= 1.22.0),
+               libmbim-glib-dev (>= 1.18.0),
                libglib2.0-doc,
                valac (>= 0.22),
                dbus
-Standards-Version: 3.9.8
-Vcs-Git: https://anonscm.debian.org/git/collab-maint/modemmanager.git
-Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/modemmanager.git
+Standards-Version: 4.2.1
+Vcs-Git: https://salsa.debian.org/cyphermox-guest/modemmanager.git
+Vcs-Browser: https://salsa.debian.org/cyphermox-guest/modemmanager
 Homepage: https://www.freedesktop.org/wiki/Software/ModemManager/
 
 Package: modemmanager
@@ -30,7 +29,6 @@ Architecture: linux-any
 Depends: ${shlibs:Depends},
          ${misc:Depends},
 Recommends: usb-modeswitch
-Breaks: network-manager (<< 0.9.8.2-1)
 Description: D-Bus service for managing modems
  ModemManager is a DBus-activated daemon which controls mobile broadband
  (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
@@ -43,9 +41,9 @@ Section: libdevel
 Architecture: linux-any
 Multi-Arch: same
 Depends: ${misc:Depends}
-Replaces: modemmanager (<< 0.7.990)
-Breaks: modemmanager (<< 0.7.990)
 Suggests: modemmanager-doc
+Breaks: modemmanager (<< 1.6.6-1)
+Replaces: modemmanager (<< 1.6.6-1)
 Description: D-Bus service for managing modems - development files
  ModemManager is a DBus-activated daemon which controls mobile broadband
  (2G/3G/4G) devices and connections. Whether built-in devices, USB dongles,
